@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome — My Website</title>
+
+    <!-- ===== Simple Modern Styling ===== -->
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fa;
+            color: #222;
+        }
+
+        header {
+            background: #1f2937;
+            color: white;
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 2.2rem;
+            font-weight: 600;
+        }
+
+        header p {
+            margin: 0;
+            opacity: 0.85;
+        }
+
+        nav {
+            background: #111827;
+            padding: 0.75rem 1.5rem;
+            text-align: center;
+        }
+
+        nav a {
+            color: #e5e7eb;
+            text-decoration: none;
+            margin: 0 1rem;
+            font-size: 1rem;
+        }
+
+        nav a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.09);
+        }
+
+        .card h2 {
+            margin-top: 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+            background: #1f2937;
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 0.75rem;
+        }
+
+        .btn:hover {
+            background: #1e40af;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== Header ===== -->
+    <header>
+        <h1>Welcome to My Website</h1>
+        <p>A simple site built and deployed using GitHub Pages</p>
+    </header>
+
+    <!-- ===== Navigation ===== -->
+    <nav>
+        <a href="home.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="projects.html">Projects</a>
+    </nav>
+
+    <!-- ===== Main Content ===== -->
+    <div class="container">
+
+        <div class="card">
+            <h2>Overview</h2>
+            <p>
+                This is the homepage of your GitHub Pages site.  
+                You can edit everything on this page directly in GitHub, 
+                or ask ChatGPT to generate updated sections, themes, or layouts.
+            </p>
+            <a class="btn" href="about.html">Learn More</a>
+        </div>
+
+        <div class="card">
+            <h2>What You Can Do Here</h2>
+            <ul>
+                <li>Showcase your projects</li>
+                <li>Host documentation or tutorials</li>
+                <li>Create a personal portfolio</li>
+                <li>Build multi-page static websites</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>Quick Tip</h2>
+            <p>
+                Your homepage file can be named <code>home.html</code> or <code>index.html</code>.  
+                GitHub Pages automatically loads <code>index.html</code> as the default.
+            </p>
+        </div>
+
+    </div>
+
+    <!-- ===== Footer ===== -->
+    <footer>
+        © <span id="year"></span> My Website — Powered by GitHub Pages
+    </footer>
+
+    <!-- Simple JS for updating year -->
+    <script>
+        document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+
+</body>
+</html>
