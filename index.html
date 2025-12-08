@@ -1,7 +1,6 @@
 <!-- File: index.html -->
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,8 +15,15 @@
 
         body {
             font-family: Arial, Helvetica, sans-serif;
-            background: linear-gradient(135deg, #e8f0ff 0%, #d4e2ff 40%, #c3d6ff 100%);
-            color: #111827;
+            color: #e5e7eb;
+
+            /* Background graphic + dark blue tint (placeholder image) */
+            background:
+                linear-gradient(rgba(15,23,42,0.85), rgba(15,23,42,0.85)),
+                url("img/portfolio-bg-placeholder.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
 
         .page {
@@ -26,24 +32,45 @@
             flex-direction: column;
         }
 
-        /* ===== Hero section ===== */
-        .hero {
-            margin: 1.0rem 1.5rem 0.5rem;   /* closer to top, left-aligned */
-            padding: 0;
+        /* ===== Central container (squeezed layout) ===== */
+        .container {
+            max-width: 1024px;
+            margin: 1.5rem auto 1.2rem;
+            padding: 0 1rem;
             display: flex;
-            align-items: flex-start;
+            flex-direction: column;
+            gap: 1.1rem;
+        }
+
+        /* ===== Shared glass style (matches hub aesthetic) ===== */
+        .glass {
+            background: rgba(15,23,42,0.78);
+            border-radius: 18px;
+            border: 1px solid rgba(148,163,184,0.45);
+            box-shadow:
+                0 24px 60px rgba(15,23,42,0.8),
+                0 0 0 1px rgba(15,23,42,0.4) inset;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 1.5rem 1.8rem;
+        }
+
+        /* ===== Hero card ===== */
+        .hero-card {
+            display: flex;
+            align-items: center;
             justify-content: space-between;
-            gap: 1.2rem;
+            gap: 1.5rem;
         }
 
         .hero-text {
-            flex: 1.4;  /* wider text area */
+            flex: 1.4;
         }
 
         .hero-title {
             font-size: 2.2rem;
             font-weight: 700;
-            margin: 0 0 0.35rem;
+            margin: 0 0 0.3rem;
         }
 
         .hero-subtitle {
@@ -54,19 +81,19 @@
 
         .hero-tagline {
             margin: 0.15rem 0;
-            font-size: 0.95rem;
-            color: #4b5563;
+            font-size: 0.96rem;
+            color: #cbd5f5;
         }
 
         .hero-contact {
             margin: 0.6rem 0 0;
             font-size: 0.88rem;
-            color: #374151;
+            color: #cbd5f5;
             line-height: 1.4;
         }
 
         .hero-contact a {
-            color: #2563eb;
+            color: #93c5fd;
             text-decoration: none;
         }
 
@@ -80,53 +107,62 @@
             justify-content: flex-end;
         }
 
-        /* ===== Diagonal Image: narrower, fixed size ===== */
+        /* Portrait frame with diagonal edge, fixed size */
         .hero-image {
-            width: 260px;    /* manually chosen: ~30% narrower than earlier */
-            height: 380px;   /* tall portrait feel, independent of viewport */
+            width: 240px;
+            height: 360px;
             background-image: url("362913277_1456595465179872_8041301197273694670_n (1) - Copy.jpg");
             background-size: cover;
             background-position: center;
-            background-color: #111;
-            border-radius: 12px;
+            background-color: #020617;
+            border-radius: 16px;
             overflow: hidden;
             margin-left: auto;
-
             clip-path: polygon(18% 0, 100% 0, 100% 100%, 0 100%);
         }
 
-        /* ===== Cards grid: 3 columns × 2 rows ===== */
-        .cards-row {
-            margin: 0 1.5rem 0.6rem;
-            padding: 0;
+        /* ===== Cards section (inside glass) ===== */
+        .cards-section h2 {
+            margin: 0 0 0.4rem;
+            font-size: 1.4rem;
+        }
+
+        .cards-section p.section-intro {
+            margin: 0 0 0.8rem;
+            font-size: 0.9rem;
+            color: #cbd5f5;
+        }
+
+        .cards-grid {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 0.8rem;  /* tighter to reduce overall height */
+            gap: 0.8rem;
         }
 
         .card {
-            background: #ffffff;
-            border-radius: 10px;
-            padding: 0.8rem;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+            background: rgba(15,23,42,0.9);
+            border-radius: 14px;
+            border: 1px solid rgba(148,163,184,0.35);
+            padding: 0.8rem 0.9rem;
+            box-shadow: 0 10px 25px rgba(15,23,42,0.6);
         }
 
         .card h3 {
-            margin: 0 0 0.3rem;
+            margin: 0 0 0.25rem;
             font-size: 1rem;
         }
 
         .card p {
             margin: 0;
-            font-size: 0.85rem;
-            color: #4b5563;
+            font-size: 0.82rem;
+            color: #d1d5db;
         }
 
         .card ul {
             margin: 0.25rem 0 0;
             padding-left: 1rem;
             font-size: 0.8rem;
-            color: #4b5563;
+            color: #cbd5f5;
         }
 
         .card ul li {
@@ -134,7 +170,7 @@
         }
 
         .btn {
-            margin-top: 0.6rem;
+            margin-top: 0.55rem;
             display: inline-block;
             padding: 0.4rem 0.85rem;
             background: #2563eb;
@@ -145,33 +181,38 @@
         }
 
         .btn:hover {
-            background: #1e40af;
+            background: #1d4ed8;
         }
 
         footer {
             text-align: center;
-            padding: 0.6rem 1rem;
+            padding: 0.5rem 1rem 0.7rem;
             margin-top: auto;
-            background: #111827;
-            color: #d1d5db;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
+            color: #cbd5f5;
+            text-shadow: 0 1px 2px rgba(15,23,42,0.9);
         }
 
-        /* Mobile layout */
-        @media (max-width: 768px) {
-            .hero {
+        @media (max-width: 900px) {
+            .hero-card {
                 flex-direction: column-reverse;
-                margin: 0.8rem 1rem 0.4rem;
+                align-items: flex-start;
             }
 
             .hero-image {
                 width: 100%;
-                height: 260px;
+                max-width: 320px;
+                height: 320px;
                 clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
             }
 
-            .cards-row {
-                margin: 0 1rem 0.6rem;
+            .cards-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .cards-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -181,93 +222,104 @@
 <body>
 <div class="page">
 
-    <!-- HERO -->
-    <section class="hero">
-        <div class="hero-text">
-            <h1 class="hero-title">Welcome to Khan's Portfolio</h1>
-            <p class="hero-subtitle">Hi, I’m Saleh Ahmed Khan.</p>
+    <main class="container">
 
-            <p class="hero-tagline">
-                Researcher in ultrawide-bandgap semiconductors and power device engineering.
+        <!-- HERO GLASS PANEL -->
+        <section class="glass hero-card">
+            <div class="hero-text">
+                <h1 class="hero-title">Welcome to Khan's Portfolio</h1>
+                <p class="hero-subtitle">Hi, I’m Saleh Ahmed Khan.</p>
+
+                <p class="hero-tagline">
+                    Researcher in ultrawide-bandgap semiconductors and power device engineering.
+                </p>
+                <p class="hero-tagline">
+                    Exploring material growth, breakdown physics, and next-generation electronics.
+                </p>
+
+                <p class="hero-contact">
+                    Personal email: <a href="mailto:your.personal@email.com">your.personal@email.com</a><br>
+                    Academic email: <a href="mailto:your.academic@university.edu">your.academic@university.edu</a><br>
+                    Socials:
+                    <a href="#" target="_blank">LinkedIn</a> ·
+                    <a href="#" target="_blank">Google Scholar</a> ·
+                    <a href="#" target="_blank">GitHub</a>
+                </p>
+            </div>
+
+            <div class="hero-image-wrapper">
+                <div class="hero-image"></div>
+            </div>
+        </section>
+
+        <!-- TABS GLASS PANEL -->
+        <section class="glass cards-section">
+            <h2>Portfolio at a Glance</h2>
+            <p class="section-intro">
+                Quick links into my research, projects, and background.
             </p>
-            <p class="hero-tagline">
-                Exploring material growth, breakdown physics, and next-generation electronics.
-            </p>
 
-            <p class="hero-contact">
-                Personal email: <a href="#">your.personal@email.com</a><br>
-                Academic email: <a href="#">your.academic@university.edu</a><br>
-                Socials:
-                <a href="#">LinkedIn</a> ·
-                <a href="#">Google Scholar</a> ·
-                <a href="#">GitHub</a>
-            </p>
-        </div>
+            <div class="cards-grid">
 
-        <div class="hero-image-wrapper">
-            <div class="hero-image"></div>
-        </div>
-    </section>
+                <div class="card">
+                    <h3>Overview</h3>
+                    <p>A concise snapshot of my work and research direction.</p>
+                    <ul>
+                        <li>Research focus</li>
+                        <li>Interests & themes</li>
+                    </ul>
+                </div>
 
-    <!-- 3 × 2 CARDS -->
-    <section class="cards-row">
+                <div class="card">
+                    <h3>Next Steps</h3>
+                    <p>Planned expansions to the site.</p>
+                    <ul>
+                        <li>About & teaching</li>
+                        <li>Project pages</li>
+                        <li>Notes & articles</li>
+                    </ul>
+                </div>
 
-        <div class="card">
-            <h3>Overview</h3>
-            <p>A concise snapshot of my work and research direction.</p>
-            <ul>
-                <li>Research focus</li>
-                <li>Interests & themes</li>
-            </ul>
-        </div>
+                <div class="card">
+                    <h3>Research Hub</h3>
+                    <p>Explore detailed β-Ga₂O₃ research pages.</p>
+                    <a class="btn" href="research/bga2o3/hub-bga2o3.html">Enter Hub</a>
+                </div>
 
-        <div class="card">
-            <h3>Next Steps</h3>
-            <p>Planned expansions to the site.</p>
-            <ul>
-                <li>About & teaching</li>
-                <li>Project pages</li>
-                <li>Notes & articles</li>
-            </ul>
-        </div>
+                <div class="card">
+                    <h3>Hobbies & Interests</h3>
+                    <p>Beyond the lab, things that keep me curious and grounded.</p>
+                    <ul>
+                        <li>Technology tinkering</li>
+                        <li>Science writing</li>
+                        <li>Creative design</li>
+                    </ul>
+                </div>
 
-        <div class="card">
-            <h3>Research Hub</h3>
-            <p>Explore detailed β-Ga₂O₃ research pages.</p>
-            <a class="btn" href="research/bga2o3/hub-bga2o3.html">Enter Hub</a>
-        </div>
+                <div class="card">
+                    <h3>Professional Experience</h3>
+                    <p>Academic and research roles that shaped my skill set.</p>
+                    <ul>
+                        <li>Research assistant & lab work</li>
+                        <li>Teaching / mentoring</li>
+                        <li>Collaborations</li>
+                    </ul>
+                </div>
 
-        <div class="card">
-            <h3>Hobbies & Interests</h3>
-            <p>Beyond the lab, things that keep me curious and grounded.</p>
-            <ul>
-                <li>Technology tinkering</li>
-                <li>Science writing</li>
-                <li>Creative design</li>
-            </ul>
-        </div>
+                <div class="card">
+                    <h3>Experimental Tools</h3>
+                    <p>Hands-on experience with fabrication and characterization tools.</p>
+                    <ul>
+                        <li>Etching & thin-film growth</li>
+                        <li>Electrical measurements</li>
+                        <li>Microscopy / spectroscopy</li>
+                    </ul>
+                </div>
 
-        <div class="card">
-            <h3>Professional Experience</h3>
-            <p>Academic and research roles that shaped my skill set.</p>
-            <ul>
-                <li>Research assistant & lab work</li>
-                <li>Teaching / mentoring</li>
-                <li>Collaborations</li>
-            </ul>
-        </div>
+            </div>
+        </section>
 
-        <div class="card">
-            <h3>Experimental Tools</h3>
-            <p>Hands-on experience with fabrication and characterization tools.</p>
-            <ul>
-                <li>Etching & thin-film growth</li>
-                <li>Electrical measurements</li>
-                <li>Microscopy / spectroscopy</li>
-            </ul>
-        </div>
-
-    </section>
+    </main>
 
     <footer>
         © <span id="year"></span> Khan’s Portfolio — Powered by GitHub Pages
