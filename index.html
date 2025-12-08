@@ -11,7 +11,7 @@
             margin: 0;
             font-family: Arial, Helvetica, sans-serif;
 
-            /* ===== Blue-Tinted Professional Gradient ===== */
+            /* Blue-tinted professional gradient */
             background: linear-gradient(135deg, #e8f0ff 0%, #d4e2ff 40%, #c3d6ff 100%);
 
             color: #111827;
@@ -29,7 +29,7 @@
             margin: 1.8rem auto 1.2rem;
             padding: 0 1.5rem;
             display: flex;
-            align-items: flex-start;      /* FIXED: lifts image top */
+            align-items: flex-start;
             justify-content: space-between;
             gap: 1.8rem;
         }
@@ -73,17 +73,17 @@
         }
 
         .hero-image-wrapper {
-            flex: 0 0 auto;                 /* FIXED: prevent resizing */
+            flex: 0 0 auto;
             display: flex;
-            justify-content: flex-end;      /* FIXED: pushes fully right */
+            justify-content: flex-end;
             width: 100%;
         }
 
-        /* ===== Enlarged Diagonal Image ===== */
+        /* ===== Enlarged Diagonal Image (wider + shifted right) ===== */
         .hero-image {
             width: 100%;
             height: 50vh;
-            max-width: 37.5vw;              /* 50% wider than previous */
+            max-width: 45vw;   /* ~20% wider than before */
             background: #111827;
             background-image: url("362913277_1456595465179872_8041301197273694670_n (1) - Copy.jpg");
             background-size: cover;
@@ -91,9 +91,10 @@
             border-radius: 12px;
             position: relative;
             overflow: hidden;
-            margin-left: auto;              /* FIXED: full right alignment */
 
-            /* diagonal left edge */
+            margin-left: auto;
+            margin-right: -12px;  /* nudge ~1 cm further right */
+
             clip-path: polygon(18% 0, 100% 0, 100% 100%, 0 100%);
         }
 
@@ -135,6 +136,10 @@
             color: #4b5563;
         }
 
+        .card ul li {
+            margin-bottom: 0.15rem;
+        }
+
         .btn {
             margin-top: 0.7rem;
             display: inline-block;
@@ -168,6 +173,7 @@
                 width: 100%;
                 max-width: 100%;
                 height: 35vh;
+                margin-right: 0;
                 clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
             }
         }
@@ -177,6 +183,7 @@
 <body>
 <div class="page">
 
+    <!-- Hero -->
     <section class="hero">
         <div class="hero-text">
             <h1 class="hero-title">Welcome to Khan's Portfolio</h1>
@@ -204,6 +211,7 @@
         </div>
     </section>
 
+    <!-- Tabs Row -->
     <section class="cards-row">
 
         <div class="card">
@@ -222,15 +230,6 @@
                 <li>About & teaching</li>
                 <li>Project pages</li>
                 <li>Notes & articles</li>
-            </ul>
-        </div>
-
-        <div class="card">
-            <h3>How This Site Evolves</h3>
-            <p>From simple HTML → structured research hubs.</p>
-            <ul>
-                <li>More sections</li>
-                <li>Custom components</li>
             </ul>
         </div>
 
@@ -272,6 +271,7 @@
 
     </section>
 
+    <!-- Footer -->
     <footer>
         © <span id="year"></span> Khan’s Portfolio — Powered by GitHub Pages
     </footer>
@@ -279,7 +279,7 @@
 </div>
 
 <script>
-document.getElementById("year").textContent = new Date().getFullYear();
+    document.getElementById("year").textContent = new Date().getFullYear();
 </script>
 
 </body>
