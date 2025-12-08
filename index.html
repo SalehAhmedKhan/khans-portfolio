@@ -1,6 +1,7 @@
 <!-- File: index.html -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,10 +11,7 @@
         body {
             margin: 0;
             font-family: Arial, Helvetica, sans-serif;
-
-            /* Blue-tinted professional gradient */
             background: linear-gradient(135deg, #e8f0ff 0%, #d4e2ff 40%, #c3d6ff 100%);
-
             color: #111827;
         }
 
@@ -23,7 +21,7 @@
             flex-direction: column;
         }
 
-        /* ===== Hero section ===== */
+        /* Hero layout */
         .hero {
             max-width: 1200px;
             margin: 1.8rem auto 1.2rem;
@@ -41,13 +39,13 @@
         .hero-title {
             font-size: 2.3rem;
             font-weight: 700;
-            margin: 0 0 0.4rem;
+            margin-bottom: 0.4rem;
         }
 
         .hero-subtitle {
             font-size: 1.35rem;
             font-weight: 600;
-            margin: 0 0 0.6rem;
+            margin-bottom: 0.6rem;
         }
 
         .hero-tagline {
@@ -57,10 +55,10 @@
         }
 
         .hero-contact {
-            margin: 0.75rem 0 0;
+            margin-top: 0.75rem;
             font-size: 0.9rem;
-            color: #374151;
             line-height: 1.4;
+            color: #374151;
         }
 
         .hero-contact a {
@@ -79,48 +77,41 @@
             width: 100%;
         }
 
-        /* ===== Enlarged Diagonal Image (wider + shifted right) ===== */
+        /* Corrected: 30% narrower, full height 50vh */
         .hero-image {
             width: 100%;
             height: 50vh;
-            max-width: 45vw;   /* ~20% wider than before */
-            background: #111827;
+            max-width: 32vw;  /* corrected narrow width */
             background-image: url("362913277_1456595465179872_8041301197273694670_n (1) - Copy.jpg");
             background-size: cover;
             background-position: center;
+            background-color: #111;
             border-radius: 12px;
-            position: relative;
             overflow: hidden;
-
             margin-left: auto;
-            margin-right: -12px;  /* nudge ~1 cm further right */
 
             clip-path: polygon(18% 0, 100% 0, 100% 100%, 0 100%);
         }
 
+        /* 3×2 grid for the cards */
         .cards-row {
             max-width: 1200px;
             margin: 0 auto 1.5rem;
             padding: 0 1.5rem;
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
             gap: 1rem;
-            justify-content: space-between;
         }
 
         .card {
-            flex: 1 1 230px;
-            min-width: 230px;
-            max-width: 260px;
-            background: #ffffff;
+            background: #fff;
             border-radius: 10px;
             padding: 1rem;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
         }
 
         .card h3 {
             margin: 0 0 0.35rem;
-            font-size: 1.05rem;
         }
 
         .card p {
@@ -130,7 +121,7 @@
         }
 
         .card ul {
-            margin: 0.3rem 0 0;
+            margin-top: 0.3rem;
             padding-left: 1.1rem;
             font-size: 0.85rem;
             color: #4b5563;
@@ -145,9 +136,9 @@
             display: inline-block;
             padding: 0.45rem 0.9rem;
             background: #2563eb;
-            color: white;
-            text-decoration: none;
+            color: #fff;
             border-radius: 999px;
+            text-decoration: none;
             font-size: 0.85rem;
         }
 
@@ -167,34 +158,32 @@
         @media (max-width: 768px) {
             .hero {
                 flex-direction: column-reverse;
-                align-items: flex-start;
             }
             .hero-image {
-                width: 100%;
                 max-width: 100%;
                 height: 35vh;
-                margin-right: 0;
                 clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+            }
+            .cards-row {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 
 <body>
+
 <div class="page">
 
-    <!-- Hero -->
+    <!-- HERO -->
     <section class="hero">
+
         <div class="hero-text">
             <h1 class="hero-title">Welcome to Khan's Portfolio</h1>
             <p class="hero-subtitle">Hi, I’m Saleh Ahmed Khan.</p>
 
-            <p class="hero-tagline">
-                Researcher in ultrawide-bandgap semiconductors and power device engineering.
-            </p>
-            <p class="hero-tagline">
-                Exploring material growth, breakdown physics, and next-generation electronics.
-            </p>
+            <p class="hero-tagline">Researcher in ultrawide-bandgap semiconductors and power device engineering.</p>
+            <p class="hero-tagline">Exploring material growth, breakdown physics, and next-generation electronics.</p>
 
             <p class="hero-contact">
                 Personal email: <a href="#">your.personal@email.com</a><br>
@@ -209,9 +198,10 @@
         <div class="hero-image-wrapper">
             <div class="hero-image"></div>
         </div>
+
     </section>
 
-    <!-- Tabs Row -->
+    <!-- CARDS -->
     <section class="cards-row">
 
         <div class="card">
@@ -241,7 +231,7 @@
 
         <div class="card">
             <h3>Hobbies & Interests</h3>
-            <p>Beyond the lab, a few things that keep me curious and grounded.</p>
+            <p>Beyond the lab, things that keep me curious and grounded.</p>
             <ul>
                 <li>Technology tinkering</li>
                 <li>Science writing</li>
@@ -271,7 +261,6 @@
 
     </section>
 
-    <!-- Footer -->
     <footer>
         © <span id="year"></span> Khan’s Portfolio — Powered by GitHub Pages
     </footer>
@@ -279,7 +268,7 @@
 </div>
 
 <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
+document.getElementById("year").textContent = new Date().getFullYear();
 </script>
 
 </body>
