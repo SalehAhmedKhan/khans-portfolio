@@ -8,8 +8,13 @@
     <title>Khan's Portfolio</title>
 
     <style>
-        body {
+        html, body {
             margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        body {
             font-family: Arial, Helvetica, sans-serif;
             background: linear-gradient(135deg, #e8f0ff 0%, #d4e2ff 40%, #c3d6ff 100%);
             color: #111827;
@@ -21,44 +26,43 @@
             flex-direction: column;
         }
 
-        /* Hero layout */
+        /* ===== Hero section ===== */
         .hero {
-            max-width: 1200px;
-            margin: 1.8rem auto 1.2rem;
-            padding: 0 1.5rem;
+            margin: 1.0rem 1.5rem 0.5rem;   /* closer to top, left-aligned */
+            padding: 0;
             display: flex;
             align-items: flex-start;
             justify-content: space-between;
-            gap: 1.8rem;
+            gap: 1.2rem;
         }
 
         .hero-text {
-            flex: 1;
+            flex: 1.4;  /* wider text area */
         }
 
         .hero-title {
-            font-size: 2.3rem;
+            font-size: 2.2rem;
             font-weight: 700;
-            margin-bottom: 0.4rem;
+            margin: 0 0 0.35rem;
         }
 
         .hero-subtitle {
             font-size: 1.35rem;
             font-weight: 600;
-            margin-bottom: 0.6rem;
+            margin: 0 0 0.5rem;
         }
 
         .hero-tagline {
             margin: 0.15rem 0;
-            font-size: 0.97rem;
+            font-size: 0.95rem;
             color: #4b5563;
         }
 
         .hero-contact {
-            margin-top: 0.75rem;
-            font-size: 0.9rem;
-            line-height: 1.4;
+            margin: 0.6rem 0 0;
+            font-size: 0.88rem;
             color: #374151;
+            line-height: 1.4;
         }
 
         .hero-contact a {
@@ -74,14 +78,12 @@
             flex: 0 0 auto;
             display: flex;
             justify-content: flex-end;
-            width: 100%;
         }
 
-        /* Corrected: 30% narrower, full height 50vh */
+        /* ===== Diagonal Image: narrower, fixed size ===== */
         .hero-image {
-            width: 100%;
-            height: 50vh;
-            max-width: 32vw;  /* corrected narrow width */
+            width: 260px;    /* manually chosen: ~30% narrower than earlier */
+            height: 380px;   /* tall portrait feel, independent of viewport */
             background-image: url("362913277_1456595465179872_8041301197273694670_n (1) - Copy.jpg");
             background-size: cover;
             background-position: center;
@@ -93,53 +95,53 @@
             clip-path: polygon(18% 0, 100% 0, 100% 100%, 0 100%);
         }
 
-        /* 3×2 grid for the cards */
+        /* ===== Cards grid: 3 columns × 2 rows ===== */
         .cards-row {
-            max-width: 1200px;
-            margin: 0 auto 1.5rem;
-            padding: 0 1.5rem;
+            margin: 0 1.5rem 0.6rem;
+            padding: 0;
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.8rem;  /* tighter to reduce overall height */
         }
 
         .card {
-            background: #fff;
+            background: #ffffff;
             border-radius: 10px;
-            padding: 1rem;
+            padding: 0.8rem;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
         }
 
         .card h3 {
-            margin: 0 0 0.35rem;
+            margin: 0 0 0.3rem;
+            font-size: 1rem;
         }
 
         .card p {
             margin: 0;
-            font-size: 0.88rem;
+            font-size: 0.85rem;
             color: #4b5563;
         }
 
         .card ul {
-            margin-top: 0.3rem;
-            padding-left: 1.1rem;
-            font-size: 0.85rem;
+            margin: 0.25rem 0 0;
+            padding-left: 1rem;
+            font-size: 0.8rem;
             color: #4b5563;
         }
 
         .card ul li {
-            margin-bottom: 0.15rem;
+            margin-bottom: 0.12rem;
         }
 
         .btn {
-            margin-top: 0.7rem;
+            margin-top: 0.6rem;
             display: inline-block;
-            padding: 0.45rem 0.9rem;
+            padding: 0.4rem 0.85rem;
             background: #2563eb;
-            color: #fff;
-            border-radius: 999px;
+            color: #ffffff;
             text-decoration: none;
-            font-size: 0.85rem;
+            border-radius: 999px;
+            font-size: 0.8rem;
         }
 
         .btn:hover {
@@ -148,23 +150,28 @@
 
         footer {
             text-align: center;
-            padding: 0.75rem 1rem;
+            padding: 0.6rem 1rem;
             margin-top: auto;
             background: #111827;
             color: #d1d5db;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
         }
 
+        /* Mobile layout */
         @media (max-width: 768px) {
             .hero {
                 flex-direction: column-reverse;
+                margin: 0.8rem 1rem 0.4rem;
             }
+
             .hero-image {
-                max-width: 100%;
-                height: 35vh;
+                width: 100%;
+                height: 260px;
                 clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
             }
+
             .cards-row {
+                margin: 0 1rem 0.6rem;
                 grid-template-columns: 1fr;
             }
         }
@@ -172,18 +179,20 @@
 </head>
 
 <body>
-
 <div class="page">
 
     <!-- HERO -->
     <section class="hero">
-
         <div class="hero-text">
             <h1 class="hero-title">Welcome to Khan's Portfolio</h1>
             <p class="hero-subtitle">Hi, I’m Saleh Ahmed Khan.</p>
 
-            <p class="hero-tagline">Researcher in ultrawide-bandgap semiconductors and power device engineering.</p>
-            <p class="hero-tagline">Exploring material growth, breakdown physics, and next-generation electronics.</p>
+            <p class="hero-tagline">
+                Researcher in ultrawide-bandgap semiconductors and power device engineering.
+            </p>
+            <p class="hero-tagline">
+                Exploring material growth, breakdown physics, and next-generation electronics.
+            </p>
 
             <p class="hero-contact">
                 Personal email: <a href="#">your.personal@email.com</a><br>
@@ -198,10 +207,9 @@
         <div class="hero-image-wrapper">
             <div class="hero-image"></div>
         </div>
-
     </section>
 
-    <!-- CARDS -->
+    <!-- 3 × 2 CARDS -->
     <section class="cards-row">
 
         <div class="card">
@@ -268,7 +276,7 @@
 </div>
 
 <script>
-document.getElementById("year").textContent = new Date().getFullYear();
+    document.getElementById("year").textContent = new Date().getFullYear();
 </script>
 
 </body>
