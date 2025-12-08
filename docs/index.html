@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome — My Website</title>
 
-    <!-- ===== Simple Modern Styling ===== -->
     <style>
         body {
             margin: 0;
@@ -32,23 +31,7 @@
             opacity: 0.85;
         }
 
-        nav {
-            background: #111827;
-            padding: 0.75rem 1.5rem;
-            text-align: center;
-        }
-
-        nav a {
-            color: #e5e7eb;
-            text-decoration: none;
-            margin: 0 1rem;
-            font-size: 1rem;
-        }
-
-        nav a:hover {
-            color: white;
-            text-decoration: underline;
-        }
+        /* Removed nav entirely */
 
         .container {
             max-width: 900px;
@@ -94,58 +77,54 @@
 </head>
 <body>
 
-    <!-- ===== Header ===== -->
+    <!-- Header -->
     <header>
         <h1>Welcome to My Website</h1>
         <p>A simple site built and deployed using GitHub Pages</p>
     </header>
 
-    <!-- ===== Navigation ===== -->
-    <nav>
-        <a href="home.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="projects.html">Projects</a>
-    </nav>
-
-    <!-- ===== Main Content ===== -->
+    <!-- Main Content -->
     <div class="container">
 
         <div class="card">
             <h2>Overview</h2>
             <p>
-                This is the homepage of your GitHub Pages site.  
-                You can edit everything on this page directly in GitHub, 
-                or ask ChatGPT to generate updated sections, themes, or layouts.
+                This is the starting homepage of your GitHub Pages site.  
+                You can expand this into a full website later by adding more pages
+                and re-introducing a navigation bar when you're ready.
             </p>
-            <a class="btn" href="about.html">Learn More</a>
         </div>
 
         <div class="card">
-            <h2>What You Can Do Here</h2>
+            <h2>What You Can Do Next</h2>
             <ul>
-                <li>Showcase your projects</li>
-                <li>Host documentation or tutorials</li>
-                <li>Create a personal portfolio</li>
-                <li>Build multi-page static websites</li>
+                <li>Add more sections to this page</li>
+                <li>Create additional HTML pages and link them later</li>
+                <li>Customize the design with more CSS</li>
+                <li>Turn this into a portfolio or personal landing page</li>
             </ul>
         </div>
 
         <div class="card">
-            <h2>Quick Tip</h2>
+            <h2>Next Steps</h2>
             <p>
-                Your homepage file can be named <code>home.html</code> or <code>index.html</code>.  
-                GitHub Pages automatically loads <code>index.html</code> as the default.
+                Once you're comfortable with the basics, you can expand your site with:
             </p>
+            <ul>
+                <li>About page</li>
+                <li>Projects page</li>
+                <li>Blog section</li>
+                <li>Custom styles and JavaScript</li>
+            </ul>
         </div>
 
     </div>
 
-    <!-- ===== Footer ===== -->
+    <!-- Footer -->
     <footer>
         © <span id="year"></span> My Website — Powered by GitHub Pages
     </footer>
 
-    <!-- Simple JS for updating year -->
     <script>
         document.getElementById("year").textContent = new Date().getFullYear();
     </script>
