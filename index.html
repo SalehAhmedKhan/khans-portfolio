@@ -1,140 +1,243 @@
+<!-- File: index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome — My Website</title>
+    <title>Khan's Portfolio</title>
 
     <style>
         body {
             margin: 0;
             font-family: Arial, Helvetica, sans-serif;
             background: #f5f7fa;
-            color: #222;
+            color: #111827;
         }
 
-        header {
-            background: #1f2937;
-            color: white;
-            padding: 2.5rem 1.5rem;
-            text-align: center;
+        /* Main wrapper to keep everything roughly in one screen height */
+        .page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
-        header h1 {
-            margin: 0 0 0.5rem 0;
-            font-size: 2.2rem;
-            font-weight: 600;
-        }
-
-        header p {
-            margin: 0;
-            opacity: 0.85;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 2rem auto;
+        /* ===== Hero section ===== */
+        .hero {
+            max-width: 1000px;
+            margin: 1.5rem auto 1rem;
             padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+        }
+
+        .hero-text {
+            flex: 1.4;
+        }
+
+        .hero-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0 0 0.3rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.05rem;
+            margin: 0 0 0.6rem;
+        }
+
+        .hero-tagline {
+            margin: 0.1rem 0;
+            font-size: 0.95rem;
+            color: #4b5563;
+        }
+
+        .hero-image-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .hero-image {
+            width: 260px;
+            max-width: 40vw;
+            height: 150px;
+            background: #111827;
+            background-image: url("img/placeholder-banner.png");
+            background-size: cover;
+            background-position: center;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            /* diagonal left edge */
+            clip-path: polygon(18% 0, 100% 0, 100% 100%, 0 100%);
+        }
+
+        /* ===== Tabs / cards row ===== */
+        .cards-row {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: space-between;
         }
 
         .card {
-            background: white;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.09);
+            flex: 1 1 210px;
+            min-width: 210px;
+            max-width: 240px;
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 0.9rem 1rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
-        .card h2 {
-            margin-top: 0;
+        .card h3 {
+            margin: 0 0 0.35rem;
+            font-size: 1rem;
         }
 
-        footer {
-            text-align: center;
-            padding: 1rem;
-            margin-top: 2rem;
-            background: #1f2937;
-            color: #ccc;
-            font-size: 0.9rem;
+        .card p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: #4b5563;
+        }
+
+        .card ul {
+            margin: 0.3rem 0 0;
+            padding-left: 1.1rem;
+            font-size: 0.83rem;
+            color: #4b5563;
+        }
+
+        .card ul li {
+            margin-bottom: 0.15rem;
         }
 
         .btn {
+            align-self: flex-start;
+            margin-top: 0.6rem;
             display: inline-block;
-            padding: 0.5rem 1rem;
+            padding: 0.45rem 0.9rem;
             background: #2563eb;
-            color: white;
+            color: #ffffff;
             text-decoration: none;
-            border-radius: 5px;
-            margin-top: 0.75rem;
+            border-radius: 999px;
+            font-size: 0.85rem;
         }
 
         .btn:hover {
             background: #1e40af;
         }
+
+        /* ===== Footer ===== */
+        footer {
+            text-align: center;
+            padding: 0.75rem 1rem;
+            margin-top: auto;
+            background: #111827;
+            color: #d1d5db;
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column-reverse;
+                align-items: flex-start;
+            }
+            .hero-image {
+                width: 100%;
+                max-width: 100%;
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); /* no diagonal on very small screens */
+            }
+        }
     </style>
 </head>
 <body>
+<div class="page">
 
-    <!-- Header -->
-    <header>
-        <h1>Welcome to My Website</h1>
-        <p>A simple site built and deployed using GitHub Pages</p>
-    </header>
-
-    <!-- Main Content -->
-    <div class="container">
-
-        <div class="card">
-            <h2>Overview</h2>
-            <p>
-                This is the starting homepage of your GitHub Pages site.  
-                You can expand this into a full website later by adding more pages
-                and re-introducing a navigation bar when you're ready.
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-text">
+            <h1 class="hero-title">Welcome to Khan's Portfolio</h1>
+            <p class="hero-subtitle">Hi, I’m Saleh Ahmed Khan.</p>
+            <p class="hero-tagline">
+                I work on ultrawide-bandgap semiconductors, device physics, and power electronics.
+            </p>
+            <p class="hero-tagline">
+                This site brings together my research, projects, and notes in one place.
             </p>
         </div>
 
+        <div class="hero-image-wrapper">
+            <!-- Placeholder image: replace path with your actual banner -->
+            <div class="hero-image"></div>
+        </div>
+    </section>
+
+    <!-- Tab-style cards (no scrolling on typical laptop screens) -->
+    <section class="cards-row">
+
         <div class="card">
-            <h2>What You Can Do Next</h2>
+            <h3>Overview</h3>
+            <p>
+                A concise entry point to who I am and what I work on.
+            </p>
             <ul>
-                <li>Add more sections to this page</li>
-                <li>Create additional HTML pages and link them later</li>
-                <li>Customize the design with more CSS</li>
-                <li>Turn this into a portfolio or personal landing page</li>
+                <li>Research focus snapshot</li>
+                <li>Key interests & themes</li>
             </ul>
         </div>
 
         <div class="card">
-            <h2>Next Steps</h2>
+            <h3>Next Steps</h3>
             <p>
-                Once you're comfortable with the basics, you can expand your site with:
+                Where this portfolio is heading as I keep building it out.
             </p>
             <ul>
-                <li>About page</li>
-                <li>Projects page</li>
-                <li>Blog section</li>
-                <li>Custom styles and JavaScript</li>
+                <li>About & teaching pages</li>
+                <li>Project highlights</li>
+                <li>Notes & blog-style entries</li>
             </ul>
         </div>
 
-        <!-- NEW Research Link Card -->
         <div class="card">
-            <h2>Research</h2>
+            <h3>How This Site Grows</h3>
             <p>
-                Explore ongoing research topics, summaries, and publications.
+                Static pages now, more structure and automation later.
             </p>
-            <a class="btn" href="research/bga2o3/hub-bga2o3.html">Go to Research Page</a>
+            <ul>
+                <li>More sections added over time</li>
+                <li>Custom styling & layouts</li>
+            </ul>
         </div>
 
-    </div>
+        <div class="card">
+            <h3>Research</h3>
+            <p>
+                Browse focused research hubs, paper logs, and curated notes.
+            </p>
+            <a class="btn" href="research/bga2o3/hub-bga2o3.html">Enter Research Hub</a>
+        </div>
+
+    </section>
 
     <!-- Footer -->
     <footer>
-        © <span id="year"></span> My Website — Powered by GitHub Pages
+        © <span id="year"></span> Khan’s Portfolio — Powered by GitHub Pages
     </footer>
 
-    <script>
-        document.getElementById("year").textContent = new Date().getFullYear();
-    </script>
+</div>
+
+<script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+</script>
 
 </body>
 </html>
