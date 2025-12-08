@@ -12,7 +12,7 @@ If you use, modify, reference, or build upon any portion of this code, you must
 give clear and visible credit to the original author:
 
 **Saleh Ahmed Khan**  
-(Please include a link back to this repository when possible.)
+https://github.com/SalehAhmedKhan
 
 ### 2. Permission for Significant Reuse
 For substantial reuse — including but not limited to commercial applications,
