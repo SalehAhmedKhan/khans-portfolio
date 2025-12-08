@@ -17,7 +17,7 @@
                 linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),  /* dark tint */
                 url("img/ChatGPT Image Dec 8, 2025, 01_52_27 PM.png");
 
-            background-size: cover;     /* fill screen */
+            background-size: cover;      /* fill screen */
             background-position: center; /* center focus */
             background-repeat: no-repeat;
             color: #f5f5f5;  /* light text since BG is dark */
@@ -63,6 +63,25 @@
             margin-top: 0;
         }
 
+        .section-subtitle {
+            margin: 0.25rem 0 0.5rem;
+            font-size: 0.95rem;
+            opacity: 0.95;
+        }
+
+        .section-quote {
+            margin: 0.5rem 0 0.25rem;
+            font-style: italic;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .section-quote-author {
+            margin: 0;
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
         /* Scrollable card strip */
         .scroll-row {
             display: flex;
@@ -91,6 +110,47 @@
             margin: 0;
             font-size: 0.85rem;
             opacity: 0.8;
+        }
+
+        /* Group card layout (text + logo on right) */
+        .group-card {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 0.75rem;
+            min-width: 260px;
+        }
+
+        .group-card-main {
+            flex: 1;
+        }
+
+        .group-affiliation {
+            margin: 0;
+            font-size: 0.8rem;
+            opacity: 0.85;
+        }
+
+        .group-description {
+            margin: 0.4rem 0 0.4rem;
+            font-size: 0.85rem;
+            opacity: 0.85;
+        }
+
+        .group-logo-wrapper {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .group-logo {
+            width: 42px;
+            height: 42px;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.25);
+            border: 1px solid rgba(255,255,255,0.35);
+            /* Placeholder background; replace <img> entirely if you want real logos */
         }
 
         /* Links */
@@ -154,36 +214,93 @@
         </div>
 
         <!-- ======================= -->
-        <!-- Groups Section -->
+        <!-- Groups Section (RENOVATED) -->
         <!-- ======================= -->
         <div class="section">
-            <h2>Research Groups (Worldwide)</h2>
-            <p>Leading β-Ga₂O₃ device & material teams.</p>
+            <h2>Know Your Peers</h2>
+
+            <p class="section-quote">
+                “If I am walking with two other men, each of them will serve as my teacher.”
+            </p>
+            <p class="section-quote-author">
+                — Confucius
+            </p>
+
+            <p class="section-subtitle">
+                Leading β-Ga₂O₃ materials and device research teams across the globe, whose work shapes our
+                understanding of ultrawide-bandgap electronics and informs the benchmarks on this hub.
+            </p>
 
             <div class="scroll-row">
 
-                <div class="hub-card">
-                    <div class="hub-card-title">Bhuiyan Group (UML)</div>
-                    <p class="hub-card-desc">LPCVD, etching, high-mobility films.</p>
-                    <a class="topic-link" href="#">Group Page</a>
+                <!-- Bhuiyan Group -->
+                <div class="hub-card group-card">
+                    <div class="group-card-main">
+                        <div class="hub-card-title">Bhuiyan Group</div>
+                        <p class="group-affiliation">
+                            Department of Electrical & Computer Engineering, University of Massachusetts Lowell
+                        </p>
+                        <p class="group-description">
+                            LPCVD-grown β-Ga₂O₃, device-oriented etching strategies, and high-mobility vertical SBDs.
+                        </p>
+                        <a class="topic-link" href="#">Group Page</a>
+                    </div>
+                    <div class="group-logo-wrapper">
+                        <!-- Placeholder logo block – replace with an <img> once you have the logo -->
+                        <!-- Example: <img src="img/logo-uml.png" alt="UMass Lowell logo" class="group-logo"> -->
+                        <div class="group-logo"></div>
+                    </div>
                 </div>
 
-                <div class="hub-card">
-                    <div class="hub-card-title">Zhao / OSU</div>
-                    <p class="hub-card-desc">MOCVD, defects, electronic transport.</p>
-                    <a class="topic-link" href="#">Group Page</a>
+                <!-- Zhao / OSU -->
+                <div class="hub-card group-card">
+                    <div class="group-card-main">
+                        <div class="hub-card-title">Zhao Labs</div>
+                        <p class="group-affiliation">
+                            Department of Electrical & Computer Engineering, The Ohio State University
+                        </p>
+                        <p class="group-description">
+                            MOCVD β-Ga₂O₃ epitaxy, defect engineering, and mobility optimization in thin films.
+                        </p>
+                        <a class="topic-link" href="#">Group Page</a>
+                    </div>
+                    <div class="group-logo-wrapper">
+                        <div class="group-logo"></div>
+                    </div>
                 </div>
 
-                <div class="hub-card">
-                    <div class="hub-card-title">Krishnamoorthy (UCSB)</div>
-                    <p class="hub-card-desc">Breakdown, power devices, FOM scaling.</p>
-                    <a class="topic-link" href="#">Group Page</a>
+                <!-- Krishnamoorthy / UCSB -->
+                <div class="hub-card group-card">
+                    <div class="group-card-main">
+                        <div class="hub-card-title">Krishnamoorthy Group</div>
+                        <p class="group-affiliation">
+                            Materials Department & Electrical and Computer Engineering, University of California, Santa Barbara
+                        </p>
+                        <p class="group-description">
+                            β-Ga₂O₃ device physics, breakdown engineering, and field-management strategies for power devices.
+                        </p>
+                        <a class="topic-link" href="#">Group Page</a>
+                    </div>
+                    <div class="group-logo-wrapper">
+                        <div class="group-logo"></div>
+                    </div>
                 </div>
 
-                <div class="hub-card">
-                    <div class="hub-card-title">UF / Pearton Group</div>
-                    <p class="hub-card-desc">Defects, spectroscopy, reliability.</p>
-                    <a class="topic-link" href="#">Group Page</a>
+                <!-- Pearton / UF -->
+                <div class="hub-card group-card">
+                    <div class="group-card-main">
+                        <div class="hub-card-title">Pearton Group</div>
+                        <p class="group-affiliation">
+                            Department of Materials Science & Engineering, University of Florida
+                        </p>
+                        <p class="group-description">
+                            Defect spectroscopy, etching, and reliability studies in β-Ga₂O₃ and related UWBG materials.
+                        </p>
+                        <a class="topic-link" href="#">Group Page</a>
+                    </div>
+                    <div class="group-logo-wrapper">
+                        <div class="group-logo"></div>
+                    </div>
                 </div>
 
             </div>
