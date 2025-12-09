@@ -11,7 +11,7 @@
             margin: 0;
             padding: 0;
             height: 100%;
-            overflow: hidden; /* prevent scrolling */
+            overflow: hidden; /* prevent scrolling on desktop */
         }
 
         body {
@@ -43,7 +43,7 @@
             gap: 0.9rem;
         }
 
-        /* ===== Shared glass style (matches hub aesthetic) ===== */
+        /* ===== Shared glass style ===== */
         .glass {
             background: rgba(15,23,42,0.78);
             border-radius: 18px;
@@ -59,25 +59,25 @@
         /* ===== Hero card ===== */
         .hero-card {
             display: flex;
-            align-items: center;
+            align-items: flex-start;   /* text and image aligned to top */
             justify-content: space-between;
             gap: 1.4rem;
         }
 
         .hero-text {
-            flex: 1.4;
+            flex: 1.6;   /* give text more width */
         }
 
         .hero-title {
             font-size: 2.2rem;
             font-weight: 700;
-            margin: 0 0 0.3rem;
+            margin: 0 0 0.25rem;
         }
 
         .hero-subtitle {
             font-size: 1.35rem;
             font-weight: 600;
-            margin: 0 0 0.5rem;
+            margin: 0 0 0.45rem;
         }
 
         .hero-tagline {
@@ -122,7 +122,7 @@
             clip-path: polygon(18% 0, 100% 0, 100% 100%, 0 100%);
         }
 
-        /* ===== Cards section (inside glass) ===== */
+        /* ===== Tabbed cards section ===== */
         .cards-section h2 {
             margin: 0 0 0.35rem;
             font-size: 1.4rem;
@@ -134,44 +134,64 @@
             color: #cbd5f5;
         }
 
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 0.7rem;
+        .tabs {
+            display: flex;
+            flex-direction: column;
         }
 
-        .card {
+        .tab-labels {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 0.7rem;
+        }
+
+        .tab-label {
+            padding: 0.35rem 0.8rem;
+            border-radius: 999px;
+            border: 1px solid rgba(148,163,184,0.5);
+            font-size: 0.82rem;
+            cursor: pointer;
+            background: rgba(15,23,42,0.9);
+            color: #e5e7eb;
+        }
+
+        .tab-label:hover {
+            background: rgba(37,99,235,0.4);
+        }
+
+        .tab-contents {
             background: rgba(15,23,42,0.9);
             border-radius: 14px;
             border: 1px solid rgba(148,163,184,0.35);
-            padding: 0.8rem 0.9rem;
+            padding: 0.9rem 1rem;
             box-shadow: 0 10px 25px rgba(15,23,42,0.6);
+            font-size: 0.84rem;
         }
 
-        .card h3 {
-            margin: 0 0 0.25rem;
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel h3 {
+            margin: 0 0 0.3rem;
             font-size: 1rem;
         }
 
-        .card p {
-            margin: 0;
-            font-size: 0.82rem;
+        .tab-panel p {
+            margin: 0 0 0.4rem;
             color: #d1d5db;
         }
 
-        .card ul {
-            margin: 0.25rem 0 0;
-            padding-left: 1rem;
-            font-size: 0.8rem;
+        .tab-panel ul {
+            margin: 0.2rem 0 0;
+            padding-left: 1.1rem;
             color: #cbd5f5;
-        }
-
-        .card ul li {
-            margin-bottom: 0.12rem;
+            font-size: 0.82rem;
         }
 
         .btn {
-            margin-top: 0.55rem;
+            margin-top: 0.45rem;
             display: inline-block;
             padding: 0.4rem 0.85rem;
             background: #2563eb;
@@ -185,6 +205,30 @@
             background: #1d4ed8;
         }
 
+        /* Hide the radio buttons */
+        .tabs input[type="radio"] {
+            display: none;
+        }
+
+        /* Default visible tab */
+        #tab-research:checked ~ .tab-contents #content-research,
+        #tab-hobbies:checked  ~ .tab-contents #content-hobbies,
+        #tab-prof:checked     ~ .tab-contents #content-prof,
+        #tab-tools:checked    ~ .tab-contents #content-tools,
+        #tab-edu:checked      ~ .tab-contents #content-edu {
+            display: block;
+        }
+
+        /* Active tab label styling */
+        #tab-research:checked ~ .tab-labels label[for="tab-research"],
+        #tab-hobbies:checked  ~ .tab-labels label[for="tab-hobbies"],
+        #tab-prof:checked     ~ .tab-labels label[for="tab-prof"],
+        #tab-tools:checked    ~ .tab-labels label[for="tab-tools"],
+        #tab-edu:checked      ~ .tab-labels label[for="tab-edu"] {
+            background: #2563eb;
+            border-color: #60a5fa;
+        }
+
         /* ===== Credit line under cards ===== */
         .page-credit {
             text-align: center;
@@ -195,7 +239,7 @@
             text-shadow: 0 1px 2px rgba(15,23,42,0.9);
         }
 
-        /* Hide old footer if kept in DOM (not used now) */
+        /* Old footer not used */
         footer {
             display: none;
         }
@@ -216,15 +260,11 @@
                 height: 320px;
                 clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
             }
-
-            .cards-grid {
-                grid-template-columns: 1fr 1fr;
-            }
         }
 
         @media (max-width: 640px) {
-            .cards-grid {
-                grid-template-columns: 1fr;
+            .tab-labels {
+                gap: 0.3rem;
             }
         }
     </style>
@@ -249,12 +289,16 @@
                 </p>
 
                 <p class="hero-contact">
-                    Personal email: <a href="mailto:your.personal@email.com">your.personal@email.com</a><br>
-                    Academic email: <a href="mailto:your.academic@university.edu">your.academic@university.edu</a><br>
+                    Personal email:
+                    <a href="mailto:salehahmedkhan1998@gmail.com">salehahmedkhan1998@gmail.com</a><br>
+                    Academic email:
+                    <a href="mailto:salehahmed_khan@uml.edu">salehahmed_khan@uml.edu</a><br>
                     Socials:
                     <a href="#" target="_blank">LinkedIn</a> ·
                     <a href="#" target="_blank">Google Scholar</a> ·
-                    <a href="#" target="_blank">GitHub</a>
+                    <a href="#" target="_blank">GitHub</a> ·
+                    <a href="#" target="_blank">Facebook</a> ·
+                    <a href="#" target="_blank">YouTube</a>
                 </p>
             </div>
 
@@ -263,70 +307,93 @@
             </div>
         </section>
 
-        <!-- TABS GLASS PANEL -->
+        <!-- TABBED GLASS PANEL -->
         <section class="glass cards-section">
             <h2>Portfolio at a Glance</h2>
             <p class="section-intro">
-                Quick links into my research, projects, and background.
+                Quick links into my research, background, and interests.
             </p>
 
-            <div class="cards-grid">
+            <div class="tabs">
+                <!-- Radios -->
+                <input type="radio" name="tabs" id="tab-research" checked>
+                <input type="radio" name="tabs" id="tab-hobbies">
+                <input type="radio" name="tabs" id="tab-prof">
+                <input type="radio" name="tabs" id="tab-tools">
+                <input type="radio" name="tabs" id="tab-edu">
 
-                <div class="card">
-                    <h3>Overview</h3>
-                    <p>A concise snapshot of my work and research direction.</p>
-                    <ul>
-                        <li>Research focus</li>
-                        <li>Interests & themes</li>
-                    </ul>
+                <!-- Tab labels -->
+                <div class="tab-labels">
+                    <label class="tab-label" for="tab-research">Research Hub</label>
+                    <label class="tab-label" for="tab-hobbies">Hobbies & Interests</label>
+                    <label class="tab-label" for="tab-prof">Professional Experience</label>
+                    <label class="tab-label" for="tab-tools">Experimental Tools</label>
+                    <label class="tab-label" for="tab-edu">Education</label>
                 </div>
 
-                <div class="card">
-                    <h3>Next Steps</h3>
-                    <p>Planned expansions to the site.</p>
-                    <ul>
-                        <li>About & teaching</li>
-                        <li>Project pages</li>
-                        <li>Notes & articles</li>
-                    </ul>
-                </div>
+                <!-- Tab contents -->
+                <div class="tab-contents">
+                    <div class="tab-panel" id="content-research">
+                        <h3>Research Hub</h3>
+                        <p>
+                            Explore detailed β-Ga₂O₃ research pages, logs, and topic-specific hubs.
+                        </p>
+                        <ul>
+                            <li>Mobility benchmarking and transport studies</li>
+                            <li>Etching, breakdown engineering, and defect analysis</li>
+                        </ul>
+                        <a class="btn" href="research/bga2o3/hub-bga2o3.html">Enter Hub</a>
+                    </div>
 
-                <div class="card">
-                    <h3>Research Hub</h3>
-                    <p>Explore detailed β-Ga₂O₃ research pages.</p>
-                    <a class="btn" href="research/bga2o3/hub-bga2o3.html">Enter Hub</a>
-                </div>
+                    <div class="tab-panel" id="content-hobbies">
+                        <h3>Hobbies & Interests</h3>
+                        <p>
+                            Beyond the lab, a few things that keep me curious and grounded.
+                        </p>
+                        <ul>
+                            <li>Technology tinkering and hardware projects</li>
+                            <li>Science communication and writing</li>
+                            <li>Creative design and visual storytelling</li>
+                        </ul>
+                    </div>
 
-                <div class="card">
-                    <h3>Hobbies & Interests</h3>
-                    <p>Beyond the lab, things that keep me curious and grounded.</p>
-                    <ul>
-                        <li>Technology tinkering</li>
-                        <li>Science writing</li>
-                        <li>Creative design</li>
-                    </ul>
-                </div>
+                    <div class="tab-panel" id="content-prof">
+                        <h3>Professional Experience</h3>
+                        <p>
+                            Academic and research roles that shaped my skill set.
+                        </p>
+                        <ul>
+                            <li>Research assistant & lab work in UWBG devices</li>
+                            <li>Teaching and mentoring students</li>
+                            <li>Collaborative projects across groups and labs</li>
+                        </ul>
+                    </div>
 
-                <div class="card">
-                    <h3>Professional Experience</h3>
-                    <p>Academic and research roles that shaped my skill set.</p>
-                    <ul>
-                        <li>Research assistant & lab work</li>
-                        <li>Teaching / mentoring</li>
-                        <li>Collaborations</li>
-                    </ul>
-                </div>
+                    <div class="tab-panel" id="content-tools">
+                        <h3>Experimental Tools</h3>
+                        <p>
+                            Hands-on experience with fabrication and characterization tools.
+                        </p>
+                        <ul>
+                            <li>Thin-film growth & etching systems</li>
+                            <li>Electrical characterization setups</li>
+                            <li>Microscopy & materials analysis techniques</li>
+                        </ul>
+                    </div>
 
-                <div class="card">
-                    <h3>Experimental Tools</h3>
-                    <p>Hands-on experience with fabrication and characterization tools.</p>
-                    <ul>
-                        <li>Etching & thin-film growth</li>
-                        <li>Electrical measurements</li>
-                        <li>Microscopy / spectroscopy</li>
-                    </ul>
+                    <div class="tab-panel" id="content-edu">
+                        <h3>Education</h3>
+                        <p>
+                            A brief overview of my academic background.
+                        </p>
+                        <ul>
+                            <li>Ph.D. studies in ultrawide-bandgap semiconductor devices</li>
+                            <li>Graduate training in solid-state electronics and materials</li>
+                            <li>Foundations in physics, electronics, and device engineering</li>
+                            <!-- You can replace these bullets with exact degrees/institutions later -->
+                        </ul>
+                    </div>
                 </div>
-
             </div>
         </section>
 
