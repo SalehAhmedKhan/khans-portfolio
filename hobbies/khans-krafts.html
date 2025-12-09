@@ -17,9 +17,12 @@
             margin: 0;
             font-family: Arial, Helvetica, sans-serif;
             color: #e5e7eb;
-            /* allow normal scrolling again if needed */
+
+            /* Dark overall + subtle flowing color accents + background image */
             background:
-                linear-gradient(rgba(15,23,42,0.9), rgba(15,23,42,0.9)),
+                radial-gradient(circle at 12% 20%, rgba(56,189,248,0.18), transparent 55%),
+                radial-gradient(circle at 82% 78%, rgba(168,85,247,0.16), transparent 55%),
+                linear-gradient(rgba(15,23,42,0.95), rgba(15,23,42,0.95)),
                 url("ChatGPT Image Dec 8, 2025, 07_22_56 PM.png");
             background-size: cover;
             background-position: center;
@@ -44,14 +47,6 @@
             margin-top: 0.8rem;
             display: flex;
         }
-
-        .back-link {
-            font-size: 0.8rem;
-            margin-bottom: 0.4rem;
-            color: #cbd5f5;
-        }
-        .back-link a { color: #93c5fd; text-decoration: none; }
-        .back-link a:hover { text-decoration: underline; }
 
         /* === Intro panel (left) === */
         .intro-panel {
@@ -97,10 +92,11 @@
         }
 
         .button-row {
-            margin-top: 0.4rem;
+            margin-top: 0.6rem;
             display: flex;
             gap: 0.6rem;
             flex-wrap: wrap;
+            justify-content: center; /* center-align the buttons */
         }
 
         .btn {
@@ -256,23 +252,18 @@
         .project-card.blender .project-bg {
             background-image: url("img/card-blender-placeholder.jpg");
         }
-
         .project-card.aiart .project-bg {
             background-image: url("img/card-aiart-placeholder.jpg");
         }
-
         .project-card.games .project-bg {
             background-image: url("img/card-games-placeholder.jpg");
         }
-
         .project-card.handicrafts .project-bg {
             background-image: url("img/card-handicrafts-placeholder.jpg");
         }
-
         .project-card.furry .project-bg {
             background-image: url("img/card-furry-placeholder.jpg");
         }
-
         .project-card.arshinagar .project-bg {
             background-image: url("img/card-arshinagar-placeholder.jpg");
         }
@@ -306,10 +297,6 @@
 <body>
 <div class="page">
 
-    <div class="back-link">
-        ← <a href="index.html">Back to Professional Portfolio</a>
-    </div>
-
     <!-- TOP: intro (left) + scrolling gallery (right) -->
     <div class="top-row">
         <section class="intro-panel">
@@ -319,9 +306,9 @@
             <h2>Lightweight projects, playful experiments, and creative detours.</h2>
 
             <p>
-                This is the part of my universe where things don’t have to be formal, peer-reviewed,
+                This is the part of my universe where things don’t have to be formal
                 or perfectly optimized. It’s where I park small builds, sketches, visuals, and
-                experiments that I simply enjoyed making.
+                worlds that I simply enjoyed making.
             </p>
 
             <p>
@@ -330,8 +317,8 @@
             </p>
 
             <div class="button-row">
-                <a class="btn" href="index.html">Back to Portfolio</a>
-                <a class="btn secondary" href="https://youtube.com/" target="_blank">YouTube</a>
+                <a class="btn" href="../index.html">Check out my Portfolio</a>
+                <a class="btn secondary" href="https://youtube.com/" target="_blank">Check out my YouTube Channel</a>
             </div>
         </section>
 
