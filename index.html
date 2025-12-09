@@ -178,17 +178,12 @@
             box-shadow: 0 10px 25px rgba(15,23,42,0.6);
             font-size: 0.84rem;
             position: relative;
+            min-height: 145px; /* keeps box from jumping in height */
         }
 
         .tab-panel {
+            display: none;
             opacity: 0;
-            max-height: 0;
-            overflow: hidden;
-            transform: translateY(6px);
-            transition:
-                opacity 0.25s ease,
-                transform 0.25s ease,
-                max-height 0.25s ease;
         }
 
         .tab-panel h3 {
@@ -228,23 +223,55 @@
             display: none;
         }
 
-        /* Fade/slide visible tab in */
-        #tab-research:checked ~ .tab-contents #content-research,
-        #tab-hobbies:checked  ~ .tab-contents #content-hobbies,
-        #tab-prof:checked     ~ .tab-contents #content-prof,
-        #tab-tools:checked    ~ .tab-contents #content-tools,
-        #tab-edu:checked      ~ .tab-contents #content-edu {
-            opacity: 1;
-            max-height: 320px;
-            transform: translateY(0);
+        /* Animations */
+        @keyframes fadeSlideLeft {
+            from { opacity: 0; transform: translateX(-12px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes fadeSlideRight {
+            from { opacity: 0; transform: translateX(12px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Show active panel with directional animation */
+        #tab-pubs:checked      ~ .tab-contents #content-pubs {
+            display: block;
+            animation: fadeSlideLeft 0.25s ease forwards;
+        }
+
+        #tab-edu:checked       ~ .tab-contents #content-edu {
+            display: block;
+            animation: fadeSlideLeft 0.25s ease forwards;
+        }
+
+        #tab-research:checked  ~ .tab-contents #content-research {
+            display: block;
+            animation: fadeSlideLeft 0.25s ease forwards;
+        }
+
+        #tab-prof:checked      ~ .tab-contents #content-prof {
+            display: block;
+            animation: fadeSlideRight 0.25s ease forwards;
+        }
+
+        #tab-tools:checked     ~ .tab-contents #content-tools {
+            display: block;
+            animation: fadeSlideRight 0.25s ease forwards;
+        }
+
+        #tab-hobbies:checked   ~ .tab-contents #content-hobbies {
+            display: block;
+            animation: fadeSlideRight 0.25s ease forwards;
         }
 
         /* Active tab label styling */
-        #tab-research:checked ~ .tab-labels label[for="tab-research"],
-        #tab-hobbies:checked  ~ .tab-labels label[for="tab-hobbies"],
-        #tab-prof:checked     ~ .tab-labels label[for="tab-prof"],
-        #tab-tools:checked    ~ .tab-labels label[for="tab-tools"],
-        #tab-edu:checked      ~ .tab-labels label[for="tab-edu"] {
+        #tab-pubs:checked      ~ .tab-labels label[for="tab-pubs"],
+        #tab-edu:checked       ~ .tab-labels label[for="tab-edu"],
+        #tab-research:checked  ~ .tab-labels label[for="tab-research"],
+        #tab-prof:checked      ~ .tab-labels label[for="tab-prof"],
+        #tab-tools:checked     ~ .tab-labels label[for="tab-tools"],
+        #tab-hobbies:checked   ~ .tab-labels label[for="tab-hobbies"] {
             background: #2563eb;
             border-color: #60a5fa;
         }
@@ -340,23 +367,51 @@
         <section class="glass cards-section">
             <div class="tabs">
                 <!-- Radios -->
-                <input type="radio" name="tabs" id="tab-research" checked>
-                <input type="radio" name="tabs" id="tab-hobbies">
+                <input type="radio" name="tabs" id="tab-pubs" checked>
+                <input type="radio" name="tabs" id="tab-edu">
+                <input type="radio" name="tabs" id="tab-research">
                 <input type="radio" name="tabs" id="tab-prof">
                 <input type="radio" name="tabs" id="tab-tools">
-                <input type="radio" name="tabs" id="tab-edu">
+                <input type="radio" name="tabs" id="tab-hobbies">
 
-                <!-- Tab labels -->
+                <!-- Tab labels, left → right -->
                 <div class="tab-labels">
+                    <label class="tab-label" for="tab-pubs">Publications</label>
+                    <label class="tab-label" for="tab-edu">Education</label>
                     <label class="tab-label" for="tab-research">Research Hub</label>
-                    <label class="tab-label" for="tab-hobbies">Hobbies & Interests</label>
                     <label class="tab-label" for="tab-prof">Professional Experience</label>
                     <label class="tab-label" for="tab-tools">Experimental Tools</label>
-                    <label class="tab-label" for="tab-edu">Education</label>
+                    <label class="tab-label" for="tab-hobbies">Hobbies & Interests</label>
                 </div>
 
                 <!-- Tab contents -->
                 <div class="tab-contents">
+                    <div class="tab-panel" id="content-pubs">
+                        <h3>Publications</h3>
+                        <p>
+                            A curated selection of papers, preprints, and conference contributions.
+                        </p>
+                        <ul>
+                            <li>β-Ga₂O₃ device and mobility studies</li>
+                            <li>Breakdown engineering and field management</li>
+                            <li>Radiation hardness and defect characterization</li>
+                        </ul>
+                        <!-- Later you can link to a dedicated publications page -->
+                    </div>
+
+                    <div class="tab-panel" id="content-edu">
+                        <h3>Education</h3>
+                        <p>
+                            A brief overview of my academic background.
+                        </p>
+                        <ul>
+                            <li>Ph.D. studies in ultrawide-bandgap semiconductor devices</li>
+                            <li>Graduate training in solid-state electronics and materials</li>
+                            <li>Foundations in physics, electronics, and device engineering</li>
+                            <!-- Replace with exact degrees/institutions when ready -->
+                        </ul>
+                    </div>
+
                     <div class="tab-panel" id="content-research">
                         <h3>Research Hub</h3>
                         <p>
@@ -366,19 +421,7 @@
                             <li>Mobility benchmarking and transport studies</li>
                             <li>Etching, breakdown engineering, and defect analysis</li>
                         </ul>
-                        <a class="btn" href="research/bga2o3/hub-bga2o3.html">Enter Hub</a>
-                    </div>
-
-                    <div class="tab-panel" id="content-hobbies">
-                        <h3>Hobbies & Interests</h3>
-                        <p>
-                            Beyond the lab, a few things that keep me curious and grounded.
-                        </p>
-                        <ul>
-                            <li>Technology tinkering and hardware projects</li>
-                            <li>Science communication and writing</li>
-                            <li>Creative design and visual storytelling</li>
-                        </ul>
+                        <a class="btn" href="research/bga2o3/hub-bga2o3.html">Enter Research Hub</a>
                     </div>
 
                     <div class="tab-panel" id="content-prof">
@@ -405,17 +448,21 @@
                         </ul>
                     </div>
 
-                    <div class="tab-panel" id="content-edu">
-                        <h3>Education</h3>
+                    <div class="tab-panel" id="content-hobbies">
+                        <h3>Hobbies & Interests</h3>
                         <p>
-                            A brief overview of my academic background.
+                            Beyond research, I enjoy tinkering, building, and exploring ideas that don’t
+                            always fit neatly into a paper.
                         </p>
-                        <ul>
-                            <li>Ph.D. studies in ultrawide-bandgap semiconductor devices</li>
-                            <li>Graduate training in solid-state electronics and materials</li>
-                            <li>Foundations in physics, electronics, and device engineering</li>
-                            <!-- Replace with exact degrees/institutions when ready -->
-                        </ul>
+                        <p>
+                            When you need a breather from reading tiny fonts in pdfs, step into the
+                            lighter side of my work—small projects, art, and experiments that keep me
+                            grounded and curious.
+                        </p>
+                        <p>
+                            Take a short detour and explore more of my creative side here:
+                        </p>
+                        <a class="btn" href="hobbies/khans-krafts.html">Visit Khan's Krafts</a>
                     </div>
                 </div>
             </div>
