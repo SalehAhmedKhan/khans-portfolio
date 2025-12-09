@@ -2,411 +2,281 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Khan's Krafts</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khan's Krafts</title>
 
-    <style>
-        :root {
-            --glass-bg: rgba(15,23,42,0.82);
-            --glass-border: rgba(148,163,184,0.45);
-            --accent: #38bdf8;
-        }
+<style>
+    :root {
+        --glass-bg: rgba(15,23,42,0.82);
+        --glass-border: rgba(148,163,184,0.45);
+        --accent: #38bdf8;
+        --accent-soft: rgba(56,189,248,0.15);
+    }
 
-        body {
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            color: #e5e7eb;
-            background:
-                linear-gradient(rgba(15,23,42,0.9), rgba(15,23,42,0.9)),
-                url("ChatGPT Image Dec 8, 2025, 07_22_56 PM.png");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;        /* ← prevents vertical scroll */
+    }
 
-        .page {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            padding: 1.2rem 2rem;
-            box-sizing: border-box;
-        }
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        color: #e5e7eb;
+        background:
+            linear-gradient(rgba(15,23,42,0.9), rgba(15,23,42,0.9)),
+            url("ChatGPT Image Dec 8, 2025, 07_22_56 PM.png");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
 
-        .top-row {
-            flex: 1; /* 50% */
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
+    .page {
+        height: 100vh;           /* Fill screen */
+        display: flex;
+        flex-direction: column;
+        padding: 1rem 1.6rem;    /* Reduced padding */
+        box-sizing: border-box;
+    }
 
-        .bottom-row {
-            flex: 1; /* 50% */
-            display: flex;
-        }
+    .back-link {
+        font-size: 0.8rem;
+        margin-bottom: 0.4rem;
+        color: #cbd5f5;
+    }
+    .back-link a { color: #93c5fd; text-decoration: none; }
+    .back-link a:hover { text-decoration: underline; }
 
-        /* ===== Back link ===== */
-        .back-link {
-            font-size: 0.8rem;
-            margin-bottom: 0.5rem;
-            color: #cbd5f5;
-        }
+    /* === Top Row === */
+    .top-row {
+        flex: 1.3;              /* Slightly reduced height */
+        display: flex;
+        gap: 1rem;
+    }
 
-        .back-link a {
-            color: #93c5fd;
-            text-decoration: none;
-        }
+    .intro-panel {
+        flex: 1;
+        background: var(--glass-bg);
+        border-radius: 16px;
+        border: 1px solid var(--glass-border);
+        backdrop-filter: blur(14px);
+        padding: 1rem 1.2rem;   /* Smaller padding */
+    }
 
-        .back-link a:hover {
-            text-decoration: underline;
-        }
+    .intro-panel h1 {
+        margin: 0 0 0.3rem;
+        font-size: 1.6rem;      /* Slightly smaller */
+    }
 
-        /* ===== Intro panel (left 1/3) ===== */
-        .intro-panel {
-            flex: 1;
-            background: var(--glass-bg);
-            border-radius: 18px;
-            border: 1px solid var(--glass-border);
-            box-shadow:
-                0 24px 60px rgba(15,23,42,0.85),
-                0 0 0 1px rgba(15,23,42,0.4) inset;
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            padding: 1.1rem 1.3rem;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
-        }
+    .intro-panel h2 {
+        margin: 0 0 0.6rem;
+        font-size: 1rem;
+        color: #bfdbfe;
+    }
 
-        /* Image heading placeholder */
-        .title-image {
-            width: 100%;
-            height: 70px;
-            border-radius: 14px;
-            background-color: #020617;
-            background-image: url("img/khan-krafts-title-placeholder.jpg"); /* swap later */
-            background-size: cover;
-            background-position: center;
-            border: 1px solid rgba(148,163,184,0.6);
-            box-shadow: 0 12px 30px rgba(15,23,42,0.7);
-        }
+    .intro-panel p {
+        font-size: 0.88rem;
+        margin: 0 0 0.5rem;
+        line-height: 1.32;
+    }
 
-        .intro-panel h2 {
-            margin: 0;
-            font-size: 0.98rem;
-            color: #bfdbfe;
-        }
+    /* === Gallery Panel === */
+    .gallery-panel {
+        flex: 2;
+        background: var(--glass-bg);
+        border-radius: 16px;
+        border: 1px solid var(--glass-border);
+        padding: 0.7rem 0.8rem;
+        display: flex;
+        flex-direction: column;
+    }
 
-        .intro-panel p {
-            margin: 0;
-            font-size: 0.9rem;
-            color: #e5e7eb;
-        }
+    .gallery-header {
+        font-size: 0.82rem;
+        margin-bottom: 0.4rem;
+        opacity: 0.85;
+    }
 
-        .button-row {
-            margin-top: 0.4rem;
-            display: flex;
-            gap: 0.6rem;
-            flex-wrap: wrap;
-        }
+    .gallery-window {
+        flex: 1;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #020617;
+    }
 
-        .btn {
-            display: inline-block;
-            padding: 0.4rem 0.9rem;
-            border-radius: 999px;
-            font-size: 0.85rem;
-            text-decoration: none;
-            border: 1px solid #60a5fa;
-            color: #e5e7eb;
-            background: rgba(37,99,235,0.9);
-            box-shadow: 0 4px 12px rgba(15,23,42,0.7);
-        }
+    .gallery-track {
+        display: flex;
+        height: 100%;
+        animation: scrollGallery 22s linear infinite;
+    }
 
-        .btn.secondary {
-            background: transparent;
-        }
+    .gallery-item {
+        flex: 0 0 38%;
+        margin-right: 0.4rem;
+        background-size: cover;
+        background-position: center;
+        border-radius: 10px;
+    }
 
-        .btn:hover {
-            background: #1d4ed8;
-        }
+    @keyframes scrollGallery {
+        0%   { transform: translateX(0); }
+        100% { transform: translateX(-55%); }
+    }
 
-        .btn.secondary:hover {
-            background: rgba(37,99,235,0.35);
-        }
+    /* === Bottom Row (Project Cards) === */
+    .bottom-row {
+        flex: 0.85;   /* reduced height */
+        margin-top: 0.6rem;
+        display: flex;
+    }
 
-        /* ===== Gallery panel (right 2/3) ===== */
-        .gallery-panel {
-            flex: 2;
-            background: var(--glass-bg);
-            border-radius: 18px;
-            border: 1px solid var(--glass-border);
-            box-shadow:
-                0 24px 60px rgba(15,23,42,0.85),
-                0 0 0 1px rgba(15,23,42,0.4) inset;
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            padding: 0.8rem 0.9rem 1rem;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-        }
+    .projects-grid {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        gap: 0.7rem;
+    }
 
-        .gallery-window {
-            flex: 1;
-            border-radius: 14px;
-            overflow: hidden;
-            position: relative;
-            background: #020617;
-        }
+    .project-card {
+        background: var(--glass-bg);
+        border-radius: 14px;
+        border: 1px solid var(--glass-border);
+        padding: 0.6rem 0.7rem;          /* Reduced height & padding */
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+        transition: 0.2s ease;
+    }
 
-        .gallery-track {
-            display: flex;
-            height: 100%;
-            animation: scrollGallery 22s linear infinite;
-        }
+    .project-card:hover {
+        transform: translateY(-3px);
+        border-color: rgba(56,189,248,0.7);
+        box-shadow: 0 18px 36px rgba(15,23,42,0.8);
+    }
 
-        .gallery-item {
-            flex: 0 0 40%;
-            margin-right: 0.5rem;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            position: relative;
-        }
+    .project-title {
+        font-size: 0.92rem;
+        font-weight: 600;
+    }
 
-        .gallery-item::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to top, rgba(15,23,42,0.4), transparent);
-        }
+    .project-tagline {
+        font-size: 0.75rem;
+        opacity: 0.9;
+        line-height: 1.2;
+    }
 
-        /* Replace these placeholder images with your own */
-        .gallery-item.img1 { background-image: url("img/krafts-placeholder-1.jpg"); }
-        .gallery-item.img2 { background-image: url("img/krafts-placeholder-2.jpg"); }
-        .gallery-item.img3 { background-image: url("img/krafts-placeholder-3.jpg"); }
-        .gallery-item.img4 { background-image: url("img/krafts-placeholder-4.jpg"); }
-        .gallery-item.img5 { background-image: url("img/krafts-placeholder-5.jpg"); }
+    .project-image-placeholder {
+        flex: 1;
+        border-radius: 10px;
+        border: 1px dashed rgba(148,163,184,0.6);
+        font-size: 0.7rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #9ca3af;
+        padding: 0 0.4rem;
+    }
 
-        @keyframes scrollGallery {
-            0%   { transform: translateX(0); }
-            100% { transform: translateX(-60%); }
-        }
-
-        /* ===== Project cards grid (bottom 50%) ===== */
-        .projects-grid {
-            flex: 1;
-            width: 100%;
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            grid-template-rows: repeat(2, 1fr);
-            gap: 0.8rem;
-        }
-
-        .project-card {
-            position: relative;
-            border-radius: 18px;
-            overflow: hidden;
-            border: 1px solid var(--glass-border);
-            box-shadow:
-                0 16px 40px rgba(15,23,42,0.7),
-                0 0 0 1px rgba(15,23,42,0.4) inset;
-            cursor: pointer;
-            text-decoration: none;
-            color: #f9fafb;
-            background-color: #020617; /* fallback */
-            transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
-            aspect-ratio: 16 / 9;   /* widescreen ratio */
-        }
-
-        .project-card:hover {
-            transform: translateY(-4px);
-            box-shadow:
-                0 22px 50px rgba(15,23,42,0.9),
-                0 0 0 1px rgba(56,189,248,0.6) inset;
-            border-color: rgba(56,189,248,0.7);
-        }
-
-        .project-bg {
-            position: absolute;
-            inset: 0;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            filter: brightness(0.7);
-            transition: filter 0.18s ease;
-        }
-
-        .project-card:hover .project-bg {
-            filter: brightness(0.9);
-        }
-
-        .project-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to top, rgba(15,23,42,0.85), transparent 55%);
-        }
-
-        .project-title {
-            position: absolute;
-            left: 0.9rem;
-            bottom: 0.85rem;
-            right: 0.9rem;
-            font-size: 1rem;
-            font-weight: 600;
-            text-shadow: 0 2px 6px rgba(0,0,0,0.8);
-        }
-
-        /* Card-specific placeholder backgrounds (swap later) */
-        .project-card.blender .project-bg {
-            background-image: url("img/card-blender-placeholder.jpg");
-        }
-
-        .project-card.aiart .project-bg {
-            background-image: url("img/card-aiart-placeholder.jpg");
-        }
-
-        .project-card.games .project-bg {
-            background-image: url("img/card-games-placeholder.jpg");
-        }
-
-        .project-card.handicrafts .project-bg {
-            background-image: url("img/card-handicrafts-placeholder.jpg");
-        }
-
-        .project-card.furry .project-bg {
-            background-image: url("img/card-furry-placeholder.jpg");
-        }
-
-        .project-card.arshinagar .project-bg {
-            background-image: url("img/card-arshinagar-placeholder.jpg");
-        }
-
-        @media (max-width: 900px) {
-            .page {
-                padding: 1rem;
-                min-height: auto;
-            }
-
-            .top-row {
-                flex-direction: column;
-                margin-bottom: 0.8rem;
-            }
-
-            .bottom-row {
-                height: auto;
-            }
-
-            .projects-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-                grid-template-rows: auto;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .gallery-track {
-                animation-duration: 18s;
-            }
-        }
-    </style>
+    /* Adjust for narrow screens (scrolling allowed) */
+    @media (max-width: 980px) {
+        html, body { overflow-y: auto; }
+        .projects-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 650px) {
+        .projects-grid { grid-template-columns: 1fr; }
+    }
+</style>
 </head>
 
 <body>
 <div class="page">
 
-    <div class="back-link">
-        ← <a href="index.html">Back to Professional Portfolio</a>
-    </div>
+    <div class="back-link">← <a href="index.html">Back to Portfolio</a></div>
 
-    <!-- TOP 50%: intro (left 1/3) + scrolling gallery (right 2/3) -->
+    <!-- TOP SECTION -->
     <div class="top-row">
+
+        <!-- Intro (left) -->
         <section class="intro-panel">
-            <!-- Image heading placeholder for "Khan's Krafts" -->
-            <div class="title-image" aria-label="Khan's Krafts"></div>
-
-            <h2>Lightweight projects, playful experiments, and creative detours.</h2>
+            <h1>Khan's Krafts</h1>
+            <h2>A home for lightweight projects and playful experiments.</h2>
 
             <p>
-                This is the part of my universe where things don’t have to be formal, peer-reviewed,
-                or perfectly optimized. It’s where I park small builds, sketches, visuals, and
-                experiments that I simply enjoyed making.
+                This is the part of my creative space where nothing needs to be formal or polished.
+                Just ideas, visuals, games, sketches, and side projects that I enjoyed making.
             </p>
 
             <p>
-                Browse through animations, AI-assisted art, games, handmade pieces, and other
-                small worlds that exist here purely for fun.
+                The gallery on the right gently cycles through some highlights — while the cards
+                below let you jump straight into different creative collections.
             </p>
-
-            <div class="button-row">
-                <a class="btn" href="index.html">Back to Portfolio</a>
-                <a class="btn secondary" href="https://youtube.com/" target="_blank">Open YouTube Channel</a>
-            </div>
         </section>
 
+        <!-- Gallery (right) -->
         <section class="gallery-panel">
+            <div class="gallery-header">
+                Auto-scrolling preview gallery — replace these with your real works.
+            </div>
+
             <div class="gallery-window">
                 <div class="gallery-track">
-                    <!-- Duplicate/loop images so the scroll feels continuous -->
                     <div class="gallery-item img1"></div>
                     <div class="gallery-item img2"></div>
                     <div class="gallery-item img3"></div>
                     <div class="gallery-item img4"></div>
                     <div class="gallery-item img5"></div>
-
-                    <!-- Repeat a few to smooth the loop -->
                     <div class="gallery-item img1"></div>
                     <div class="gallery-item img2"></div>
-                    <div class="gallery-item img3"></div>
                 </div>
             </div>
         </section>
+
     </div>
 
-    <!-- BOTTOM 50%: 2 rows x 3 big widescreen clickable cards -->
+    <!-- BOTTOM PROJECT CARDS -->
     <div class="bottom-row">
         <div class="projects-grid">
-            <!-- Row 1 -->
-            <a class="project-card blender" href="#">
-                <div class="project-bg"></div>
-                <div class="project-overlay"></div>
+
+            <a class="project-card" href="#">
                 <div class="project-title">Blender Animations</div>
+                <div class="project-tagline">3D motion tests & looping visual ideas.</div>
+                <div class="project-image-placeholder">Placeholder Image</div>
             </a>
 
-            <a class="project-card aiart" href="#">
-                <div class="project-bg"></div>
-                <div class="project-overlay"></div>
+            <a class="project-card" href="#">
                 <div class="project-title">A.I. Art</div>
+                <div class="project-tagline">Hybrid human–AI creative workflows.</div>
+                <div class="project-image-placeholder">Placeholder Image</div>
             </a>
 
-            <a class="project-card games" href="#">
-                <div class="project-bg"></div>
-                <div class="project-overlay"></div>
+            <a class="project-card" href="#">
                 <div class="project-title">Games</div>
+                <div class="project-tagline">Tiny prototypes & playful mechanics.</div>
+                <div class="project-image-placeholder">Placeholder Image</div>
             </a>
 
-            <!-- Row 2 -->
-            <a class="project-card handicrafts" href="#">
-                <div class="project-bg"></div>
-                <div class="project-overlay"></div>
+            <a class="project-card" href="#">
                 <div class="project-title">Handicrafts</div>
+                <div class="project-tagline">Hand-made objects and tactile pieces.</div>
+                <div class="project-image-placeholder">Placeholder Image</div>
             </a>
 
-            <a class="project-card furry" href="#">
-                <div class="project-bg"></div>
-                <div class="project-overlay"></div>
+            <a class="project-card" href="#">
                 <div class="project-title">Furry Friends</div>
+                <div class="project-tagline">Pets, creatures, doodles & warmth.</div>
+                <div class="project-image-placeholder">Placeholder Image</div>
             </a>
 
-            <a class="project-card arshinagar" href="#">
-                <div class="project-bg"></div>
-                <div class="project-overlay"></div>
+            <a class="project-card" href="#">
                 <div class="project-title">Project Arshinagar</div>
+                <div class="project-tagline">Worldbuilding, lore & fantasy maps.</div>
+                <div class="project-image-placeholder">Placeholder Image</div>
             </a>
+
         </div>
     </div>
 
