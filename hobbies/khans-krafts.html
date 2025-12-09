@@ -18,7 +18,7 @@
             font-family: Arial, Helvetica, sans-serif;
             color: #e5e7eb;
 
-            /* Dark overall + subtle flowing color accents + background image */
+            /* Dark background with soft flowing color accents + BG image */
             background:
                 radial-gradient(circle at 12% 20%, rgba(56,189,248,0.18), transparent 55%),
                 radial-gradient(circle at 82% 78%, rgba(168,85,247,0.16), transparent 55%),
@@ -38,41 +38,34 @@
             gap: 0.8rem;
         }
 
-        .top-row {
+        /* ===== Merged top card ===== */
+        .top-merged-panel {
             display: flex;
             gap: 1rem;
-        }
-
-        .bottom-row {
-            margin-top: 0.8rem;
-            display: flex;
-        }
-
-        /* === Intro panel (left) === */
-        .intro-panel {
-            flex: 1;
+            padding: 1rem 1.2rem;
             background: var(--glass-bg);
             border-radius: 18px;
-            padding: 1.1rem 1.3rem;
             border: 1px solid var(--glass-border);
             box-shadow:
                 0 24px 60px rgba(15,23,42,0.85),
                 0 0 0 1px rgba(15,23,42,0.4) inset;
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            box-sizing: border-box;
+        }
+
+        .intro-panel {
+            flex: 1;
             display: flex;
             flex-direction: column;
             gap: 0.6rem;
         }
 
-        /* Image heading placeholder */
         .title-image {
             width: 100%;
             height: 70px;
             border-radius: 14px;
             background-color: #020617;
-            background-image: url("img/khan-krafts-title-placeholder.jpg"); /* swap later */
+            background-image: url("img/khan-krafts-title-placeholder.jpg");
             background-size: cover;
             background-position: center;
             border: 1px solid rgba(148,163,184,0.6);
@@ -88,7 +81,6 @@
         .intro-panel p {
             margin: 0;
             font-size: 0.9rem;
-            color: #e5e7eb;
         }
 
         .button-row {
@@ -96,7 +88,7 @@
             display: flex;
             gap: 0.6rem;
             flex-wrap: wrap;
-            justify-content: center; /* center-align the buttons */
+            justify-content: center;
         }
 
         .btn {
@@ -123,21 +115,12 @@
             background: rgba(37,99,235,0.35);
         }
 
-        /* === Gallery panel (right) === */
+        /* ===== Right side gallery (unchanged) ===== */
         .gallery-panel {
             flex: 2;
-            background: var(--glass-bg);
-            border-radius: 18px;
-            border: 1px solid var(--glass-border);
-            box-shadow:
-                0 24px 60px rgba(15,23,42,0.85),
-                0 0 0 1px rgba(15,23,42,0.4) inset;
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            border-radius: 14px;
             padding: 0.8rem 0.9rem 1rem;
             box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
         }
 
         .gallery-window {
@@ -159,7 +142,6 @@
             margin-right: 0.5rem;
             background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
             position: relative;
         }
 
@@ -170,7 +152,6 @@
             background: linear-gradient(to top, rgba(15,23,42,0.4), transparent);
         }
 
-        /* Replace these placeholder images with your own */
         .gallery-item.img1 { background-image: url("img/krafts-placeholder-1.jpg"); }
         .gallery-item.img2 { background-image: url("img/krafts-placeholder-2.jpg"); }
         .gallery-item.img3 { background-image: url("img/krafts-placeholder-3.jpg"); }
@@ -182,12 +163,16 @@
             100% { transform: translateX(-60%); }
         }
 
-        /* === Project cards grid (bottom) === */
+        /* ===== Bottom cards grid ===== */
+        .bottom-row {
+            margin-top: 0.8rem;
+            display: flex;
+        }
+
         .projects-grid {
             flex: 1;
-            width: 100%;
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             grid-template-rows: repeat(2, 1fr);
             gap: 0.8rem;
         }
@@ -203,10 +188,8 @@
             cursor: pointer;
             text-decoration: none;
             color: #f9fafb;
-            background-color: #020617; /* fallback */
-            transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
-
-            /* Landscape aspect, ~30% shorter than classic 16:9 */
+            background-color: #020617;
+            transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
             aspect-ratio: 16 / 6;
         }
 
@@ -223,7 +206,6 @@
             inset: 0;
             background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
             filter: brightness(0.7);
             transition: filter 0.18s ease;
         }
@@ -248,103 +230,67 @@
             text-shadow: 0 2px 6px rgba(0,0,0,0.8);
         }
 
-        /* Card-specific placeholder backgrounds (swap later) */
-        .project-card.blender .project-bg {
-            background-image: url("img/card-blender-placeholder.jpg");
-        }
-        .project-card.aiart .project-bg {
-            background-image: url("img/card-aiart-placeholder.jpg");
-        }
-        .project-card.games .project-bg {
-            background-image: url("img/card-games-placeholder.jpg");
-        }
-        .project-card.handicrafts .project-bg {
-            background-image: url("img/card-handicrafts-placeholder.jpg");
-        }
-        .project-card.furry .project-bg {
-            background-image: url("img/card-furry-placeholder.jpg");
-        }
-        .project-card.arshinagar .project-bg {
-            background-image: url("img/card-arshinagar-placeholder.jpg");
-        }
+        .project-card.blender .project-bg       { background-image: url("img/card-blender-placeholder.jpg"); }
+        .project-card.aiart .project-bg         { background-image: url("img/card-aiart-placeholder.jpg"); }
+        .project-card.games .project-bg         { background-image: url("img/card-games-placeholder.jpg"); }
+        .project-card.handicrafts .project-bg   { background-image: url("img/card-handicrafts-placeholder.jpg"); }
+        .project-card.furry .project-bg         { background-image: url("img/card-furry-placeholder.jpg"); }
+        .project-card.arshinagar .project-bg    { background-image: url("img/card-arshinagar-placeholder.jpg"); }
 
-        @media (max-width: 900px) {
-            .page {
-                padding: 1rem;
-            }
-
-            .top-row {
-                flex-direction: column;
-            }
-
-            .bottom-row {
-                margin-top: 0.6rem;
-            }
-
-            .projects-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-        }
-
-        @media (max-width: 640px) {
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-        }
     </style>
 </head>
 
 <body>
 <div class="page">
 
-    <!-- TOP: intro (left) + scrolling gallery (right) -->
-    <div class="top-row">
+    <!-- ===== MERGED TOP PANEL ===== -->
+    <div class="top-merged-panel">
+
+        <!-- LEFT: Intro -->
         <section class="intro-panel">
-            <!-- Image heading placeholder for "Khan's Krafts" -->
-            <div class="title-image" aria-label="Khan's Krafts"></div>
+            <div class="title-image"></div>
 
             <h2>Lightweight projects, playful experiments, and creative detours.</h2>
 
             <p>
-                This is the part of my universe where things don’t have to be formal
-                or perfectly optimized. It’s where I park small builds, sketches, visuals, and
-                worlds that I simply enjoyed making.
+                This space is where creativity flows freely — animations, art, games,
+                crafting, and spontaneous ideas that were fun to bring to life.
             </p>
 
             <p>
-                Browse through animations, AI-assisted art, games, handmade pieces, and other
-                small worlds that exist here purely for fun.
+                Nothing formal — just things I made because I enjoyed making them.
             </p>
 
             <div class="button-row">
-                <a class="btn" href="../index.html">Check out my Portfolio</a>
+                <a class="btn" href="../index.html">Check out my Professional Portfolio</a>
                 <a class="btn secondary" href="https://youtube.com/" target="_blank">Check out my YouTube Channel</a>
             </div>
         </section>
 
+        <!-- RIGHT: Gallery -->
         <section class="gallery-panel">
             <div class="gallery-window">
                 <div class="gallery-track">
-                    <!-- Duplicate/loop images so the scroll feels continuous -->
                     <div class="gallery-item img1"></div>
                     <div class="gallery-item img2"></div>
                     <div class="gallery-item img3"></div>
                     <div class="gallery-item img4"></div>
                     <div class="gallery-item img5"></div>
 
-                    <!-- Repeat a few to smooth the loop -->
+                    <!-- repeat for continuous motion -->
                     <div class="gallery-item img1"></div>
                     <div class="gallery-item img2"></div>
                     <div class="gallery-item img3"></div>
                 </div>
             </div>
         </section>
+
     </div>
 
-    <!-- BOTTOM: 2 rows x 3 big clickable cards -->
+    <!-- ===== BOTTOM GRID (unchanged) ===== -->
     <div class="bottom-row">
         <div class="projects-grid">
-            <!-- Row 1 -->
+
             <a class="project-card blender" href="#">
                 <div class="project-bg"></div>
                 <div class="project-overlay"></div>
@@ -363,7 +309,6 @@
                 <div class="project-title">Games</div>
             </a>
 
-            <!-- Row 2 -->
             <a class="project-card handicrafts" href="#">
                 <div class="project-bg"></div>
                 <div class="project-overlay"></div>
@@ -381,6 +326,7 @@
                 <div class="project-overlay"></div>
                 <div class="project-title">Project Arshinagar</div>
             </a>
+
         </div>
     </div>
 
