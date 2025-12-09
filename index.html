@@ -65,7 +65,7 @@
         }
 
         .hero-text {
-            flex: 1.6;   /* give text more width */
+            flex: 1.6;
         }
 
         .hero-title {
@@ -77,7 +77,13 @@
         .hero-subtitle {
             font-size: 1.35rem;
             font-weight: 600;
-            margin: 0 0 0.45rem;
+            margin: 0 0 0.35rem;
+        }
+
+        .hero-affiliation {
+            margin: 0 0 0.55rem;
+            font-size: 0.9rem;
+            color: #e5e7eb;
         }
 
         .hero-tagline {
@@ -102,6 +108,21 @@
             text-decoration: underline;
         }
 
+        .hero-socials {
+            margin: 0.4rem 0 0;
+            font-size: 0.84rem;
+            color: #cbd5f5;
+        }
+
+        .hero-socials a {
+            color: #93c5fd;
+            text-decoration: none;
+        }
+
+        .hero-socials a:hover {
+            text-decoration: underline;
+        }
+
         .hero-image-wrapper {
             flex: 0 0 auto;
             display: flex;
@@ -123,17 +144,6 @@
         }
 
         /* ===== Tabbed cards section ===== */
-        .cards-section h2 {
-            margin: 0 0 0.35rem;
-            font-size: 1.4rem;
-        }
-
-        .cards-section p.section-intro {
-            margin: 0 0 0.7rem;
-            font-size: 0.9rem;
-            color: #cbd5f5;
-        }
-
         .tabs {
             display: flex;
             flex-direction: column;
@@ -167,10 +177,18 @@
             padding: 0.9rem 1rem;
             box-shadow: 0 10px 25px rgba(15,23,42,0.6);
             font-size: 0.84rem;
+            position: relative;
         }
 
         .tab-panel {
-            display: none;
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transform: translateY(6px);
+            transition:
+                opacity 0.25s ease,
+                transform 0.25s ease,
+                max-height 0.25s ease;
         }
 
         .tab-panel h3 {
@@ -210,13 +228,15 @@
             display: none;
         }
 
-        /* Default visible tab */
+        /* Fade/slide visible tab in */
         #tab-research:checked ~ .tab-contents #content-research,
         #tab-hobbies:checked  ~ .tab-contents #content-hobbies,
         #tab-prof:checked     ~ .tab-contents #content-prof,
         #tab-tools:checked    ~ .tab-contents #content-tools,
         #tab-edu:checked      ~ .tab-contents #content-edu {
-            display: block;
+            opacity: 1;
+            max-height: 320px;
+            transform: translateY(0);
         }
 
         /* Active tab label styling */
@@ -281,6 +301,12 @@
                 <h1 class="hero-title">Welcome to Khan's Portfolio</h1>
                 <p class="hero-subtitle">Hi, I’m Saleh Ahmed Khan.</p>
 
+                <p class="hero-affiliation">
+                    Graduate Research Assistant<br>
+                    Department of Electrical and Computer Engineering<br>
+                    University of Massachusetts Lowell
+                </p>
+
                 <p class="hero-tagline">
                     Researcher in ultrawide-bandgap semiconductors and power device engineering.
                 </p>
@@ -292,7 +318,10 @@
                     Personal email:
                     <a href="mailto:salehahmedkhan1998@gmail.com">salehahmedkhan1998@gmail.com</a><br>
                     Academic email:
-                    <a href="mailto:salehahmed_khan@uml.edu">salehahmed_khan@uml.edu</a><br>
+                    <a href="mailto:salehahmed_khan@uml.edu">salehahmed_khan@uml.edu</a>
+                </p>
+
+                <p class="hero-socials">
                     Socials:
                     <a href="#" target="_blank">LinkedIn</a> ·
                     <a href="#" target="_blank">Google Scholar</a> ·
@@ -309,11 +338,6 @@
 
         <!-- TABBED GLASS PANEL -->
         <section class="glass cards-section">
-            <h2>Portfolio at a Glance</h2>
-            <p class="section-intro">
-                Quick links into my research, background, and interests.
-            </p>
-
             <div class="tabs">
                 <!-- Radios -->
                 <input type="radio" name="tabs" id="tab-research" checked>
@@ -390,7 +414,7 @@
                             <li>Ph.D. studies in ultrawide-bandgap semiconductor devices</li>
                             <li>Graduate training in solid-state electronics and materials</li>
                             <li>Foundations in physics, electronics, and device engineering</li>
-                            <!-- You can replace these bullets with exact degrees/institutions later -->
+                            <!-- Replace with exact degrees/institutions when ready -->
                         </ul>
                     </div>
                 </div>
