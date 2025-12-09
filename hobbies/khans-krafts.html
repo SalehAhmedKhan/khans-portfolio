@@ -18,7 +18,6 @@
             font-family: Arial, Helvetica, sans-serif;
             color: #e5e7eb;
 
-            /* Dark background with soft flowing color accents + BG image */
             background:
                 radial-gradient(circle at 12% 20%, rgba(56,189,248,0.18), transparent 55%),
                 radial-gradient(circle at 82% 78%, rgba(168,85,247,0.16), transparent 55%),
@@ -38,7 +37,7 @@
             gap: 0.8rem;
         }
 
-        /* ===== Merged top card ===== */
+        /* ===== MERGED TOP PANEL ===== */
         .top-merged-panel {
             display: flex;
             gap: 1rem;
@@ -51,12 +50,16 @@
                 0 0 0 1px rgba(15,23,42,0.4) inset;
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
+
+            /* ensures the gallery stays tall */
+            min-height: 300px;
         }
 
         .intro-panel {
             flex: 1;
             display: flex;
             flex-direction: column;
+            justify-content: flex-start;
             gap: 0.6rem;
         }
 
@@ -115,20 +118,24 @@
             background: rgba(37,99,235,0.35);
         }
 
-        /* ===== Right side gallery (unchanged) ===== */
+        /* ===== RESTORED SCROLLING GALLERY ===== */
         .gallery-panel {
             flex: 2;
+            display: flex;                /* restores height */
+            flex-direction: column;
+            justify-content: stretch;
+
             border-radius: 14px;
             padding: 0.8rem 0.9rem 1rem;
             box-sizing: border-box;
         }
 
         .gallery-window {
-            flex: 1;
+            flex: 1;                      /* ensures the gallery fills vertical space */
             border-radius: 14px;
             overflow: hidden;
-            position: relative;
             background: #020617;
+            position: relative;
         }
 
         .gallery-track {
@@ -163,7 +170,7 @@
             100% { transform: translateX(-60%); }
         }
 
-        /* ===== Bottom cards grid ===== */
+        /* ===== BOTTOM GRID REMAINS UNCHANGED ===== */
         .bottom-row {
             margin-top: 0.8rem;
             display: flex;
@@ -182,13 +189,8 @@
             border-radius: 18px;
             overflow: hidden;
             border: 1px solid var(--glass-border);
-            box-shadow:
-                0 16px 40px rgba(15,23,42,0.7),
-                0 0 0 1px rgba(15,23,42,0.4) inset;
+            background: #020617;
             cursor: pointer;
-            text-decoration: none;
-            color: #f9fafb;
-            background-color: #020617;
             transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
             aspect-ratio: 16 / 6;
         }
@@ -198,7 +200,6 @@
             box-shadow:
                 0 22px 50px rgba(15,23,42,0.9),
                 0 0 0 1px rgba(56,189,248,0.6) inset;
-            border-color: rgba(56,189,248,0.7);
         }
 
         .project-bg {
@@ -206,18 +207,13 @@
             inset: 0;
             background-size: cover;
             background-position: center;
-            filter: brightness(0.7);
-            transition: filter 0.18s ease;
-        }
-
-        .project-card:hover .project-bg {
-            filter: brightness(0.9);
+            filter: brightness(0.75);
         }
 
         .project-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to top, rgba(15,23,42,0.85), transparent 55%);
+            background: linear-gradient(to top, rgba(15,23,42,0.9), transparent);
         }
 
         .project-title {
@@ -227,15 +223,7 @@
             right: 0.9rem;
             font-size: 1rem;
             font-weight: 600;
-            text-shadow: 0 2px 6px rgba(0,0,0,0.8);
         }
-
-        .project-card.blender .project-bg       { background-image: url("img/card-blender-placeholder.jpg"); }
-        .project-card.aiart .project-bg         { background-image: url("img/card-aiart-placeholder.jpg"); }
-        .project-card.games .project-bg         { background-image: url("img/card-games-placeholder.jpg"); }
-        .project-card.handicrafts .project-bg   { background-image: url("img/card-handicrafts-placeholder.jpg"); }
-        .project-card.furry .project-bg         { background-image: url("img/card-furry-placeholder.jpg"); }
-        .project-card.arshinagar .project-bg    { background-image: url("img/card-arshinagar-placeholder.jpg"); }
 
     </style>
 </head>
@@ -243,7 +231,7 @@
 <body>
 <div class="page">
 
-    <!-- ===== MERGED TOP PANEL ===== -->
+    <!-- ===== MERGED TOP PANEL WITH RESTORED GALLERY ===== -->
     <div class="top-merged-panel">
 
         <!-- LEFT: Intro -->
@@ -254,7 +242,7 @@
 
             <p>
                 This space is where creativity flows freely — animations, art, games,
-                crafting, and spontaneous ideas that were fun to bring to life.
+                crafting, and spontaneous ideas made purely for fun.
             </p>
 
             <p>
@@ -267,7 +255,7 @@
             </div>
         </section>
 
-        <!-- RIGHT: Gallery -->
+        <!-- RIGHT: SCROLLING IMAGE GALLERY (RESTORED) -->
         <section class="gallery-panel">
             <div class="gallery-window">
                 <div class="gallery-track">
@@ -277,7 +265,7 @@
                     <div class="gallery-item img4"></div>
                     <div class="gallery-item img5"></div>
 
-                    <!-- repeat for continuous motion -->
+                    <!-- repeating for seamless loop -->
                     <div class="gallery-item img1"></div>
                     <div class="gallery-item img2"></div>
                     <div class="gallery-item img3"></div>
@@ -292,37 +280,37 @@
         <div class="projects-grid">
 
             <a class="project-card blender" href="#">
-                <div class="project-bg"></div>
+                <div class="project-bg" style="background-image:url('img/card-blender-placeholder.jpg');"></div>
                 <div class="project-overlay"></div>
                 <div class="project-title">Blender Animations</div>
             </a>
 
             <a class="project-card aiart" href="#">
-                <div class="project-bg"></div>
+                <div class="project-bg" style="background-image:url('img/card-aiart-placeholder.jpg');"></div>
                 <div class="project-overlay"></div>
                 <div class="project-title">A.I. Art</div>
             </a>
 
             <a class="project-card games" href="#">
-                <div class="project-bg"></div>
+                <div class="project-bg" style="background-image:url('img/card-games-placeholder.jpg');"></div>
                 <div class="project-overlay"></div>
                 <div class="project-title">Games</div>
             </a>
 
             <a class="project-card handicrafts" href="#">
-                <div class="project-bg"></div>
+                <div class="project-bg" style="background-image:url('img/card-handicrafts-placeholder.jpg');"></div>
                 <div class="project-overlay"></div>
                 <div class="project-title">Handicrafts</div>
             </a>
 
             <a class="project-card furry" href="#">
-                <div class="project-bg"></div>
+                <div class="project-bg" style="background-image:url('img/card-furry-placeholder.jpg');"></div>
                 <div class="project-overlay"></div>
                 <div class="project-title">Furry Friends</div>
             </a>
 
             <a class="project-card arshinagar" href="#">
-                <div class="project-bg"></div>
+                <div class="project-bg" style="background-image:url('img/card-arshinagar-placeholder.jpg');"></div>
                 <div class="project-overlay"></div>
                 <div class="project-title">Project Arshinagar</div>
             </a>
