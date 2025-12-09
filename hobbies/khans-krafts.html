@@ -11,13 +11,13 @@
             --glass-bg: rgba(15,23,42,0.82);
             --glass-border: rgba(148,163,184,0.45);
             --accent: #38bdf8;
-            --accent-soft: rgba(56,189,248,0.15);
         }
 
         body {
             margin: 0;
             font-family: Arial, Helvetica, sans-serif;
             color: #e5e7eb;
+            overflow: hidden; /* prevents scrolling */
             background:
                 linear-gradient(rgba(15,23,42,0.9), rgba(15,23,42,0.9)),
                 url("ChatGPT Image Dec 8, 2025, 07_22_56 PM.png");
@@ -27,239 +27,187 @@
         }
 
         .page {
-            min-height: 100vh;
+            height: 100vh; /* Fill entire screen */
             display: flex;
             flex-direction: column;
-            padding: 1.5rem 2rem;
+            padding: 1rem 2rem;
             box-sizing: border-box;
+            gap: 0.6rem;
         }
 
+        /* TOP & BOTTOM split exactly */
         .top-row {
-            flex: 2;
+            height: 48%;
             display: flex;
-            gap: 1.2rem;
-            margin-bottom: 1.2rem;
-        }
-
-        .bottom-row {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
             gap: 0.8rem;
         }
 
-        /* ===== Back link ===== */
+        .bottom-row {
+            height: 48%;
+            display: flex;
+        }
+
         .back-link {
             font-size: 0.8rem;
-            margin-bottom: 0.6rem;
             color: #cbd5f5;
         }
+        .back-link a { color: #93c5fd; text-decoration: none; }
+        .back-link a:hover { text-decoration: underline; }
 
-        .back-link a {
-            color: #93c5fd;
-            text-decoration: none;
-        }
-
-        .back-link a:hover {
-            text-decoration: underline;
-        }
-
-        /* ===== Intro panel (left 1/3) ===== */
+        /* INTRO PANEL */
         .intro-panel {
             flex: 1;
             background: var(--glass-bg);
             border-radius: 18px;
+            padding: 1rem 1.2rem;
             border: 1px solid var(--glass-border);
-            box-shadow:
-                0 24px 60px rgba(15,23,42,0.85),
-                0 0 0 1px rgba(15,23,42,0.4) inset;
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            padding: 1.4rem 1.5rem;
-            box-sizing: border-box;
+            box-shadow: 0 18px 40px rgba(15,23,42,0.85);
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            overflow: hidden;
         }
 
-        .intro-panel h1 {
-            margin: 0 0 0.4rem;
-            font-size: 1.8rem;
+        .title-image {
+            width: 100%;
+            height: 58px; /* slightly reduced */
+            border-radius: 12px;
+            background-color: #020617;
+            background-image: url("img/khan-krafts-title-placeholder.jpg");
+            background-size: cover;
+            background-position: center;
+            border: 1px solid rgba(148,163,184,0.6);
         }
 
         .intro-panel h2 {
-            margin: 0 0 0.9rem;
-            font-size: 1.05rem;
-            color: #bfdbfe;
+            margin: 0.2rem 0 0;
+            font-size: 0.95rem;
         }
 
         .intro-panel p {
-            margin: 0 0 0.6rem;
-            font-size: 0.95rem;
-            color: #e5e7eb;
+            margin: 0;
+            font-size: 0.85rem;
         }
 
-        /* ===== Gallery panel (right 2/3) ===== */
+        .button-row {
+            margin-top: 0.3rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.35rem 0.9rem;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            text-decoration: none;
+            background: #2563eb;
+            border: 1px solid #60a5fa;
+            color: white;
+        }
+        .btn.secondary { background: transparent; }
+        .btn:hover { background: #1d4ed8; }
+        .btn.secondary:hover { background: rgba(37,99,235,0.3); }
+
+        /* GALLERY */
         .gallery-panel {
             flex: 2;
             background: var(--glass-bg);
+            padding: 0.5rem 0.7rem;
             border-radius: 18px;
             border: 1px solid var(--glass-border);
-            box-shadow:
-                0 24px 60px rgba(15,23,42,0.85),
-                0 0 0 1px rgba(15,23,42,0.4) inset;
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            padding: 1rem 1rem 1.2rem;
-            box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            gap: 0.6rem;
-        }
-
-        .gallery-header {
-            font-size: 0.9rem;
-            color: #cbd5f5;
-            opacity: 0.9;
+            overflow: hidden;
         }
 
         .gallery-window {
             flex: 1;
             border-radius: 14px;
             overflow: hidden;
-            position: relative;
-            background: #020617;
         }
 
         .gallery-track {
             display: flex;
             height: 100%;
-            animation: scrollGallery 22s linear infinite;
+            animation: scrollGallery 20s linear infinite;
         }
 
         .gallery-item {
-            flex: 0 0 40%;
-            margin-right: 0.5rem;
+            flex: 0 0 38%;
+            margin-right: 0.4rem;
             background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
-            position: relative;
         }
 
-        .gallery-item::after {
-            /* subtle gradient overlay for text legibility if needed */
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to top, rgba(15,23,42,0.4), transparent);
+        @keyframes scrollGallery {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-55%); }
         }
 
-        /* Replace these placeholder images with your own */
         .gallery-item.img1 { background-image: url("img/krafts-placeholder-1.jpg"); }
         .gallery-item.img2 { background-image: url("img/krafts-placeholder-2.jpg"); }
         .gallery-item.img3 { background-image: url("img/krafts-placeholder-3.jpg"); }
         .gallery-item.img4 { background-image: url("img/krafts-placeholder-4.jpg"); }
         .gallery-item.img5 { background-image: url("img/krafts-placeholder-5.jpg"); }
 
-        @keyframes scrollGallery {
-            0%   { transform: translateX(0); }
-            100% { transform: translateX(-60%); }
-        }
-
-        /* ===== Project cards grid (bottom 1/3) ===== */
+        /* PROJECT GRID */
         .projects-grid {
             flex: 1;
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             grid-template-rows: repeat(2, 1fr);
-            gap: 0.8rem;
+            gap: 0.6rem;
         }
 
         .project-card {
-            background: var(--glass-bg);
-            border-radius: 18px;
+            position: relative;
+            border-radius: 14px;
             border: 1px solid var(--glass-border);
-            box-shadow:
-                0 16px 40px rgba(15,23,42,0.7),
-                0 0 0 1px rgba(15,23,42,0.4) inset;
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            padding: 0.8rem 0.9rem;
-            box-sizing: border-box;
+            background: #020617;
+            overflow: hidden;
+            aspect-ratio: 16 / 8.5; /* slightly shorter cards */
             text-decoration: none;
-            color: inherit;
-            display: flex;
-            flex-direction: column;
-            gap: 0.4rem;
-            cursor: pointer;
-            transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+            color: white;
+            box-shadow: 0 12px 30px rgba(15,23,42,0.85);
+            transition: transform .15s, box-shadow .15s;
         }
 
         .project-card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-3px);
             box-shadow:
-                0 22px 50px rgba(15,23,42,0.9),
-                0 0 0 1px rgba(56,189,248,0.6) inset;
-            border-color: rgba(56,189,248,0.7);
+                0 18px 40px rgba(15,23,42,0.9),
+                0 0 0 1px rgba(56,189,248,0.5) inset;
+        }
+
+        .project-bg {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.7);
+        }
+
+        .project-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(15,23,42,0.8), transparent 60%);
         }
 
         .project-title {
-            font-size: 1rem;
+            position: absolute;
+            bottom: 0.7rem;
+            left: 0.8rem;
+            font-size: 0.9rem;
             font-weight: 600;
         }
 
-        .project-tagline {
-            font-size: 0.8rem;
-            color: #cbd5f5;
-        }
+        .project-card.blender .project-bg       { background-image: url("img/card-blender-placeholder.jpg"); }
+        .project-card.aiart .project-bg         { background-image: url("img/card-aiart-placeholder.jpg"); }
+        .project-card.games .project-bg         { background-image: url("img/card-games-placeholder.jpg"); }
+        .project-card.handicrafts .project-bg   { background-image: url("img/card-handicrafts-placeholder.jpg"); }
+        .project-card.furry .project-bg         { background-image: url("img/card-furry-placeholder.jpg"); }
+        .project-card.arshinagar .project-bg    { background-image: url("img/card-arshinagar-placeholder.jpg"); }
 
-        .project-image-placeholder {
-            flex: 1;
-            margin-top: 0.3rem;
-            border-radius: 12px;
-            border: 1px dashed rgba(148,163,184,0.6);
-            background: radial-gradient(circle at 30% 20%, var(--accent-soft), transparent),
-                        radial-gradient(circle at 80% 70%, rgba(56,189,248,0.08), transparent);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            color: #9ca3af;
-            text-align: center;
-            padding: 0 0.4rem;
-            box-sizing: border-box;
-        }
-
-        .project-image-placeholder span {
-            opacity: 0.85;
-        }
-
-        @media (max-width: 900px) {
-            .page {
-                padding: 1rem;
-                min-height: auto;
-            }
-
-            .top-row {
-                flex-direction: column;
-            }
-
-            .bottom-row {
-                margin-top: 0.6rem;
-            }
-
-            .projects-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-                grid-template-rows: auto;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .gallery-track {
-                animation-duration: 18s;
-            }
-        }
     </style>
 </head>
 
@@ -270,107 +218,79 @@
         ← <a href="index.html">Back to Professional Portfolio</a>
     </div>
 
-    <!-- TOP: intro (left 1/3) + scrolling gallery (right 2/3) -->
+    <!-- ==== TOP HALF ==== -->
     <div class="top-row">
+
+        <!-- LEFT INTRO PANEL -->
         <section class="intro-panel">
-            <h1>Khan's Krafts</h1>
+            <div class="title-image"></div>
+
             <h2>Lightweight projects, playful experiments, and creative detours.</h2>
 
             <p>
-                This is the part of my universe where things don’t have to be formal, peer-reviewed,
-                or perfectly optimized. It’s where I park small builds, sketches, visuals, and
-                experiments that I simply enjoyed making.
+                This part of my world is reserved for fun — sketches, art, small builds, experiments,
+                and anything I made simply because I enjoyed making it.
             </p>
 
             <p>
-                Browse through animations, AI-assisted art, games, handmade pieces, and a few
-                personal worlds that exist just for fun (looking at you, Project Arshinagar).
+                Dive in, explore, and enjoy a more relaxed side of my creative life.
             </p>
 
-            <p>
-                The gallery on the right will cycle through highlights; the project tiles below
-                take you straight into specific collections.
-            </p>
+            <div class="button-row">
+                <a class="btn" href="index.html">Back to Portfolio</a>
+                <a class="btn secondary" href="https://youtube.com/" target="_blank">YouTube</a>
+            </div>
         </section>
 
+        <!-- RIGHT GALLERY -->
         <section class="gallery-panel">
-            <div class="gallery-header">
-                A rotating glimpse of Khan's creative side &mdash; swap in your own shots here later.
-            </div>
             <div class="gallery-window">
                 <div class="gallery-track">
-                    <!-- Duplicate/loop images so the scroll feels continuous -->
                     <div class="gallery-item img1"></div>
                     <div class="gallery-item img2"></div>
                     <div class="gallery-item img3"></div>
                     <div class="gallery-item img4"></div>
                     <div class="gallery-item img5"></div>
-
-                    <!-- Repeat a few to smooth the loop -->
                     <div class="gallery-item img1"></div>
                     <div class="gallery-item img2"></div>
-                    <div class="gallery-item img3"></div>
                 </div>
             </div>
         </section>
+
     </div>
 
-    <!-- BOTTOM: 2 rows x 3 big clickable cards -->
+    <!-- ==== BOTTOM HALF ==== -->
     <div class="bottom-row">
         <div class="projects-grid">
-            <!-- Row 1 -->
-            <a class="project-card" href="#">
+
+            <a class="project-card blender" href="#">
+                <div class="project-bg"></div>
+                <div class="project-overlay"></div>
                 <div class="project-title">Blender Animations</div>
-                <div class="project-tagline">Short loops, motion tests, and 3D experiments.</div>
-                <div class="project-image-placeholder">
-                    <span>Drop a favorite animation still here.</span>
-                </div>
             </a>
 
-            <a class="project-card" href="#">
+            <a class="project-card aiart" href="#">
+                <div class="project-bg"></div>
+                <div class="project-overlay"></div>
                 <div class="project-title">A.I. Art</div>
-                <div class="project-tagline">Concepts, styles, and human+model collaborations.</div>
-                <div class="project-image-placeholder">
-                    <span>Use this as the hero image for your AI pieces.</span>
-                </div>
             </a>
 
-            <a class="project-card" href="#">
+            <a class="project-card games" href="#">
+                <div class="project-bg"></div>
+                <div class="project-overlay"></div>
                 <div class="project-title">Games</div>
-                <div class="project-tagline">Prototypes, tiny mechanics, and playful ideas.</div>
-                <div class="project-image-placeholder">
-                    <span>Screenshot from a favorite level or UI mock.</span>
-                </div>
             </a>
 
-            <!-- Row 2 -->
-            <a class="project-card" href="#">
+            <a class="project-card handicrafts" href="#">
+                <div class="project-bg"></div>
+                <div class="project-overlay"></div>
                 <div class="project-title">Handicrafts</div>
-                <div class="project-tagline">Things made by hand: tactile, imperfect, personal.</div>
-                <div class="project-image-placeholder">
-                    <span>Photo of a finished piece or work-in-progress.</span>
-                </div>
             </a>
 
-            <a class="project-card" href="#">
+            <a class="project-card furry" href="#">
+                <div class="project-bg"></div>
+                <div class="project-overlay"></div>
                 <div class="project-title">Furry Friends</div>
-                <div class="project-tagline">Pet photos, doodles, or creature designs.</div>
-                <div class="project-image-placeholder">
-                    <span>Pick the most chaotic or wholesome shot.</span>
-                </div>
             </a>
 
-            <a class="project-card" href="#">
-                <div class="project-title">Project Arshinagar</div>
-                <div class="project-tagline">A world-building sandbox, stories, and maps.</div>
-                <div class="project-image-placeholder">
-                    <span>Map, emblem, or key visual from Arshinagar.</span>
-                </div>
-            </a>
-        </div>
-    </div>
-
-</div>
-</body>
-</html>
-
+            <a class="pr
