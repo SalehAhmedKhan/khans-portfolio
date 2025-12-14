@@ -117,7 +117,7 @@
             background: rgba(37,99,235,0.35);
         }
 
-        /* ===== RESTORED SCROLLING GALLERY (JSON-DRIVEN + SEAMLESS LOOP) ===== */
+        /* ===== JSON-DRIVEN SCROLLING GALLERY (SEAMLESS + FIXED TILE WIDTH) ===== */
         .gallery-panel {
             flex: 2;
             display: flex;
@@ -139,10 +139,9 @@
         .gallery-track {
             display: flex;
             height: 100%;
-            width: max-content;
 
             /* JS will set these */
-            --scroll-distance: 60%;
+            --scroll-distance: 600px;
             --scroll-duration: 22s;
 
             animation: scrollGallery var(--scroll-duration) linear infinite;
@@ -150,8 +149,11 @@
         }
 
         .gallery-item {
-            flex: 0 0 40%;
+            flex: 0 0 auto;                      /* IMPORTANT: do not use % flex-basis here */
+            width: clamp(220px, 28vw, 420px);     /* IMPORTANT: real, stable tile width */
+            height: 100%;
             margin-right: 0.5rem;
+
             background-size: cover;
             background-position: center;
             position: relative;
@@ -164,8 +166,6 @@
             background: linear-gradient(to top, rgba(15,23,42,0.4), transparent);
         }
 
-        /* Smooth, SEAMLESS marquee:
-           We duplicate the set; scroll exactly half of the full track width */
         @keyframes scrollGallery {
             0%   { transform: translateX(0); }
             100% { transform: translateX(calc(-1 * var(--scroll-distance))); }
@@ -231,7 +231,7 @@
 <body>
 <div class="page">
 
-    <!-- ===== MERGED TOP PANEL WITH RESTORED GALLERY ===== -->
+    <!-- ===== MERGED TOP PANEL WITH GALLERY ===== -->
     <div class="top-merged-panel">
 
         <!-- LEFT: Intro -->
@@ -257,10 +257,9 @@
             </div>
         </section>
 
-        <!-- RIGHT: SCROLLING IMAGE GALLERY (NOW JSON-DRIVEN) -->
+        <!-- RIGHT: SCROLLING IMAGE GALLERY (JSON-DRIVEN) -->
         <section class="gallery-panel">
             <div class="gallery-window">
-                <!-- JS will populate this -->
                 <div class="gallery-track" id="kraftsGalleryTrack"></div>
             </div>
         </section>
@@ -318,7 +317,7 @@
   const track = document.getElementById("kraftsGalleryTrack");
   if (!track) return;
 
-  // Cache-bust so updates appear right after you push changes (esp. GitHub Pages caching)
+  // Cache-bust so updates show up right after you push changes
   const url = `${JSON_PATH}?v=${Date.now()}`;
 
   let cfg;
@@ -340,7 +339,8 @@
   // Base directory for images: same folder as the JSON
   const baseDir = JSON_PATH.split("/").slice(0, -1).join("/");
 
-  // Build a seamless loop by duplicating the full list twice
+  // Build a seamless loop by duplicating the full list once.
+  // We then scroll exactly "half" the track width, which equals one full set.
   const doubled = images.concat(images);
 
   track.innerHTML = doubled.map((file) => {
@@ -348,16 +348,20 @@
     return `<div class="gallery-item" style="background-image:url('${baseDir}/${safe}')"></div>`;
   }).join("");
 
-  // After layout, compute the exact scroll distance (half the full track width)
-  // so the loop transitions perfectly.
-  requestAnimationFrame(() => {
+  const setDistance = () => {
     const half = track.scrollWidth / 2;
     track.style.setProperty("--scroll-distance", `${half}px`);
+  };
 
-    // Allow you to control speed from JSON (durationSeconds), fallback to 22s
+  // Initial + responsive recalculation (prevents jumpiness on resize)
+  requestAnimationFrame(() => {
+    setDistance();
+
     const dur = Number(cfg.durationSeconds || 22);
     track.style.setProperty("--scroll-duration", `${dur}s`);
   });
+
+  window.addEventListener("resize", () => requestAnimationFrame(setDistance));
 })();
 </script>
 
