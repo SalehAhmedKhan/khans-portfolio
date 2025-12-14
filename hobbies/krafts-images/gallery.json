@@ -1,10 +1,9 @@
 {
-  "folder": "krafts-images",
-  "intervalMs": 3500,
   "images": [
     "shahidminar.jpeg",
     "natmemorial.jpeg",
     "palki.jpeg",
     "kalhonaho.jpg"
-  ]
+  ],
+  "durationSeconds": 22
 }
