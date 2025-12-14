@@ -6,11 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Khan's Krafts</title>
 
-  <!-- ===== Fancy font for bottom cards ===== -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
-
   <style>
     :root {
       --glass-bg: rgba(15,23,42,0.82);
@@ -42,11 +37,11 @@
       gap: 0.8rem;
     }
 
-    /* ===== MERGED TOP PANEL ===== */
+    /* ===== MERGED TOP PANEL (LOCK HEIGHT) ===== */
     .top-merged-panel {
       display: flex;
-      gap: 0.9rem;
-      padding: 0.9rem 1.05rem;
+      gap: 1rem;
+      padding: 1rem 1.2rem;
 
       background: var(--glass-bg);
       border-radius: 18px;
@@ -57,48 +52,64 @@
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
 
-      height: clamp(320px, 40vh, 390px);
+      /* lock the panel height so it never grows (desktop) */
+      height: clamp(280px, 34vh, 320px);
       align-items: stretch;
-      flex-wrap: nowrap;
-      overflow: hidden;
-    }
 
-    .intro-panel {
-      flex: 1 1 460px;
-      min-width: 360px;
-      display: flex;
-      flex-direction: column;
-      gap: 0.45rem;
-    }
-
-    .title-image {
-      height: 60px;
-      border-radius: 14px;
-      background: url("img/khan-krafts-title-placeholder.jpg") center/cover no-repeat;
-      border: 1px solid rgba(148,163,184,0.6);
-    }
-
-    .intro-panel h2 {
-      font-size: 0.94rem;
-      color: #bfdbfe;
-      margin: 0;
-    }
-
-    .intro-panel p {
-      font-size: 0.86rem;
-      margin: 0;
-      line-height: 1.25;
-    }
-
-    .button-row {
-      margin-top: 0.5rem;
-      display: flex;
-      gap: 0.6rem;
-      justify-content: center;
+      /* allow wrapping if the viewport is narrow */
       flex-wrap: wrap;
     }
 
+    .intro-panel {
+      flex: 1 1 420px;     /* keep the left content alive */
+      min-width: 360px;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 0.6rem;
+
+      min-height: 0;
+      overflow: visible;   /* don't clip the intro */
+    }
+
+    .title-image {
+      width: 100%;
+      height: 70px;
+      border-radius: 14px;
+      background-color: #020617;
+      background-image: url("img/khan-krafts-title-placeholder.jpg");
+      background-size: cover;
+      background-position: center;
+      border: 1px solid rgba(148,163,184,0.6);
+      box-shadow: 0 12px 30px rgba(15,23,42,0.7);
+      flex: 0 0 auto;
+    }
+
+    .intro-panel h2 {
+      margin: 0;
+      font-size: 0.98rem;
+      color: #bfdbfe;
+      flex: 0 0 auto;
+    }
+
+    .intro-panel p {
+      margin: 0;
+      font-size: 0.9rem;
+      flex: 0 0 auto;
+    }
+
+    .button-row {
+      margin-top: 0.6rem;
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      flex: 0 0 auto;
+    }
+
     .btn {
+      display: inline-block;
       padding: 0.4rem 0.9rem;
       border-radius: 999px;
       font-size: 0.85rem;
@@ -106,47 +117,92 @@
       border: 1px solid #60a5fa;
       color: #e5e7eb;
       background: rgba(37,99,235,0.9);
+      box-shadow: 0 4px 12px rgba(15,23,42,0.7);
     }
     .btn.secondary { background: transparent; }
+    .btn:hover { background: #1d4ed8; }
+    .btn.secondary:hover { background: rgba(37,99,235,0.35); }
 
-    /* ===== GALLERY ===== */
+    /* ===== SCROLLING GALLERY (FILL HEIGHT, SCALE CONTENT) ===== */
     .gallery-panel {
-      flex: 1 1 620px;
-      min-width: 420px;
-      padding: 0.55rem 0.6rem;
+      flex: 1 1 520px;     /* balanced with the intro (no more flex:2 takeover) */
+      min-width: 360px;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: stretch;
+      border-radius: 14px;
+
+      padding: 0.8rem 0.9rem 1rem;
+      box-sizing: border-box;
+
+      min-height: 0;
     }
 
     .gallery-window {
-      height: 100%;
+      flex: 1;
+      min-height: 0;
       border-radius: 14px;
       overflow: hidden;
       background: #020617;
+      position: relative;
+
+      /* IMPORTANT: ensure it fills the panel height */
+      height: 100%;
     }
 
     .gallery-track {
       display: flex;
       height: 100%;
-      animation: scrollGallery var(--scroll-duration,22s) linear infinite;
+      align-items: stretch;
+
+      /* set by JS */
+      --scroll-distance: 600px;
+      --scroll-duration: 22s;
+
+      animation: scrollGallery var(--scroll-duration) linear infinite;
+      will-change: transform;
     }
 
+    /* Each tile fills vertical height; width is stable */
     .gallery-item {
+      flex: 0 0 auto;
       height: 100%;
-      width: clamp(240px, 30vw, 520px);
+      width: clamp(200px, 26vw, 380px);
       margin-right: 0.5rem;
+      position: relative;
+      background: #020617;
     }
 
+    /* Use an <img> so sizing is predictable */
     .gallery-item img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      display: block;
+    }
+
+    .gallery-item::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(to top, rgba(15,23,42,0.4), transparent);
     }
 
     @keyframes scrollGallery {
-      to { transform: translateX(calc(-1 * var(--scroll-distance))); }
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(calc(-1 * var(--scroll-distance))); }
     }
 
-    /* ===== BOTTOM GRID ===== */
+    /* ===== BOTTOM GRID REMAINS UNCHANGED ===== */
+    .bottom-row {
+      margin-top: 0.8rem;
+      display: flex;
+    }
+
     .projects-grid {
+      flex: 1;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       grid-template-rows: repeat(2, 1fr);
@@ -157,9 +213,18 @@
       position: relative;
       border-radius: 18px;
       overflow: hidden;
-      background: #020617;
-      aspect-ratio: 16 / 6;
       border: 1px solid var(--glass-border);
+      background: #020617;
+      cursor: pointer;
+      transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
+      aspect-ratio: 16 / 6;
+    }
+
+    .project-card:hover {
+      transform: translateY(-4px);
+      box-shadow:
+        0 22px 50px rgba(15,23,42,0.9),
+        0 0 0 1px rgba(56,189,248,0.6) inset;
     }
 
     .project-bg {
@@ -170,76 +235,203 @@
       filter: brightness(0.75);
     }
 
-    /* Improved contrast for text */
     .project-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(
-        to top,
-        rgba(15,23,42,0.92),
-        rgba(15,23,42,0.35),
-        transparent
-      );
+      background: linear-gradient(to top, rgba(15,23,42,0.9), transparent);
     }
 
-    /* ===== UPDATED FANCY TITLE ===== */
+    /* ===== UPDATED: bigger + white titles on the 6 bottom cards ===== */
     .project-title {
       position: absolute;
       left: 0.9rem;
-      bottom: 0.85rem;
+      bottom: 0.9rem;
       right: 0.9rem;
 
-      font-family: "Playfair Display", serif;
-      font-size: 1.25rem;
+      font-size: 1.35rem;     /* bigger */
       font-weight: 600;
-      letter-spacing: 0.4px;
+      color: #ffffff;         /* pure white */
 
-      color: #ffffff;
+      letter-spacing: 0.3px;
+      line-height: 1.2;
+
       text-shadow:
         0 2px 6px rgba(0,0,0,0.6),
-        0 0 12px rgba(0,0,0,0.35);
+        0 0 10px rgba(0,0,0,0.35);
+
+      pointer-events: none;
     }
 
-    @media (max-width: 980px) {
-      .top-merged-panel { flex-wrap: wrap; height: auto; }
-      .gallery-window { height: 240px; }
+    @media (max-width: 900px) {
+      .top-merged-panel {
+        height: auto;          /* allow natural height when stacked */
+      }
+      .intro-panel,
+      .gallery-panel {
+        min-width: 100%;
+      }
+      .gallery-window {
+        height: 220px;         /* keeps gallery as a strip on small screens */
+      }
     }
   </style>
 </head>
 
 <body>
-<div class="page">
+  <div class="page">
 
-  <!-- TOP PANEL -->
-  <div class="top-merged-panel">
-    <section class="intro-panel">
-      <div class="title-image"></div>
-      <h2>Lightweight projects, playful experiments, and creative detours.</h2>
-      <p>This is the part of my universe where things don’t have to be formal.</p>
-      <p>Browse through animations, AI-assisted art, games, and handmade pieces.</p>
-      <div class="button-row">
-        <a class="btn" href="../index.html">Check out my Professional Portfolio</a>
-        <a class="btn secondary" href="https://youtube.com/" target="_blank">YouTube Channel</a>
-      </div>
-    </section>
+    <div class="top-merged-panel">
 
-    <section class="gallery-panel">
-      <div class="gallery-window">
-        <div class="gallery-track" id="kraftsGalleryTrack"></div>
+      <section class="intro-panel">
+        <div class="title-image"></div>
+
+        <h2>Lightweight projects, playful experiments, and creative detours.</h2>
+
+        <p>
+          This is the part of my universe where things don’t have to be formal,
+          or perfectly optimized. It’s where I park small builds, sketches, visuals, and
+          experiments that I simply enjoyed making.
+        </p>
+
+        <p>
+          Browse through animations, AI-assisted art, games, handmade pieces, and other
+          small worlds that exist here purely for fun.
+        </p>
+
+        <div class="button-row">
+          <a class="btn" href="../index.html">Check out my Professional Portfolio</a>
+          <a class="btn secondary" href="https://youtube.com/" target="_blank">Check out my YouTube Channel</a>
+        </div>
+      </section>
+
+      <section class="gallery-panel">
+        <div class="gallery-window">
+          <div class="gallery-track" id="kraftsGalleryTrack"></div>
+        </div>
+      </section>
+
+    </div>
+
+    <div class="bottom-row">
+      <div class="projects-grid">
+
+        <a class="project-card blender" href="#">
+          <div class="project-bg" style="background-image:url('img/card-blender-placeholder.jpg');"></div>
+          <div class="project-overlay"></div>
+          <div class="project-title">Blender Animations</div>
+        </a>
+
+        <a class="project-card aiart" href="#">
+          <div class="project-bg" style="background-image:url('krafts-images/kalhonaho.jpg');"></div>
+          <div class="project-overlay"></div>
+          <div class="project-title">A.I. Art</div>
+        </a>
+
+        <a class="project-card games" href="#">
+          <div class="project-bg" style="background-image:url('img/card-games-placeholder.jpg');"></div>
+          <div class="project-overlay"></div>
+          <div class="project-title">Games</div>
+        </a>
+
+        <a class="project-card handicrafts" href="#">
+          <div class="project-bg" style="background-image:url('krafts-images/shahidminar.jpeg');"></div>
+          <div class="project-overlay"></div>
+          <div class="project-title">Handicrafts</div>
+        </a>
+
+        <a class="project-card furry" href="#">
+          <div class="project-bg" style="background-image:url('img/card-furry-placeholder.jpg');"></div>
+          <div class="project-overlay"></div>
+          <div class="project-title">Furry Friends</div>
+        </a>
+
+        <a class="project-card arshinagar" href="#">
+          <div class="project-bg" style="background-image:url('img/card-arshinagar-placeholder.jpg');"></div>
+          <div class="project-overlay"></div>
+          <div class="project-title">Project Arshinagar</div>
+        </a>
+
       </div>
-    </section>
+    </div>
+
   </div>
 
-  <!-- BOTTOM GRID -->
-  <div class="projects-grid">
-    <a class="project-card"><div class="project-bg"></div><div class="project-overlay"></div><div class="project-title">Blender Animations</div></a>
-    <a class="project-card"><div class="project-bg"></div><div class="project-overlay"></div><div class="project-title">A.I. Art</div></a>
-    <a class="project-card"><div class="project-bg"></div><div class="project-overlay"></div><div class="project-title">Games</div></a>
-    <a class="project-card"><div class="project-bg"></div><div class="project-overlay"></div><div class="project-title">Handicrafts</div></a>
-    <a class="project-card"><div class="project-bg"></div><div class="project-overlay"></div><div class="project-title">Furry Friends</div></a>
-    <a class="project-card"><div class="project-bg"></div><div class="project-overlay"></div><div class="project-title">Project Arshinagar</div></a>
-  </div>
+  <script>
+    (async function () {
+      const JSON_PATH = "krafts-images/gallery.json";
+      const track = document.getElementById("kraftsGalleryTrack");
+      if (!track) return;
 
-</div>
+      // cache-bust to show updates quickly
+      const url = `${JSON_PATH}?v=${Date.now()}`;
+
+      let cfg;
+      try {
+        const res = await fetch(url, { cache: "no-store" });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        cfg = await res.json();
+      } catch (e) {
+        track.innerHTML = `<div style="padding:12px;opacity:.85">Couldn’t load ${JSON_PATH}: ${e.message}</div>`;
+        return;
+      }
+
+      const images = Array.isArray(cfg.images) ? cfg.images.filter(Boolean) : [];
+      if (!images.length) {
+        track.innerHTML = `<div style="padding:12px;opacity:.85">No images listed in ${JSON_PATH}.</div>`;
+        return;
+      }
+
+      const baseDir = JSON_PATH.split("/").slice(0, -1).join("/");
+
+      // Build a seamless loop: duplicate the list once
+      const doubled = images.concat(images);
+
+      track.innerHTML = doubled.map((file) => {
+        const safe = encodeURIComponent(String(file));
+        const src = `${baseDir}/${safe}`;
+        return `
+          <div class="gallery-item">
+            <img src="${src}" alt="Khan's Krafts gallery image" loading="lazy" />
+          </div>
+        `;
+      }).join("");
+
+      const setDistance = () => {
+        // Scroll exactly one full set = half the total width (because we doubled)
+        const half = track.scrollWidth / 2;
+        track.style.setProperty("--scroll-distance", `${half}px`);
+      };
+
+      // durationSeconds is optional in JSON
+      track.style.setProperty("--scroll-duration", `${Number(cfg.durationSeconds || 22)}s`);
+
+      // Wait for images to affect layout, then compute distances
+      const imgs = Array.from(track.querySelectorAll("img"));
+      let pending = imgs.length;
+
+      const done = () => {
+        setDistance();
+        // also keep it correct if window resizes
+        window.addEventListener("resize", () => requestAnimationFrame(setDistance));
+      };
+
+      if (!pending) {
+        requestAnimationFrame(done);
+        return;
+      }
+
+      imgs.forEach(img => {
+        const finishOne = () => {
+          pending -= 1;
+          if (pending <= 0) requestAnimationFrame(done);
+        };
+        if (img.complete) finishOne();
+        else {
+          img.addEventListener("load", finishOne, { once: true });
+          img.addEventListener("error", finishOne, { once: true });
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
