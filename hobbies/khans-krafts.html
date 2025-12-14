@@ -1,269 +1,425 @@
+<!-- File: khans-krafts.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Khan's Krafts</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Khan's Krafts</title>
 
-<style>
-:root {
-  --glass-bg: rgba(15,23,42,0.82);
-  --glass-border: rgba(148,163,184,0.45);
-}
+  <style>
+    :root {
+      --glass-bg: rgba(15,23,42,0.82);
+      --glass-border: rgba(148,163,184,0.45);
+      --accent: #38bdf8;
+    }
 
-/* ===== PAGE BASE ===== */
-body {
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  color: #e5e7eb;
-  background:
-    radial-gradient(circle at 12% 20%, rgba(56,189,248,0.18), transparent 55%),
-    radial-gradient(circle at 82% 78%, rgba(168,85,247,0.16), transparent 55%),
-    linear-gradient(rgba(15,23,42,0.95), rgba(15,23,42,0.95));
-}
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #e5e7eb;
 
-.page {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  padding: 1.2rem 2rem;
-  gap: 0.8rem;
-}
+      background:
+        radial-gradient(circle at 12% 20%, rgba(56,189,248,0.18), transparent 55%),
+        radial-gradient(circle at 82% 78%, rgba(168,85,247,0.16), transparent 55%),
+        linear-gradient(rgba(15,23,42,0.95), rgba(15,23,42,0.95)),
+        url("ChatGPT Image Dec 8, 2025, 07_22_56 PM.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
 
-/* ===== TOP MERGED PANEL (LOCKED & SAFE) ===== */
-.top-merged-panel {
-  display: flex;
-  gap: 0.9rem;
-  padding: 0.9rem 1.05rem;
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 1.2rem 2rem;
+      box-sizing: border-box;
+      gap: 0.8rem;
+    }
 
-  background: var(--glass-bg);
-  border-radius: 18px;
-  border: 1px solid var(--glass-border);
-  box-shadow:
-    0 24px 60px rgba(15,23,42,0.85),
-    0 0 0 1px rgba(15,23,42,0.4) inset;
-  backdrop-filter: blur(16px);
+    /* ===== MERGED TOP PANEL (DESKTOP: NO WRAP) ===== */
+    .top-merged-panel {
+      display: flex;
+      gap: 0.9rem;
+      padding: 0.9rem 1.05rem;
 
-  height: clamp(320px, 40vh, 390px);
-  align-items: stretch;
+      background: var(--glass-bg);
+      border-radius: 18px;
+      border: 1px solid var(--glass-border);
+      box-shadow:
+        0 24px 60px rgba(15,23,42,0.85),
+        0 0 0 1px rgba(15,23,42,0.4) inset;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
 
-  /* 🔒 critical */
-  flex-wrap: nowrap;
-  overflow: hidden;
-}
+      /* Slightly taller so gallery fits nicely */
+      height: clamp(320px, 40vh, 390px);
+      align-items: stretch;
 
-/* ===== INTRO ===== */
-.intro-panel {
-  flex: 1 1 460px;
-  min-width: 360px;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
+      /* CRITICAL: do NOT wrap on desktop */
+      flex-wrap: nowrap;
 
-.title-image {
-  height: 60px;
-  border-radius: 14px;
-  background: #020617;
-  border: 1px solid rgba(148,163,184,0.6);
-}
+      /* Keep gallery from bleeding into the grid */
+      overflow: hidden;
+    }
 
-.intro-panel h2 {
-  margin: 0;
-  font-size: 0.95rem;
-  color: #bfdbfe;
-}
+    .intro-panel {
+      flex: 1 1 460px;
+      min-width: 360px;
 
-.intro-panel p {
-  margin: 0;
-  font-size: 0.88rem;
-  line-height: 1.25;
-}
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 0.45rem;
 
-.button-row {
-  margin-top: 0.6rem;
-  display: flex;
-  gap: 0.6rem;
-  justify-content: center;
-  flex-wrap: wrap;
-}
+      min-height: 0;
+      overflow: visible;
+    }
 
-.btn {
-  padding: 0.45rem 0.95rem;
-  border-radius: 999px;
-  font-size: 0.85rem;
-  border: 1px solid #60a5fa;
-  background: rgba(37,99,235,0.9);
-  color: #fff;
-  text-decoration: none;
-}
+    .title-image {
+      width: 100%;
+      height: 60px; /* slightly shorter */
+      border-radius: 14px;
+      background-color: #020617;
+      background-image: url("img/khan-krafts-title-placeholder.jpg");
+      background-size: cover;
+      background-position: center;
+      border: 1px solid rgba(148,163,184,0.6);
+      box-shadow: 0 12px 30px rgba(15,23,42,0.7);
+      flex: 0 0 auto;
+    }
 
-/* ===== GALLERY (CONTAINED) ===== */
-.gallery-panel {
-  flex: 1 1 620px;
-  min-width: 420px;
-  padding: 0.55rem;
-  min-height: 0;
-}
+    .intro-panel h2 {
+      margin: 0;
+      font-size: 0.94rem;
+      color: #bfdbfe;
+      line-height: 1.15;
+      flex: 0 0 auto;
+    }
 
-.gallery-window {
-  height: 100%;
-  border-radius: 14px;
-  overflow: hidden;
-  background: #020617;
-}
+    .intro-panel p {
+      margin: 0;
+      font-size: 0.86rem;
+      line-height: 1.25;
+      flex: 0 0 auto;
+    }
 
-.gallery-track {
-  display: flex;
-  height: 100%;
-  animation: scrollGallery var(--scroll-duration,22s) linear infinite;
-}
+    .button-row {
+      margin-top: 0.5rem;
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      flex: 0 0 auto;
+    }
 
-.gallery-item {
-  height: 100%;
-  width: clamp(240px, 30vw, 520px);
-  margin-right: 0.5rem;
-}
+    .btn {
+      display: inline-block;
+      padding: 0.4rem 0.9rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      text-decoration: none;
+      border: 1px solid #60a5fa;
+      color: #e5e7eb;
+      background: rgba(37,99,235,0.9);
+      box-shadow: 0 4px 12px rgba(15,23,42,0.7);
+      white-space: nowrap;
+    }
+    .btn.secondary { background: transparent; }
+    .btn:hover { background: #1d4ed8; }
+    .btn.secondary:hover { background: rgba(37,99,235,0.35); }
 
-.gallery-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+    /* ===== GALLERY (STAYS INSIDE TOP CARD HEIGHT) ===== */
+    .gallery-panel {
+      flex: 1 1 620px;
+      min-width: 420px;
 
-@keyframes scrollGallery {
-  to { transform: translateX(calc(-1 * var(--scroll-distance))); }
-}
+      display: flex;
+      flex-direction: column;
+      justify-content: stretch;
+      border-radius: 14px;
 
-/* ===== BOTTOM GRID ===== */
-.bottom-row {
-  display: flex;
-}
+      /* tighter padding so the gallery window is bigger */
+      padding: 0.55rem 0.6rem 0.6rem;
+      box-sizing: border-box;
 
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  gap: 0.8rem;
-}
+      min-height: 0;
+    }
 
-.project-card {
-  position: relative;
-  border-radius: 18px;
-  overflow: hidden;
-  background: #020617;
-  border: 1px solid var(--glass-border);
-  aspect-ratio: 16 / 6;
-}
+    .gallery-window {
+      flex: 1;
+      min-height: 0;
+      height: 100%;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #020617;
+      position: relative;
+    }
 
-.project-bg {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  filter: brightness(0.7);
-}
+    .gallery-track {
+      display: flex;
+      height: 100%;
+      align-items: stretch;
 
-.project-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(15,23,42,0.9), transparent);
-}
+      --scroll-distance: 600px;
+      --scroll-duration: 22s;
 
-/* ✅ BIGGER + WHITE TEXT */
-.project-title {
-  position: absolute;
-  left: 0.9rem;
-  bottom: 0.9rem;
-  right: 0.9rem;
-  font-size: 1.35rem;
-  font-weight: 600;
-  color: #ffffff;
-  text-shadow:
-    0 2px 6px rgba(0,0,0,0.6),
-    0 0 10px rgba(0,0,0,0.35);
-}
+      animation: scrollGallery var(--scroll-duration) linear infinite;
+      will-change: transform;
+    }
 
-/* ===== MOBILE ===== */
-@media (max-width: 980px) {
-  .top-merged-panel {
-    height: auto;
-    flex-wrap: wrap;
-    overflow: visible;
-  }
-  .intro-panel,
-  .gallery-panel {
-    min-width: 100%;
-  }
-  .gallery-window {
-    height: 240px;
-  }
-}
-</style>
+    .gallery-item {
+      flex: 0 0 auto;
+      height: 100%;
+      width: clamp(240px, 30vw, 520px);
+      margin-right: 0.5rem;
+      position: relative;
+      background: #020617;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .gallery-item::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(to top, rgba(15,23,42,0.4), transparent);
+    }
+
+    @keyframes scrollGallery {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(calc(-1 * var(--scroll-distance))); }
+    }
+
+    /* ===== BOTTOM GRID ===== */
+    .bottom-row {
+      margin-top: 0.8rem;
+      display: flex;
+    }
+
+    .projects-grid {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 0.8rem;
+    }
+
+    .project-card {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--glass-border);
+      background: #020617;
+      cursor: pointer;
+      transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
+      aspect-ratio: 16 / 6;
+    }
+
+    .project-card:hover {
+      transform: translateY(-4px);
+      box-shadow:
+        0 22px 50px rgba(15,23,42,0.9),
+        0 0 0 1px rgba(56,189,248,0.6) inset;
+    }
+
+    .project-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      filter: brightness(0.75);
+    }
+
+    .project-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(15,23,42,0.9), transparent);
+    }
+
+    .project-title {
+      position: absolute;
+      left: 0.9rem;
+      bottom: 0.75rem;
+      right: 0.9rem;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    /* ===== MOBILE: STACK (NOW WE ALLOW WRAP) ===== */
+    @media (max-width: 980px) {
+      .top-merged-panel {
+        height: auto;
+        flex-wrap: wrap;     /* ONLY on small screens */
+        overflow: visible;   /* nothing gets clipped when stacked */
+      }
+
+      .intro-panel,
+      .gallery-panel {
+        min-width: 100%;
+      }
+
+      .gallery-window {
+        height: 240px;
+      }
+    }
+  </style>
 </head>
 
 <body>
-<div class="page">
+  <div class="page">
 
-  <div class="top-merged-panel">
+    <div class="top-merged-panel">
 
-    <section class="intro-panel">
-      <div class="title-image"></div>
-      <h2>Lightweight projects, playful experiments, and creative detours.</h2>
-      <p>This is where I park small builds, sketches, visuals, and experiments.</p>
-      <p>Animations, AI art, games, handmade pieces — just for fun.</p>
-      <div class="button-row">
-        <a class="btn" href="../index.html">Professional Portfolio</a>
-        <a class="btn" href="https://youtube.com/" target="_blank">YouTube</a>
-      </div>
-    </section>
+      <section class="intro-panel">
+        <div class="title-image"></div>
 
-    <section class="gallery-panel">
-      <div class="gallery-window">
-        <div class="gallery-track" id="kraftsGalleryTrack"></div>
-      </div>
-    </section>
+        <h2>Lightweight projects, playful experiments, and creative detours.</h2>
 
-  </div>
+        <p>
+          This is the part of my universe where things don’t have to be formal,
+          or perfectly optimized. It’s where I park small builds, sketches, visuals, and
+          experiments that I simply enjoyed making.
+        </p>
 
-  <div class="bottom-row">
-    <div class="projects-grid">
-      <div class="project-card"><div class="project-bg"></div><div class="project-overlay"></div><div class="project-title">Blender Animations</div></div>
-      <div class="project-card"><div class="project-bg"></div><div class="project-overlay"></div><div class="project-title">A.I. Art</div></div>
-      <div class="project-card"><div class="project-bg"></div><div class="project-overlay"></div><div class="project-title">Games</div></div>
-      <div class="project-card"><div class="project-bg"></div><div class="project-overlay"></div><div class="project-title">Handicrafts</div></div>
-      <div class="project-card"><div class="project-bg"></div><div class="project-overlay"></div><div class="project-title">Furry Friends</div></div>
-      <div class="project-card"><div class="project-bg"></div><div class="project-overlay"></div><div class="project-title">Project Arshinagar</div></div>
+        <p>
+          Browse through animations, AI-assisted art, games, handmade pieces, and other
+          small worlds that exist here purely for fun.
+        </p>
+
+        <div class="button-row">
+          <a class="btn" href="../index.html">Check out my Professional Portfolio</a>
+          <a class="btn secondary" href="https://youtube.com/" target="_blank">Check out my YouTube Channel</a>
+        </div>
+      </section>
+
+      <section class="gallery-panel">
+        <div class="gallery-window">
+          <div class="gallery-track" id="kraftsGalleryTrack"></div>
+        </div>
+      </section>
+
     </div>
+
+    <div class="bottom-row">
+      <div class="projects-grid">
+
+        <a class="project-card blender" href="#">
+          <div class="project-bg" style="background-image:url('img/card-blender-placeholder.jpg');"></div>
+          <div class="project-overlay"></div>
+          <div class="project-title">Blender Animations</div>
+        </a>
+
+        <a class="project-card aiart" href="#">
+          <div class="project-bg" style="background-image:url('krafts-images/kalhonaho.jpg');"></div>
+          <div class="project-overlay"></div>
+          <div class="project-title">A.I. Art</div>
+        </a>
+
+        <a class="project-card games" href="#">
+          <div class="project-bg" style="background-image:url('img/card-games-placeholder.jpg');"></div>
+          <div class="project-overlay"></div>
+          <div class="project-title">Games</div>
+        </a>
+
+        <a class="project-card handicrafts" href="#">
+          <div class="project-bg" style="background-image:url('krafts-images/shahidminar.jpeg');"></div>
+          <div class="project-overlay"></div>
+          <div class="project-title">Handicrafts</div>
+        </a>
+
+        <a class="project-card furry" href="#">
+          <div class="project-bg" style="background-image:url('img/card-furry-placeholder.jpg');"></div>
+          <div class="project-overlay"></div>
+          <div class="project-title">Furry Friends</div>
+        </a>
+
+        <a class="project-card arshinagar" href="#">
+          <div class="project-bg" style="background-image:url('img/card-arshinagar-placeholder.jpg');"></div>
+          <div class="project-overlay"></div>
+          <div class="project-title">Project Arshinagar</div>
+        </a>
+
+      </div>
+    </div>
+
   </div>
 
-</div>
+  <script>
+    (async function () {
+      const JSON_PATH = "krafts-images/gallery.json";
+      const track = document.getElementById("kraftsGalleryTrack");
+      if (!track) return;
 
-<script>
-(async function () {
-  const JSON_PATH = "krafts-images/gallery.json";
-  const track = document.getElementById("kraftsGalleryTrack");
+      const url = `${JSON_PATH}?v=${Date.now()}`;
 
-  const res = await fetch(`${JSON_PATH}?v=${Date.now()}`);
-  const cfg = await res.json();
-  const imgs = cfg.images || [];
+      let cfg;
+      try {
+        const res = await fetch(url, { cache: "no-store" });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        cfg = await res.json();
+      } catch (e) {
+        track.innerHTML = `<div style="padding:12px;opacity:.85">Couldn’t load ${JSON_PATH}: ${e.message}</div>`;
+        return;
+      }
 
-  const base = JSON_PATH.replace("/gallery.json","");
-  const doubled = imgs.concat(imgs);
+      const images = Array.isArray(cfg.images) ? cfg.images.filter(Boolean) : [];
+      if (!images.length) {
+        track.innerHTML = `<div style="padding:12px;opacity:.85">No images listed in ${JSON_PATH}.</div>`;
+        return;
+      }
 
-  track.innerHTML = doubled.map(f =>
-    `<div class="gallery-item"><img src="${base}/${f}" /></div>`
-  ).join("");
+      const baseDir = JSON_PATH.split("/").slice(0, -1).join("/");
+      const doubled = images.concat(images);
 
-  const calc = () => {
-    track.style.setProperty("--scroll-distance", track.scrollWidth / 2 + "px");
-    track.style.setProperty("--scroll-duration", (cfg.durationSeconds || 22) + "s");
-  };
+      track.innerHTML = doubled.map((file) => {
+        const safe = encodeURIComponent(String(file));
+        const src = `${baseDir}/${safe}`;
+        return `
+          <div class="gallery-item">
+            <img src="${src}" alt="Khan's Krafts gallery image" loading="lazy" />
+          </div>
+        `;
+      }).join("");
 
-  window.addEventListener("load", calc);
-  window.addEventListener("resize", calc);
-})();
-</script>
+      const setDistance = () => {
+        const half = track.scrollWidth / 2;
+        track.style.setProperty("--scroll-distance", `${half}px`);
+      };
 
+      track.style.setProperty("--scroll-duration", `${Number(cfg.durationSeconds || 22)}s`);
+
+      const imgs = Array.from(track.querySelectorAll("img"));
+      let pending = imgs.length;
+
+      const done = () => {
+        setDistance();
+        window.addEventListener("resize", () => requestAnimationFrame(setDistance));
+      };
+
+      if (!pending) {
+        requestAnimationFrame(done);
+        return;
+      }
+
+      imgs.forEach(img => {
+        const finishOne = () => {
+          pending -= 1;
+          if (pending <= 0) requestAnimationFrame(done);
+        };
+        if (img.complete) finishOne();
+        else {
+          img.addEventListener("load", finishOne, { once: true });
+          img.addEventListener("error", finishOne, { once: true });
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
