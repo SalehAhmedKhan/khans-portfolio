@@ -1,0 +1,10 @@
+{
+  "folder": "krafts-images",
+  "intervalMs": 3500,
+  "images": [
+    "shahidminar.jpg",
+    "natmemorial.jpg",
+    "palki.jpg",
+    "kalhonaho.jpg"
+  ]
+}
