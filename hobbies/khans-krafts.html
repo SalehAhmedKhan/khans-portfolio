@@ -37,7 +37,7 @@
       gap: 0.8rem;
     }
 
-    /* ===== MERGED TOP PANEL (NEATER FIT + CLIP) ===== */
+    /* ===== MERGED TOP PANEL (DESKTOP: NO WRAP) ===== */
     .top-merged-panel {
       display: flex;
       gap: 0.9rem;
@@ -52,21 +52,20 @@
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
 
-      /* Slightly taller than before */
+      /* Slightly taller so gallery fits nicely */
       height: clamp(320px, 40vh, 390px);
       align-items: stretch;
 
-      /* allow wrapping if the viewport is narrow */
-      flex-wrap: wrap;
+      /* CRITICAL: do NOT wrap on desktop */
+      flex-wrap: nowrap;
 
-      /* IMPORTANT: never let the gallery bleed into the grid */
+      /* Keep gallery from bleeding into the grid */
       overflow: hidden;
     }
 
     .intro-panel {
-      flex: 1 1 420px;
-      min-width: 340px;
-      max-width: 48%;
+      flex: 1 1 460px;
+      min-width: 360px;
 
       display: flex;
       flex-direction: column;
@@ -92,7 +91,7 @@
 
     .intro-panel h2 {
       margin: 0;
-      font-size: 0.94rem; /* slightly tighter */
+      font-size: 0.94rem;
       color: #bfdbfe;
       line-height: 1.15;
       flex: 0 0 auto;
@@ -100,7 +99,7 @@
 
     .intro-panel p {
       margin: 0;
-      font-size: 0.86rem; /* slightly tighter */
+      font-size: 0.86rem;
       line-height: 1.25;
       flex: 0 0 auto;
     }
@@ -130,18 +129,17 @@
     .btn:hover { background: #1d4ed8; }
     .btn.secondary:hover { background: rgba(37,99,235,0.35); }
 
-    /* ===== SCROLLING GALLERY (NEAT FIT) ===== */
+    /* ===== GALLERY (STAYS INSIDE TOP CARD HEIGHT) ===== */
     .gallery-panel {
-      flex: 1 1 520px;
-      min-width: 360px;
-      max-width: 52%;
+      flex: 1 1 620px;
+      min-width: 420px;
 
       display: flex;
       flex-direction: column;
       justify-content: stretch;
       border-radius: 14px;
 
-      /* tighter padding so the window is bigger */
+      /* tighter padding so the gallery window is bigger */
       padding: 0.55rem 0.6rem 0.6rem;
       box-sizing: border-box;
 
@@ -151,11 +149,11 @@
     .gallery-window {
       flex: 1;
       min-height: 0;
+      height: 100%;
       border-radius: 14px;
       overflow: hidden;
       background: #020617;
       position: relative;
-      height: 100%;
     }
 
     .gallery-track {
@@ -173,10 +171,7 @@
     .gallery-item {
       flex: 0 0 auto;
       height: 100%;
-
-      /* a bit wider so it looks “clean” in the bigger card */
       width: clamp(240px, 30vw, 520px);
-
       margin-right: 0.5rem;
       position: relative;
       background: #020617;
@@ -202,7 +197,7 @@
       100% { transform: translateX(calc(-1 * var(--scroll-distance))); }
     }
 
-    /* ===== BOTTOM GRID REMAINS UNCHANGED ===== */
+    /* ===== BOTTOM GRID ===== */
     .bottom-row {
       margin-top: 0.8rem;
       display: flex;
@@ -257,19 +252,21 @@
       font-weight: 600;
     }
 
-    @media (max-width: 900px) {
+    /* ===== MOBILE: STACK (NOW WE ALLOW WRAP) ===== */
+    @media (max-width: 980px) {
       .top-merged-panel {
-        height: auto; /* allow natural height when stacked */
+        height: auto;
+        flex-wrap: wrap;     /* ONLY on small screens */
+        overflow: visible;   /* nothing gets clipped when stacked */
       }
 
       .intro-panel,
       .gallery-panel {
         min-width: 100%;
-        max-width: 100%;
       }
 
       .gallery-window {
-        height: 240px; /* slightly taller strip */
+        height: 240px;
       }
     }
   </style>
@@ -290,3 +287,139 @@
           or perfectly optimized. It’s where I park small builds, sketches, visuals, and
           experiments that I simply enjoyed making.
         </p>
+
+        <p>
+          Browse through animations, AI-assisted art, games, handmade pieces, and other
+          small worlds that exist here purely for fun.
+        </p>
+
+        <div class="button-row">
+          <a class="btn" href="../index.html">Check out my Professional Portfolio</a>
+          <a class="btn secondary" href="https://youtube.com/" target="_blank">Check out my YouTube Channel</a>
+        </div>
+      </section>
+
+      <section class="gallery-panel">
+        <div class="gallery-window">
+          <div class="gallery-track" id="kraftsGalleryTrack"></div>
+        </div>
+      </section>
+
+    </div>
+
+    <div class="bottom-row">
+      <div class="projects-grid">
+
+        <a class="project-card blender" href="#">
+          <div class="project-bg" style="background-image:url('img/card-blender-placeholder.jpg');"></div>
+          <div class="project-overlay"></div>
+          <div class="project-title">Blender Animations</div>
+        </a>
+
+        <a class="project-card aiart" href="#">
+          <div class="project-bg" style="background-image:url('krafts-images/kalhonaho.jpg');"></div>
+          <div class="project-overlay"></div>
+          <div class="project-title">A.I. Art</div>
+        </a>
+
+        <a class="project-card games" href="#">
+          <div class="project-bg" style="background-image:url('img/card-games-placeholder.jpg');"></div>
+          <div class="project-overlay"></div>
+          <div class="project-title">Games</div>
+        </a>
+
+        <a class="project-card handicrafts" href="#">
+          <div class="project-bg" style="background-image:url('krafts-images/shahidminar.jpeg');"></div>
+          <div class="project-overlay"></div>
+          <div class="project-title">Handicrafts</div>
+        </a>
+
+        <a class="project-card furry" href="#">
+          <div class="project-bg" style="background-image:url('img/card-furry-placeholder.jpg');"></div>
+          <div class="project-overlay"></div>
+          <div class="project-title">Furry Friends</div>
+        </a>
+
+        <a class="project-card arshinagar" href="#">
+          <div class="project-bg" style="background-image:url('img/card-arshinagar-placeholder.jpg');"></div>
+          <div class="project-overlay"></div>
+          <div class="project-title">Project Arshinagar</div>
+        </a>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    (async function () {
+      const JSON_PATH = "krafts-images/gallery.json";
+      const track = document.getElementById("kraftsGalleryTrack");
+      if (!track) return;
+
+      const url = `${JSON_PATH}?v=${Date.now()}`;
+
+      let cfg;
+      try {
+        const res = await fetch(url, { cache: "no-store" });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        cfg = await res.json();
+      } catch (e) {
+        track.innerHTML = `<div style="padding:12px;opacity:.85">Couldn’t load ${JSON_PATH}: ${e.message}</div>`;
+        return;
+      }
+
+      const images = Array.isArray(cfg.images) ? cfg.images.filter(Boolean) : [];
+      if (!images.length) {
+        track.innerHTML = `<div style="padding:12px;opacity:.85">No images listed in ${JSON_PATH}.</div>`;
+        return;
+      }
+
+      const baseDir = JSON_PATH.split("/").slice(0, -1).join("/");
+      const doubled = images.concat(images);
+
+      track.innerHTML = doubled.map((file) => {
+        const safe = encodeURIComponent(String(file));
+        const src = `${baseDir}/${safe}`;
+        return `
+          <div class="gallery-item">
+            <img src="${src}" alt="Khan's Krafts gallery image" loading="lazy" />
+          </div>
+        `;
+      }).join("");
+
+      const setDistance = () => {
+        const half = track.scrollWidth / 2;
+        track.style.setProperty("--scroll-distance", `${half}px`);
+      };
+
+      track.style.setProperty("--scroll-duration", `${Number(cfg.durationSeconds || 22)}s`);
+
+      const imgs = Array.from(track.querySelectorAll("img"));
+      let pending = imgs.length;
+
+      const done = () => {
+        setDistance();
+        window.addEventListener("resize", () => requestAnimationFrame(setDistance));
+      };
+
+      if (!pending) {
+        requestAnimationFrame(done);
+        return;
+      }
+
+      imgs.forEach(img => {
+        const finishOne = () => {
+          pending -= 1;
+          if (pending <= 0) requestAnimationFrame(done);
+        };
+        if (img.complete) finishOne();
+        else {
+          img.addEventListener("load", finishOne, { once: true });
+          img.addEventListener("error", finishOne, { once: true });
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
