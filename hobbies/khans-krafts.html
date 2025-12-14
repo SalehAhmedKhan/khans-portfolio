@@ -52,8 +52,8 @@
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
 
-      /* Slightly taller so gallery fits nicely */
-      height: clamp(320px, 40vh, 390px);
+      /* Give it a bit more room so intro text/buttons never clip */
+      height: clamp(360px, 44vh, 440px);
       align-items: stretch;
 
       /* CRITICAL: do NOT wrap on desktop */
@@ -73,12 +73,14 @@
       gap: 0.45rem;
 
       min-height: 0;
-      overflow: visible;
+
+      /* Prevent content visually leaking out of the merged top card */
+      overflow: hidden;
     }
 
     .title-image {
       width: 100%;
-      height: 180px; /* slightly shorter */
+      height: 200px; /* slightly shorter */
       border-radius: 14px;
       background-color: #020617;
       background-image: url("krafts-images/log-khan.jpg");
@@ -96,21 +98,25 @@
       line-height: 1.2;
       flex: 0 0 auto;
     }
-    
+
     .intro-panel p {
       margin: 0;
       font-size: 0.94rem;   /* was 0.86rem */
-      line-height: 1.35;   /* slightly more breathing room */
+      line-height: 1.35;    /* slightly more breathing room */
       flex: 0 0 auto;
     }
 
     .button-row {
-      margin-top: 0.5rem;
+      /* Push buttons to bottom so text never forces them out / into clipping */
+      margin-top: auto;
+
       display: flex;
       gap: 0.6rem;
       flex-wrap: wrap;
       justify-content: center;
       flex: 0 0 auto;
+
+      padding-top: 0.35rem;
     }
 
     .btn {
@@ -174,261 +180,4 @@
       width: clamp(240px, 30vw, 520px);
       margin-right: 0.5rem;
       position: relative;
-      background: #020617;
-    }
-
-    .gallery-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .gallery-item::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background: linear-gradient(to top, rgba(15,23,42,0.4), transparent);
-    }
-
-    @keyframes scrollGallery {
-      0%   { transform: translateX(0); }
-      100% { transform: translateX(calc(-1 * var(--scroll-distance))); }
-    }
-
-    /* ===== BOTTOM GRID ===== */
-    .bottom-row {
-      margin-top: 0.8rem;
-      display: flex;
-    }
-
-    .projects-grid {
-      flex: 1;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: repeat(2, 1fr);
-      gap: 0.8rem;
-    }
-
-    .project-card {
-      position: relative;
-      border-radius: 18px;
-      overflow: hidden;
-      border: 1px solid var(--glass-border);
-      background: #020617;
-      cursor: pointer;
-      transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
-      aspect-ratio: 16 / 6;
-    }
-
-    .project-card:hover {
-      transform: translateY(-4px);
-      box-shadow:
-        0 22px 50px rgba(15,23,42,0.9),
-        0 0 0 1px rgba(56,189,248,0.6) inset;
-    }
-
-    .project-bg {
-      position: absolute;
-      inset: 0;
-      background-size: cover;
-      background-position: center;
-      filter: brightness(0.75);
-    }
-
-    .project-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(15,23,42,0.9), transparent);
-    }
-
-    .project-title {
-      position: absolute;
-      left: 0.9rem;
-      bottom: 0.9rem;
-      right: 0.9rem;
-    
-      font-size: 1.35rem;   /* bigger */
-      font-weight: 600;
-      color: #ffffff;       /* pure white */
-    
-      letter-spacing: 0.3px;
-      line-height: 1.2;
-    
-      text-shadow:
-        0 2px 6px rgba(0,0,0,0.6),
-        0 0 10px rgba(0,0,0,0.35);
-    }
-
-    /* ===== MOBILE: STACK (NOW WE ALLOW WRAP) ===== */
-    @media (max-width: 980px) {
-      .top-merged-panel {
-        height: auto;
-        flex-wrap: wrap;     /* ONLY on small screens */
-        overflow: visible;   /* nothing gets clipped when stacked */
-      }
-
-      .intro-panel,
-      .gallery-panel {
-        min-width: 100%;
-      }
-
-      .gallery-window {
-        height: 240px;
-      }
-    }
-  </style>
-</head>
-
-<body>
-  <div class="page">
-
-    <div class="top-merged-panel">
-
-      <section class="intro-panel">
-        <div class="title-image"></div>
-
-        <h2>Lightweight projects, playful experiments, and creative detours.</h2>
-
-        <p>
-          This is the part of my universe where things don’t have to be formal,
-          or perfectly optimized. It’s where I park small builds, sketches, visuals, and
-          experiments that I simply enjoyed making.
-        </p>
-
-        <p>
-          Browse through animations, AI-assisted art, games, handmade pieces, and other
-          small worlds that exist here purely for fun.
-        </p>
-
-        <div class="button-row">
-          <a class="btn" href="../index.html">Check out my Professional Portfolio</a>
-          <a class="btn secondary" href="https://youtube.com/" target="_blank">Check out my YouTube Channel</a>
-        </div>
-      </section>
-
-      <section class="gallery-panel">
-        <div class="gallery-window">
-          <div class="gallery-track" id="kraftsGalleryTrack"></div>
-        </div>
-      </section>
-
-    </div>
-
-    <div class="bottom-row">
-      <div class="projects-grid">
-
-        <a class="project-card blender" href="#">
-          <div class="project-bg" style="background-image:url('img/card-blender-placeholder.jpg');"></div>
-          <div class="project-overlay"></div>
-          <div class="project-title">Blender Creations</div>
-        </a>
-
-        <a class="project-card aiart" href="#">
-          <div class="project-bg" style="background-image:url('krafts-images/kalhonaho.jpg');"></div>
-          <div class="project-overlay"></div>
-          <div class="project-title">A.I. Art</div>
-        </a>
-
-        <a class="project-card games" href="#">
-          <div class="project-bg" style="background-image:url('img/card-games-placeholder.jpg');"></div>
-          <div class="project-overlay"></div>
-          <div class="project-title">Games</div>
-        </a>
-
-        <a class="project-card handicrafts" href="#">
-          <div class="project-bg" style="background-image:url('krafts-images/shahidminar.jpeg');"></div>
-          <div class="project-overlay"></div>
-          <div class="project-title">Handicrafts</div>
-        </a>
-
-        <a class="project-card furry" href="#">
-          <div class="project-bg" style="background-image:url('krafts-images/pets-general.jpg');"></div>
-          <div class="project-overlay"></div>
-          <div class="project-title">Furry Friends</div>
-        </a>
-
-        <a class="project-card arshinagar" href="#">
-          <div class="project-bg" style="background-image:url('krafts-images/arshi.jpg');"></div>
-          <div class="project-overlay"></div>
-          <div class="project-title">Project Arshinagar</div>
-        </a>
-
-      </div>
-    </div>
-
-  </div>
-
-  <script>
-    (async function () {
-      const JSON_PATH = "krafts-images/gallery.json";
-      const track = document.getElementById("kraftsGalleryTrack");
-      if (!track) return;
-
-      const url = `${JSON_PATH}?v=${Date.now()}`;
-
-      let cfg;
-      try {
-        const res = await fetch(url, { cache: "no-store" });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        cfg = await res.json();
-      } catch (e) {
-        track.innerHTML = `<div style="padding:12px;opacity:.85">Couldn’t load ${JSON_PATH}: ${e.message}</div>`;
-        return;
-      }
-
-      const images = Array.isArray(cfg.images) ? cfg.images.filter(Boolean) : [];
-      if (!images.length) {
-        track.innerHTML = `<div style="padding:12px;opacity:.85">No images listed in ${JSON_PATH}.</div>`;
-        return;
-      }
-
-      const baseDir = JSON_PATH.split("/").slice(0, -1).join("/");
-      const doubled = images.concat(images);
-
-      track.innerHTML = doubled.map((file) => {
-        const safe = encodeURIComponent(String(file));
-        const src = `${baseDir}/${safe}`;
-        return `
-          <div class="gallery-item">
-            <img src="${src}" alt="Khan's Krafts gallery image" loading="lazy" />
-          </div>
-        `;
-      }).join("");
-
-      const setDistance = () => {
-        const half = track.scrollWidth / 2;
-        track.style.setProperty("--scroll-distance", `${half}px`);
-      };
-
-      track.style.setProperty("--scroll-duration", `${Number(cfg.durationSeconds || 22)}s`);
-
-      const imgs = Array.from(track.querySelectorAll("img"));
-      let pending = imgs.length;
-
-      const done = () => {
-        setDistance();
-        window.addEventListener("resize", () => requestAnimationFrame(setDistance));
-      };
-
-      if (!pending) {
-        requestAnimationFrame(done);
-        return;
-      }
-
-      imgs.forEach(img => {
-        const finishOne = () => {
-          pending -= 1;
-          if (pending <= 0) requestAnimationFrame(done);
-        };
-        if (img.complete) finishOne();
-        else {
-          img.addEventListener("load", finishOne, { once: true });
-          img.addEventListener("error", finishOne, { once: true });
-        }
-      });
-    })();
-  </script>
-</body>
-</html>
+      background: #
