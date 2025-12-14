@@ -51,7 +51,6 @@
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
 
-            /* ensures the gallery stays tall */
             min-height: 300px;
         }
 
@@ -118,20 +117,19 @@
             background: rgba(37,99,235,0.35);
         }
 
-        /* ===== RESTORED SCROLLING GALLERY ===== */
+        /* ===== RESTORED SCROLLING GALLERY (JSON-DRIVEN + SEAMLESS LOOP) ===== */
         .gallery-panel {
             flex: 2;
-            display: flex;                /* restores height */
+            display: flex;
             flex-direction: column;
             justify-content: stretch;
-
             border-radius: 14px;
             padding: 0.8rem 0.9rem 1rem;
             box-sizing: border-box;
         }
 
         .gallery-window {
-            flex: 1;                      /* ensures the gallery fills vertical space */
+            flex: 1;
             border-radius: 14px;
             overflow: hidden;
             background: #020617;
@@ -141,7 +139,14 @@
         .gallery-track {
             display: flex;
             height: 100%;
-            animation: scrollGallery 22s linear infinite;
+            width: max-content;
+
+            /* JS will set these */
+            --scroll-distance: 60%;
+            --scroll-duration: 22s;
+
+            animation: scrollGallery var(--scroll-duration) linear infinite;
+            will-change: transform;
         }
 
         .gallery-item {
@@ -159,15 +164,11 @@
             background: linear-gradient(to top, rgba(15,23,42,0.4), transparent);
         }
 
-        .gallery-item.img1 { background-image: url("img/krafts-placeholder-1.jpg"); }
-        .gallery-item.img2 { background-image: url("img/krafts-placeholder-2.jpg"); }
-        .gallery-item.img3 { background-image: url("img/krafts-placeholder-3.jpg"); }
-        .gallery-item.img4 { background-image: url("img/krafts-placeholder-4.jpg"); }
-        .gallery-item.img5 { background-image: url("img/krafts-placeholder-5.jpg"); }
-
+        /* Smooth, SEAMLESS marquee:
+           We duplicate the set; scroll exactly half of the full track width */
         @keyframes scrollGallery {
             0%   { transform: translateX(0); }
-            100% { transform: translateX(-60%); }
+            100% { transform: translateX(calc(-1 * var(--scroll-distance))); }
         }
 
         /* ===== BOTTOM GRID REMAINS UNCHANGED ===== */
@@ -224,7 +225,6 @@
             font-size: 1rem;
             font-weight: 600;
         }
-
     </style>
 </head>
 
@@ -257,21 +257,11 @@
             </div>
         </section>
 
-        <!-- RIGHT: SCROLLING IMAGE GALLERY (RESTORED) -->
+        <!-- RIGHT: SCROLLING IMAGE GALLERY (NOW JSON-DRIVEN) -->
         <section class="gallery-panel">
             <div class="gallery-window">
-                <div class="gallery-track">
-                    <div class="gallery-item img1"></div>
-                    <div class="gallery-item img2"></div>
-                    <div class="gallery-item img3"></div>
-                    <div class="gallery-item img4"></div>
-                    <div class="gallery-item img5"></div>
-
-                    <!-- repeating for seamless loop -->
-                    <div class="gallery-item img1"></div>
-                    <div class="gallery-item img2"></div>
-                    <div class="gallery-item img3"></div>
-                </div>
+                <!-- JS will populate this -->
+                <div class="gallery-track" id="kraftsGalleryTrack"></div>
             </div>
         </section>
 
@@ -321,5 +311,55 @@
     </div>
 
 </div>
+
+<script>
+(async function () {
+  const JSON_PATH = "krafts-images/gallery.json";
+  const track = document.getElementById("kraftsGalleryTrack");
+  if (!track) return;
+
+  // Cache-bust so updates appear right after you push changes (esp. GitHub Pages caching)
+  const url = `${JSON_PATH}?v=${Date.now()}`;
+
+  let cfg;
+  try {
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    cfg = await res.json();
+  } catch (e) {
+    track.innerHTML = `<div style="padding:12px;opacity:.85">Couldn’t load ${JSON_PATH}: ${e.message}</div>`;
+    return;
+  }
+
+  const images = Array.isArray(cfg.images) ? cfg.images.filter(Boolean) : [];
+  if (!images.length) {
+    track.innerHTML = `<div style="padding:12px;opacity:.85">No images listed in ${JSON_PATH}.</div>`;
+    return;
+  }
+
+  // Base directory for images: same folder as the JSON
+  const baseDir = JSON_PATH.split("/").slice(0, -1).join("/");
+
+  // Build a seamless loop by duplicating the full list twice
+  const doubled = images.concat(images);
+
+  track.innerHTML = doubled.map((file) => {
+    const safe = encodeURIComponent(String(file));
+    return `<div class="gallery-item" style="background-image:url('${baseDir}/${safe}')"></div>`;
+  }).join("");
+
+  // After layout, compute the exact scroll distance (half the full track width)
+  // so the loop transitions perfectly.
+  requestAnimationFrame(() => {
+    const half = track.scrollWidth / 2;
+    track.style.setProperty("--scroll-distance", `${half}px`);
+
+    // Allow you to control speed from JSON (durationSeconds), fallback to 22s
+    const dur = Number(cfg.durationSeconds || 22);
+    track.style.setProperty("--scroll-duration", `${dur}s`);
+  });
+})();
+</script>
+
 </body>
 </html>
