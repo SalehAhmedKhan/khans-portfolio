@@ -11,13 +11,10 @@
       --bg1:#050712;
       --bg2:#0b1430;
       --bg3:#070a14;
-
       --glass: rgba(15,23,42,0.70);
       --border: rgba(148,163,184,0.35);
-
       --text: #e5e7eb;
       --muted: rgba(226,232,240,0.72);
-
       --accent: #f59e0b;
       --shadow: 0 22px 55px rgba(0,0,0,0.55);
       --r: 18px;
@@ -30,7 +27,6 @@
       margin:0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
       color: var(--text);
-
       background:
         radial-gradient(circle at 14% 22%, rgba(245,158,11,0.16), transparent 55%),
         radial-gradient(circle at 86% 30%, rgba(139,92,246,0.14), transparent 55%),
@@ -38,9 +34,6 @@
         linear-gradient(140deg, var(--bg1) 0%, var(--bg2) 55%, var(--bg3) 100%);
       background-attachment: fixed;
     }
-
-    a{ color: #93c5fd; text-decoration:none; }
-    a:hover{ text-decoration:underline; }
 
     .page{
       max-width: 1200px;
@@ -50,63 +43,49 @@
 
     .topbar{
       display:flex;
-      align-items:flex-start;
       justify-content: space-between;
       gap: 1rem;
       padding: 1rem 1.1rem;
-
       background: var(--glass);
       border: 1px solid var(--border);
       border-radius: var(--r);
       box-shadow: var(--shadow);
       backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
     }
 
     .titleblock h1{
       margin:0;
       font-size: clamp(1.35rem, 2.6vw, 1.9rem);
-      letter-spacing: 0.2px;
     }
 
     .titleblock p{
       margin: 0.35rem 0 0;
       color: var(--muted);
-      line-height: 1.35;
       max-width: 70ch;
-      font-size: 0.95rem;
-    }
-
-    .hint{
-      margin: 0.2rem 0 0;
-      font-size: 0.82rem;
-      color: rgba(226,232,240,0.55);
     }
 
     .back{
-      flex: 0 0 auto;
       padding: 0.5rem 0.9rem;
       border-radius: 999px;
       border: 1px solid rgba(147,197,253,0.55);
       background: rgba(2,6,23,0.35);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.35);
-      white-space: nowrap;
+      color: #93c5fd;
+      text-decoration:none;
       height: fit-content;
     }
 
     .grid{
       margin-top: 1rem;
       display:grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: 0.85rem;
     }
 
     @media (max-width: 980px){
-      .grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .grid{ grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 640px){
       .topbar{ flex-direction: column; }
-      .back{ align-self: flex-start; }
       .grid{ grid-template-columns: 1fr; }
     }
 
@@ -118,56 +97,34 @@
       background: rgba(2,6,23,0.55);
       box-shadow: 0 18px 45px rgba(0,0,0,0.45);
       cursor: pointer;
-      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+      transition: transform 0.18s ease;
     }
 
-    .card:hover{
-      transform: translateY(-4px);
-      border-color: rgba(245,158,11,0.55);
-      box-shadow: 0 26px 60px rgba(0,0,0,0.62);
-    }
+    .card.horizontal{ aspect-ratio: 16 / 10; }
+    .card.vertical{ aspect-ratio: 3 / 4; }
 
-    /* Orientation controls card height/shape */
-    .card.horizontal{ aspect-ratio: 16 / 10; min-height: 190px; }
-    .card.vertical{ aspect-ratio: 3 / 4; min-height: 260px; }
+    .card:hover{ transform: translateY(-4px); }
 
     .card-media{
       position:absolute;
       inset:0;
       background-size: cover;
       background-position: center;
-      filter: brightness(0.78);
-      transform: scale(1.02);
+      filter: brightness(0.8);
     }
 
     .card-overlay{
       position:absolute;
       inset:0;
-      background: linear-gradient(to top, rgba(2,6,23,0.92), rgba(2,6,23,0.15));
+      background: linear-gradient(to top, rgba(2,6,23,0.95), rgba(2,6,23,0.2));
     }
 
     .card-title{
       position:absolute;
       left: 0.95rem;
-      right: 0.95rem;
       bottom: 0.9rem;
       font-size: 1.1rem;
       font-weight: 650;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.55);
-      display:flex;
-      align-items:center;
-      justify-content: space-between;
-      gap: 0.75rem;
-    }
-
-    .pill{
-      font-size: 0.75rem;
-      padding: 0.18rem 0.55rem;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.18);
-      background: rgba(15,23,42,0.45);
-      color: rgba(226,232,240,0.88);
-      white-space: nowrap;
     }
 
     /* ===== Slide Panel ===== */
@@ -181,296 +138,173 @@
       z-index: 50;
     }
 
+    .scrim.open{ opacity:1; pointer-events:auto; }
+
     .panel{
       position: fixed;
       top: 0;
       right: 0;
       height: 100%;
       width: min(520px, 92vw);
-      background: rgba(2,6,23,0.72);
-      border-left: 1px solid rgba(148,163,184,0.30);
-      box-shadow: -30px 0 80px rgba(0,0,0,0.60);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-
+      background: rgba(2,6,23,0.75);
+      border-left: 1px solid var(--border);
+      box-shadow: -30px 0 80px rgba(0,0,0,0.6);
       transform: translateX(100%);
       transition: transform 0.22s ease;
       z-index: 60;
-
       display:flex;
       flex-direction: column;
-      overflow:hidden;
     }
 
     .panel.open{ transform: translateX(0); }
-    .scrim.open{
-      opacity: 1;
-      pointer-events: auto;
-    }
 
     .panel-header{
       display:flex;
-      align-items:center;
       justify-content: space-between;
-      gap: 0.75rem;
-      padding: 0.9rem 0.95rem;
-      border-bottom: 1px solid rgba(148,163,184,0.22);
-      background: rgba(15,23,42,0.55);
+      padding: 0.9rem;
+      border-bottom: 1px solid var(--border);
     }
 
     .panel-header h2{
       margin:0;
-      font-size: 1.05rem;
-      letter-spacing: 0.2px;
+      font-size: 1.1rem;
     }
 
     .close{
-      border: 1px solid rgba(255,255,255,0.18);
-      background: rgba(2,6,23,0.45);
-      color: var(--text);
+      background:none;
+      border: 1px solid var(--border);
       border-radius: 999px;
+      color: var(--text);
       padding: 0.35rem 0.7rem;
-      cursor: pointer;
-      font-size: 0.9rem;
+      cursor:pointer;
     }
 
-    .close:hover{ background: rgba(59,130,246,0.22); }
-
     .panel-body{
-      padding: 0.95rem;
+      padding: 0.9rem;
       overflow:auto;
-      display:flex;
-      flex-direction: column;
-      gap: 0.85rem;
     }
 
     .hero{
-      border-radius: 16px;
-      overflow:hidden;
-      border: 1px solid rgba(148,163,184,0.28);
-      background: rgba(0,0,0,0.25);
-      box-shadow: 0 18px 45px rgba(0,0,0,0.45);
       aspect-ratio: 16 / 10;
+      border-radius: 14px;
+      overflow:hidden;
+      border: 1px solid var(--border);
+      margin-bottom: 0.75rem;
     }
 
     .hero img{
       width:100%;
       height:100%;
       object-fit: cover;
-      display:block;
-      filter: brightness(0.92);
     }
 
-    .meta{
-      display:flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-
-    .meta .chip{
-      font-size: 0.8rem;
-      padding: 0.22rem 0.6rem;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.16);
-      background: rgba(15,23,42,0.45);
-      color: rgba(226,232,240,0.88);
-      white-space: nowrap;
+    .date-made{
+      margin: 0.25rem 0 0.4rem;
+      font-size: 0.95rem;
+      font-weight: 650;
+      color: rgba(226,232,240,0.9);
     }
 
     .desc{
-      margin: 0;
+      margin:0;
       color: var(--muted);
       line-height: 1.5;
-      font-size: 0.95rem;
-    }
-
-    .error{
-      margin-top: 1rem;
-      padding: 0.9rem 1rem;
-      border-radius: 14px;
-      border: 1px solid rgba(248,113,113,0.35);
-      background: rgba(248,113,113,0.10);
-      color: rgba(254,226,226,0.92);
-    }
-
-    code{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      font-size: 0.92em;
-      color: rgba(226,232,240,0.9);
     }
   </style>
 </head>
 
 <body>
-  <div class="page">
-    <div class="topbar">
-      <div class="titleblock">
-        <h1>Handicrafts</h1>
-        <p>
-          Click any handcrafted piece to open a slide-in description panel.
-          Edit <code>items.json</code> to update cards.
-        </p>
-        <p class="hint">Expected files: <code>handicrafts/handicrafts.html</code>, <code>handicrafts/items.json</code>, and images in <code>handicrafts/</code>.</p>
-      </div>
 
-      <a class="back" href="../khans-krafts.html">← Back to Khan’s Krafts</a>
+<div class="page">
+  <div class="topbar">
+    <div class="titleblock">
+      <h1>Handicrafts</h1>
+      <p>Click any handcrafted piece to view details.</p>
     </div>
-
-    <div class="grid" id="grid"></div>
-    <div class="error" id="error" style="display:none;"></div>
+    <a class="back" href="../khans-krafts.html">← Back</a>
   </div>
 
-  <!-- Slide panel -->
-  <div class="scrim" id="scrim" aria-hidden="true"></div>
+  <div class="grid" id="grid"></div>
+</div>
 
-  <aside class="panel" id="panel" aria-hidden="true" aria-label="Handicraft details">
-    <div class="panel-header">
-      <h2 id="panelTitle">Item</h2>
-      <button class="close" id="closeBtn" type="button">Close ✕</button>
+<div class="scrim" id="scrim"></div>
+
+<aside class="panel" id="panel">
+  <div class="panel-header">
+    <h2 id="panelTitle"></h2>
+    <button class="close" id="closeBtn">Close</button>
+  </div>
+  <div class="panel-body">
+    <div class="hero">
+      <img id="panelImg" src="" alt="" />
     </div>
+    <h3 class="date-made" id="panelDateMade"></h3>
+    <p class="desc" id="panelDesc"></p>
+  </div>
+</aside>
 
-    <div class="panel-body">
-      <div class="hero">
-        <img id="panelImg" src="" alt="" />
+<script>
+  const grid = document.getElementById("grid");
+  const panel = document.getElementById("panel");
+  const scrim = document.getElementById("scrim");
+  const closeBtn = document.getElementById("closeBtn");
+
+  const panelTitle = document.getElementById("panelTitle");
+  const panelImg = document.getElementById("panelImg");
+  const panelDesc = document.getElementById("panelDesc");
+  const panelDateMade = document.getElementById("panelDateMade");
+
+  let ITEMS = [];
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, c => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"
+    }[c]));
+  }
+
+  async function loadItems(){
+    const res = await fetch("items.json", { cache: "no-store" });
+    ITEMS = await res.json();
+    render();
+  }
+
+  function render(){
+    grid.innerHTML = ITEMS.map((item, i) => `
+      <div class="card ${item.orientation || "horizontal"}" data-i="${i}" tabindex="0">
+        <div class="card-media" style="background-image:url('${escapeHtml(item.image)}')"></div>
+        <div class="card-overlay"></div>
+        <div class="card-title">${escapeHtml(item.title)}</div>
       </div>
+    `).join("");
+  }
 
-      <div class="meta" id="panelMeta"></div>
+  function openPanel(item){
+    panelTitle.textContent = item.title || "";
+    panelImg.src = item.image || "";
+    panelDesc.textContent = item.shortDescription || "";
+    panelDateMade.textContent = item.dateMade ? `Made: ${item.dateMade}` : "";
+    panel.classList.add("open");
+    scrim.classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
 
-      <p class="desc" id="panelDesc"></p>
-    </div>
-  </aside>
+  function closePanel(){
+    panel.classList.remove("open");
+    scrim.classList.remove("open");
+    document.body.style.overflow = "";
+  }
 
-  <script>
-    const grid = document.getElementById("grid");
-    const scrim = document.getElementById("scrim");
-    const panel = document.getElementById("panel");
-    const closeBtn = document.getElementById("closeBtn");
-    const errBox = document.getElementById("error");
+  grid.addEventListener("click", e => {
+    const c = e.target.closest(".card");
+    if (!c) return;
+    openPanel(ITEMS[c.dataset.i]);
+  });
 
-    const panelTitle = document.getElementById("panelTitle");
-    const panelImg = document.getElementById("panelImg");
-    const panelDesc = document.getElementById("panelDesc");
-    const panelMeta = document.getElementById("panelMeta");
+  closeBtn.addEventListener("click", closePanel);
+  scrim.addEventListener("click", closePanel);
 
-    let ITEMS = [];
+  loadItems();
+</script>
 
-    function escapeHtml(s){
-      return String(s).replace(/[&<>"']/g, (c) => ({
-        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-      }[c]));
-    }
-
-    function normalizeOrientation(o){
-      const v = String(o || "").toLowerCase().trim();
-      return (v === "vertical" || v === "horizontal") ? v : "horizontal";
-    }
-
-    function render(items){
-      grid.innerHTML = items.map((item, idx) => {
-        const orientation = normalizeOrientation(item.orientation);
-        const title = item.title ?? `Untitled ${idx+1}`;
-        const image = item.image ?? "";
-        return `
-          <div class="card ${orientation}" role="button" tabindex="0" data-index="${idx}" aria-label="Open ${escapeHtml(title)}">
-            <div class="card-media" style="background-image:url('${escapeHtml(image)}')"></div>
-            <div class="card-overlay"></div>
-            <div class="card-title">
-              <span>${escapeHtml(title)}</span>
-            </div>
-          </div>
-        `;
-      }).join("");
-    }
-
-    function openPanel(item){
-      const title = item.title ?? "Untitled";
-      const image = item.image ?? "";
-      const orientation = normalizeOrientation(item.orientation);
-      const dateMade = item.dateMade ?? "";
-      const shortDescription = item.shortDescription ?? "";
-
-      panelTitle.textContent = title;
-      panelImg.src = image;
-      panelImg.alt = title;
-      panelDesc.textContent = shortDescription;
-
-      // Chips: orientation + date
-      const chips = [];
-      chips.push({ label: orientation });
-      if (dateMade) chips.push({ label: `Made: ${dateMade}` });
-
-      panelMeta.innerHTML = chips.map(c => `<span class="chip">${escapeHtml(c.label)}</span>`).join("");
-
-      scrim.classList.add("open");
-      panel.classList.add("open");
-      panel.setAttribute("aria-hidden", "false");
-      scrim.setAttribute("aria-hidden", "false");
-      document.body.style.overflow = "hidden";
-    }
-
-    function closePanel(){
-      scrim.classList.remove("open");
-      panel.classList.remove("open");
-      panel.setAttribute("aria-hidden", "true");
-      scrim.setAttribute("aria-hidden", "true");
-      document.body.style.overflow = "";
-    }
-
-    async function loadItems(){
-      try{
-        const res = await fetch("items.json", { cache: "no-store" });
-        if (!res.ok) throw new Error(`HTTP ${res.status} loading items.json`);
-        const data = await res.json();
-
-        if (!Array.isArray(data)) {
-          throw new Error("items.json must be a JSON array of objects.");
-        }
-
-        // Light validation (does NOT block, just normalizes)
-        ITEMS = data.map((x) => ({
-          title: x.title ?? "",
-          image: x.image ?? "",
-          orientation: normalizeOrientation(x.orientation),
-          dateMade: x.dateMade ?? "",
-          shortDescription: x.shortDescription ?? ""
-        }));
-
-        render(ITEMS);
-      } catch (e){
-        errBox.style.display = "block";
-        errBox.textContent =
-          "Could not load items.json. If you are opening this file directly (file://), fetch may be blocked. " +
-          "Run a local server, or host it. Error: " + e.message;
-      }
-    }
-
-    // Events
-    grid.addEventListener("click", (e) => {
-      const card = e.target.closest(".card");
-      if (!card) return;
-      const idx = Number(card.dataset.index);
-      const item = ITEMS[idx];
-      if (item) openPanel(item);
-    });
-
-    grid.addEventListener("keydown", (e) => {
-      if (e.key !== "Enter" && e.key !== " ") return;
-      const card = e.target.closest(".card");
-      if (!card) return;
-      e.preventDefault();
-      const idx = Number(card.dataset.index);
-      const item = ITEMS[idx];
-      if (item) openPanel(item);
-    });
-
-    closeBtn.addEventListener("click", closePanel);
-    scrim.addEventListener("click", closePanel);
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") closePanel();
-    });
-
-    // Load from JSON
-    loadItems();
-  </script>
 </body>
 </html>
