@@ -13,22 +13,19 @@
       --bg3:#070a14;
 
       --glass: rgba(15,23,42,0.70);
-      --glass2: rgba(2,6,23,0.55);
       --border: rgba(148,163,184,0.35);
 
       --text: #e5e7eb;
       --muted: rgba(226,232,240,0.72);
 
       --accent: #f59e0b;
-      --accent2:#8b5cf6;
-      --accent3:#38bdf8;
-
       --shadow: 0 22px 55px rgba(0,0,0,0.55);
       --r: 18px;
     }
 
     *{ box-sizing:border-box; }
     html, body{ height:100%; }
+
     body{
       margin:0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
@@ -80,6 +77,12 @@
       font-size: 0.95rem;
     }
 
+    .hint{
+      margin: 0.2rem 0 0;
+      font-size: 0.82rem;
+      color: rgba(226,232,240,0.55);
+    }
+
     .back{
       flex: 0 0 auto;
       padding: 0.5rem 0.9rem;
@@ -116,7 +119,6 @@
       box-shadow: 0 18px 45px rgba(0,0,0,0.45);
       cursor: pointer;
       transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
-      min-height: 190px;
     }
 
     .card:hover{
@@ -124,6 +126,10 @@
       border-color: rgba(245,158,11,0.55);
       box-shadow: 0 26px 60px rgba(0,0,0,0.62);
     }
+
+    /* Orientation controls card height/shape */
+    .card.horizontal{ aspect-ratio: 16 / 10; min-height: 190px; }
+    .card.vertical{ aspect-ratio: 3 / 4; min-height: 260px; }
 
     .card-media{
       position:absolute;
@@ -145,7 +151,7 @@
       left: 0.95rem;
       right: 0.95rem;
       bottom: 0.9rem;
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       font-weight: 650;
       text-shadow: 0 2px 10px rgba(0,0,0,0.55);
       display:flex;
@@ -278,31 +284,19 @@
       font-size: 0.95rem;
     }
 
-    .label{
-      margin: 0.25rem 0 0;
-      font-size: 0.82rem;
-      color: rgba(226,232,240,0.78);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-
-    .kv{
-      display:grid;
-      grid-template-columns: 120px 1fr;
-      gap: 0.4rem 0.8rem;
-      padding: 0.75rem;
+    .error{
+      margin-top: 1rem;
+      padding: 0.9rem 1rem;
       border-radius: 14px;
-      border: 1px solid rgba(148,163,184,0.20);
-      background: rgba(15,23,42,0.35);
+      border: 1px solid rgba(248,113,113,0.35);
+      background: rgba(248,113,113,0.10);
+      color: rgba(254,226,226,0.92);
     }
 
-    .k{ color: rgba(226,232,240,0.78); font-size: 0.9rem; }
-    .v{ color: rgba(226,232,240,0.92); font-size: 0.9rem; }
-
-    .hint{
-      margin: 0.2rem 0 0;
-      font-size: 0.82rem;
-      color: rgba(226,232,240,0.55);
+    code{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.92em;
+      color: rgba(226,232,240,0.9);
     }
   </style>
 </head>
@@ -314,15 +308,16 @@
         <h1>Handicrafts</h1>
         <p>
           Click any handcrafted piece to open a slide-in description panel.
-          Swap the image paths + text in the <code>ITEMS</code> array inside the script.
+          Edit <code>items.json</code> to update cards.
         </p>
-        <p class="hint">Tip: put your photos in <code>handicrafts/images/</code> and update filenames below.</p>
+        <p class="hint">Expected files: <code>handicrafts/handicrafts.html</code>, <code>handicrafts/items.json</code>, and images in <code>handicrafts/</code>.</p>
       </div>
 
       <a class="back" href="../khans-krafts.html">← Back to Khan’s Krafts</a>
     </div>
 
     <div class="grid" id="grid"></div>
+    <div class="error" id="error" style="display:none;"></div>
   </div>
 
   <!-- Slide panel -->
@@ -342,99 +337,75 @@
       <div class="meta" id="panelMeta"></div>
 
       <p class="desc" id="panelDesc"></p>
-
-      <div>
-        <p class="label">Details</p>
-        <div class="kv" id="panelKV"></div>
-      </div>
     </div>
   </aside>
 
   <script>
-    // EDIT THESE ITEMS ONLY (content + images)
-    const ITEMS = [
-      {
-        id: "shahid-minar",
-        title: "Shahid Minar Miniature",
-        image: "images/shahidminar.jpeg",
-        description: "A handmade miniature inspired by the Shaheed Minar, built with layered materials and careful hand-finishing.",
-        chips: ["Miniature", "Architecture"],
-        details: {
-          Materials: "Foam board, acrylic paint, glue",
-          Scale: "Desktop",
-          Finish: "Hand-painted",
-          Notes: "Add more notes here"
-        }
-      },
-      {
-        id: "wooden-frame",
-        title: "Carved Wooden Frame",
-        image: "images/wooden-frame.jpg",
-        description: "A decorative frame with carved accents and a warm stain finish.",
-        chips: ["Woodwork", "Decor"],
-        details: {
-          Materials: "Wood, stain, varnish",
-          Size: "8×10 in",
-          Finish: "Stained + sealed",
-          Notes: "Add more notes here"
-        }
-      },
-      {
-        id: "clay-ornament",
-        title: "Clay Ornament Set",
-        image: "images/clay-ornaments.jpg",
-        description: "A small set of clay ornaments, hand-shaped and painted for a matte, handmade look.",
-        chips: ["Clay", "Painted"],
-        details: {
-          Materials: "Air-dry clay, acrylic paint",
-          Pieces: "Set of 3",
-          Finish: "Matte coat",
-          Notes: "Add more notes here"
-        }
-      },
-      {
-        id: "paper-craft",
-        title: "Layered Paper Craft",
-        image: "images/layered-paper.jpg",
-        description: "Layered cut-paper composition with depth and a clean edge finish.",
-        chips: ["Paper", "Layered"],
-        details: {
-          Materials: "Card stock, cutter, glue",
-          Style: "Layered relief",
-          Frame: "Optional",
-          Notes: "Add more notes here"
-        }
-      }
-    ];
-
     const grid = document.getElementById("grid");
     const scrim = document.getElementById("scrim");
     const panel = document.getElementById("panel");
     const closeBtn = document.getElementById("closeBtn");
+    const errBox = document.getElementById("error");
 
     const panelTitle = document.getElementById("panelTitle");
     const panelImg = document.getElementById("panelImg");
     const panelDesc = document.getElementById("panelDesc");
     const panelMeta = document.getElementById("panelMeta");
-    const panelKV = document.getElementById("panelKV");
+
+    let ITEMS = [];
+
+    function escapeHtml(s){
+      return String(s).replace(/[&<>"']/g, (c) => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+      }[c]));
+    }
+
+    function normalizeOrientation(o){
+      const v = String(o || "").toLowerCase().trim();
+      return (v === "vertical" || v === "horizontal") ? v : "horizontal";
+    }
+
+    function render(items){
+      grid.innerHTML = items.map((item, idx) => {
+        const orientation = normalizeOrientation(item.orientation);
+        const title = item.title ?? `Untitled ${idx+1}`;
+        const image = item.image ?? "";
+        return `
+          <div class="card ${orientation}" role="button" tabindex="0" data-index="${idx}" aria-label="Open ${escapeHtml(title)}">
+            <div class="card-media" style="background-image:url('${escapeHtml(image)}')"></div>
+            <div class="card-overlay"></div>
+            <div class="card-title">
+              <span>${escapeHtml(title)}</span>
+              <span class="pill">${orientation}</span>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
 
     function openPanel(item){
-      panelTitle.textContent = item.title;
-      panelImg.src = item.image;
-      panelImg.alt = item.title;
-      panelDesc.textContent = item.description;
+      const title = item.title ?? "Untitled";
+      const image = item.image ?? "";
+      const orientation = normalizeOrientation(item.orientation);
+      const dateMade = item.dateMade ?? "";
+      const shortDescription = item.shortDescription ?? "";
 
-      panelMeta.innerHTML = (item.chips || []).map(c => `<span class="chip">${escapeHtml(c)}</span>`).join("");
+      panelTitle.textContent = title;
+      panelImg.src = image;
+      panelImg.alt = title;
+      panelDesc.textContent = shortDescription;
 
-      panelKV.innerHTML = Object.entries(item.details || {}).map(([k,v]) => {
-        return `<div class="k">${escapeHtml(k)}</div><div class="v">${escapeHtml(String(v))}</div>`;
-      }).join("");
+      // Chips: orientation + date
+      const chips = [];
+      chips.push({ label: orientation });
+      if (dateMade) chips.push({ label: `Made: ${dateMade}` });
+
+      panelMeta.innerHTML = chips.map(c => `<span class="chip">${escapeHtml(c.label)}</span>`).join("");
 
       scrim.classList.add("open");
       panel.classList.add("open");
       panel.setAttribute("aria-hidden", "false");
       scrim.setAttribute("aria-hidden", "false");
-
       document.body.style.overflow = "hidden";
     }
 
@@ -443,33 +414,43 @@
       panel.classList.remove("open");
       panel.setAttribute("aria-hidden", "true");
       scrim.setAttribute("aria-hidden", "true");
-
       document.body.style.overflow = "";
     }
 
-    function escapeHtml(s){
-      return String(s).replace(/[&<>"']/g, (c) => ({
-        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-      }[c]));
+    async function loadItems(){
+      try{
+        const res = await fetch("items.json", { cache: "no-store" });
+        if (!res.ok) throw new Error(`HTTP ${res.status} loading items.json`);
+        const data = await res.json();
+
+        if (!Array.isArray(data)) {
+          throw new Error("items.json must be a JSON array of objects.");
+        }
+
+        // Light validation (does NOT block, just normalizes)
+        ITEMS = data.map((x) => ({
+          title: x.title ?? "",
+          image: x.image ?? "",
+          orientation: normalizeOrientation(x.orientation),
+          dateMade: x.dateMade ?? "",
+          shortDescription: x.shortDescription ?? ""
+        }));
+
+        render(ITEMS);
+      } catch (e){
+        errBox.style.display = "block";
+        errBox.textContent =
+          "Could not load items.json. If you are opening this file directly (file://), fetch may be blocked. " +
+          "Run a local server, or host it. Error: " + e.message;
+      }
     }
 
-    // Render cards
-    grid.innerHTML = ITEMS.map(item => `
-      <div class="card" role="button" tabindex="0" data-id="${escapeHtml(item.id)}" aria-label="Open ${escapeHtml(item.title)}">
-        <div class="card-media" style="background-image:url('${escapeHtml(item.image)}')"></div>
-        <div class="card-overlay"></div>
-        <div class="card-title">
-          <span>${escapeHtml(item.title)}</span>
-          <span class="pill">View</span>
-        </div>
-      </div>
-    `).join("");
-
-    // Click / keyboard open
+    // Events
     grid.addEventListener("click", (e) => {
       const card = e.target.closest(".card");
       if (!card) return;
-      const item = ITEMS.find(x => x.id === card.dataset.id);
+      const idx = Number(card.dataset.index);
+      const item = ITEMS[idx];
       if (item) openPanel(item);
     });
 
@@ -478,17 +459,19 @@
       const card = e.target.closest(".card");
       if (!card) return;
       e.preventDefault();
-      const item = ITEMS.find(x => x.id === card.dataset.id);
+      const idx = Number(card.dataset.index);
+      const item = ITEMS[idx];
       if (item) openPanel(item);
     });
 
-    // Close handlers
     closeBtn.addEventListener("click", closePanel);
     scrim.addEventListener("click", closePanel);
     window.addEventListener("keydown", (e) => {
       if (e.key === "Escape") closePanel();
     });
+
+    // Load from JSON
+    loadItems();
   </script>
 </body>
 </html>
-
