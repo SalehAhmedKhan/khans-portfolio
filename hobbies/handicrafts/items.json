@@ -2,21 +2,28 @@
   {
     "title": "Shahid Minar Miniature",
     "image": "shahidminar.jpeg",
-    "orientation": "vertical",
-    "dateMade": "2025-01-15",
+    "orientation": "horizontal",
+    "dateMade": "February 15, 2025",
     "shortDescription": "A handmade miniature inspired by the Shaheed Minar with layered construction and hand-finished details."
   },
   {
-    "title": "Carved Wooden Frame",
-    "image": "wooden-frame.jpg",
+    "title": "National Memorial",
+    "image": "natmonument.jpeg",
     "orientation": "horizontal",
-    "dateMade": "2024-11-02",
+    "dateMade": "December 6, 2025",
     "shortDescription": "Decorative carved frame with a warm stain finish and sealed protective coat."
+  },
+  {
+    "title": "Palanqueen",
+    "image": "palki.jpeg",
+    "orientation": "horizontal",
+    "dateMade": "April 14, 2025",
+    "shortDescription": "A small set of hand-shaped clay ornaments painted for a clean matte handmade look."
   },
   {
     "title": "Clay Ornament Set",
     "image": "clay-ornaments.jpg",
-    "orientation": "horizontal",
+    "orientation": "vertical",
     "dateMade": "2024-12-18",
     "shortDescription": "A small set of hand-shaped clay ornaments painted for a clean matte handmade look."
   }
