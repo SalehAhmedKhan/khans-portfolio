@@ -4,11 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>β-Ga₂O₃ Electron Mobilities</title> <!-- EDIT PAGE TITLE HERE -->
+    <title>β-Ga₂O₃ Electron Mobilities</title>
 
     <style>
         :root {
-            /* Dark theme variables (content unchanged; styling only) */
             --bg: #0b1020;
             --card-bg: rgba(255, 255, 255, 0.08);
             --border: rgba(255, 255, 255, 0.14);
@@ -20,16 +19,13 @@
             --radius: 10px;
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
             margin: 0;
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
                          Roboto, Helvetica, Arial, sans-serif;
 
-            /* Dark gradient background (no images) — different tone from hub page */
             background:
                 radial-gradient(circle at 18% 22%, rgba(255, 140, 80, 0.10), transparent 42%),
                 radial-gradient(circle at 82% 28%, rgba(120, 80, 255, 0.10), transparent 46%),
@@ -44,11 +40,8 @@
             text-decoration: none;
         }
 
-        a:hover {
-            text-decoration: underline;
-        }
+        a:hover { text-decoration: underline; }
 
-        /* Page shell */
         .page {
             max-width: 1200px;
             margin: 0 auto;
@@ -59,7 +52,6 @@
             margin-bottom: 1.5rem;
         }
 
-        /* ===== TITLE AREA (EASY TO EDIT) ===== */
         .topic-label {
             font-size: 0.75rem;
             letter-spacing: 0.12em;
@@ -81,7 +73,6 @@
             font-size: 0.95rem;
         }
 
-        /* Back link under title */
         .back-link {
             display: inline-block;
             margin-top: 0.6rem;
@@ -90,36 +81,20 @@
             color: var(--accent);
         }
 
-        .back-link:hover {
-            text-decoration: underline;
-        }
-
-        /* Layout */
         .layout {
             display: flex;
             gap: 1.5rem;
             align-items: flex-start;
         }
 
-        main {
-            flex: 1.7;
-        }
-
-        aside.sidebar {
-            flex: 0.9;
-        }
+        main { flex: 1.7; }
+        aside.sidebar { flex: 0.9; }
 
         @media (max-width: 900px) {
-            .layout {
-                flex-direction: column;
-            }
-
-            aside.sidebar {
-                order: -1;
-            }
+            .layout { flex-direction: column; }
+            aside.sidebar { order: -1; }
         }
 
-        /* ===== UPDATE LOG ===== */
         .sidebar-card {
             background: var(--card-bg);
             border-radius: var(--radius);
@@ -167,7 +142,6 @@
             font-size: 0.85rem;
         }
 
-        /* ===== PAPER LIST ===== */
         .section-header {
             margin-bottom: 0.75rem;
             display: flex;
@@ -197,17 +171,10 @@
             border-radius: var(--radius);
             box-shadow: var(--shadow-soft);
             border: 1px solid var(--border);
-            padding: 1rem 1rem;
+            padding: 1rem;
             display: flex;
             gap: 1rem;
             align-items: stretch;
-            transition: box-shadow 0.15s ease;
-        }
-
-        /* Removed per-card offset (no translateX) */
-
-        .paper-card:hover {
-            box-shadow: 0 10px 26px rgba(0, 0, 0, 0.45);
         }
 
         .paper-main { flex: 1; }
@@ -256,12 +223,8 @@
         }
 
         @media (max-width: 700px) {
-            .paper-card {
-                flex-direction: column;
-            }
-            .paper-tags {
-                align-items: flex-start;
-            }
+            .paper-card { flex-direction: column; }
+            .paper-tags { align-items: flex-start; }
         }
 
         .tag {
@@ -276,7 +239,6 @@
 
         .tag.method { background: #fef3c7; color: #92400e; }
         .tag.device { background: #ecfdf3; color: #166534; }
-        .tag.year   { background: #f3e8ff; color: #6b21a8; }
     </style>
 </head>
 
@@ -284,162 +246,130 @@
 
 <div class="page">
 
-    <!-- ===== TOPIC TITLE AREA ===== -->
-    <header class="page-header">
-        <div class="topic-label">Research Topic</div>
+<header class="page-header">
+    <div class="topic-label">Research Topic</div>
+    <h1 class="topic-title">β-Ga₂O₃ Electron Mobilities</h1>
+    <p class="topic-subtitle">
+        Curated notes on experimental mobility benchmarks in β-Ga₂O₃ thin films and devices.
+    </p>
+    <a class="back-link" href="hub-bga2o3.html">← Back to Research Home</a>
+</header>
 
-        <h1 class="topic-title">β-Ga₂O₃ Electron Mobilities</h1>
+<div class="layout">
 
-        <p class="topic-subtitle">
-            Curated notes on experimental mobility benchmarks in β-Ga₂O₃ thin films and devices.
-        </p>
+<main>
+    <div class="section-header">
+        <h2>Paper log</h2>
+        <span>(newer at the top → older towards the bottom)</span>
+    </div>
 
-        <!-- NEW BACK LINK TO RESEARCH-HOME -->
-        <a class="back-link" href="hub-bga2o3.html">← Back to Research Home</a>
-    </header>
+    <div class="paper-list">
 
-    <div class="layout">
-
-        <!-- ===== MAIN CONTENT: PAPERS ===== -->
-        <main>
-            <div class="section-header">
-                <h2>Paper log</h2>
-                <span>(older at the top → newer towards the bottom)</span>
-            </div>
-
-            <div class="paper-list">
-
-                <!-- PAPER 1 -->
-                <article class="paper-card">
-                    <div class="paper-main">
-                        <div class="paper-top-row">
-                            <span class="paper-date">2025 • LPCVD</span>
-                            <span><a href="#" target="_blank">Journal page</a></span>
-                        </div>
-
-                        <h3 class="paper-gist">
-                            LPCVD β-Ga₂O₃ with 162 cm²/V·s electron mobility
-                        </h3>
-
-                        <p class="paper-title">
-                            High-mobility β-Ga₂O₃ grown by Ga-assisted LPCVD.
-                        </p>
-
-                        <p class="paper-authors">
-                            S. A. Khan <em>et al.</em> — Bhuiyan Group, UMass Lowell
-                        </p>
-                    </div>
-
-                    <div class="paper-tags">
-                        <span class="tag">Bhuiyan Group</span>
-                        <span class="tag method">LPCVD</span>
-                        <span class="tag device">Mobility</span>
-                        <span class="tag year">2025</span>
-                    </div>
-                </article>
-
-                <!-- PAPER 2 -->
-                <article class="paper-card">
-                    <div class="paper-main">
-                        <div class="paper-top-row">
-                            <span class="paper-date">2023 • MOCVD</span>
-                            <span><a href="#" target="_blank">Journal page</a></span>
-                        </div>
-
-                        <h3 class="paper-gist">
-                            MOCVD β-Ga₂O₃ with improved oxygen stoichiometry
-                        </h3>
-
-                        <p class="paper-title">
-                            Mobility enhancement in MOCVD-grown β-Ga₂O₃ via VI/III ratio engineering.
-                        </p>
-
-                        <p class="paper-authors">
-                            Z. Feng <em>et al.</em> — Ohio State University
-                        </p>
-                    </div>
-
-                    <div class="paper-tags">
-                        <span class="tag">OSU Group</span>
-                        <span class="tag method">MOCVD</span>
-                        <span class="tag device">Hall Mobility</span>
-                        <span class="tag year">2023</span>
-                    </div>
-                </article>
-
-                <!-- PAPER 3 -->
-                <article class="paper-card">
-                    <div class="paper-main">
-                        <div class="paper-top-row">
-                            <span class="paper-date">2021 • MBE / Devices</span>
-                            <span><a href="#" target="_blank">Journal page</a></span>
-                        </div>
-
-                        <h3 class="paper-gist">
-                            UCSB mobility + breakdown benchmark study
-                        </h3>
-
-                        <p class="paper-title">
-                            Transport and breakdown characteristics of β-Ga₂O₃ devices grown by MBE.
-                        </p>
-
-                        <p class="paper-authors">
-                            A. N. Author <em>et al.</em> — S. Krishnamoorthy Group, UCSB
-                        </p>
-                    </div>
-
-                    <div class="paper-tags">
-                        <span class="tag">UCSB</span>
-                        <span class="tag method">MBE</span>
-                        <span class="tag device">Vertical SBD</span>
-                        <span class="tag year">2021</span>
-                    </div>
-                </article>
-
-            </div>
-        </main>
-
-        <!-- ===== SIDEBAR ===== -->
-        <aside class="sidebar">
-            <div class="sidebar-card">
-                <h2>Update log</h2>
-                <p class="log-help">
-                    Latest updates appear at top. Edit manually as you add more papers.
+        <article class="paper-card">
+            <div class="paper-main">
+                <div class="paper-top-row">
+                    <span class="paper-date">2025 • LPCVD</span>
+                    <span><a href="#" target="_blank">Journal page</a></span>
+                </div>
+                <h3 class="paper-gist">
+                    LPCVD β-Ga₂O₃ with 162 cm²/V·s electron mobility
+                </h3>
+                <p class="paper-title">
+                    High-mobility β-Ga₂O₃ grown by Ga-assisted LPCVD.
                 </p>
-
-                <ul class="log-list">
-                    <li class="log-item latest">
-                        <div class="log-date" id="today-date">Today</div>
-                        <div class="log-text">Page initialized with first 3 benchmark papers.</div>
-                    </li>
-
-                    <li class="log-item">
-                        <div class="log-date">2025-01-10</div>
-                        <div class="log-text">Draft literature list created.</div>
-                    </li>
-
-                    <li class="log-item">
-                        <div class="log-date">2024-12-05</div>
-                        <div class="log-text">Added historical mobility notes.</div>
-                    </li>
-                </ul>
-
+                <p class="paper-authors">
+                    S. A. Khan <em>et al.</em> — Bhuiyan Group, UMass Lowell
+                </p>
             </div>
-        </aside>
+            <div class="paper-tags">
+                <span class="tag method">LPCVD</span>
+                <span class="tag device">Mobility</span>
+            </div>
+        </article>
+
+        <article class="paper-card">
+            <div class="paper-main">
+                <div class="paper-top-row">
+                    <span class="paper-date">2023 • MOCVD</span>
+                    <span><a href="#" target="_blank">Journal page</a></span>
+                </div>
+                <h3 class="paper-gist">
+                    MOCVD β-Ga₂O₃ with improved oxygen stoichiometry
+                </h3>
+                <p class="paper-title">
+                    Mobility enhancement in MOCVD-grown β-Ga₂O₃ via VI/III ratio engineering.
+                </p>
+                <p class="paper-authors">
+                    Z. Feng <em>et al.</em> — Ohio State University
+                </p>
+            </div>
+            <div class="paper-tags">
+                <span class="tag method">MOCVD</span>
+                <span class="tag device">Hall Mobility</span>
+            </div>
+        </article>
+
+        <article class="paper-card">
+            <div class="paper-main">
+                <div class="paper-top-row">
+                    <span class="paper-date">2021 • MBE / Devices</span>
+                    <span><a href="#" target="_blank">Journal page</a></span>
+                </div>
+                <h3 class="paper-gist">
+                    UCSB mobility + breakdown benchmark study
+                </h3>
+                <p class="paper-title">
+                    Transport and breakdown characteristics of β-Ga₂O₃ devices grown by MBE.
+                </p>
+                <p class="paper-authors">
+                    A. N. Author <em>et al.</em> — S. Krishnamoorthy Group, UCSB
+                </p>
+            </div>
+            <div class="paper-tags">
+                <span class="tag method">MBE</span>
+                <span class="tag device">Vertical SBD</span>
+            </div>
+        </article>
 
     </div>
+</main>
+
+<aside class="sidebar">
+    <div class="sidebar-card">
+        <h2>Update log</h2>
+        <p class="log-help">
+            Latest updates appear at top. Edit manually as you add more papers.
+        </p>
+        <ul class="log-list">
+            <li class="log-item latest">
+                <div class="log-date" id="today-date">Today</div>
+                <div class="log-text">Page initialized with first 3 benchmark papers.</div>
+            </li>
+            <li class="log-item">
+                <div class="log-date">2025-01-10</div>
+                <div class="log-text">Draft literature list created.</div>
+            </li>
+            <li class="log-item">
+                <div class="log-date">2024-12-05</div>
+                <div class="log-text">Added historical mobility notes.</div>
+            </li>
+        </ul>
+    </div>
+</aside>
+
+</div>
 </div>
 
 <script>
-    (function () {
-        const s = document.getElementById('today-date');
-        if (s) {
-            const d = new Date();
-            s.textContent = d.getFullYear() + "-" +
-                            String(d.getMonth()+1).padStart(2,'0') + "-" +
-                            String(d.getDate()).padStart(2,'0');
-        }
-    })();
+(function () {
+    const s = document.getElementById('today-date');
+    if (s) {
+        const d = new Date();
+        s.textContent = d.getFullYear() + "-" +
+                        String(d.getMonth()+1).padStart(2,'0') + "-" +
+                        String(d.getDate()).padStart(2,'0');
+    }
+})();
 </script>
 
 </body>
