@@ -7,20 +7,17 @@
     <title>β-Ga₂O₃ Research Hub</title>
 
     <style>
-        /* ===== Background Image + Dark Overlay ===== */
+        /* ===== Dark Technical Gradient Background (No Images) ===== */
         body {
             margin: 0;
             font-family: Arial, Helvetica, sans-serif;
+            color: #f5f5f5;
 
-            /* Background image */
-            background: 
-                linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),  /* dark tint */
-                url("img/ChatGPT Image Dec 8, 2025, 01_52_27 PM.png");
-
-            background-size: cover;      /* fill screen */
-            background-position: center; /* center focus */
-            background-repeat: no-repeat;
-            color: #f5f5f5;  /* light text since BG is dark */
+            background:
+                radial-gradient(circle at 20% 20%, rgba(80,120,255,0.12), transparent 40%),
+                radial-gradient(circle at 80% 30%, rgba(0,200,180,0.08), transparent 45%),
+                linear-gradient(135deg, #0b0f1a, #111827 60%, #0a0e17);
+            background-attachment: fixed;
         }
 
         /* ===== Header ===== */
@@ -47,16 +44,15 @@
             padding: 0 1.5rem;
         }
 
-        /* White translucent content boxes */
+        /* Translucent sections */
         .section {
-            background: rgba(255, 255, 255, 0.12);
-            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255,255,255,0.12);
             border-radius: 10px;
             padding: 1.5rem;
             margin-bottom: 1.5rem;
-            backdrop-filter: blur(6px);
-            color: #f5f5f5;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.35);
         }
 
         .section h2 {
@@ -76,13 +72,7 @@
             opacity: 0.9;
         }
 
-        .section-quote-author {
-            margin: 0;
-            font-size: 0.85rem;
-            opacity: 0.8;
-        }
-
-        /* Scrollable card strip */
+        /* Scroll row */
         .scroll-row {
             display: flex;
             overflow-x: auto;
@@ -90,15 +80,14 @@
             padding-bottom: 0.5rem;
         }
 
-        /* Cards with translucent style */
+        /* Cards */
         .hub-card {
             min-width: 220px;
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255,255,255,0.18);
             border-radius: 10px;
             padding: 1rem;
-            backdrop-filter: blur(4px);
-            color: #fff;
+            backdrop-filter: blur(6px);
         }
 
         .hub-card-title {
@@ -109,20 +98,12 @@
         .hub-card-desc {
             margin: 0;
             font-size: 0.85rem;
-            opacity: 0.8;
+            opacity: 0.85;
         }
 
-        /* Group card layout (text + logo on right) */
+        /* Group cards (text-only now) */
         .group-card {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 0.75rem;
             min-width: 260px;
-        }
-
-        .group-card-main {
-            flex: 1;
         }
 
         .group-affiliation {
@@ -137,22 +118,6 @@
             opacity: 0.85;
         }
 
-        .group-logo-wrapper {
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .group-logo {
-            width: 42px;
-            height: 42px;
-            border-radius: 6px;
-            background: rgba(255,255,255,0.25);
-            border: 1px solid rgba(255,255,255,0.35);
-            /* Placeholder background; replace with <img> entirely when you add real logos */
-        }
-
         /* Links */
         a.topic-link,
         a.back-link {
@@ -165,178 +130,105 @@
         a.back-link:hover {
             text-decoration: underline;
         }
-
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>β-Ga₂O₃ Research Hub</h1>
-        <p>Central index for β-Ga₂O₃ device, material, and physics research.</p>
-    </header>
+<header>
+    <h1>β-Ga₂O₃ Research Hub</h1>
+    <p>Central index for β-Ga₂O₃ device, material, and physics research.</p>
+</header>
 
-    <div class="container">
+<div class="container">
 
-        <!-- ======================= -->
-        <!-- Research Topics Section -->
-        <!-- ======================= -->
-        <div class="section">
-            <h2>β-Ga₂O₃ Research Topics</h2>
-            <p>Focused pages with logs, paper lists, and detailed notes.</p>
+    <!-- Research Topics -->
+    <div class="section">
+        <h2>β-Ga₂O₃ Research Topics</h2>
+        <p>Focused pages with logs, paper lists, and detailed notes.</p>
 
-            <div class="scroll-row">
+        <div class="scroll-row">
+            <div class="hub-card">
+                <div class="hub-card-title">Mobilities</div>
+                <p class="hub-card-desc">Hall mobility, drift mobility, epitaxy dependence.</p>
+                <a class="topic-link" href="mobility-bgo.html">Open</a>
+            </div>
 
-                <div class="hub-card">
-                    <div class="hub-card-title">Mobilities</div>
-                    <p class="hub-card-desc">Hall mobility, drift mobility, epitaxy dependence.</p>
-                    <a class="topic-link" href="mobility-bgo.html">Open</a>
-                </div>
+            <div class="hub-card">
+                <div class="hub-card-title">Etching & Patterning</div>
+                <p class="hub-card-desc">ICP-RIE chemistries, LPCVD etching, damage studies.</p>
+                <a class="topic-link" href="#">Coming soon</a>
+            </div>
 
-                <div class="hub-card">
-                    <div class="hub-card-title">Etching & Patterning</div>
-                    <p class="hub-card-desc">ICP-RIE chemistries, LPCVD etching, damage studies.</p>
-                    <a class="topic-link" href="#">Coming soon</a>
-                </div>
+            <div class="hub-card">
+                <div class="hub-card-title">Breakdown Engineering</div>
+                <p class="hub-card-desc">JTEs, field plates, BV scaling.</p>
+                <a class="topic-link" href="#">Coming soon</a>
+            </div>
 
-                <div class="hub-card">
-                    <div class="hub-card-title">Breakdown Engineering</div>
-                    <p class="hub-card-desc">JTEs, field plates, BV scaling.</p>
-                    <a class="topic-link" href="#">Coming soon</a>
-                </div>
-
-                <div class="hub-card">
-                    <div class="hub-card-title">Defects & Irradiation</div>
-                    <p class="hub-card-desc">DLTS, Raman, neutron/gamma studies.</p>
-                    <a class="topic-link" href="#">Coming soon</a>
-                </div>
-
+            <div class="hub-card">
+                <div class="hub-card-title">Defects & Irradiation</div>
+                <p class="hub-card-desc">DLTS, Raman, neutron/gamma studies.</p>
+                <a class="topic-link" href="#">Coming soon</a>
             </div>
         </div>
-
-        <!-- ======================= -->
-        <!-- Groups Section (RENOVATED & UPDATED) -->
-        <!-- ======================= -->
-        <div class="section">
-            <h2>Know Your Peers</h2>
-
-            <p class="section-quote">
-                “If I am walking with two other men, each of them will serve as my teacher.” — <span style="font-style: normal;">Confucius</span>
-            </p>
-
-            <br>
-
-            <p class="section-subtitle">
-                Leading β-Ga₂O₃ materials and device research teams across the globe, whose work shapes our
-                understanding of ultrawide-bandgap electronics.
-            </p>
-
-            <div class="scroll-row">
-
-                <!-- Bhuiyan Group -->
-                <div class="hub-card group-card">
-                    <div class="group-card-main">
-                        <div class="hub-card-title">Bhuiyan Group</div>
-                        <p class="group-affiliation" style="font-weight:600;">
-                            University of Massachusetts Lowell
-                        </p>
-                        <p class="group-description">
-                            LPCVD-grown β-Ga₂O₃, device-oriented etching strategies, and high-mobility vertical SBDs.
-                        </p>
-                        <a class="topic-link" href="#">Group Page</a>
-                    </div>
-                    <div class="group-logo-wrapper">
-                        <!-- Placeholder – replace with <img src="img/logo-uml.png" ...> -->
-                        <div class="group-logo"></div>
-                    </div>
-                </div>
-
-                <!-- Zhao / OSU -->
-                <div class="hub-card group-card">
-                    <div class="group-card-main">
-                        <div class="hub-card-title">Zhao Labs</div>
-                        <p class="group-affiliation" style="font-weight:600;">
-                            The Ohio State University
-                        </p>
-                        <p class="group-description">
-                            MOCVD β-Ga₂O₃ epitaxy, defect engineering, and mobility optimization in thin films.
-                        </p>
-                        <a class="topic-link" href="#">Group Page</a>
-                    </div>
-                    <div class="group-logo-wrapper">
-                        <div class="group-logo"></div>
-                    </div>
-                </div>
-
-                <!-- Krishnamoorthy / UCSB -->
-                <div class="hub-card group-card">
-                    <div class="group-card-main">
-                        <div class="hub-card-title">Krishnamoorthy Group</div>
-                        <p class="group-affiliation" style="font-weight:600;">
-                            University of California, Santa Barbara (UCSB)
-                        </p>
-                        <p class="group-description">
-                            β-Ga₂O₃ device physics, breakdown engineering, and field-management strategies for power devices.
-                        </p>
-                        <a class="topic-link" href="#">Group Page</a>
-                    </div>
-                    <div class="group-logo-wrapper">
-                        <div class="group-logo"></div>
-                    </div>
-                </div>
-
-                <!-- Pearton / UF -->
-                <div class="hub-card group-card">
-                    <div class="group-card-main">
-                        <div class="hub-card-title">Pearton Group</div>
-                        <p class="group-affiliation" style="font-weight:600;">
-                            University of Florida (UF)
-                        </p>
-                        <p class="group-description">
-                            Defect spectroscopy, etching, and reliability studies in β-Ga₂O₃ and related UWBG materials.
-                        </p>
-                        <a class="topic-link" href="#">Group Page</a>
-                    </div>
-                    <div class="group-logo-wrapper">
-                        <div class="group-logo"></div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-        <!-- ======================= -->
-        <!-- Other Hubs -->
-        <!-- ======================= -->
-        <div class="section">
-            <h2>Other Research Hubs</h2>
-            <p>Explore related semiconductor fields.</p>
-
-            <div class="scroll-row">
-
-                <div class="hub-card">
-                    <div class="hub-card-title">GaN & AlGaN</div>
-                    <p class="hub-card-desc">Polarization engineering, HEMTs.</p>
-                    <a class="topic-link" href="#">Open Hub</a>
-                </div>
-
-                <div class="hub-card">
-                    <div class="hub-card-title">Power Devices</div>
-                    <p class="hub-card-desc">Vertical devices, drift engineering.</p>
-                    <a class="topic-link" href="#">Open Hub</a>
-                </div>
-
-                <div class="hub-card">
-                    <div class="hub-card-title">Growth Systems</div>
-                    <p class="hub-card-desc">MBE / MOCVD / LPCVD / HVPE.</p>
-                    <a class="topic-link" href="#">Open Hub</a>
-                </div>
-
-            </div>
-        </div>
-
-        <a class="back-link" href="../../index.html">← Back to Homepage</a>
-
     </div>
+
+    <!-- Know Your Peers -->
+    <div class="section">
+        <h2>Know Your Peers</h2>
+
+        <p class="section-quote">
+            “If I am walking with two other men, each of them will serve as my teacher.” — Confucius
+        </p>
+
+        <p class="section-subtitle">
+            Leading β-Ga₂O₃ materials and device research teams across the globe.
+        </p>
+
+        <div class="scroll-row">
+
+            <div class="hub-card group-card">
+                <div class="hub-card-title">Bhuiyan Group</div>
+                <p class="group-affiliation"><strong>University of Massachusetts Lowell</strong></p>
+                <p class="group-description">
+                    LPCVD-grown β-Ga₂O₃ and vertical power devices.
+                </p>
+                <a class="topic-link" href="#">Group Page</a>
+            </div>
+
+            <div class="hub-card group-card">
+                <div class="hub-card-title">Zhao Labs</div>
+                <p class="group-affiliation"><strong>The Ohio State University</strong></p>
+                <p class="group-description">
+                    MOCVD epitaxy and defect engineering.
+                </p>
+                <a class="topic-link" href="#">Group Page</a>
+            </div>
+
+            <div class="hub-card group-card">
+                <div class="hub-card-title">Krishnamoorthy Group</div>
+                <p class="group-affiliation"><strong>UC Santa Barbara</strong></p>
+                <p class="group-description">
+                    Device physics and breakdown engineering.
+                </p>
+                <a class="topic-link" href="#">Group Page</a>
+            </div>
+
+            <div class="hub-card group-card">
+                <div class="hub-card-title">Pearton Group</div>
+                <p class="group-affiliation"><strong>University of Florida</strong></p>
+                <p class="group-description">
+                    Defect spectroscopy and reliability.
+                </p>
+                <a class="topic-link" href="#">Group Page</a>
+            </div>
+
+        </div>
+    </div>
+
+    <a class="back-link" href="../../index.html">← Back to Portfolio</a>
+
+</div>
 
 </body>
 </html>
