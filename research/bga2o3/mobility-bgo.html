@@ -8,14 +8,15 @@
 
     <style>
         :root {
-            --bg: #f5f7fa;
-            --card-bg: #ffffff;
-            --border: #e5e7eb;
-            --accent: #2563eb;
-            --accent-soft: #eff6ff;
-            --text-main: #111827;
-            --text-muted: #6b7280;
-            --shadow-soft: 0 2px 6px rgba(0, 0, 0, 0.06);
+            /* Dark theme variables (content unchanged; styling only) */
+            --bg: #0b1020;
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --border: rgba(255, 255, 255, 0.14);
+            --accent: #60a5fa;
+            --accent-soft: rgba(96, 165, 250, 0.14);
+            --text-main: #e5e7eb;
+            --text-muted: rgba(229, 231, 235, 0.72);
+            --shadow-soft: 0 6px 18px rgba(0, 0, 0, 0.35);
             --radius: 10px;
         }
 
@@ -27,7 +28,14 @@
             margin: 0;
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
                          Roboto, Helvetica, Arial, sans-serif;
-            background: var(--bg);
+
+            /* Dark gradient background (no images) — different tone from hub page */
+            background:
+                radial-gradient(circle at 18% 22%, rgba(255, 140, 80, 0.10), transparent 42%),
+                radial-gradient(circle at 82% 28%, rgba(120, 80, 255, 0.10), transparent 46%),
+                linear-gradient(140deg, #070a14 0%, #0b1228 55%, #070a14 100%);
+            background-attachment: fixed;
+
             color: var(--text-main);
         }
 
@@ -193,17 +201,13 @@
             display: flex;
             gap: 1rem;
             align-items: stretch;
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            transition: box-shadow 0.15s ease;
         }
 
-        .paper-card:nth-child(1) { transform: translateX(0); }
-        .paper-card:nth-child(2) { transform: translateX(10px); }
-        .paper-card:nth-child(3) { transform: translateX(20px); }
-        .paper-card:nth-child(4) { transform: translateX(30px); }
+        /* Removed per-card offset (no translateX) */
 
         .paper-card:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            transform: translateX(0);
+            box-shadow: 0 10px 26px rgba(0, 0, 0, 0.45);
         }
 
         .paper-main { flex: 1; }
