@@ -210,6 +210,15 @@
       color: var(--muted);
       line-height: 1.5;
     }
+
+    .error{
+      margin-top: 1rem;
+      padding: 0.9rem 1rem;
+      border-radius: 14px;
+      border: 1px solid rgba(248,113,113,0.35);
+      background: rgba(248,113,113,0.10);
+      color: rgba(254,226,226,0.92);
+    }
   </style>
 </head>
 
@@ -225,6 +234,7 @@
   </div>
 
   <div class="grid" id="grid"></div>
+  <div class="error" id="error" style="display:none;"></div>
 </div>
 
 <div class="scrim" id="scrim"></div>
@@ -248,6 +258,7 @@
   const panel = document.getElementById("panel");
   const scrim = document.getElementById("scrim");
   const closeBtn = document.getElementById("closeBtn");
+  const errBox = document.getElementById("error");
 
   const panelTitle = document.getElementById("panelTitle");
   const panelImg = document.getElementById("panelImg");
@@ -262,18 +273,41 @@
     }[c]));
   }
 
+  function formatDatePretty(isoDate){
+    if (!isoDate) return "";
+    const d = new Date(isoDate);
+    if (isNaN(d)) return isoDate;
+    return d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+  }
+
   async function loadItems(){
-    const res = await fetch("items.json", { cache: "no-store" });
-    ITEMS = await res.json();
-    render();
+    try{
+      const res = await fetch("items.json", { cache: "no-store" });
+      if (!res.ok) throw new Error(`HTTP ${res.status} loading items.json`);
+      ITEMS = await res.json();
+
+      // Display newest first (expects ISO dates like YYYY-MM-DD)
+      if (Array.isArray(ITEMS)) {
+        ITEMS.sort((a, b) => new Date(b.dateMade || 0) - new Date(a.dateMade || 0));
+      }
+
+      render();
+    } catch (e){
+      errBox.style.display = "block";
+      errBox.textContent =
+        "Could not load items.json. If you are opening this file directly (file://), fetch may be blocked. " +
+        "Run a local server or host it. Error: " + e.message;
+    }
   }
 
   function render(){
+    if (!Array.isArray(ITEMS)) return;
+
     grid.innerHTML = ITEMS.map((item, i) => `
-      <div class="card ${item.orientation || "horizontal"}" data-i="${i}" tabindex="0">
-        <div class="card-media" style="background-image:url('${escapeHtml(item.image)}')"></div>
+      <div class="card ${escapeHtml(item.orientation || "horizontal")}" data-i="${i}" tabindex="0">
+        <div class="card-media" style="background-image:url('${escapeHtml(item.image || "")}')"></div>
         <div class="card-overlay"></div>
-        <div class="card-title">${escapeHtml(item.title)}</div>
+        <div class="card-title">${escapeHtml(item.title || "")}</div>
       </div>
     `).join("");
   }
@@ -282,7 +316,7 @@
     panelTitle.textContent = item.title || "";
     panelImg.src = item.image || "";
     panelDesc.textContent = item.shortDescription || "";
-    panelDateMade.textContent = item.dateMade ? `Date Crafted: ${item.dateMade}` : "";
+    panelDateMade.textContent = item.dateMade ? `Date Crafted: ${formatDatePretty(item.dateMade)}` : "";
     panel.classList.add("open");
     scrim.classList.add("open");
     document.body.style.overflow = "hidden";
@@ -297,6 +331,14 @@
   grid.addEventListener("click", e => {
     const c = e.target.closest(".card");
     if (!c) return;
+    openPanel(ITEMS[c.dataset.i]);
+  });
+
+  grid.addEventListener("keydown", e => {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    const c = e.target.closest(".card");
+    if (!c) return;
+    e.preventDefault();
     openPanel(ITEMS[c.dataset.i]);
   });
 
