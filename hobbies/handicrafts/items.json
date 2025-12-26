@@ -1,0 +1,23 @@
+[
+  {
+    "title": "Shahid Minar Miniature",
+    "image": "shahidminar.jpeg",
+    "orientation": "vertical",
+    "dateMade": "2025-01-15",
+    "shortDescription": "A handmade miniature inspired by the Shaheed Minar with layered construction and hand-finished details."
+  },
+  {
+    "title": "Carved Wooden Frame",
+    "image": "wooden-frame.jpg",
+    "orientation": "horizontal",
+    "dateMade": "2024-11-02",
+    "shortDescription": "Decorative carved frame with a warm stain finish and sealed protective coat."
+  },
+  {
+    "title": "Clay Ornament Set",
+    "image": "clay-ornaments.jpg",
+    "orientation": "horizontal",
+    "dateMade": "2024-12-18",
+    "shortDescription": "A small set of hand-shaped clay ornaments painted for a clean matte handmade look."
+  }
+]
