@@ -1,0 +1,352 @@
+<!-- File: games.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Games</title>
+
+  <style>
+    :root{
+      --bg1:#050712;
+      --bg2:#0b1430;
+      --bg3:#070a14;
+      --glass: rgba(15,23,42,0.70);
+      --border: rgba(148,163,184,0.35);
+      --text: #e5e7eb;
+      --muted: rgba(226,232,240,0.72);
+      --accent: #f59e0b;
+      --shadow: 0 22px 55px rgba(0,0,0,0.55);
+      --r: 18px;
+    }
+
+    *{ box-sizing:border-box; }
+    html, body{ height:100%; }
+
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 14% 22%, rgba(245,158,11,0.16), transparent 55%),
+        radial-gradient(circle at 86% 30%, rgba(139,92,246,0.14), transparent 55%),
+        radial-gradient(circle at 70% 88%, rgba(56,189,248,0.10), transparent 55%),
+        linear-gradient(140deg, var(--bg1) 0%, var(--bg2) 55%, var(--bg3) 100%);
+      background-attachment: fixed;
+    }
+
+    .page{
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.25rem 1.25rem 2.4rem;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1rem 1.1rem;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+    }
+
+    .titleblock h1{
+      margin:0;
+      font-size: clamp(1.35rem, 2.6vw, 1.9rem);
+    }
+
+    .titleblock p{
+      margin: 0.35rem 0 0;
+      color: var(--muted);
+      max-width: 70ch;
+    }
+
+    .back{
+      padding: 0.5rem 0.9rem;
+      border-radius: 999px;
+      border: 1px solid rgba(147,197,253,0.55);
+      background: rgba(2,6,23,0.35);
+      color: #93c5fd;
+      text-decoration:none;
+      height: fit-content;
+    }
+
+    .grid{
+      margin-top: 1rem;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.85rem;
+    }
+
+    @media (max-width: 980px){
+      .grid{ grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px){
+      .topbar{ flex-direction: column; }
+      .grid{ grid-template-columns: 1fr; }
+    }
+
+    .card{
+      position: relative;
+      border-radius: var(--r);
+      overflow:hidden;
+      border: 1px solid var(--border);
+      background: rgba(2,6,23,0.55);
+      box-shadow: 0 18px 45px rgba(0,0,0,0.45);
+      cursor: pointer;
+      transition: transform 0.18s ease;
+    }
+
+    .card.horizontal{ aspect-ratio: 16 / 10; }
+    .card.vertical{ aspect-ratio: 3 / 4; }
+
+    .card:hover{ transform: translateY(-4px); }
+
+    .card-media{
+      position:absolute;
+      inset:0;
+      background-size: cover;
+      background-position: center;
+      filter: brightness(0.8);
+    }
+
+    .card-overlay{
+      position:absolute;
+      inset:0;
+      background: linear-gradient(to top, rgba(2,6,23,0.95), rgba(2,6,23,0.2));
+    }
+
+    .card-title{
+      position:absolute;
+      left: 0.95rem;
+      bottom: 0.9rem;
+      font-size: 1.1rem;
+      font-weight: 650;
+    }
+
+    /* ===== Slide Panel ===== */
+    .scrim{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.18s ease;
+      z-index: 50;
+    }
+
+    .scrim.open{ opacity:1; pointer-events:auto; }
+
+    .panel{
+      position: fixed;
+      top: 0;
+      right: 0;
+      height: 100%;
+      width: min(520px, 92vw);
+      background: rgba(2,6,23,0.75);
+      border-left: 1px solid var(--border);
+      box-shadow: -30px 0 80px rgba(0,0,0,0.6);
+      transform: translateX(100%);
+      transition: transform 0.22s ease;
+      z-index: 60;
+      display:flex;
+      flex-direction: column;
+    }
+
+    .panel.open{ transform: translateX(0); }
+
+    .panel-header{
+      display:flex;
+      justify-content: space-between;
+      padding: 0.9rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .panel-header h2{
+      margin:0;
+      font-size: 1.1rem;
+    }
+
+    .close{
+      background:none;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--text);
+      padding: 0.35rem 0.7rem;
+      cursor:pointer;
+    }
+
+    .panel-body{
+      padding: 0.9rem;
+      overflow:auto;
+    }
+
+    .hero{
+      aspect-ratio: 16 / 10;
+      border-radius: 14px;
+      overflow:hidden;
+      border: 1px solid var(--border);
+      margin-bottom: 0.75rem;
+    }
+
+    .hero img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+    }
+
+    .date-made{
+      margin: 0.25rem 0 0.4rem;
+      font-size: 0.95rem;
+      font-weight: 650;
+      color: rgba(226,232,240,0.9);
+    }
+
+    .desc{
+      margin:0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .error{
+      margin-top: 1rem;
+      padding: 0.9rem 1rem;
+      border-radius: 14px;
+      border: 1px solid rgba(248,113,113,0.35);
+      background: rgba(248,113,113,0.10);
+      color: rgba(254,226,226,0.92);
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="page">
+  <div class="topbar">
+    <div class="titleblock">
+      <h1>Games</h1>
+      <p>Click any project to view details.</p>
+    </div>
+    <a class="back" href="../khans-krafts.html">Back to Khan's Krafts</a>
+  </div>
+
+  <div class="grid" id="grid"></div>
+  <div class="error" id="error" style="display:none;"></div>
+</div>
+
+<div class="scrim" id="scrim"></div>
+
+<aside class="panel" id="panel">
+  <div class="panel-header">
+    <h2 id="panelTitle"></h2>
+    <button class="close" id="closeBtn">Close</button>
+  </div>
+  <div class="panel-body">
+    <div class="hero">
+      <img id="panelImg" src="" alt="" />
+    </div>
+    <h3 class="date-made" id="panelDateMade"></h3>
+    <p class="desc" id="panelDesc"></p>
+  </div>
+</aside>
+
+<script>
+  const grid = document.getElementById("grid");
+  const panel = document.getElementById("panel");
+  const scrim = document.getElementById("scrim");
+  const closeBtn = document.getElementById("closeBtn");
+  const errBox = document.getElementById("error");
+
+  const panelTitle = document.getElementById("panelTitle");
+  const panelImg = document.getElementById("panelImg");
+  const panelDesc = document.getElementById("panelDesc");
+  const panelDateMade = document.getElementById("panelDateMade");
+
+  let ITEMS = [];
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, c => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"
+    }[c]));
+  }
+
+  function formatDatePretty(isoDate){
+    if (!isoDate) return "";
+    const d = new Date(isoDate);
+    if (isNaN(d)) return isoDate;
+    return d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+  }
+
+  async function loadItems(){
+    try{
+      const res = await fetch("items.json", { cache: "no-store" });
+      if (!res.ok) throw new Error(`HTTP ${res.status} loading items.json`);
+      ITEMS = await res.json();
+
+      // Display newest first (expects ISO dates like YYYY-MM-DD)
+      if (Array.isArray(ITEMS)) {
+        ITEMS.sort((a, b) => new Date(b.dateMade || 0) - new Date(a.dateMade || 0));
+      }
+
+      render();
+    } catch (e){
+      errBox.style.display = "block";
+      errBox.textContent =
+        "Could not load items.json. If you are opening this file directly (file://), fetch may be blocked. " +
+        "Run a local server or host it. Error: " + e.message;
+    }
+  }
+
+  function render(){
+    if (!Array.isArray(ITEMS)) return;
+
+    grid.innerHTML = ITEMS.map((item, i) => `
+      <div class="card ${escapeHtml(item.orientation || "horizontal")}" data-i="${i}" tabindex="0">
+        <div class="card-media" style="background-image:url('${escapeHtml(item.image || "")}')"></div>
+        <div class="card-overlay"></div>
+        <div class="card-title">${escapeHtml(item.title || "")}</div>
+      </div>
+    `).join("");
+  }
+
+  function openPanel(item){
+    panelTitle.textContent = item.title || "";
+    panelImg.src = item.image || "";
+    panelDesc.textContent = item.shortDescription || "";
+    panelDateMade.textContent = item.dateMade ? `Date Crafted: ${formatDatePretty(item.dateMade)}` : "";
+    panel.classList.add("open");
+    scrim.classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closePanel(){
+    panel.classList.remove("open");
+    scrim.classList.remove("open");
+    document.body.style.overflow = "";
+  }
+
+  grid.addEventListener("click", e => {
+    const c = e.target.closest(".card");
+    if (!c) return;
+    openPanel(ITEMS[c.dataset.i]);
+  });
+
+  grid.addEventListener("keydown", e => {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    const c = e.target.closest(".card");
+    if (!c) return;
+    e.preventDefault();
+    openPanel(ITEMS[c.dataset.i]);
+  });
+
+  closeBtn.addEventListener("click", closePanel);
+  scrim.addEventListener("click", closePanel);
+
+  loadItems();
+</script>
+
+</body>
+</html>
