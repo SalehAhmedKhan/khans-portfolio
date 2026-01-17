@@ -13,10 +13,20 @@
     "orientation": "horizontal"
   },
   {
-    "title": "Desert Glass Temples",
-    "image": "desert-glass-temples.jpeg",
-    "shortDescription": "Surreal glass-like architecture emerging from dunes, with warm rim lighting and atmospheric haze.",
-    "dateMade": "2025-11-20",
+    "title": "Doran's Map",
+    "image": "dragons.jpeg",
+    "shortDescription": [
+      "When the Shadow Lord’s Ak-Baba swept across Deltora, the seven dragons were hunted almost to extinction. When only one dragon remained in each gem territory, Doran the Dragonlover sought them out and convinced them to sleep, hidden and sworn not to take advantage of one another, until a king wearing the Belt of Deltora would call them back.",
+      "The diamond dragon endured through loss rather than dominance. Nearly destroyed, its legacy survived through its young, pale fire reflecting endurance and survival instead of raw power.",
+      "The emerald dragon rose from high places with fierce pride, its spines bristling and eyes blazing green. Honour-bound yet quick to anger, it was as unyielding as the mountains it claimed.",
+      "The lapis-lazuli dragon cut through the sky like a shard of night, its blue fire scattered like stars. Swift, sharp-tongued, and fearless, it was a creature of height and hunt rather than patience.",
+      "The topaz dragon bore the scars of open war, vast and golden, wings torn yet unbroken. Even wounded, it fought on, carrying the weight of wide skies and relentless endurance.",
+      "The opal dragon was overwhelmed during the great slaughter, remembered for flame that shimmered through every colour. Rare and unstable, it was neither simple nor easily mastered.",
+      "The ruby dragon ruled land, sea, and sky alike, its scarlet wings cutting above cliffs and waves. Sleek and watchful, its fire was tied as much to wind and water as to flame.",
+      "The amethyst dragon was buried and dragged toward death in the dunes, slow to rise and slow to heal. Its purple fire returned only with patience, truth, and time.",
+      "They were never united by friendship, yet together they formed the living balance of Deltora. When they vanished into sleep, the land weakened; when they began to wake, the world remembered what it had lost."
+    ]
+    "dateMade": "2025-01-20",
     "orientation": "horizontal"
   },
   {
