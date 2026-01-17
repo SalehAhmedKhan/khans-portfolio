@@ -1,2 +1,30 @@
 [
+  {
+    "title": "When Tomorrow Stops Waiting",
+    "image": "images/aiart/hehasnoname.jpg",
+    "shortDescription": "Those who waste their hours never hear it coming—but the moment they whisper “I’ll do it later,” it begins to listen.",
+    "dateMade": "2025-08-04",
+    "orientation": "horizontal"
+  },
+  {
+    "title": "Desert Glass Temples",
+    "image": "images/aiart/desert-glass-temples.jpg",
+    "shortDescription": "Surreal glass-like architecture emerging from dunes, with warm rim lighting and atmospheric haze.",
+    "dateMade": "2025-11-20",
+    "orientation": "horizontal"
+  },
+  {
+    "title": "Portrait Study: Ember",
+    "image": "images/aiart/portrait-ember.jpg",
+    "shortDescription": "Character portrait with painterly texture and soft depth-of-field, tuned for balanced skin tones and controlled highlights.",
+    "dateMade": "2025-10-09",
+    "orientation": "horizontal"
+  },
+  {
+    "title": "Mythic River Guardian",
+    "image": "images/aiart/river-guardian.jpg",
+    "shortDescription": "A folkloric guardian figure shaped by water and mist, blending mythic motifs with modern concept-art composition.",
+    "dateMade": "2025-09-14",
+    "orientation": "horizontal"
+  }
 ]
