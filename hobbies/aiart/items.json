@@ -1,7 +1,7 @@
 [
   {
     "title": "When Tomorrow Stops Waiting",
-    "image": "images/aiart/hehasnoname.jpeg",
+    "image": "hehasnoname.jpeg",
     "shortDescription": [
       "It was once a person, but no one remembers who. All that’s known is that it lived a life built on hesitation—endless plans, endless dreams, and endless delays until even time grew tired of waiting. When death finally reached that unfinished soul, there was nothing whole enough to claim. From that void of abandoned moments, it formed—something born not from malice, but from every “later” that was never fulfilled. Its true name has faded from all memory; only the unease it brings remains.",
       "Its body resembles a fossilized nightmare: corroded bronze fused with decaying moss, its frame tangled in ancient cobwebs and centuries of neglect. Where a face should be, writhing tendrils spill outward, searching blindly through the air as though hunting for the future it was denied. Its hollow eye sockets swallow light instead of reflecting it, and a dying glow churns within its chest—a trapped remnant of time that can no longer move forward.",
@@ -14,21 +14,21 @@
   },
   {
     "title": "Desert Glass Temples",
-    "image": "images/aiart/desert-glass-temples.jpeg",
+    "image": "desert-glass-temples.jpeg",
     "shortDescription": "Surreal glass-like architecture emerging from dunes, with warm rim lighting and atmospheric haze.",
     "dateMade": "2025-11-20",
     "orientation": "horizontal"
   },
   {
     "title": "Portrait Study: Ember",
-    "image": "images/aiart/portrait-ember.jpeg",
+    "image": "portrait-ember.jpeg",
     "shortDescription": "Character portrait with painterly texture and soft depth-of-field, tuned for balanced skin tones and controlled highlights.",
     "dateMade": "2025-10-09",
     "orientation": "horizontal"
   },
   {
     "title": "Mythic River Guardian",
-    "image": "images/aiart/river-guardian.jpeg",
+    "image": "river-guardian.jpeg",
     "shortDescription": "A folkloric guardian figure shaped by water and mist, blending mythic motifs with modern concept-art composition.",
     "dateMade": "2025-09-14",
     "orientation": "horizontal"
