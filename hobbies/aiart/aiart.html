@@ -209,6 +209,7 @@
       margin:0;
       color: var(--muted);
       line-height: 1.5;
+      white-space: pre-line;
     }
 
     .error{
@@ -312,10 +313,15 @@
     `).join("");
   }
 
+  function getDescriptionText(desc){
+    if (Array.isArray(desc)) return desc.join("\n\n");
+    return desc || "";
+  }
+
   function openPanel(item){
     panelTitle.textContent = item.title || "";
     panelImg.src = item.image || "";
-    panelDesc.textContent = item.shortDescription || "";
+    panelDesc.textContent = getDescriptionText(item.shortDescription);
     panelDateMade.textContent = item.dateMade ? `Date Crafted: ${formatDatePretty(item.dateMade)}` : "";
     panel.classList.add("open");
     scrim.classList.add("open");
