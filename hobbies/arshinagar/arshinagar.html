@@ -44,6 +44,7 @@
     .topbar{
       display:flex;
       justify-content: space-between;
+      align-items: flex-start;
       gap: 1rem;
       padding: 1rem 1.1rem;
       background: var(--glass);
@@ -51,6 +52,12 @@
       border-radius: var(--r);
       box-shadow: var(--shadow);
       backdrop-filter: blur(16px);
+    }
+
+    /* ✅ Make the text block actually take the available width */
+    .titleblock{
+      flex: 1 1 auto;
+      min-width: 0;
     }
 
     .titleblock h1{
@@ -61,10 +68,11 @@
     .titleblock p{
       margin: 0.35rem 0 0;
       color: var(--muted);
-      max-width: 70ch;
+      max-width: none; /* ✅ remove the artificial 70ch limit */
     }
 
     .back{
+      flex: 0 0 auto;
       padding: 0.5rem 0.9rem;
       border-radius: 999px;
       border: 1px solid rgba(147,197,253,0.55);
@@ -72,6 +80,8 @@
       color: #93c5fd;
       text-decoration:none;
       height: fit-content;
+      white-space: nowrap;
+      align-self: flex-start;
     }
 
     .grid{
@@ -87,6 +97,7 @@
     @media (max-width: 640px){
       .topbar{ flex-direction: column; }
       .grid{ grid-template-columns: 1fr; }
+      .back{ align-self: flex-start; }
     }
 
     .card{
@@ -229,7 +240,7 @@
   <div class="topbar">
     <div class="titleblock">
       <h1>Project Arshinagar</h1>
-      <p>You’ve arrived at Arshinagar—not quite a place, not quite a destination, but a quiet crossing between memory and imagination. What gathers here moves gently, carrying songs born of soil and devotion, boats carved by tide and hand, and traces of a world shaped by habit, faith, and listening. Some things are shown plainly; others are left unfinished on purpose, like stories meant to be completed by those who linger.</p> 
+      <p>You’ve arrived at Arshinagar—not quite a place, not quite a destination, but a quiet crossing between memory and imagination. What gathers here moves gently, carrying songs born of soil and devotion, boats carved by tide and hand, and traces of a world shaped by habit, faith, and listening. Some things are shown plainly; others are left unfinished on purpose, like stories meant to be completed by those who linger.</p>
       <p>If something here feels familiar, or stirs a question you can’t quite name, I’d love to hear from you. Arshinagar grows through exchange, and conversations often reveal paths I haven’t walked yet. Feel free to reach out—let’s talk, and see where the river takes us next.</p>
     </div>
     <a class="back" href="../khans-krafts.html">Back to Khan's Krafts</a>
@@ -288,7 +299,6 @@
       if (!res.ok) throw new Error(`HTTP ${res.status} loading items.json`);
       ITEMS = await res.json();
 
-      // Display newest first (expects ISO dates like YYYY-MM-DD)
       if (Array.isArray(ITEMS)) {
         ITEMS.sort((a, b) => new Date(b.dateMade || 0) - new Date(a.dateMade || 0));
       }
