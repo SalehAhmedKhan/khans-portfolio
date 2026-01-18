@@ -16,12 +16,10 @@
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
       color: #e5e7eb;
 
-      /* Soothing Islamic green → black gradient */
       background:
         radial-gradient(circle at top left, rgba(16,185,129,0.18), transparent 55%),
         linear-gradient(180deg, #04130c 0%, #020617 100%);
 
-      /* Positioning context */
       position: relative;
     }
 
@@ -39,9 +37,15 @@
       backdrop-filter: blur(14px);
     }
 
+    /* Header row: button + title */
+    .header{
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      margin-bottom: 0.6rem;
+    }
+
     .back-btn{
-      display: inline-block;
-      margin-bottom: 0.9rem;
       padding: 0.35rem 0.85rem;
       border-radius: 999px;
       border: 1px solid rgba(16,185,129,0.45);
@@ -49,6 +53,7 @@
       color: #a7f3d0;
       text-decoration: none;
       font-size: 0.78rem;
+      white-space: nowrap;
     }
 
     .back-btn:hover{
@@ -56,7 +61,7 @@
     }
 
     h1{
-      margin: 0 0 0.6rem;
+      margin: 0;
       font-size: clamp(1.8rem, 4vw, 2.4rem);
       font-weight: 700;
       color: #d1fae5;
@@ -80,12 +85,17 @@
       );
     }
 
-    /* Mobile safety */
     @media (max-width: 640px){
       .container{
         right: 1.2rem;
         left: 1.2rem;
         max-width: unset;
+      }
+
+      .header{
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.6rem;
       }
     }
   </style>
@@ -94,9 +104,10 @@
 <body>
 
   <div class="container">
-    <a class="back-btn" href="../index.html">← Back to Portfolio</a>
-
-    <h1>The Faith Corner</h1>
+    <div class="header">
+      <a class="back-btn" href="../index.html">Back to My Portfolio</a>
+      <h1>The Faith Corner</h1>
+    </div>
 
     <div class="divider"></div>
 
