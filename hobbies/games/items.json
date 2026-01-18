@@ -1,2 +1,13 @@
 [
+  {
+    "title": "Forgotten Checkpoint",
+    "image": "placeholder.jpeg",
+    "shortDescription": [
+      "An environmental concept built around a narrative-first approach to level design.",
+      "The space hints at past conflict through layout, debris placement, and lighting rather than explicit storytelling.",
+      "Designed as a modular gameplay area that can support exploration, combat, or scripted events."
+    ],
+    "dateMade": "2026-01-08",
+    "orientation": "horizontal"
+  }
 ]
