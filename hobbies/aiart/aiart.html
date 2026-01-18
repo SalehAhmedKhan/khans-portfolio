@@ -140,32 +140,30 @@
 
     .scrim.open{ opacity:1; pointer-events:auto; }
 
-    /* ✅ CHANGED: center modal panel (still uses .open class, no JS changes) */
     .panel{
       position: fixed;
       top: 50%;
       left: 50%;
-      height: min(88vh, 820px);
-      width: min(860px, 94vw);
-      background: rgba(2,6,23,0.78);
+      transform: translate(50%, -50%);
+      height: min(86vh, 720px);
+      width: min(980px, 94vw);
+      background: rgba(2,6,23,0.75);
       border: 1px solid var(--border);
+      box-shadow: 0 22px 70px rgba(0,0,0,0.65);
       border-radius: var(--r);
-      box-shadow: 0 26px 90px rgba(0,0,0,0.65);
-      transform: translate(-50%, -50%) scale(0.98);
       opacity: 0;
       pointer-events: none;
-      transition: transform 0.22s ease, opacity 0.18s ease;
+      transition: opacity 0.18s ease, transform 0.18s ease;
       z-index: 60;
       display:flex;
       flex-direction: column;
-      overflow: hidden; /* keep rounded corners clean */
-      backdrop-filter: blur(14px);
+      backdrop-filter: blur(16px);
     }
 
     .panel.open{
       opacity: 1;
       pointer-events: auto;
-      transform: translate(-50%, -50%) scale(1);
+      transform: translate(-50%, -50%);
     }
 
     .panel-header{
@@ -174,7 +172,6 @@
       align-items: center;
       padding: 0.9rem;
       border-bottom: 1px solid var(--border);
-      flex: 0 0 auto;
     }
 
     .panel-header h2{
@@ -191,36 +188,49 @@
       cursor:pointer;
     }
 
-    /* ✅ CHANGED: body scrolls, image stays sticky */
+    /* === 2-column panel body === */
     .panel-body{
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 1rem;
       padding: 0.9rem;
-      overflow: auto;
       flex: 1 1 auto;
+      overflow: hidden;
+      min-height: 0;
     }
 
-    .hero{
-      aspect-ratio: 16 / 10;
+    @media (max-width: 860px){
+      .panel{
+        width: min(860px, 94vw);
+      }
+      .panel-body{
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .panel-media{
       border-radius: 14px;
       overflow:hidden;
       border: 1px solid var(--border);
-      margin-bottom: 0.75rem;
-
-      /* ✅ sticky image: stays visible while text scrolls */
-      position: sticky;
-      top: 0;
-      z-index: 2;
-      background: rgba(2,6,23,0.78);
+      background: rgba(2,6,23,0.6);
+      min-height: 0;
     }
 
-    .hero img{
+    .panel-media img{
       width:100%;
       height:100%;
       object-fit: cover;
       display:block;
     }
 
+    .panel-content{
+      overflow-y: auto;
+      padding-right: 0.25rem;
+      min-height: 0;
+    }
+
     .date-made{
-      margin: 0.25rem 0 0.4rem;
+      margin: 0.25rem 0 0.6rem;
       font-size: 0.95rem;
       font-weight: 650;
       color: rgba(226,232,240,0.9);
@@ -230,7 +240,7 @@
       margin:0;
       color: var(--muted);
       line-height: 1.5;
-      white-space: pre-line; /* keeps paragraph breaks from \n\n */
+      white-space: pre-line;
     }
 
     .error{
@@ -266,12 +276,16 @@
     <h2 id="panelTitle"></h2>
     <button class="close" id="closeBtn">Close</button>
   </div>
+
   <div class="panel-body">
-    <div class="hero">
+    <div class="panel-media">
       <img id="panelImg" src="" alt="" />
     </div>
-    <h3 class="date-made" id="panelDateMade"></h3>
-    <p class="desc" id="panelDesc"></p>
+
+    <div class="panel-content">
+      <h3 class="date-made" id="panelDateMade"></h3>
+      <p class="desc" id="panelDesc"></p>
+    </div>
   </div>
 </aside>
 
@@ -300,6 +314,11 @@
     const d = new Date(isoDate);
     if (isNaN(d)) return isoDate;
     return d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+  }
+
+  function getDescriptionText(desc){
+    if (Array.isArray(desc)) return desc.join("\n\n");
+    return desc || "";
   }
 
   async function loadItems(){
@@ -332,11 +351,6 @@
         <div class="card-title">${escapeHtml(item.title || "")}</div>
       </div>
     `).join("");
-  }
-
-  function getDescriptionText(desc){
-    if (Array.isArray(desc)) return desc.join("\n\n");
-    return desc || "";
   }
 
   function openPanel(item){
