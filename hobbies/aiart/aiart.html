@@ -142,41 +142,36 @@
 
     .panel{
       position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(50%, -50%);
-      height: min(86vh, 720px);
-      width: min(980px, 94vw);
-      background: rgba(2,6,23,0.75);
+      inset: 6vh 6vw;
+      background: rgba(2,6,23,0.92);
       border: 1px solid var(--border);
-      box-shadow: 0 22px 70px rgba(0,0,0,0.65);
-      border-radius: var(--r);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.18s ease, transform 0.18s ease;
-      z-index: 60;
+      border-radius: 20px;
+      box-shadow: var(--shadow);
       display:flex;
       flex-direction: column;
-      backdrop-filter: blur(16px);
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.96);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      z-index: 60;
     }
 
     .panel.open{
       opacity: 1;
       pointer-events: auto;
-      transform: translate(-50%, -50%);
+      transform: scale(1);
     }
 
     .panel-header{
       display:flex;
       justify-content: space-between;
-      align-items: center;
-      padding: 0.9rem;
+      padding: 1rem 1.2rem;
       border-bottom: 1px solid var(--border);
     }
 
     .panel-header h2{
       margin:0;
-      font-size: 1.1rem;
+      font-size: 1.25rem;
     }
 
     .close{
@@ -184,53 +179,42 @@
       border: 1px solid var(--border);
       border-radius: 999px;
       color: var(--text);
-      padding: 0.35rem 0.7rem;
+      padding: 0.35rem 0.8rem;
       cursor:pointer;
     }
 
-    /* === 2-column panel body === */
     .panel-body{
-      display: grid;
-      grid-template-columns: 1fr 1.2fr;
+      display:grid;
+      grid-template-columns: 1.1fr 1fr;
       gap: 1rem;
-      padding: 0.9rem;
-      flex: 1 1 auto;
+      padding: 1rem;
+      height: 100%;
       overflow: hidden;
-      min-height: 0;
     }
 
-    @media (max-width: 860px){
-      .panel{
-        width: min(860px, 94vw);
-      }
-      .panel-body{
-        grid-template-columns: 1fr;
-      }
+    .panel-media{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
     }
 
+    /* ✅ FIXED IMAGE BEHAVIOR */
     .panel-media img{
       width:100%;
       height:auto;
-      max-height: 100%;
+      max-height:100%;
       object-fit: contain;
       display:block;
     }
 
-    .panel-media img{
-      width:100%;
-      height:100%;
-      object-fit: cover;
-      display:block;
-    }
-
-    .panel-content{
-      overflow-y: auto;
-      padding-right: 0.25rem;
-      min-height: 0;
+    .panel-text{
+      overflow:auto;
+      padding-right: 0.4rem;
     }
 
     .date-made{
-      margin: 0.25rem 0 0.6rem;
+      margin: 0 0 0.6rem;
       font-size: 0.95rem;
       font-weight: 650;
       color: rgba(226,232,240,0.9);
@@ -239,17 +223,8 @@
     .desc{
       margin:0;
       color: var(--muted);
-      line-height: 1.5;
+      line-height: 1.55;
       white-space: pre-line;
-    }
-
-    .error{
-      margin-top: 1rem;
-      padding: 0.9rem 1rem;
-      border-radius: 14px;
-      border: 1px solid rgba(248,113,113,0.35);
-      background: rgba(248,113,113,0.10);
-      color: rgba(254,226,226,0.92);
     }
   </style>
 </head>
@@ -266,7 +241,6 @@
   </div>
 
   <div class="grid" id="grid"></div>
-  <div class="error" id="error" style="display:none;"></div>
 </div>
 
 <div class="scrim" id="scrim"></div>
@@ -276,14 +250,12 @@
     <h2 id="panelTitle"></h2>
     <button class="close" id="closeBtn">Close</button>
   </div>
-
   <div class="panel-body">
     <div class="panel-media">
       <img id="panelImg" src="" alt="" />
     </div>
-
-    <div class="panel-content">
-      <h3 class="date-made" id="panelDateMade"></h3>
+    <div class="panel-text">
+      <div class="date-made" id="panelDateMade"></div>
       <p class="desc" id="panelDesc"></p>
     </div>
   </div>
@@ -294,7 +266,6 @@
   const panel = document.getElementById("panel");
   const scrim = document.getElementById("scrim");
   const closeBtn = document.getElementById("closeBtn");
-  const errBox = document.getElementById("error");
 
   const panelTitle = document.getElementById("panelTitle");
   const panelImg = document.getElementById("panelImg");
@@ -303,52 +274,25 @@
 
   let ITEMS = [];
 
-  function escapeHtml(s){
-    return String(s).replace(/[&<>"']/g, c => ({
-      "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"
-    }[c]));
-  }
-
-  function formatDatePretty(isoDate){
-    if (!isoDate) return "";
-    const d = new Date(isoDate);
-    if (isNaN(d)) return isoDate;
-    return d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
-  }
-
-  function getDescriptionText(desc){
-    if (Array.isArray(desc)) return desc.join("\n\n");
-    return desc || "";
+  function formatDatePretty(iso){
+    if(!iso) return "";
+    const d = new Date(iso);
+    return isNaN(d) ? iso : d.toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"});
   }
 
   async function loadItems(){
-    try{
-      const res = await fetch("items.json", { cache: "no-store" });
-      if (!res.ok) throw new Error(`HTTP ${res.status} loading items.json`);
-      ITEMS = await res.json();
-
-      // Display newest first (expects ISO dates like YYYY-MM-DD)
-      if (Array.isArray(ITEMS)) {
-        ITEMS.sort((a, b) => new Date(b.dateMade || 0) - new Date(a.dateMade || 0));
-      }
-
-      render();
-    } catch (e){
-      errBox.style.display = "block";
-      errBox.textContent =
-        "Could not load items.json. If you are opening this file directly (file://), fetch may be blocked. " +
-        "Run a local server or host it. Error: " + e.message;
-    }
+    const res = await fetch("items.json",{cache:"no-store"});
+    ITEMS = await res.json();
+    ITEMS.sort((a,b)=>new Date(b.dateMade||0)-new Date(a.dateMade||0));
+    render();
   }
 
   function render(){
-    if (!Array.isArray(ITEMS)) return;
-
-    grid.innerHTML = ITEMS.map((item, i) => `
-      <div class="card ${escapeHtml(item.orientation || "horizontal")}" data-i="${i}" tabindex="0">
-        <div class="card-media" style="background-image:url('${escapeHtml(item.image || "")}')"></div>
+    grid.innerHTML = ITEMS.map((item,i)=>`
+      <div class="card ${item.orientation||"horizontal"}" data-i="${i}">
+        <div class="card-media" style="background-image:url('${item.image}')"></div>
         <div class="card-overlay"></div>
-        <div class="card-title">${escapeHtml(item.title || "")}</div>
+        <div class="card-title">${item.title}</div>
       </div>
     `).join("");
   }
@@ -356,35 +300,30 @@
   function openPanel(item){
     panelTitle.textContent = item.title || "";
     panelImg.src = item.image || "";
-    panelDesc.textContent = getDescriptionText(item.shortDescription);
-    panelDateMade.textContent = item.dateMade ? `Date Crafted: ${formatDatePretty(item.dateMade)}` : "";
+    panelDesc.textContent = Array.isArray(item.shortDescription)
+      ? item.shortDescription.join("\n\n")
+      : item.shortDescription || "";
+    panelDateMade.textContent = item.dateMade
+      ? `Date Crafted: ${formatDatePretty(item.dateMade)}`
+      : "";
     panel.classList.add("open");
     scrim.classList.add("open");
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow="hidden";
   }
 
   function closePanel(){
     panel.classList.remove("open");
     scrim.classList.remove("open");
-    document.body.style.overflow = "";
+    document.body.style.overflow="";
   }
 
-  grid.addEventListener("click", e => {
-    const c = e.target.closest(".card");
-    if (!c) return;
-    openPanel(ITEMS[c.dataset.i]);
+  grid.addEventListener("click",e=>{
+    const c=e.target.closest(".card");
+    if(c) openPanel(ITEMS[c.dataset.i]);
   });
 
-  grid.addEventListener("keydown", e => {
-    if (e.key !== "Enter" && e.key !== " ") return;
-    const c = e.target.closest(".card");
-    if (!c) return;
-    e.preventDefault();
-    openPanel(ITEMS[c.dataset.i]);
-  });
-
-  closeBtn.addEventListener("click", closePanel);
-  scrim.addEventListener("click", closePanel);
+  closeBtn.addEventListener("click",closePanel);
+  scrim.addEventListener("click",closePanel);
 
   loadItems();
 </script>
