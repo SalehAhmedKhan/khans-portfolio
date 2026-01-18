@@ -1,2 +1,13 @@
 [
+  {
+    "title": "Mechanical Shrine",
+    "image": "placeholder.jpeg",
+    "shortDescription": [
+      "A hard-surface modeling study focused on layered mechanical components and worn industrial materials.",
+      "The piece explores balance between symmetry and imperfection, using subtle bevels and edge wear to avoid a sterile look.",
+      "Lighting was kept minimal to emphasize form, silhouette, and material response rather than surface detail."
+    ],
+    "dateMade": "2026-01-10",
+    "orientation": "horizontal"
+  }
 ]
