@@ -1,13 +1,24 @@
 [
   {
-    "title": "Arshinagar: Riverside Memory",
-    "image": "placeholder.jpeg",
+    "title": "Boats",
+    "image": "moyurponkhi-nao.jpeg",
     "shortDescription": [
       "A visual narrative piece inspired by places that exist more vividly in memory than in reality.",
       "Architecture and landscape elements are intentionally softened, blending realism with nostalgia.",
       "The composition prioritizes mood and emotional resonance over strict spatial accuracy."
     ],
     "dateMade": "2026-01-03",
+    "orientation": "horizontal"
+  },
+  {
+    "title": "Songs",
+    "image": "river-songs.jpg",
+    "shortDescription": [
+      "Bengal’s native songs are rooted in soil and spirit, shaped by folk memory, devotion, and the quiet poetry of rural life—flowing through river traditions and boat cultures where music rose with the oars and drifted with the tide.",
+      "Song Genres: Vhatiyali, Lalon's Songs, Bhaoal, Nazrul's Songs",
+      ""
+    ],
+    "dateMade": "2026-01-17",
     "orientation": "horizontal"
   }
 ]
