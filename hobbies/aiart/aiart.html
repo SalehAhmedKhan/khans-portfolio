@@ -140,29 +140,41 @@
 
     .scrim.open{ opacity:1; pointer-events:auto; }
 
+    /* ✅ CHANGED: center modal panel (still uses .open class, no JS changes) */
     .panel{
       position: fixed;
-      top: 0;
-      right: 0;
-      height: 100%;
-      width: min(520px, 92vw);
-      background: rgba(2,6,23,0.75);
-      border-left: 1px solid var(--border);
-      box-shadow: -30px 0 80px rgba(0,0,0,0.6);
-      transform: translateX(100%);
-      transition: transform 0.22s ease;
+      top: 50%;
+      left: 50%;
+      height: min(88vh, 820px);
+      width: min(860px, 94vw);
+      background: rgba(2,6,23,0.78);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      box-shadow: 0 26px 90px rgba(0,0,0,0.65);
+      transform: translate(-50%, -50%) scale(0.98);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.22s ease, opacity 0.18s ease;
       z-index: 60;
       display:flex;
       flex-direction: column;
+      overflow: hidden; /* keep rounded corners clean */
+      backdrop-filter: blur(14px);
     }
 
-    .panel.open{ transform: translateX(0); }
+    .panel.open{
+      opacity: 1;
+      pointer-events: auto;
+      transform: translate(-50%, -50%) scale(1);
+    }
 
     .panel-header{
       display:flex;
       justify-content: space-between;
+      align-items: center;
       padding: 0.9rem;
       border-bottom: 1px solid var(--border);
+      flex: 0 0 auto;
     }
 
     .panel-header h2{
@@ -179,9 +191,11 @@
       cursor:pointer;
     }
 
+    /* ✅ CHANGED: body scrolls, image stays sticky */
     .panel-body{
       padding: 0.9rem;
-      overflow:auto;
+      overflow: auto;
+      flex: 1 1 auto;
     }
 
     .hero{
@@ -190,12 +204,19 @@
       overflow:hidden;
       border: 1px solid var(--border);
       margin-bottom: 0.75rem;
+
+      /* ✅ sticky image: stays visible while text scrolls */
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: rgba(2,6,23,0.78);
     }
 
     .hero img{
       width:100%;
       height:100%;
       object-fit: cover;
+      display:block;
     }
 
     .date-made{
@@ -209,7 +230,7 @@
       margin:0;
       color: var(--muted);
       line-height: 1.5;
-      white-space: pre-line;
+      white-space: pre-line; /* keeps paragraph breaks from \n\n */
     }
 
     .error{
