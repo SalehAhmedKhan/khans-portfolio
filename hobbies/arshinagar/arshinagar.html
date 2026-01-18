@@ -209,6 +209,7 @@
       margin:0;
       color: var(--muted);
       line-height: 1.5;
+      white-space: pre-line;
     }
 
     .error{
@@ -315,7 +316,9 @@
   function openPanel(item){
     panelTitle.textContent = item.title || "";
     panelImg.src = item.image || "";
-    panelDesc.textContent = item.shortDescription || "";
+    panelDesc.textContent = Array.isArray(item.shortDescription)
+      ? item.shortDescription.join("\n\n")
+      : item.shortDescription || "";
     panelDateMade.textContent = item.dateMade ? `Date Crafted: ${formatDatePretty(item.dateMade)}` : "";
     panel.classList.add("open");
     scrim.classList.add("open");
