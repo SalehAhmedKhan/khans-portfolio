@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Faith Corner</title>
+
+  <style>
+    html, body{
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+
+    body{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      color: #e5e7eb;
+
+      /* Soothing Islamic green → black gradient */
+      background:
+        radial-gradient(circle at top, rgba(16,185,129,0.18), transparent 60%),
+        linear-gradient(180deg, #04130c 0%, #020617 100%);
+    }
+
+    .container{
+      max-width: 720px;
+      padding: 2.2rem 2rem;
+      text-align: center;
+      background: rgba(2,6,23,0.55);
+      border-radius: 18px;
+      border: 1px solid rgba(16,185,129,0.35);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      backdrop-filter: blur(14px);
+    }
+
+    h1{
+      margin: 0 0 0.6rem;
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      font-weight: 700;
+      color: #d1fae5;
+    }
+
+    p{
+      margin: 0.35rem 0;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #cbd5f5;
+    }
+
+    .divider{
+      width: 60px;
+      height: 2px;
+      margin: 1.1rem auto;
+      background: linear-gradient(
+        to right,
+        transparent,
+        #10b981,
+        transparent
+      );
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h1>The Faith Corner</h1>
+
+    <div class="divider"></div>
+
+    <p>
+      A quiet space for reflection, grounding, and remembrance.
+    </p>
+    <p>
+      Here, faith is not argued or displayed — it is simply lived, slowly and sincerely.
+    </p>
+  </div>
+
+</body>
+</html>
