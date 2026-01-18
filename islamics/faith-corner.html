@@ -13,27 +13,46 @@
     }
 
     body{
-      display: flex;
-      align-items: center;
-      justify-content: center;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
       color: #e5e7eb;
 
       /* Soothing Islamic green → black gradient */
       background:
-        radial-gradient(circle at top, rgba(16,185,129,0.18), transparent 60%),
+        radial-gradient(circle at top left, rgba(16,185,129,0.18), transparent 55%),
         linear-gradient(180deg, #04130c 0%, #020617 100%);
+
+      /* Positioning context */
+      position: relative;
     }
 
     .container{
+      position: absolute;
+      top: 1.6rem;
+      left: 1.6rem;
+
       max-width: 720px;
       padding: 2.2rem 2rem;
-      text-align: center;
       background: rgba(2,6,23,0.55);
       border-radius: 18px;
       border: 1px solid rgba(16,185,129,0.35);
       box-shadow: 0 20px 60px rgba(0,0,0,0.6);
       backdrop-filter: blur(14px);
+    }
+
+    .back-btn{
+      display: inline-block;
+      margin-bottom: 0.9rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      border: 1px solid rgba(16,185,129,0.45);
+      background: rgba(2,6,23,0.6);
+      color: #a7f3d0;
+      text-decoration: none;
+      font-size: 0.78rem;
+    }
+
+    .back-btn:hover{
+      background: rgba(16,185,129,0.18);
     }
 
     h1{
@@ -53,13 +72,21 @@
     .divider{
       width: 60px;
       height: 2px;
-      margin: 1.1rem auto;
+      margin: 1.1rem 0;
       background: linear-gradient(
         to right,
-        transparent,
         #10b981,
         transparent
       );
+    }
+
+    /* Mobile safety */
+    @media (max-width: 640px){
+      .container{
+        right: 1.2rem;
+        left: 1.2rem;
+        max-width: unset;
+      }
     }
   </style>
 </head>
@@ -67,6 +94,8 @@
 <body>
 
   <div class="container">
+    <a class="back-btn" href="../index.html">← Back to Portfolio</a>
+
     <h1>The Faith Corner</h1>
 
     <div class="divider"></div>
