@@ -127,97 +127,11 @@
       font-weight: 650;
     }
 
-    /* ===== Slide Panel ===== */
-    .scrim{
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.55);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.18s ease;
-      z-index: 50;
-    }
-
-    .scrim.open{ opacity:1; pointer-events:auto; }
-
-    .panel{
-      position: fixed;
-      top: 0;
-      right: 0;
-      height: 100%;
-      width: min(520px, 92vw);
-      background: rgba(2,6,23,0.75);
-      border-left: 1px solid var(--border);
-      box-shadow: -30px 0 80px rgba(0,0,0,0.6);
-      transform: translateX(100%);
-      transition: transform 0.22s ease;
-      z-index: 60;
-      display:flex;
-      flex-direction: column;
-    }
-
-    .panel.open{ transform: translateX(0); }
-
-    .panel-header{
-      display:flex;
-      justify-content: space-between;
-      padding: 0.9rem;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .panel-header h2{
-      margin:0;
-      font-size: 1.1rem;
-    }
-
-    .close{
-      background:none;
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      color: var(--text);
-      padding: 0.35rem 0.7rem;
-      cursor:pointer;
-    }
-
-    .panel-body{
-      padding: 0.9rem;
-      overflow:auto;
-    }
-
-    .hero{
-      aspect-ratio: 16 / 10;
-      border-radius: 14px;
-      overflow:hidden;
-      border: 1px solid var(--border);
-      margin-bottom: 0.75rem;
-    }
-
-    .hero img{
-      width:100%;
-      height:100%;
-      object-fit: cover;
-    }
-
-    .date-made{
-      margin: 0.25rem 0 0.4rem;
-      font-size: 0.95rem;
-      font-weight: 650;
-      color: rgba(226,232,240,0.9);
-    }
-
     .desc{
       margin:0;
       color: var(--muted);
       line-height: 1.5;
-    }
-
-    .error{
-      margin-top: 1rem;
-      padding: 0.9rem 1rem;
-      border-radius: 14px;
-      border: 1px solid rgba(248,113,113,0.35);
-      background: rgba(248,113,113,0.10);
-      color: rgba(254,226,226,0.92);
+      white-space: pre-line;
     }
   </style>
 </head>
@@ -286,7 +200,6 @@
       if (!res.ok) throw new Error(`HTTP ${res.status} loading items.json`);
       ITEMS = await res.json();
 
-      // Display newest first (expects ISO dates like YYYY-MM-DD)
       if (Array.isArray(ITEMS)) {
         ITEMS.sort((a, b) => new Date(b.dateMade || 0) - new Date(a.dateMade || 0));
       }
@@ -315,7 +228,9 @@
   function openPanel(item){
     panelTitle.textContent = item.title || "";
     panelImg.src = item.image || "";
-    panelDesc.textContent = item.shortDescription || "";
+    panelDesc.textContent = Array.isArray(item.shortDescription)
+      ? item.shortDescription.join("\n\n")
+      : item.shortDescription || "";
     panelDateMade.textContent = item.dateMade ? `Date Crafted: ${formatDatePretty(item.dateMade)}` : "";
     panel.classList.add("open");
     scrim.classList.add("open");
