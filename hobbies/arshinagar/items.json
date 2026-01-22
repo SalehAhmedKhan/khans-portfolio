@@ -5,7 +5,7 @@
     "shortDescription": [
       "From narrow dinghis and fishing boats to wide river ferries and cargo crafts, Bengal’s boats were built for tide, trade, and travel. Each design evolved from the rhythm of oars, monsoon waters, and everyday survival.",
       "Slender dinghis skimmed shallow canals, while sturdy koshas and panshis carried nets, grain, and people across open rivers. Large bajras and merchant boats moved slowly with the current, their high hulls shaped for long journeys and heavy loads. Together, these vessels formed a living river economy—quiet, resilient, and deeply woven into daily life.",
-      "Boat Types: Dinghi Nouka, Panshi Nao, Baich er Nouka, Moyurponkhi Nao, Bajra, Shampan, Balam Nouka "
+      "Boat Types: Dinghi Nouka, Panshi Nao, Baich er Nouka, Moyurponkhi Nao, Bajra, Shampan, Balam Nouka"
     ],
     "dateMade": "2026-01-16",
     "orientation": "horizontal"
@@ -15,8 +15,23 @@
     "image": "river-songs.jpg",
     "shortDescription": [
       "Bengal’s native songs are rooted in soil and spirit, shaped by folk memory, devotion, and the quiet poetry of rural life—flowing through river traditions and boat cultures where music rose with the oars and drifted with the tide.",
-      "Song Genres: Vhatiyali, Lalon's Songs, Bhaoal, Nazrul's Songs",
-      ""
+      "Across rivers and villages, these songs carried longing, labor, faith, and resistance—binding people to land and water through shared sound.",
+      "Song Genres: Bhatiyali, Lalon’s Songs, Baul, Nazrul’s Songs"
+    ],
+    "dateMade": "2026-01-17",
+    "orientation": "horizontal"
+  },
+  {
+    "title": "Crafts",
+    "image": "homecrafts.jpg",
+    "shortDescription": [
+      "Threads of silk, cotton, and memory move hand to hand in lamplit rooms, while honey drips from forest dusk and needles quietly stitch lived time into cloth. From river wind to hill mist, labor flows—unbroken—shaping a land that remembers itself through craft.",
+      "Varendra Region (Shores of Chalan Beel): The dry uplands and wetland edges of Varendra supported silk taat weaving alongside pottery, shaal woodcraft, and village metal works. These crafts formed an interdependent system—looms demanded tools, tools shaped clay and wood, and all served an agrarian landscape defined by resilience rather than abundance.",
+      "Sonargaon Outskirts: In the fertile floodplains around Sonargaon, cotton taat weaving flourished beside metal works and pottery, while Nakshi Kantha embroidery emerged within domestic spaces. Here, fine textiles and household crafts reflected proximity to trade routes, courtly demand, and dense settlement life.",
+      "Sundarbans Frontier: At the forest’s edge, craft followed survival. Honey collection defined seasonal labor, supported by golpata-based woodcraft for shelter and tools. Fishing nets and jute craft sustained river and estuary livelihoods, shaped by tides, mangrove ecology, and constant negotiation with the forest.",
+      "Barisal Sandbar: On shifting riverine chars, dried fish preservation anchored subsistence, complemented by shell craft, fishing net making, and jute work. These crafts were portable, adaptive, and responsive to a landscape that appeared, eroded, and reformed with the river’s will.",
+      "Chittagong Coast: As Bengal’s maritime gateway, the coast centered on foreign trade posts that connected local production to distant worlds. Salt processing, fishing nets, and coconut-based woodcraft supported port settlements, blending coastal ecology with long-distance exchange.",
+      "Sylhet Hill Slopes: In the misted hills of Sylhet, tea plantations defined the regional economy, while stonemasons, pottery, and bamboo woodcraft persisted alongside it. These crafts drew directly from hill terrain and forest growth, sustaining everyday life beyond the plantation grid."
     ],
     "dateMade": "2026-01-17",
     "orientation": "horizontal"
