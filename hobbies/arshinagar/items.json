@@ -33,7 +33,22 @@
       "Chittagong Coast: As Bengal’s maritime gateway, the coast centered on foreign trade posts that connected local production to distant worlds. Salt processing, fishing nets, and coconut-based woodcraft supported port settlements, blending coastal ecology with long-distance exchange.",
       "Sylhet Hill Slopes: In the misted hills of Sylhet, tea plantations defined the regional economy, while stonemasons, pottery, and bamboo woodcraft persisted alongside it. These crafts drew directly from hill terrain and forest growth, sustaining everyday life beyond the plantation grid."
     ],
-    "dateMade": "2026-01-17",
+    "dateMade": "2026-01-21",
+    "orientation": "horizontal"
+  },
+  {
+    "title": "Produce",
+    "image": "produce.jpg",
+    "shortDescription": [
+      "Across Bengal, food grew where land, water, and labor allowed it—rooted not in abundance alone, but in careful adaptation. From dry uplands and shifting river sandbars to mangrove frontiers and misted hills, sustenance followed ecology, season, and lived knowledge.",
+      "In the Varendra Region along the shores of Chalan Beel, rice paddies anchored life, followed by winter lentils and bright mustard patches that colored the dry season, while mango and jackfruit trees marked homestead boundaries; oil ghani presses turned mustard seed into daily sustenance.",
+      "Around the Sonargaon outskirts, fertile floodplains sustained rice and lentils alongside banana groves and household vegetable patches, supported by small cattle holdings that supplied milk and strength for agrarian life.",
+      "At the Sundarbans frontier, salt-tolerant rice paddies met tidal waters, where fishing and crab ponds shaped protein intake, vegetable plots rose on higher ground, and deer were kept in managed enclosures reflecting a controlled, frontier relationship with the forest.",
+      "On the shifting Barisal sandbars, broadcast rice adapted to unstable land, sugarcane thrived in fertile silt, fishing remained essential, vegetable patches followed the seasons, and poultry coops provided reliable food amid constant river change.",
+      "Along the Chittagong coast, coconut trees defined the landscape, jum rice cultivation echoed hill-adjacent practices, fishing tied households to the sea, vegetable plots filled daily needs, and goats grazed hardy coastal scrub.",
+      "In the Sylhet hill slopes, tea plantations reshaped land and labor, while betel vines and supari trees flourished in humid shade, vegetables grew near homes, and beekeeping quietly turned forest flowers and garden blooms into honey, completing a food system shaped by hills, rain, and patience."
+    ],
+    "dateMade": "2026-01-22",
     "orientation": "horizontal"
   }
 ]
