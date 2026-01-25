@@ -11,15 +11,14 @@
             margin: 0;
             padding: 0;
             height: 100%;
-            overflow-y: auto;   /* allow vertical scrolling */
-            overflow-x: hidden; /* keep horizontal clean */
+            overflow-y: auto;
+            overflow-x: hidden;
         }
 
         body {
             font-family: Arial, Helvetica, sans-serif;
             color: #e5e7eb;
 
-            /* Background graphic + dark blue tint */
             background:
                 linear-gradient(rgba(15,23,42,0.85), rgba(15,23,42,0.85)),
                 url("ChatGPT Image Dec 8, 2025, 07_22_56 PM.png");
@@ -34,7 +33,6 @@
             flex-direction: column;
         }
 
-        /* ===== Central container (squeezed layout) ===== */
         .container {
             max-width: 1024px;
             margin: 1.2rem auto 0.4rem;
@@ -44,7 +42,6 @@
             gap: 0.9rem;
         }
 
-        /* ===== Shared glass style ===== */
         .glass {
             background: rgba(15,23,42,0.78);
             border-radius: 18px;
@@ -57,10 +54,9 @@
             padding: 1.3rem 1.6rem;
         }
 
-        /* ===== Hero card ===== */
         .hero-card {
             display: flex;
-            align-items: flex-start;   /* text and image aligned to top */
+            align-items: flex-start;
             justify-content: space-between;
             gap: 1.4rem;
         }
@@ -105,10 +101,6 @@
             text-decoration: none;
         }
 
-        .hero-contact a:hover {
-            text-decoration: underline;
-        }
-
         .hero-socials {
             margin: 0.4rem 0 0;
             font-size: 0.84rem;
@@ -120,31 +112,16 @@
             text-decoration: none;
         }
 
-        .hero-socials a:hover {
-            text-decoration: underline;
-        }
-
-        .hero-image-wrapper {
-            flex: 0 0 auto;
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        /* Portrait frame with diagonal edge, fixed size */
         .hero-image {
             width: 240px;
             height: 360px;
             background-image: url("362913277_1456595465179872_8041301197273694670_n (1) - Copy.jpg");
             background-size: cover;
             background-position: center;
-            background-color: #020617;
             border-radius: 16px;
-            overflow: hidden;
-            margin-left: auto;
             clip-path: polygon(18% 0, 100% 0, 100% 100%, 0 100%);
         }
 
-        /* ✅ NEW: Hero action buttons area */
         .hero-actions {
             margin-top: 0.7rem;
         }
@@ -153,75 +130,6 @@
             margin: 0.15rem 0;
             font-size: 0.9rem;
             color: #cbd5f5;
-            line-height: 1.4;
-        }
-
-        /* ===== Tabbed cards section ===== */
-        .tabs {
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* ✅ UPDATED: justified tab labels */
-        .tab-labels {
-            display: flex;
-            justify-content: space-between; /* ✅ spreads buttons evenly */
-            gap: 0.6rem;
-            margin-bottom: 0.7rem;
-            width: 100%;
-            flex-wrap: wrap;
-        }
-
-        /* ✅ UPDATED: tab button is equal width + centered */
-        .tab-label {
-            flex: 1;
-            text-align: center;
-            white-space: nowrap;
-
-            padding: 0.35rem 0.8rem;
-            border-radius: 999px;
-            border: 1px solid rgba(148,163,184,0.5);
-            font-size: 0.82rem;
-            cursor: pointer;
-            background: rgba(15,23,42,0.9);
-            color: #e5e7eb;
-        }
-
-        .tab-label:hover {
-            background: rgba(37,99,235,0.4);
-        }
-
-        .tab-contents {
-            background: rgba(15,23,42,0.9);
-            border-radius: 14px;
-            border: 1px solid rgba(148,163,184,0.35);
-            padding: 0.9rem 1rem;
-            box-shadow: 0 10px 25px rgba(15,23,42,0.6);
-            font-size: 0.84rem;
-            position: relative;
-            min-height: 145px; /* keeps box from jumping in height */
-        }
-
-        .tab-panel {
-            display: none;
-            opacity: 0;
-        }
-
-        .tab-panel h3 {
-            margin: 0 0 0.3rem;
-            font-size: 1rem;
-        }
-
-        .tab-panel p {
-            margin: 0 0 0.4rem;
-            color: #d1d5db;
-        }
-
-        .tab-panel ul {
-            margin: 0.2rem 0 0;
-            padding-left: 1.1rem;
-            color: #cbd5f5;
-            font-size: 0.82rem;
         }
 
         .btn {
@@ -239,17 +147,11 @@
             background: #1d4ed8;
         }
 
-        /* ✅ NEW: muted hero buttons */
         .btn-muted {
             background: rgba(148,163,184,0.18);
             border: 1px solid rgba(148,163,184,0.35);
         }
 
-        .btn-muted:hover {
-            background: rgba(148,163,184,0.28);
-        }
-
-        /* ✅ NEW: button row so two buttons sit side-by-side */
         .btn-row{
             display: flex;
             gap: 0.55rem;
@@ -257,20 +159,48 @@
             align-items: center;
         }
 
-        /* ✅ NEW: Islamic deep/dark green button */
         .btn-faith{
-            background: #064e3b; /* deep dark green */
-        }
-        .btn-faith:hover{
-            background: #065f46;
+            background: #064e3b;
         }
 
-        /* Hide the radio buttons */
         .tabs input[type="radio"] {
             display: none;
         }
 
-        /* Animations */
+        .tab-labels {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.6rem;
+            margin-bottom: 0.7rem;
+            width: 100%;
+            flex-wrap: wrap;
+        }
+
+        .tab-label {
+            flex: 1;
+            text-align: center;
+            white-space: nowrap;
+            padding: 0.35rem 0.8rem;
+            border-radius: 999px;
+            border: 1px solid rgba(148,163,184,0.5);
+            font-size: 0.82rem;
+            cursor: pointer;
+            background: rgba(15,23,42,0.9);
+            color: #e5e7eb;
+        }
+
+        .tab-contents {
+            background: rgba(15,23,42,0.9);
+            border-radius: 14px;
+            border: 1px solid rgba(148,163,184,0.35);
+            padding: 0.9rem 1rem;
+            min-height: 145px;
+        }
+
+        .tab-panel {
+            display: none;
+        }
+
         @keyframes fadeSlideLeft {
             from { opacity: 0; transform: translateX(-12px); }
             to   { opacity: 1; transform: translateX(0); }
@@ -281,273 +211,148 @@
             to   { opacity: 1; transform: translateX(0); }
         }
 
-        /* Show active panel with directional animation */
-        #tab-pubs:checked      ~ .tab-contents #content-pubs {
-            display: block;
-            animation: fadeSlideLeft 0.25s ease forwards;
-        }
-
-        #tab-edu:checked       ~ .tab-contents #content-edu {
-            display: block;
-            animation: fadeSlideLeft 0.25s ease forwards;
-        }
-
-        #tab-research:checked  ~ .tab-contents #content-research {
-            display: block;
-            animation: fadeSlideLeft 0.25s ease forwards;
-        }
-
+        #tab-pubs:checked      ~ .tab-contents #content-pubs,
+        #tab-edu:checked       ~ .tab-contents #content-edu,
         #tab-prof:checked      ~ .tab-contents #content-prof {
             display: block;
-            animation: fadeSlideRight 0.25s ease forwards;
+            animation: fadeSlideLeft 0.25s ease forwards;
         }
 
-        #tab-tools:checked     ~ .tab-contents #content-tools {
-            display: block;
-            animation: fadeSlideRight 0.25s ease forwards;
-        }
-
+        #tab-tools:checked     ~ .tab-contents #content-tools,
+        #tab-research:checked  ~ .tab-contents #content-research,
         #tab-hobbies:checked   ~ .tab-contents #content-hobbies {
             display: block;
             animation: fadeSlideRight 0.25s ease forwards;
         }
 
-        /* Active tab label styling */
-        #tab-pubs:checked      ~ .tab-labels label[for="tab-pubs"],
-        #tab-edu:checked       ~ .tab-labels label[for="tab-edu"],
-        #tab-research:checked  ~ .tab-labels label[for="tab-research"],
-        #tab-prof:checked      ~ .tab-labels label[for="tab-prof"],
-        #tab-tools:checked     ~ .tab-labels label[for="tab-tools"],
-        #tab-hobbies:checked   ~ .tab-labels label[for="tab-hobbies"] {
-            background: #2563eb;
-            border-color: #60a5fa;
-        }
-
-        /* ===== Credit line under cards ===== */
         .page-credit {
             text-align: center;
-            margin-top: 0.3rem;
-            margin-bottom: 0.2rem;
             font-size: 0.78rem;
             color: #cbd5f5;
-            text-shadow: 0 1px 2px rgba(15,23,42,0.9);
-        }
-
-        /* Old footer not used */
-        footer {
-            display: none;
-        }
-
-        @media (max-width: 900px) {
-            html, body {
-                overflow: auto; /* allow scroll on small screens */
-            }
-
-            .hero-card {
-                flex-direction: column-reverse;
-                align-items: flex-start;
-            }
-
-            .hero-image {
-                width: 100%;
-                max-width: 320px;
-                height: 320px;
-                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-            }
-
-            /* ✅ mobile-friendly tab wrap */
-            .tab-labels {
-                justify-content: center;
-            }
-            .tab-label {
-                flex: unset;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .tab-labels {
-                gap: 0.3rem;
-            }
         }
     </style>
 </head>
 
 <body>
 <div class="page">
+<main class="container">
 
-    <main class="container">
+    <!-- HERO CARD -->
+    <section class="glass hero-card">
+        <div class="hero-text">
+            <h1 class="hero-title">Welcome to Khan's Portfolio</h1>
+            <p class="hero-subtitle">Hi, I’m Saleh Ahmed Khan.</p>
 
-        <!-- HERO GLASS PANEL -->
-        <section class="glass hero-card">
-            <div class="hero-text">
-                <h1 class="hero-title">Welcome to Khan's Portfolio</h1>
-                <p class="hero-subtitle">Hi, I’m Saleh Ahmed Khan.</p>
+            <p class="hero-affiliation">
+                Graduate Research Assistant<br>
+                Department of Electrical and Computer Engineering<br>
+                University of Massachusetts Lowell
+            </p>
 
-                <p class="hero-affiliation">
-                    Graduate Research Assistant<br>
-                    Department of Electrical and Computer Engineering<br>
-                    University of Massachusetts Lowell
-                </p>
+            <p class="hero-tagline">
+                Researcher in ultrawide-bandgap semiconductors and power device engineering.
+            </p>
 
-                <p class="hero-tagline">
-                    Researcher in ultrawide-bandgap semiconductors and power device engineering.
-                </p>
-                <p class="hero-tagline">
-                    Exploring material growth, breakdown physics, and next-generation electronics.
-                </p>
+            <p class="hero-contact">
+                Personal email:
+                <a href="mailto:salehahmedkhan1998@gmail.com">salehahmedkhan1998@gmail.com</a><br>
+                Academic email:
+                <a href="mailto:salehahmed_khan@uml.edu">salehahmed_khan@uml.edu</a>
+            </p>
 
-                <p class="hero-contact">
-                    Personal email:
-                    <a href="mailto:salehahmedkhan1998@gmail.com">salehahmedkhan1998@gmail.com</a><br>
-                    Academic email:
-                    <a href="mailto:salehahmed_khan@uml.edu">salehahmed_khan@uml.edu</a>
-                </p>
+            <p class="hero-socials">
+                Socials:
+                <a href="#" target="_blank">LinkedIn</a> ·
+                <a href="#" target="_blank">ResearchGate</a> ·
+                <a href="#" target="_blank">YouTube</a>
+            </p>
 
-                <p class="hero-socials">
-                    Socials:
-                    <a href="#" target="_blank">LinkedIn</a> ·
-                    <a href="#" target="_blank">ResearchGate</a> ·
-                    <a href="#" target="_blank">Facebook</a> ·
-                    <a href="#" target="_blank">YouTube</a>
-                </p>
+            <div class="hero-actions">
+                <p>My Professional Resume and Academic profiles</p>
 
-                <!-- ✅ NEW: CV download + profile buttons (same directory) -->
-                <div class="hero-actions">
-                    <p>Download my CV as a PDF (same folder as this page).</p>
-                    <p>You can also view my academic profiles below.</p>
+                <div class="btn-row">
+                    <a class="btn" href="CV.pdf" download>Download Resume</a>
+                    <a class="btn btn-muted" href="#" target="_blank">Google Scholar</a>
+                    <a class="btn btn-muted" href="#" target="_blank">GitHub</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-image"></div>
+    </section>
+
+    <!-- TABS -->
+    <section class="glass">
+        <div class="tabs">
+
+            <input type="radio" name="tabs" id="tab-pubs" checked>
+            <input type="radio" name="tabs" id="tab-edu">
+            <input type="radio" name="tabs" id="tab-research">
+            <input type="radio" name="tabs" id="tab-prof">
+            <input type="radio" name="tabs" id="tab-tools">
+            <input type="radio" name="tabs" id="tab-hobbies">
+
+            <div class="tab-labels">
+                <label class="tab-label" for="tab-pubs">Publications</label>
+                <label class="tab-label" for="tab-edu">Educuation</label>
+                <label class="tab-label" for="tab-prof">Experiences</label>
+                <label class="tab-label" for="tab-tools">References</label>
+                <label class="tab-label" for="tab-research">Research Hub</label>
+                <label class="tab-label" for="tab-hobbies">Hobbies and Interests</label>
+            </div>
+
+            <div class="tab-contents">
+                <div class="tab-panel" id="content-pubs"></div>
+                <div class="tab-panel" id="content-edu"></div>
+                <div class="tab-panel" id="content-prof"></div>
+                <div class="tab-panel" id="content-tools"></div>
+
+                <div class="tab-panel" id="content-research">
+                    <h3>Research Hub</h3>
+                    <p>Explore detailed β-Ga₂O₃ research pages, logs, and topic-specific hubs.</p>
+                    <a class="btn" href="research/bga2o3/hub-bga2o3.html">Enter Research Hub</a>
+                </div>
+
+                <div class="tab-panel" id="content-hobbies">
+                    <h3>Hobbies & Interests</h3>
+                    <p>Take a short detour and explore more of my creative side!</p>
 
                     <div class="btn-row">
-                        <a class="btn" href="CV.pdf" download>Download CV (PDF)</a>
-                        <a class="btn btn-muted" href="#" target="_blank">My Google Scholar</a>
-                        <a class="btn btn-muted" href="#" target="_blank">My GitHub</a>
+                        <a class="btn" href="hobbies/khans-krafts.html">Visit Khan's Krafts</a>
+                        <a class="btn btn-faith" href="islamics/faith-corner.html">Visit The Faith Corner</a>
+                        <a class="btn btn-muted" href="#" target="_blank">Facebook</a>
                     </div>
                 </div>
             </div>
 
-            <div class="hero-image-wrapper">
-                <div class="hero-image"></div>
-            </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- TABBED GLASS PANEL -->
-        <section class="glass cards-section">
-            <div class="tabs">
-                <!-- Radios -->
-                <input type="radio" name="tabs" id="tab-pubs" checked>
-                <input type="radio" name="tabs" id="tab-edu">
-                <input type="radio" name="tabs" id="tab-research">
-                <input type="radio" name="tabs" id="tab-prof">
-                <input type="radio" name="tabs" id="tab-tools">
-                <input type="radio" name="tabs" id="tab-hobbies">
+    <p class="page-credit">
+        © <span id="year"></span> Khan’s Portfolio — Powered by GitHub Pages
+    </p>
 
-                <!-- Tab labels, left → right -->
-                <div class="tab-labels">
-                    <label class="tab-label" for="tab-pubs">Publications</label>
-                    <label class="tab-label" for="tab-edu">Educuation</label>
-                    <label class="tab-label" for="tab-prof">Experiences</label>
-                    <label class="tab-label" for="tab-tools">References</label>
-                    <label class="tab-label" for="tab-research">Research Hub</label>
-                    <label class="tab-label" for="tab-hobbies">Hobbies and Interests</label>
-                </div>
-
-                <!-- Tab contents -->
-                <div class="tab-contents">
-                    <div class="tab-panel" id="content-pubs">
-                        <h3>Publications</h3>
-                        <p>
-                            A curated selection of papers, preprints, and conference contributions.
-                        </p>
-                        <ul>
-                            <li>β-Ga₂O₃ device and mobility studies</li>
-                            <li>Breakdown engineering and field management</li>
-                            <li>Radiation hardness and defect characterization</li>
-                        </ul>
-                    </div>
-
-                    <div class="tab-panel" id="content-edu">
-                        <h3>Education</h3>
-                        <p>
-                            A brief overview of my academic background.
-                        </p>
-                        <ul>
-                            <li>Ph.D. studies in ultrawide-bandgap semiconductor devices</li>
-                            <li>Graduate training in solid-state electronics and materials</li>
-                            <li>Foundations in physics, electronics, and device engineering</li>
-                        </ul>
-                    </div>
-
-                    <div class="tab-panel" id="content-research">
-                        <h3>Research Hub</h3>
-                        <p>
-                            Explore detailed β-Ga₂O₃ research pages, logs, and topic-specific hubs.
-                        </p>
-                        <ul>
-                            <li>Mobility benchmarking and transport studies</li>
-                            <li>Etching, breakdown engineering, and defect analysis</li>
-                        </ul>
-                        <a class="btn" href="research/bga2o3/hub-bga2o3.html">Enter Research Hub</a>
-                    </div>
-
-                    <div class="tab-panel" id="content-prof">
-                        <h3>Professional Experience</h3>
-                        <p>
-                            Academic and research roles that shaped my skill set.
-                        </p>
-                        <ul>
-                            <li>Research assistant & lab work in UWBG devices</li>
-                            <li>Teaching and mentoring students</li>
-                            <li>Collaborative projects across groups and labs</li>
-                        </ul>
-                    </div>
-
-                    <div class="tab-panel" id="content-tools">
-                        <h3>Experimental Tools</h3>
-                        <p>
-                            Hands-on experience with fabrication and characterization tools.
-                        </p>
-                        <ul>
-                            <li>Thin-film growth & etching systems</li>
-                            <li>Electrical characterization setups</li>
-                            <li>Microscopy & materials analysis techniques</li>
-                        </ul>
-                    </div>
-
-                    <div class="tab-panel" id="content-hobbies">
-                        <h3>Hobbies & Interests</h3>
-                        <p>
-                            Beyond research, I enjoy tinkering, building, and exploring ideas that don’t always fit neatly into a paper.
-                        </p>
-                        <p>
-                            When it’s time to take a break from dense PDFs and tiny fonts, this is a little corner for lighter explorations:
-                        </p>
-                        <p>
-                            small projects, art, and experiments that keep me grounded and curious.
-                        </p>
-                        <p>
-                            Take a short detour and explore more of my creative side!
-                        </p>
-
-                        <!-- ✅ ONLY CHANGE HERE: put both buttons side-by-side -->
-                        <div class="btn-row">
-                            <a class="btn" href="hobbies/khans-krafts.html">Visit Khan's Krafts</a>
-                            <a class="btn btn-faith" href="islamics/faith-corner.html">Visit The Faith Corner</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Credit line under second glass panel -->
-        <p class="page-credit">
-            © <span id="year"></span> Khan’s Portfolio — Powered by GitHub Pages
-        </p>
-
-    </main>
-
+</main>
 </div>
 
 <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
+document.getElementById("year").textContent = new Date().getFullYear();
+
+async function renderTab(jsonFile, panelId) {
+    const panel = document.getElementById(panelId);
+    const res = await fetch(jsonFile);
+    const data = await res.json();
+
+    panel.innerHTML =
+        `<h3>${data.h3}</h3>` +
+        data.paragraphs.map(p => `<p>${p}</p>`).join("") +
+        `<ul>${data.bullets.map(b => `<li>${b}</li>`).join("")}</ul>`;
+}
+
+renderTab("tab-publications.json", "content-pubs");
+renderTab("tab-education.json", "content-edu");
+renderTab("tab-experiences.json", "content-prof");
+renderTab("tab-references.json", "content-tools");
 </script>
 
 </body>
