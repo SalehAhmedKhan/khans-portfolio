@@ -144,21 +144,40 @@
             clip-path: polygon(18% 0, 100% 0, 100% 100%, 0 100%);
         }
 
+        /* ✅ NEW: Hero action buttons area */
+        .hero-actions {
+            margin-top: 0.7rem;
+        }
+
+        .hero-actions p {
+            margin: 0.15rem 0;
+            font-size: 0.9rem;
+            color: #cbd5f5;
+            line-height: 1.4;
+        }
+
         /* ===== Tabbed cards section ===== */
         .tabs {
             display: flex;
             flex-direction: column;
         }
 
+        /* ✅ UPDATED: justified tab labels */
         .tab-labels {
             display: flex;
             justify-content: space-between; /* ✅ spreads buttons evenly */
             gap: 0.6rem;
             margin-bottom: 0.7rem;
             width: 100%;
+            flex-wrap: wrap;
         }
 
+        /* ✅ UPDATED: tab button is equal width + centered */
         .tab-label {
+            flex: 1;
+            text-align: center;
+            white-space: nowrap;
+
             padding: 0.35rem 0.8rem;
             border-radius: 999px;
             border: 1px solid rgba(148,163,184,0.5);
@@ -218,6 +237,16 @@
 
         .btn:hover {
             background: #1d4ed8;
+        }
+
+        /* ✅ NEW: muted hero buttons */
+        .btn-muted {
+            background: rgba(148,163,184,0.18);
+            border: 1px solid rgba(148,163,184,0.35);
+        }
+
+        .btn-muted:hover {
+            background: rgba(148,163,184,0.28);
         }
 
         /* ✅ NEW: button row so two buttons sit side-by-side */
@@ -325,6 +354,14 @@
                 height: 320px;
                 clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
             }
+
+            /* ✅ mobile-friendly tab wrap */
+            .tab-labels {
+                justify-content: center;
+            }
+            .tab-label {
+                flex: unset;
+            }
         }
 
         @media (max-width: 640px) {
@@ -369,11 +406,22 @@
                 <p class="hero-socials">
                     Socials:
                     <a href="#" target="_blank">LinkedIn</a> ·
-                    <a href="#" target="_blank">Google Scholar</a> ·
-                    <a href="#" target="_blank">GitHub</a> ·
+                    <a href="#" target="_blank">ResearchGate</a> ·
                     <a href="#" target="_blank">Facebook</a> ·
                     <a href="#" target="_blank">YouTube</a>
                 </p>
+
+                <!-- ✅ NEW: CV download + profile buttons (same directory) -->
+                <div class="hero-actions">
+                    <p>Download my CV as a PDF (same folder as this page).</p>
+                    <p>You can also view my academic profiles below.</p>
+
+                    <div class="btn-row">
+                        <a class="btn" href="CV.pdf" download>Download CV (PDF)</a>
+                        <a class="btn btn-muted" href="#" target="_blank">My Google Scholar</a>
+                        <a class="btn btn-muted" href="#" target="_blank">My GitHub</a>
+                    </div>
+                </div>
             </div>
 
             <div class="hero-image-wrapper">
@@ -395,11 +443,11 @@
                 <!-- Tab labels, left → right -->
                 <div class="tab-labels">
                     <label class="tab-label" for="tab-pubs">Publications</label>
-                    <label class="tab-label" for="tab-edu">Education</label>
+                    <label class="tab-label" for="tab-edu">Educuation</label>
+                    <label class="tab-label" for="tab-prof">Experiences</label>
+                    <label class="tab-label" for="tab-tools">References</label>
                     <label class="tab-label" for="tab-research">Research Hub</label>
-                    <label class="tab-label" for="tab-prof">Professional Experience</label>
-                    <label class="tab-label" for="tab-tools">Experimental Tools</label>
-                    <label class="tab-label" for="tab-hobbies">Hobbies & Interests</label>
+                    <label class="tab-label" for="tab-hobbies">Hobbies and Interests</label>
                 </div>
 
                 <!-- Tab contents -->
