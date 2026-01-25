@@ -152,9 +152,10 @@
 
         .tab-labels {
             display: flex;
-            flex-wrap: wrap;
-            gap: 0.4rem;
+            justify-content: space-between; /* ✅ spreads buttons evenly */
+            gap: 0.6rem;
             margin-bottom: 0.7rem;
+            width: 100%;
         }
 
         .tab-label {
