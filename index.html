@@ -11,18 +11,17 @@
             margin: 0;
             padding: 0;
             height: 100%;
-            overflow-y: auto;   /* allow vertical scrolling */
-            overflow-x: hidden; /* keep horizontal clean */
+            overflow-y: auto;
+            overflow-x: hidden;
         }
 
         body {
             font-family: Arial, Helvetica, sans-serif;
             color: #e5e7eb;
 
-            /* Background graphic + dark blue tint */
             background:
                 linear-gradient(rgba(15,23,42,0.85), rgba(15,23,42,0.85)),
-                url("ChatGPT Image Dec 8, 2025, 07_22_56 PM.png");
+                url("ChatGPT%20Image%20Dec%208,%202025,%2007_22_56%20PM.png");
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -34,7 +33,6 @@
             flex-direction: column;
         }
 
-        /* ===== Central container (squeezed layout) ===== */
         .container {
             max-width: 1024px;
             margin: 1.2rem auto 0.4rem;
@@ -44,7 +42,6 @@
             gap: 0.9rem;
         }
 
-        /* ===== Shared glass style ===== */
         .glass {
             background: rgba(15,23,42,0.78);
             border-radius: 18px;
@@ -60,7 +57,7 @@
         /* ===== Hero card ===== */
         .hero-card {
             display: flex;
-            align-items: flex-start;   /* text and image aligned to top */
+            align-items: flex-start;
             justify-content: space-between;
             gap: 1.4rem;
         }
@@ -69,7 +66,7 @@
             flex: 1.6;
         }
 
-        /* ✅ ONLY CHANGE: make hero typography uniform */
+        /* ✅ Uniform hero typography */
         .hero-title {
             font-size: 2.15rem;
             font-weight: 700;
@@ -139,11 +136,11 @@
             justify-content: flex-end;
         }
 
-        /* Portrait frame with diagonal edge, fixed size */
+        /* ✅ Hero portrait (URL-safe filename for mobile) */
         .hero-image {
             width: 240px;
             height: 360px;
-            background-image: url("362913277_1456595465179872_8041301197273694670_n (1) - Copy.jpg");
+            background-image: url("362913277_1456595465179872_8041301197273694670_n%20(1)%20-%20Copy.jpg");
             background-size: cover;
             background-position: center;
             background-color: #020617;
@@ -153,16 +150,15 @@
             clip-path: polygon(18% 0, 100% 0, 100% 100%, 0 100%);
         }
 
-        /* ===== Tabbed cards section ===== */
+        /* ===== Tabs ===== */
         .tabs {
             display: flex;
             flex-direction: column;
         }
 
-        /* Justified tab labels */
         .tab-labels {
             display: flex;
-            justify-content: space-between; /* spreads buttons evenly */
+            justify-content: space-between;
             gap: 0.6rem;
             margin-bottom: 0.7rem;
             width: 100%;
@@ -173,7 +169,6 @@
             flex: 1;
             text-align: center;
             white-space: nowrap;
-
             padding: 0.35rem 0.8rem;
             border-radius: 999px;
             border: 1px solid rgba(148,163,184,0.5);
@@ -195,10 +190,9 @@
             box-shadow: 0 10px 25px rgba(15,23,42,0.6);
             font-size: 0.84rem;
             position: relative;
-            min-height: 145px; /* keeps box from jumping in height */
+            min-height: 145px;
         }
 
-        /* ✅ Force JSON + non-JSON panels to match typography exactly */
         .tab-panel {
             display: none;
             opacity: 0;
@@ -248,26 +242,25 @@
             background: rgba(148,163,184,0.28);
         }
 
-        .btn-row{
+        .btn-row {
             display: flex;
             gap: 0.55rem;
             flex-wrap: wrap;
             align-items: center;
         }
 
-        .btn-faith{
-            background: #064e3b; /* deep dark green */
+        .btn-faith {
+            background: #064e3b;
         }
-        .btn-faith:hover{
+
+        .btn-faith:hover {
             background: #065f46;
         }
 
-        /* Hide the radio buttons */
         .tabs input[type="radio"] {
             display: none;
         }
 
-        /* Animations */
         @keyframes fadeSlideLeft {
             from { opacity: 0; transform: translateX(-12px); }
             to   { opacity: 1; transform: translateX(0); }
@@ -278,36 +271,32 @@
             to   { opacity: 1; transform: translateX(0); }
         }
 
-        /* Left three tabs slide from left */
-        #tab-pubs:checked      ~ .tab-contents #content-pubs,
-        #tab-edu:checked       ~ .tab-contents #content-edu,
-        #tab-prof:checked      ~ .tab-contents #content-prof {
+        #tab-pubs:checked ~ .tab-contents #content-pubs,
+        #tab-edu:checked ~ .tab-contents #content-edu,
+        #tab-prof:checked ~ .tab-contents #content-prof {
             display: block;
             opacity: 1;
             animation: fadeSlideLeft 0.25s ease forwards;
         }
 
-        /* Right three tabs slide from right */
-        #tab-tools:checked     ~ .tab-contents #content-tools,
-        #tab-research:checked  ~ .tab-contents #content-research,
-        #tab-hobbies:checked   ~ .tab-contents #content-hobbies {
+        #tab-tools:checked ~ .tab-contents #content-tools,
+        #tab-research:checked ~ .tab-contents #content-research,
+        #tab-hobbies:checked ~ .tab-contents #content-hobbies {
             display: block;
             opacity: 1;
             animation: fadeSlideRight 0.25s ease forwards;
         }
 
-        /* Active tab label styling */
-        #tab-pubs:checked      ~ .tab-labels label[for="tab-pubs"],
-        #tab-edu:checked       ~ .tab-labels label[for="tab-edu"],
-        #tab-prof:checked      ~ .tab-labels label[for="tab-prof"],
-        #tab-tools:checked     ~ .tab-labels label[for="tab-tools"],
-        #tab-research:checked  ~ .tab-labels label[for="tab-research"],
-        #tab-hobbies:checked   ~ .tab-labels label[for="tab-hobbies"] {
+        #tab-pubs:checked ~ .tab-labels label[for="tab-pubs"],
+        #tab-edu:checked ~ .tab-labels label[for="tab-edu"],
+        #tab-prof:checked ~ .tab-labels label[for="tab-prof"],
+        #tab-tools:checked ~ .tab-labels label[for="tab-tools"],
+        #tab-research:checked ~ .tab-labels label[for="tab-research"],
+        #tab-hobbies:checked ~ .tab-labels label[for="tab-hobbies"] {
             background: #2563eb;
             border-color: #60a5fa;
         }
 
-        /* ===== Credit line under cards ===== */
         .page-credit {
             text-align: center;
             margin-top: 0.3rem;
@@ -317,46 +306,42 @@
             text-shadow: 0 1px 2px rgba(15,23,42,0.9);
         }
 
-        footer {
-            display: none;
-        }
-
-        /* ✅ Keep your original responsive behaviors */
+        /* ✅ MOBILE FIX: Image stacks ABOVE text + diagonal preserved */
         @media (max-width: 900px) {
-            html, body {
-                overflow: auto; /* allow scroll on small screens */
-            }
 
             .hero-card {
-                flex-direction: column-reverse;
-                align-items: flex-start;
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .hero-image-wrapper {
+                order: -1;
+                width: 100%;
+                justify-content: flex-start;
+                margin-bottom: 0.9rem;
             }
 
             .hero-image {
                 width: 100%;
-                max-width: 320px;
-                height: 320px;
-                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+                height: 340px;
+
+                /* keep diagonal look */
+                clip-path: polygon(12% 0, 100% 0, 100% 100%, 0 100%);
             }
 
             .tab-labels {
                 justify-content: center;
             }
+
             .tab-label {
                 flex: unset;
             }
         }
 
-        @media (max-width: 640px) {
-            .tab-labels {
-                gap: 0.3rem;
-            }
-        }
-
-        /* Hero actions */
         .hero-actions {
             margin-top: 0.7rem;
         }
+
         .hero-actions p {
             margin: 0.15rem 0;
             font-size: 0.9rem;
@@ -368,7 +353,6 @@
 
 <body>
 <div class="page">
-
     <main class="container">
 
         <!-- HERO GLASS PANEL -->
@@ -423,7 +407,6 @@
         <!-- TABBED GLASS PANEL -->
         <section class="glass cards-section">
             <div class="tabs">
-                <!-- Radios -->
                 <input type="radio" name="tabs" id="tab-pubs" checked>
                 <input type="radio" name="tabs" id="tab-edu">
                 <input type="radio" name="tabs" id="tab-research">
@@ -431,7 +414,6 @@
                 <input type="radio" name="tabs" id="tab-tools">
                 <input type="radio" name="tabs" id="tab-hobbies">
 
-                <!-- Tab labels -->
                 <div class="tab-labels">
                     <label class="tab-label" for="tab-pubs">Publications</label>
                     <label class="tab-label" for="tab-edu">Educuation</label>
@@ -441,15 +423,12 @@
                     <label class="tab-label" for="tab-hobbies">Hobbies and Interests</label>
                 </div>
 
-                <!-- Tab contents -->
                 <div class="tab-contents">
-                    <!-- These 4 panels are filled from external JSON files -->
                     <div class="tab-panel" id="content-pubs"></div>
                     <div class="tab-panel" id="content-edu"></div>
                     <div class="tab-panel" id="content-prof"></div>
                     <div class="tab-panel" id="content-tools"></div>
 
-                    <!-- Research Hub (kept exactly) -->
                     <div class="tab-panel" id="content-research">
                         <h3>Research Hub</h3>
                         <p>
@@ -462,7 +441,6 @@
                         <a class="btn" href="research/bga2o3/hub-bga2o3.html">Enter Research Hub</a>
                     </div>
 
-                    <!-- Hobbies & Interests (kept exactly, + Facebook button) -->
                     <div class="tab-panel" id="content-hobbies">
                         <h3>Hobbies & Interests</h3>
                         <p>
@@ -493,7 +471,6 @@
         </p>
 
     </main>
-
 </div>
 
 <script>
@@ -517,9 +494,7 @@
                 : "";
 
             panelEl.innerHTML = h3 + paras + bullets;
-        } catch (e) {
-            // fail silently
-        }
+        } catch (e) {}
     }
 
     renderTabFromFile("tab-publications.json", "content-pubs");
