@@ -28,14 +28,13 @@
     .top-wrap{
       position: relative;
       padding: 1.6rem;
-      display: flex;
+      display: grid;
+      grid-template-columns: minmax(360px, 720px) minmax(320px, 1fr);
       gap: 1.2rem;
-      align-items: flex-start;
+      align-items: stretch; /* makes both top cards same height */
     }
 
     .container{
-      /* keep your original look */
-      max-width: 720px;
       padding: 2.2rem 2rem;
       background: rgba(2,6,23,0.55);
       border-radius: 18px;
@@ -43,6 +42,7 @@
       box-shadow: 0 20px 60px rgba(0,0,0,0.6);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
+      height: 100%; /* ensure equal height behavior */
     }
 
     /* Header row */
@@ -93,12 +93,8 @@
 
     /* ===== Top-right wide photo slot ===== */
     .calligraphy-slot{
-      flex: 1;
-      min-width: 280px;
-      max-width: 640px;
-      height: 210px;
       border-radius: 18px;
-      border: 1px solid rgba(16,185,129,0.28);
+      border: 1px solid rgba(16,185,129,0.35);
       background:
         radial-gradient(circle at 30% 20%, rgba(16,185,129,0.18), transparent 55%),
         rgba(2,6,23,0.40);
@@ -107,21 +103,21 @@
       -webkit-backdrop-filter: blur(12px);
       overflow: hidden;
       position: relative;
+      height: 100%; /* match height with left card */
+      min-height: 220px; /* safety */
     }
 
-    /* Put your image here */
     .calligraphy-slot::before{
       content: "";
       position: absolute;
       inset: 0;
-      background-image: url("allah-calligraphy.jpg"); /* <-- replace with your file */
+      background-image: url("allah-calligraphy.jpg"); /* replace with your file */
       background-size: cover;
       background-position: center;
       opacity: 0.95;
       filter: saturate(1.02) contrast(1.02);
     }
 
-    /* Soft overlay for readability */
     .calligraphy-slot::after{
       content: "";
       position: absolute;
@@ -129,12 +125,12 @@
       background: linear-gradient(90deg, rgba(2,6,23,0.55), rgba(2,6,23,0.15));
     }
 
-    /* ===== Slider area ===== */
-    .slider-wrap{
+    /* ===== Cards section (non-slider, expands downward) ===== */
+    .cards-wrap{
       padding: 0 1.6rem 1.6rem;
     }
 
-    .slider-shell{
+    .cards-shell{
       max-width: 1180px;
       margin: 0 auto;
       background: rgba(2,6,23,0.40);
@@ -144,75 +140,26 @@
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       overflow: hidden;
+      padding: 1rem;
     }
 
-    .slider-head{
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.95rem 1.05rem;
-      border-bottom: 1px solid rgba(16,185,129,0.18);
+    .cards-grid{
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 1rem;
     }
 
-    .slider-title{
-      margin: 0;
-      font-size: 0.95rem;
-      font-weight: 650;
-      color: #d1fae5;
-      letter-spacing: 0.2px;
-    }
-
-    .slider-controls{
-      display: flex;
-      align-items: center;
-      gap: 0.55rem;
-    }
-
-    .icon-btn{
-      width: 38px;
-      height: 38px;
-      border-radius: 999px;
-      border: 1px solid rgba(16,185,129,0.35);
-      background: rgba(2,6,23,0.55);
-      color: #a7f3d0;
-      cursor: pointer;
-      display: grid;
-      place-items: center;
-      line-height: 0;
-      user-select: none;
-    }
-
-    .icon-btn:hover{
-      background: rgba(16,185,129,0.15);
-    }
-
-    .track{
-      display: grid;
-      grid-auto-flow: column;
-      grid-auto-columns: minmax(280px, 360px);
-      gap: 1rem;
-      padding: 1rem 1rem 1.15rem;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      scroll-behavior: smooth;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .track::-webkit-scrollbar{
-      height: 10px;
-    }
-    .track::-webkit-scrollbar-thumb{
-      background: rgba(16,185,129,0.22);
-      border-radius: 999px;
-    }
-    .track::-webkit-scrollbar-track{
-      background: rgba(2,6,23,0.25);
-      border-radius: 999px;
+    /* Clickable card (entire card is a link) */
+    .card-link{
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      height: 100%;
+      border-radius: 16px;
+      outline: none;
     }
 
     .card{
-      scroll-snap-align: start;
       background: rgba(2,6,23,0.55);
       border: 1px solid rgba(148,163,184,0.18);
       border-radius: 16px;
@@ -220,7 +167,20 @@
       box-shadow: 0 16px 40px rgba(0,0,0,0.45);
       display: flex;
       flex-direction: column;
-      min-height: 310px;
+      min-height: 320px;
+      height: 100%;
+      transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .card-link:hover .card{
+      transform: translateY(-2px);
+      border-color: rgba(16,185,129,0.35);
+      background: rgba(2,6,23,0.62);
+    }
+
+    .card-link:focus-visible .card{
+      outline: 2px solid rgba(16,185,129,0.55);
+      outline-offset: 3px;
     }
 
     .card-media{
@@ -270,46 +230,23 @@
       color: #cbd5f5;
     }
 
-    .card-actions{
-      margin-top: auto;
-      display: flex;
-      justify-content: flex-start;
-      gap: 0.6rem;
-      flex-wrap: wrap;
-      padding-top: 0.35rem;
-    }
-
-    .btn{
-      display: inline-block;
-      padding: 0.45rem 0.85rem;
-      border-radius: 999px;
-      border: 1px solid rgba(16,185,129,0.40);
-      background: rgba(2,6,23,0.55);
-      color: #a7f3d0;
-      text-decoration: none;
-      font-size: 0.82rem;
-      white-space: nowrap;
-    }
-
-    .btn:hover{
-      background: rgba(16,185,129,0.16);
-    }
-
     /* ===== Responsive ===== */
     @media (max-width: 900px){
       .top-wrap{
-        flex-direction: column;
+        grid-template-columns: 1fr;
         padding: 1.2rem;
       }
 
       .calligraphy-slot{
-        width: 100%;
-        max-width: unset;
-        height: 210px;
+        min-height: 210px;
       }
 
-      .slider-wrap{
+      .cards-wrap{
         padding: 0 1.2rem 1.2rem;
+      }
+
+      .cards-grid{
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
@@ -324,8 +261,8 @@
         gap: 0.6rem;
       }
 
-      .track{
-        grid-auto-columns: minmax(260px, 86%);
+      .cards-grid{
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -333,7 +270,7 @@
 
 <body>
 
-  <!-- TOP ROW: your intro card + new photo slot -->
+  <!-- TOP ROW: intro card + photo slot -->
   <div class="top-wrap">
     <div class="container">
       <div class="header">
@@ -351,92 +288,82 @@
       </p>
     </div>
 
-    <!-- Wide photo slot (top-right on desktop) -->
     <div class="calligraphy-slot" aria-label="Calligraphy image"></div>
   </div>
 
-  <!-- SLIDER SECTION -->
-  <div class="slider-wrap">
-    <div class="slider-shell">
-      <div class="slider-head">
-        <p class="slider-title">Explore</p>
+  <!-- CARDS GRID (expands downward, no slider, no Explore label) -->
+  <div class="cards-wrap">
+    <div class="cards-shell">
+      <div class="cards-grid">
 
-        <div class="slider-controls">
-          <button class="icon-btn" id="prevBtn" aria-label="Previous">
-            ‹
-          </button>
-          <button class="icon-btn" id="nextBtn" aria-label="Next">
-            ›
-          </button>
-        </div>
-      </div>
-
-      <div class="track" id="track">
         <!-- Card 1 -->
-        <article class="card" style="--img: url('asma-ul-husna.jpg');">
-          <div class="card-media"></div>
-          <div class="card-body">
-            <h3>Al-Asma Ul Husna</h3>
-            <p>
-              A guided space to learn, reflect on, and internalize the Beautiful Names — with meaning, context, and daily remembrance.
-            </p>
-            <div class="card-actions">
-              <a class="btn" href="#" aria-label="Open Al-Asma Ul Husna">Open</a>
+        <a class="card-link" href="asma-ul-husna.html" aria-label="Open Al-Asma Ul Husna">
+          <article class="card" style="--img: url('asma-ul-husna.jpg');">
+            <div class="card-media"></div>
+            <div class="card-body">
+              <h3>Al-Asma Ul Husna</h3>
+              <p>
+                A guided space to learn, reflect on, and internalize the Beautiful Names — with meaning, context, and daily remembrance.
+              </p>
             </div>
-          </div>
-        </article>
+          </article>
+        </a>
 
         <!-- Card 2 -->
-        <article class="card" style="--img: url('luqman-lessons.jpg');">
-          <div class="card-media"></div>
-          <div class="card-body">
-            <h3>Lessons of Luqman (AS)</h3>
-            <p>
-              Practical wisdom from Surah Luqman — advice on gratitude, character, humility, prayer, and family life.
-            </p>
-            <div class="card-actions">
-              <a class="btn" href="#" aria-label="Open Lessons of Luqman">Open</a>
+        <a class="card-link" href="luqman-lessons.html" aria-label="Open Lessons of Luqman (AS)">
+          <article class="card" style="--img: url('luqman-lessons.jpg');">
+            <div class="card-media"></div>
+            <div class="card-body">
+              <h3>Lessons of Luqman (AS)</h3>
+              <p>
+                Practical wisdom from Surah Luqman — advice on gratitude, character, humility, prayer, and family life.
+              </p>
             </div>
-          </div>
-        </article>
+          </article>
+        </a>
 
         <!-- Card 3 -->
-        <article class="card" style="--img: url('essential-arabic.jpg');">
-          <div class="card-media"></div>
-          <div class="card-body">
-            <h3>Essential Arabics for Every Muslim</h3>
-            <p>
-              A gentle, practical primer: key words in Salah, common Qur’anic terms, and everyday phrases every Muslim benefits from knowing.
-            </p>
-            <div class="card-actions">
-              <a class="btn" href="#" aria-label="Open Essential Arabic">Open</a>
+        <a class="card-link" href="essential-arabic.html" aria-label="Open Essential Arabics for Every Muslim">
+          <article class="card" style="--img: url('essential-arabic.jpg');">
+            <div class="card-media"></div>
+            <div class="card-body">
+              <h3>Essential Arabics for Every Muslim</h3>
+              <p>
+                A gentle, practical primer: key words in Salah, common Qur’anic terms, and everyday phrases every Muslim benefits from knowing.
+              </p>
             </div>
-          </div>
-        </article>
+          </article>
+        </a>
+
+        <!-- Card 4 (placeholder idea) -->
+        <a class="card-link" href="#" aria-label="Open Daily Dhikr and Du'a">
+          <article class="card" style="--img: url('daily-dhikr.jpg');">
+            <div class="card-media"></div>
+            <div class="card-body">
+              <h3>Daily Dhikr & Du&#8217;a</h3>
+              <p>
+                Morning and evening remembrances, short du&#8217;as, and a simple routine to keep the heart anchored throughout the day.
+              </p>
+            </div>
+          </article>
+        </a>
+
+        <!-- Card 5 (placeholder idea) -->
+        <a class="card-link" href="#" aria-label="Open Stories of the Prophets">
+          <article class="card" style="--img: url('prophets-stories.jpg');">
+            <div class="card-media"></div>
+            <div class="card-body">
+              <h3>Stories of the Prophets</h3>
+              <p>
+                A calm, reflective collection of prophetic stories — focusing on lessons, patience, and timeless guidance for everyday life.
+              </p>
+            </div>
+          </article>
+        </a>
+
       </div>
     </div>
   </div>
-
-  <script>
-    const track = document.getElementById("track");
-    const prevBtn = document.getElementById("prevBtn");
-    const nextBtn = document.getElementById("nextBtn");
-
-    function getScrollAmount() {
-      const firstCard = track.querySelector(".card");
-      if (!firstCard) return 320;
-      const cardWidth = firstCard.getBoundingClientRect().width;
-      return Math.round(cardWidth + 16); // include gap
-    }
-
-    prevBtn.addEventListener("click", () => {
-      track.scrollBy({ left: -getScrollAmount(), behavior: "smooth" });
-    });
-
-    nextBtn.addEventListener("click", () => {
-      track.scrollBy({ left: getScrollAmount(), behavior: "smooth" });
-    });
-  </script>
 
 </body>
 </html>
