@@ -69,35 +69,43 @@
             flex: 1.6;
         }
 
+        /* ✅ Updated typography for uniform hero card fonts */
         .hero-title {
-            font-size: 2.2rem;
+            font-size: 2.15rem;
             font-weight: 700;
-            margin: 0 0 0.25rem;
-        }
-
-        .hero-subtitle {
-            font-size: 1.35rem;
-            font-weight: 600;
+            letter-spacing: -0.3px;
             margin: 0 0 0.35rem;
         }
 
+        .hero-subtitle {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0 0 0.6rem;
+            color: #f1f5f9;
+        }
+
         .hero-affiliation {
-            margin: 0 0 0.55rem;
-            font-size: 0.9rem;
-            color: #e5e7eb;
+            margin: 0 0 0.85rem;
+            font-size: 0.92rem;
+            font-weight: 400;
+            line-height: 1.35;
+            color: #dbeafe;
         }
 
         .hero-tagline {
-            margin: 0.15rem 0;
-            font-size: 0.96rem;
+            margin: 0.25rem 0;
+            font-size: 0.92rem;
+            font-weight: 400;
+            line-height: 1.45;
             color: #cbd5f5;
         }
 
         .hero-contact {
-            margin: 0.55rem 0 0;
+            margin: 0.75rem 0 0;
             font-size: 0.88rem;
+            font-weight: 400;
+            line-height: 1.45;
             color: #cbd5f5;
-            line-height: 1.4;
         }
 
         .hero-contact a {
@@ -110,8 +118,9 @@
         }
 
         .hero-socials {
-            margin: 0.4rem 0 0;
-            font-size: 0.84rem;
+            margin: 0.55rem 0 0;
+            font-size: 0.88rem;
+            font-weight: 400;
             color: #cbd5f5;
         }
 
@@ -130,394 +139,6 @@
             justify-content: flex-end;
         }
 
-        /* Portrait frame with diagonal edge, fixed size */
-        .hero-image {
-            width: 240px;
-            height: 360px;
-            background-image: url("362913277_1456595465179872_8041301197273694670_n (1) - Copy.jpg");
-            background-size: cover;
-            background-position: center;
-            background-color: #020617;
-            border-radius: 16px;
-            overflow: hidden;
-            margin-left: auto;
-            clip-path: polygon(18% 0, 100% 0, 100% 100%, 0 100%);
-        }
+        /* Portrait frame with diagonal
 
-        /* ===== Tabbed cards section ===== */
-        .tabs {
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Justified tab labels */
-        .tab-labels {
-            display: flex;
-            justify-content: space-between; /* spreads buttons evenly */
-            gap: 0.6rem;
-            margin-bottom: 0.7rem;
-            width: 100%;
-            flex-wrap: wrap;
-        }
-
-        .tab-label {
-            flex: 1;
-            text-align: center;
-            white-space: nowrap;
-
-            padding: 0.35rem 0.8rem;
-            border-radius: 999px;
-            border: 1px solid rgba(148,163,184,0.5);
-            font-size: 0.82rem;
-            cursor: pointer;
-            background: rgba(15,23,42,0.9);
-            color: #e5e7eb;
-        }
-
-        .tab-label:hover {
-            background: rgba(37,99,235,0.4);
-        }
-
-        .tab-contents {
-            background: rgba(15,23,42,0.9);
-            border-radius: 14px;
-            border: 1px solid rgba(148,163,184,0.35);
-            padding: 0.9rem 1rem;
-            box-shadow: 0 10px 25px rgba(15,23,42,0.6);
-            font-size: 0.84rem;
-            position: relative;
-            min-height: 145px; /* keeps box from jumping in height */
-        }
-
-        /* ✅ Force JSON + non-JSON panels to match typography exactly */
-        .tab-panel {
-            display: none;
-            opacity: 0;
-            font-family: inherit;
-            font-size: 0.84rem;
-            line-height: 1.4;
-        }
-
-        .tab-panel h3 {
-            margin: 0 0 0.3rem;
-            font-size: 1rem;
-        }
-
-        .tab-panel p {
-            margin: 0 0 0.4rem;
-            color: #d1d5db;
-        }
-
-        .tab-panel ul {
-            margin: 0.2rem 0 0;
-            padding-left: 1.1rem;
-            color: #cbd5f5;
-            font-size: 0.82rem;
-        }
-
-        .btn {
-            margin-top: 0.45rem;
-            display: inline-block;
-            padding: 0.4rem 0.85rem;
-            background: #2563eb;
-            color: #ffffff;
-            text-decoration: none;
-            border-radius: 999px;
-            font-size: 0.8rem;
-        }
-
-        .btn:hover {
-            background: #1d4ed8;
-        }
-
-        .btn-muted {
-            background: rgba(148,163,184,0.18);
-            border: 1px solid rgba(148,163,184,0.35);
-        }
-
-        .btn-muted:hover {
-            background: rgba(148,163,184,0.28);
-        }
-
-        .btn-row{
-            display: flex;
-            gap: 0.55rem;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .btn-faith{
-            background: #064e3b; /* deep dark green */
-        }
-        .btn-faith:hover{
-            background: #065f46;
-        }
-
-        /* Hide the radio buttons */
-        .tabs input[type="radio"] {
-            display: none;
-        }
-
-        /* Animations */
-        @keyframes fadeSlideLeft {
-            from { opacity: 0; transform: translateX(-12px); }
-            to   { opacity: 1; transform: translateX(0); }
-        }
-
-        @keyframes fadeSlideRight {
-            from { opacity: 0; transform: translateX(12px); }
-            to   { opacity: 1; transform: translateX(0); }
-        }
-
-        /* Left three tabs slide from left */
-        #tab-pubs:checked      ~ .tab-contents #content-pubs,
-        #tab-edu:checked       ~ .tab-contents #content-edu,
-        #tab-prof:checked      ~ .tab-contents #content-prof {
-            display: block;
-            opacity: 1;
-            animation: fadeSlideLeft 0.25s ease forwards;
-        }
-
-        /* Right three tabs slide from right */
-        #tab-tools:checked     ~ .tab-contents #content-tools,
-        #tab-research:checked  ~ .tab-contents #content-research,
-        #tab-hobbies:checked   ~ .tab-contents #content-hobbies {
-            display: block;
-            opacity: 1;
-            animation: fadeSlideRight 0.25s ease forwards;
-        }
-
-        /* Active tab label styling */
-        #tab-pubs:checked      ~ .tab-labels label[for="tab-pubs"],
-        #tab-edu:checked       ~ .tab-labels label[for="tab-edu"],
-        #tab-prof:checked      ~ .tab-labels label[for="tab-prof"],
-        #tab-tools:checked     ~ .tab-labels label[for="tab-tools"],
-        #tab-research:checked  ~ .tab-labels label[for="tab-research"],
-        #tab-hobbies:checked   ~ .tab-labels label[for="tab-hobbies"] {
-            background: #2563eb;
-            border-color: #60a5fa;
-        }
-
-        /* ===== Credit line under cards ===== */
-        .page-credit {
-            text-align: center;
-            margin-top: 0.3rem;
-            margin-bottom: 0.2rem;
-            font-size: 0.78rem;
-            color: #cbd5f5;
-            text-shadow: 0 1px 2px rgba(15,23,42,0.9);
-        }
-
-        footer {
-            display: none;
-        }
-
-        /* ✅ Keep your original responsive behaviors */
-        @media (max-width: 900px) {
-            html, body {
-                overflow: auto; /* allow scroll on small screens */
-            }
-
-            .hero-card {
-                flex-direction: column-reverse;
-                align-items: flex-start;
-            }
-
-            .hero-image {
-                width: 100%;
-                max-width: 320px;
-                height: 320px;
-                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-            }
-
-            .tab-labels {
-                justify-content: center;
-            }
-            .tab-label {
-                flex: unset;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .tab-labels {
-                gap: 0.3rem;
-            }
-        }
-
-        /* Hero actions */
-        .hero-actions {
-            margin-top: 0.7rem;
-        }
-        .hero-actions p {
-            margin: 0.15rem 0;
-            font-size: 0.9rem;
-            color: #cbd5f5;
-            line-height: 1.4;
-        }
-    </style>
-</head>
-
-<body>
-<div class="page">
-
-    <main class="container">
-
-        <!-- HERO GLASS PANEL -->
-        <section class="glass hero-card">
-            <div class="hero-text">
-                <h1 class="hero-title">Welcome to Khan's Portfolio</h1>
-                <p class="hero-subtitle">Hi, I’m Saleh Ahmed Khan.</p>
-
-                <p class="hero-affiliation">
-                    Graduate Research Assistant<br>
-                    Department of Electrical and Computer Engineering<br>
-                    University of Massachusetts Lowell
-                </p>
-
-                <p class="hero-tagline">
-                    Researcher in ultrawide-bandgap semiconductors and power device engineering.
-                </p>
-                <p class="hero-tagline">
-                    Exploring material growth, breakdown physics, and next-generation electronics.
-                </p>
-
-                <p class="hero-contact">
-                    Personal email:
-                    <a href="mailto:salehahmedkhan1998@gmail.com">salehahmedkhan1998@gmail.com</a><br>
-                    Academic email:
-                    <a href="mailto:salehahmed_khan@uml.edu">salehahmed_khan@uml.edu</a>
-                </p>
-
-                <p class="hero-socials">
-                    Socials:
-                    <a href="#" target="_blank">LinkedIn</a> ·
-                    <a href="#" target="_blank">ResearchGate</a> ·
-                    <a href="#" target="_blank">YouTube</a>
-                </p>
-
-                <div class="hero-actions">
-                    <p>My Professional Resume and Academic profiles</p>
-
-                    <div class="btn-row">
-                        <a class="btn" href="CV.pdf" download>Download Resume</a>
-                        <a class="btn btn-muted" href="#" target="_blank">Google Scholar</a>
-                        <a class="btn btn-muted" href="#" target="_blank">GitHub</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="hero-image-wrapper">
-                <div class="hero-image"></div>
-            </div>
-        </section>
-
-        <!-- TABBED GLASS PANEL -->
-        <section class="glass cards-section">
-            <div class="tabs">
-                <!-- Radios -->
-                <input type="radio" name="tabs" id="tab-pubs" checked>
-                <input type="radio" name="tabs" id="tab-edu">
-                <input type="radio" name="tabs" id="tab-research">
-                <input type="radio" name="tabs" id="tab-prof">
-                <input type="radio" name="tabs" id="tab-tools">
-                <input type="radio" name="tabs" id="tab-hobbies">
-
-                <!-- Tab labels -->
-                <div class="tab-labels">
-                    <label class="tab-label" for="tab-pubs">Publications</label>
-                    <label class="tab-label" for="tab-edu">Educuation</label>
-                    <label class="tab-label" for="tab-prof">Experiences</label>
-                    <label class="tab-label" for="tab-tools">References</label>
-                    <label class="tab-label" for="tab-research">Research Hub</label>
-                    <label class="tab-label" for="tab-hobbies">Hobbies and Interests</label>
-                </div>
-
-                <!-- Tab contents -->
-                <div class="tab-contents">
-                    <!-- These 4 panels are filled from external JSON files -->
-                    <div class="tab-panel" id="content-pubs"></div>
-                    <div class="tab-panel" id="content-edu"></div>
-                    <div class="tab-panel" id="content-prof"></div>
-                    <div class="tab-panel" id="content-tools"></div>
-
-                    <!-- Research Hub (kept exactly) -->
-                    <div class="tab-panel" id="content-research">
-                        <h3>Research Hub</h3>
-                        <p>
-                            Explore detailed β-Ga₂O₃ research pages, logs, and topic-specific hubs.
-                        </p>
-                        <ul>
-                            <li>Mobility benchmarking and transport studies</li>
-                            <li>Etching, breakdown engineering, and defect analysis</li>
-                        </ul>
-                        <a class="btn" href="research/bga2o3/hub-bga2o3.html">Enter Research Hub</a>
-                    </div>
-
-                    <!-- Hobbies & Interests (kept exactly, + Facebook button) -->
-                    <div class="tab-panel" id="content-hobbies">
-                        <h3>Hobbies & Interests</h3>
-                        <p>
-                            Beyond research, I enjoy tinkering, building, and exploring ideas that don’t always fit neatly into a paper.
-                        </p>
-                        <p>
-                            When it’s time to take a break from dense PDFs and tiny fonts, this is a little corner for lighter explorations:
-                        </p>
-                        <p>
-                            small projects, art, and experiments that keep me grounded and curious.
-                        </p>
-                        <p>
-                            Take a short detour and explore more of my creative side!
-                        </p>
-
-                        <div class="btn-row">
-                            <a class="btn" href="hobbies/khans-krafts.html">Visit Khan's Krafts</a>
-                            <a class="btn btn-faith" href="islamics/faith-corner.html">Visit The Faith Corner</a>
-                            <a class="btn btn-muted" href="#" target="_blank">Facebook</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <p class="page-credit">
-            © <span id="year"></span> Khan’s Portfolio — Powered by GitHub Pages
-        </p>
-
-    </main>
-
-</div>
-
-<script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-
-    async function renderTabFromFile(jsonUrl, targetPanelId) {
-        const panelEl = document.getElementById(targetPanelId);
-        if (!panelEl) return;
-
-        try {
-            const res = await fetch(jsonUrl, { cache: "no-store" });
-            if (!res.ok) return;
-            const data = await res.json();
-
-            const h3 = `<h3>${data.h3 || ""}</h3>`;
-            const paras = Array.isArray(data.paragraphs)
-                ? data.paragraphs.map(t => `<p>${t}</p>`).join("")
-                : "";
-            const bullets = Array.isArray(data.bullets) && data.bullets.length
-                ? `<ul>${data.bullets.map(li => `<li>${li}</li>`).join("")}</ul>`
-                : "";
-
-            panelEl.innerHTML = h3 + paras + bullets;
-        } catch (e) {
-            // fail silently
-        }
-    }
-
-    renderTabFromFile("tab-publications.json", "content-pubs");
-    renderTabFromFile("tab-education.json", "content-edu");
-    renderTabFromFile("tab-experiences.json", "content-prof");
-    renderTabFromFile("tab-references.json", "content-tools");
-</script>
-
-</body>
-</html>
+::contentReference[oaicite:0]{index=0}
