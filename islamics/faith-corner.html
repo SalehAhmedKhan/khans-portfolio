@@ -21,13 +21,20 @@
         linear-gradient(180deg, #04130c 0%, #020617 100%);
 
       position: relative;
+      overflow-x: hidden;
+    }
+
+    /* ===== Top area layout: left intro card + right wide photo ===== */
+    .top-wrap{
+      position: relative;
+      padding: 1.6rem;
+      display: flex;
+      gap: 1.2rem;
+      align-items: flex-start;
     }
 
     .container{
-      position: absolute;
-      top: 1.6rem;
-      left: 1.6rem;
-
+      /* keep your original look */
       max-width: 720px;
       padding: 2.2rem 2rem;
       background: rgba(2,6,23,0.55);
@@ -35,13 +42,14 @@
       border: 1px solid rgba(16,185,129,0.35);
       box-shadow: 0 20px 60px rgba(0,0,0,0.6);
       backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
     }
 
     /* Header row */
     .header{
       display: flex;
       align-items: center;
-      justify-content: space-between; /* key change */
+      justify-content: space-between;
       gap: 1rem;
       margin-bottom: 0.6rem;
     }
@@ -80,18 +88,234 @@
       width: 60px;
       height: 2px;
       margin: 1.1rem 0;
-      background: linear-gradient(
-        to right,
-        #10b981,
-        transparent
-      );
+      background: linear-gradient(to right, #10b981, transparent);
+    }
+
+    /* ===== Top-right wide photo slot ===== */
+    .calligraphy-slot{
+      flex: 1;
+      min-width: 280px;
+      max-width: 640px;
+      height: 210px;
+      border-radius: 18px;
+      border: 1px solid rgba(16,185,129,0.28);
+      background:
+        radial-gradient(circle at 30% 20%, rgba(16,185,129,0.18), transparent 55%),
+        rgba(2,6,23,0.40);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.55);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Put your image here */
+    .calligraphy-slot::before{
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url("allah-calligraphy.jpg"); /* <-- replace with your file */
+      background-size: cover;
+      background-position: center;
+      opacity: 0.95;
+      filter: saturate(1.02) contrast(1.02);
+    }
+
+    /* Soft overlay for readability */
+    .calligraphy-slot::after{
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(2,6,23,0.55), rgba(2,6,23,0.15));
+    }
+
+    /* ===== Slider area ===== */
+    .slider-wrap{
+      padding: 0 1.6rem 1.6rem;
+    }
+
+    .slider-shell{
+      max-width: 1180px;
+      margin: 0 auto;
+      background: rgba(2,6,23,0.40);
+      border: 1px solid rgba(16,185,129,0.22);
+      border-radius: 18px;
+      box-shadow: 0 18px 55px rgba(0,0,0,0.55);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      overflow: hidden;
+    }
+
+    .slider-head{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.95rem 1.05rem;
+      border-bottom: 1px solid rgba(16,185,129,0.18);
+      gap: 1rem;
+    }
+
+    .slider-title{
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 650;
+      color: #d1fae5;
+      letter-spacing: 0.2px;
+    }
+
+    .slider-controls{
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+    }
+
+    .icon-btn{
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      border: 1px solid rgba(16,185,129,0.35);
+      background: rgba(2,6,23,0.55);
+      color: #a7f3d0;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      line-height: 0;
+      user-select: none;
+    }
+
+    .icon-btn:hover{
+      background: rgba(16,185,129,0.15);
+    }
+
+    .track{
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(280px, 360px);
+      gap: 1rem;
+      padding: 1rem 1rem 1.15rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .track::-webkit-scrollbar{
+      height: 10px;
+    }
+    .track::-webkit-scrollbar-thumb{
+      background: rgba(16,185,129,0.22);
+      border-radius: 999px;
+    }
+    .track::-webkit-scrollbar-track{
+      background: rgba(2,6,23,0.25);
+      border-radius: 999px;
+    }
+
+    .card{
+      scroll-snap-align: start;
+      background: rgba(2,6,23,0.55);
+      border: 1px solid rgba(148,163,184,0.18);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.45);
+      display: flex;
+      flex-direction: column;
+      min-height: 310px;
+    }
+
+    .card-media{
+      height: 150px;
+      background: rgba(15,23,42,0.55);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-media::before{
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: var(--img, none);
+      background-size: cover;
+      background-position: center;
+      opacity: 0.95;
+      filter: saturate(1.02) contrast(1.03);
+    }
+
+    .card-media::after{
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(2,6,23,0.10), rgba(2,6,23,0.70));
+    }
+
+    .card-body{
+      padding: 0.95rem 1rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      flex: 1;
+    }
+
+    .card h3{
+      margin: 0;
+      font-size: 1.02rem;
+      font-weight: 700;
+      color: #d1fae5;
+    }
+
+    .card p{
+      margin: 0;
+      font-size: 0.9rem;
+      line-height: 1.55;
+      color: #cbd5f5;
+    }
+
+    .card-actions{
+      margin-top: auto;
+      display: flex;
+      justify-content: flex-start;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      padding-top: 0.35rem;
+    }
+
+    .btn{
+      display: inline-block;
+      padding: 0.45rem 0.85rem;
+      border-radius: 999px;
+      border: 1px solid rgba(16,185,129,0.40);
+      background: rgba(2,6,23,0.55);
+      color: #a7f3d0;
+      text-decoration: none;
+      font-size: 0.82rem;
+      white-space: nowrap;
+    }
+
+    .btn:hover{
+      background: rgba(16,185,129,0.16);
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 900px){
+      .top-wrap{
+        flex-direction: column;
+        padding: 1.2rem;
+      }
+
+      .calligraphy-slot{
+        width: 100%;
+        max-width: unset;
+        height: 210px;
+      }
+
+      .slider-wrap{
+        padding: 0 1.2rem 1.2rem;
+      }
     }
 
     @media (max-width: 640px){
       .container{
-        right: 1.2rem;
-        left: 1.2rem;
-        max-width: unset;
+        padding: 1.7rem 1.4rem;
       }
 
       .header{
@@ -99,27 +323,120 @@
         align-items: flex-start;
         gap: 0.6rem;
       }
+
+      .track{
+        grid-auto-columns: minmax(260px, 86%);
+      }
     }
   </style>
 </head>
 
 <body>
 
-  <div class="container">
-    <div class="header">
-      <h1>The Faith Corner</h1>
-      <a class="back-btn" href="../index.html">Return to my Portfolio</a>
+  <!-- TOP ROW: your intro card + new photo slot -->
+  <div class="top-wrap">
+    <div class="container">
+      <div class="header">
+        <h1>The Faith Corner</h1>
+        <a class="back-btn" href="../index.html">Return to my Portfolio</a>
+      </div>
+
+      <div class="divider"></div>
+
+      <p>
+        A quiet space for reflection, grounding, and remembrance.
+      </p>
+      <p>
+        Here, faith is not argued or displayed — it is simply lived, slowly and sincerely.
+      </p>
     </div>
 
-    <div class="divider"></div>
-
-    <p>
-      A quiet space for reflection, grounding, and remembrance.
-    </p>
-    <p>
-      Here, faith is not argued or displayed — it is simply lived, slowly and sincerely.
-    </p>
+    <!-- Wide photo slot (top-right on desktop) -->
+    <div class="calligraphy-slot" aria-label="Calligraphy image"></div>
   </div>
+
+  <!-- SLIDER SECTION -->
+  <div class="slider-wrap">
+    <div class="slider-shell">
+      <div class="slider-head">
+        <p class="slider-title">Explore</p>
+
+        <div class="slider-controls">
+          <button class="icon-btn" id="prevBtn" aria-label="Previous">
+            ‹
+          </button>
+          <button class="icon-btn" id="nextBtn" aria-label="Next">
+            ›
+          </button>
+        </div>
+      </div>
+
+      <div class="track" id="track">
+        <!-- Card 1 -->
+        <article class="card" style="--img: url('asma-ul-husna.jpg');">
+          <div class="card-media"></div>
+          <div class="card-body">
+            <h3>Al-Asma Ul Husna</h3>
+            <p>
+              A guided space to learn, reflect on, and internalize the Beautiful Names — with meaning, context, and daily remembrance.
+            </p>
+            <div class="card-actions">
+              <a class="btn" href="#" aria-label="Open Al-Asma Ul Husna">Open</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="card" style="--img: url('luqman-lessons.jpg');">
+          <div class="card-media"></div>
+          <div class="card-body">
+            <h3>Lessons of Luqman (AS)</h3>
+            <p>
+              Practical wisdom from Surah Luqman — advice on gratitude, character, humility, prayer, and family life.
+            </p>
+            <div class="card-actions">
+              <a class="btn" href="#" aria-label="Open Lessons of Luqman">Open</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="card" style="--img: url('essential-arabic.jpg');">
+          <div class="card-media"></div>
+          <div class="card-body">
+            <h3>Essential Arabics for Every Muslim</h3>
+            <p>
+              A gentle, practical primer: key words in Salah, common Qur’anic terms, and everyday phrases every Muslim benefits from knowing.
+            </p>
+            <div class="card-actions">
+              <a class="btn" href="#" aria-label="Open Essential Arabic">Open</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const track = document.getElementById("track");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+
+    function getScrollAmount() {
+      const firstCard = track.querySelector(".card");
+      if (!firstCard) return 320;
+      const cardWidth = firstCard.getBoundingClientRect().width;
+      return Math.round(cardWidth + 16); // include gap
+    }
+
+    prevBtn.addEventListener("click", () => {
+      track.scrollBy({ left: -getScrollAmount(), behavior: "smooth" });
+    });
+
+    nextBtn.addEventListener("click", () => {
+      track.scrollBy({ left: getScrollAmount(), behavior: "smooth" });
+    });
+  </script>
 
 </body>
 </html>
