@@ -31,7 +31,10 @@
       display: grid;
       grid-template-columns: minmax(360px, 720px) minmax(320px, 1fr);
       gap: 1.2rem;
-      align-items: stretch; /* makes both top cards same height */
+      align-items: stretch;
+
+      /* ✅ FIX: Prevent overlap with cards below */
+      margin-bottom: 1.4rem;
     }
 
     .container{
@@ -42,7 +45,7 @@
       box-shadow: 0 20px 60px rgba(0,0,0,0.6);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
-      height: 100%; /* ensure equal height behavior */
+      height: 100%;
     }
 
     /* Header row */
@@ -103,15 +106,15 @@
       -webkit-backdrop-filter: blur(12px);
       overflow: hidden;
       position: relative;
-      height: 100%; /* match height with left card */
-      min-height: 220px; /* safety */
+      height: 100%;
+      min-height: 220px;
     }
 
     .calligraphy-slot::before{
       content: "";
       position: absolute;
       inset: 0;
-      background-image: url("allah-calligraphy.jpg"); /* replace with your file */
+      background-image: url("allah-calligraphy.jpg");
       background-size: cover;
       background-position: center;
       opacity: 0.95;
@@ -125,9 +128,12 @@
       background: linear-gradient(90deg, rgba(2,6,23,0.55), rgba(2,6,23,0.15));
     }
 
-    /* ===== Cards section (non-slider, expands downward) ===== */
+    /* ===== Cards section ===== */
     .cards-wrap{
       padding: 0 1.6rem 1.6rem;
+
+      /* ✅ Safety: prevent upward pull */
+      margin-top: 0;
     }
 
     .cards-shell{
@@ -149,7 +155,7 @@
       gap: 1rem;
     }
 
-    /* Clickable card (entire card is a link) */
+    /* Clickable card */
     .card-link{
       text-decoration: none;
       color: inherit;
@@ -178,11 +184,6 @@
       background: rgba(2,6,23,0.62);
     }
 
-    .card-link:focus-visible .card{
-      outline: 2px solid rgba(16,185,129,0.55);
-      outline-offset: 3px;
-    }
-
     .card-media{
       height: 150px;
       background: rgba(15,23,42,0.55);
@@ -198,7 +199,6 @@
       background-size: cover;
       background-position: center;
       opacity: 0.95;
-      filter: saturate(1.02) contrast(1.03);
     }
 
     .card-media::after{
@@ -237,24 +237,12 @@
         padding: 1.2rem;
       }
 
-      .calligraphy-slot{
-        min-height: 210px;
-      }
-
-      .cards-wrap{
-        padding: 0 1.2rem 1.2rem;
-      }
-
       .cards-grid{
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
     @media (max-width: 640px){
-      .container{
-        padding: 1.7rem 1.4rem;
-      }
-
       .header{
         flex-direction: column;
         align-items: flex-start;
@@ -270,7 +258,7 @@
 
 <body>
 
-  <!-- TOP ROW: intro card + photo slot -->
+  <!-- TOP ROW -->
   <div class="top-wrap">
     <div class="container">
       <div class="header">
@@ -288,16 +276,15 @@
       </p>
     </div>
 
-    <div class="calligraphy-slot" aria-label="Calligraphy image"></div>
+    <div class="calligraphy-slot"></div>
   </div>
 
-  <!-- CARDS GRID (expands downward, no slider, no Explore label) -->
+  <!-- CARDS -->
   <div class="cards-wrap">
     <div class="cards-shell">
       <div class="cards-grid">
 
-        <!-- Card 1 -->
-        <a class="card-link" href="asma-ul-husna.html" aria-label="Open Al-Asma Ul Husna">
+        <a class="card-link" href="asma-ul-husna.html">
           <article class="card" style="--img: url('asma-ul-husna.jpg');">
             <div class="card-media"></div>
             <div class="card-body">
@@ -309,8 +296,7 @@
           </article>
         </a>
 
-        <!-- Card 2 -->
-        <a class="card-link" href="luqman-lessons.html" aria-label="Open Lessons of Luqman (AS)">
+        <a class="card-link" href="luqman-lessons.html">
           <article class="card" style="--img: url('luqman-lessons.jpg');">
             <div class="card-media"></div>
             <div class="card-body">
@@ -322,8 +308,7 @@
           </article>
         </a>
 
-        <!-- Card 3 -->
-        <a class="card-link" href="essential-arabic.html" aria-label="Open Essential Arabics for Every Muslim">
+        <a class="card-link" href="essential-arabic.html">
           <article class="card" style="--img: url('essential-arabic.jpg');">
             <div class="card-media"></div>
             <div class="card-body">
@@ -335,8 +320,7 @@
           </article>
         </a>
 
-        <!-- Card 4 (placeholder idea) -->
-        <a class="card-link" href="#" aria-label="Open Daily Dhikr and Du'a">
+        <a class="card-link" href="#">
           <article class="card" style="--img: url('daily-dhikr.jpg');">
             <div class="card-media"></div>
             <div class="card-body">
@@ -348,8 +332,7 @@
           </article>
         </a>
 
-        <!-- Card 5 (placeholder idea) -->
-        <a class="card-link" href="#" aria-label="Open Stories of the Prophets">
+        <a class="card-link" href="#">
           <article class="card" style="--img: url('prophets-stories.jpg');">
             <div class="card-media"></div>
             <div class="card-body">
