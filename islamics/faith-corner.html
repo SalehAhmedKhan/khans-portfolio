@@ -31,10 +31,12 @@
       display: grid;
       grid-template-columns: minmax(360px, 720px) minmax(320px, 1fr);
       gap: 1.2rem;
+
+      /* ✅ This ensures both top cards stretch to same height */
       align-items: stretch;
 
-      /* ✅ FIX: Prevent overlap with cards below */
-      margin-bottom: 1.4rem;
+      /* ✅ Push the bottom cards down more */
+      margin-bottom: 2.6rem;
     }
 
     .container{
@@ -45,7 +47,9 @@
       box-shadow: 0 20px 60px rgba(0,0,0,0.6);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
-      height: 100%;
+
+      /* ✅ IMPORTANT: remove height:100% so grid stretching works correctly */
+      /* height: 100%; */
     }
 
     /* Header row */
@@ -106,8 +110,10 @@
       -webkit-backdrop-filter: blur(12px);
       overflow: hidden;
       position: relative;
-      height: 100%;
-      min-height: 220px;
+
+      /* ✅ Let grid stretch this naturally to match left card */
+      /* height: 100%; */
+      /* min-height: 220px; */
     }
 
     .calligraphy-slot::before{
@@ -132,8 +138,8 @@
     .cards-wrap{
       padding: 0 1.6rem 1.6rem;
 
-      /* ✅ Safety: prevent upward pull */
-      margin-top: 0;
+      /* ✅ Extra separation so it visually sits lower */
+      margin-top: 1.2rem;
     }
 
     .cards-shell{
@@ -235,6 +241,14 @@
       .top-wrap{
         grid-template-columns: 1fr;
         padding: 1.2rem;
+
+        /* keep the larger spacing on mobile too */
+        margin-bottom: 2rem;
+      }
+
+      /* ✅ Give the image a reasonable minimum on stacked layout */
+      .calligraphy-slot{
+        min-height: 210px;
       }
 
       .cards-grid{
