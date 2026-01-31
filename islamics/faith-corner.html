@@ -26,6 +26,11 @@
         ),
         linear-gradient(180deg, #04130c 0%, #020617 100%);
 
+      /* ✅ FIX: prevent gradient "tiling" seam on tall pages (second-row cutoff) */
+      background-repeat: no-repeat, no-repeat;
+      background-size: 100% 100%, 100% 100%;
+      background-attachment: fixed, fixed;
+
       position: relative;
       overflow-x: hidden;
     }
@@ -63,8 +68,8 @@
       /* ✅ This ensures both top cards stretch to same height */
       align-items: stretch;
 
-      /* ✅ Push the bottom cards down more */
-      margin-bottom: 2.6rem;
+      /* ✅ FIX: reduce the large gap between top + cards section */
+      margin-bottom: 1.2rem;
     }
 
     .container{
@@ -166,8 +171,8 @@
     .cards-wrap{
       padding: 0 1.6rem 1.6rem;
 
-      /* ✅ Extra separation so it visually sits lower */
-      margin-top: 1.2rem;
+      /* ✅ FIX: reduce extra separation */
+      margin-top: 0.2rem;
     }
 
     .cards-shell{
@@ -419,7 +424,7 @@
         padding: 1.2rem;
 
         /* keep the larger spacing on mobile too */
-        margin-bottom: 2rem;
+        margin-bottom: 1.2rem;
       }
 
       /* ✅ Give the image a reasonable minimum on stacked layout */
