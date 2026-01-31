@@ -21,7 +21,7 @@ export const FAITH_CARDS = [
     title: "Essential Arabics for Every Muslim",
     description:
       "A gentle, practical primer: key words in Salah, common Qur’anic terms, and everyday phrases every Muslim benefits from knowing.",
-    image: "./main_images/arabics.png",
+    image: "./main_images/arabic.png",
     module: "js/tabs/arabic.js",
   },
   {
