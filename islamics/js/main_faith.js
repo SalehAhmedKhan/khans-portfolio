@@ -21,7 +21,7 @@ export const FAITH_CARDS = [
     title: "Essential Arabics for Every Muslim",
     description:
       "A gentle, practical primer: key words in Salah, common Qur’anic terms, and everyday phrases every Muslim benefits from knowing.",
-    image: "main_images/image_3.jpg",
+    image: "./main_images/arabics.png",
     module: "js/tabs/arabic.js",
   },
   {
@@ -29,7 +29,7 @@ export const FAITH_CARDS = [
     title: "Daily Dhikr & Du'a",
     description:
       "Morning and evening remembrances, short du'as, and a simple routine to keep the heart anchored throughout the day.",
-    image: "main_images/image_4.jpg",
+    image: "./main_images/dhikr and dua.png",
     module: "js/tabs/dhikr.js",
   },
   {
