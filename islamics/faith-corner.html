@@ -16,19 +16,43 @@
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
       color: #e5e7eb;
 
-      /* ✅ FIXED: smoother gradient transition (no abrupt cutoff) */
+      /* ✅ FIXED: smoother extended gradient fade */
       background:
         radial-gradient(
           circle at top left,
-          rgba(16,185,129,0.18) 0%,
-          rgba(16,185,129,0.10) 35%,
-          rgba(16,185,129,0.04) 55%,
-          rgba(16,185,129,0.00) 75%
+          rgba(16,185,129,0.22) 0%,
+          rgba(16,185,129,0.10) 40%,
+          rgba(16,185,129,0.03) 70%,
+          rgba(16,185,129,0.00) 100%
         ),
         linear-gradient(180deg, #04130c 0%, #020617 100%);
 
       position: relative;
       overflow-x: hidden;
+    }
+
+    /* ✅ FIXED: subtle overlay to prevent gradient banding */
+    body::before{
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.06;
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          rgba(255,255,255,0.06) 0px,
+          rgba(255,255,255,0.06) 1px,
+          rgba(0,0,0,0.00) 2px,
+          rgba(0,0,0,0.00) 4px
+        );
+    }
+
+    /* ✅ keep all content above overlay */
+    body > *{
+      position: relative;
+      z-index: 1;
     }
 
     /* ===== Top area layout: left intro card + right wide photo ===== */
@@ -38,11 +62,7 @@
       display: grid;
       grid-template-columns: minmax(360px, 720px) minmax(320px, 1fr);
       gap: 1.2rem;
-
-      /* ✅ This ensures both top cards stretch to same height */
       align-items: stretch;
-
-      /* ✅ Push the bottom cards down more */
       margin-bottom: 2.6rem;
     }
 
@@ -56,7 +76,6 @@
       -webkit-backdrop-filter: blur(14px);
     }
 
-    /* Header row */
     .header{
       display: flex;
       align-items: center;
@@ -102,7 +121,6 @@
       background: linear-gradient(to right, #10b981, transparent);
     }
 
-    /* ===== Top-right wide photo slot ===== */
     .calligraphy-slot{
       border-radius: 18px;
       border: 1px solid rgba(16,185,129,0.35);
@@ -124,7 +142,6 @@
       background-size: cover;
       background-position: center;
       opacity: 0.95;
-      filter: saturate(1.02) contrast(1.02);
     }
 
     .calligraphy-slot::after{
@@ -134,7 +151,6 @@
       background: linear-gradient(90deg, rgba(2,6,23,0.55), rgba(2,6,23,0.15));
     }
 
-    /* ===== Cards section ===== */
     .cards-wrap{
       padding: 0 1.6rem 1.6rem;
       margin-top: 1.2rem;
@@ -159,14 +175,12 @@
       gap: 1rem;
     }
 
-    /* Clickable card */
     .card-link{
       text-decoration: none;
       color: inherit;
       display: block;
       height: 100%;
       border-radius: 16px;
-      outline: none;
     }
 
     .card{
@@ -178,21 +192,17 @@
       display: flex;
       flex-direction: column;
       min-height: 320px;
-      height: 100%;
-      transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+      transition: transform 0.15s ease;
     }
 
     .card-link:hover .card{
       transform: translateY(-2px);
       border-color: rgba(16,185,129,0.35);
-      background: rgba(2,6,23,0.62);
     }
 
     .card-media{
       height: 150px;
-      background: rgba(15,23,42,0.55);
       position: relative;
-      overflow: hidden;
     }
 
     .card-media::before{
@@ -202,7 +212,6 @@
       background-image: var(--img, none);
       background-size: cover;
       background-position: center;
-      opacity: 0.95;
     }
 
     .card-media::after{
@@ -213,10 +222,7 @@
     }
 
     .card-body{
-      padding: 0.95rem 1rem 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.55rem;
+      padding: 1rem;
       flex: 1;
     }
 
@@ -228,36 +234,24 @@
     }
 
     .card p{
-      margin: 0;
+      margin-top: 0.4rem;
       font-size: 0.9rem;
-      line-height: 1.55;
       color: #cbd5f5;
     }
 
-    /* ===== Responsive ===== */
     @media (max-width: 900px){
       .top-wrap{
         grid-template-columns: 1fr;
-        padding: 1.2rem;
-        margin-bottom: 2rem;
       }
-
       .calligraphy-slot{
         min-height: 210px;
       }
-
       .cards-grid{
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(2, 1fr);
       }
     }
 
     @media (max-width: 640px){
-      .header{
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.6rem;
-      }
-
       .cards-grid{
         grid-template-columns: 1fr;
       }
@@ -267,7 +261,6 @@
 
 <body>
 
-  <!-- TOP ROW -->
   <div class="top-wrap">
     <div class="container">
       <div class="header">
@@ -277,18 +270,13 @@
 
       <div class="divider"></div>
 
-      <p>
-        A quiet space for reflection, grounding, and remembrance.
-      </p>
-      <p>
-        Here, faith is not argued or displayed — it is simply lived, slowly and sincerely.
-      </p>
+      <p>A quiet space for reflection, grounding, and remembrance.</p>
+      <p>Here, faith is not argued or displayed — it is simply lived, slowly and sincerely.</p>
     </div>
 
     <div class="calligraphy-slot"></div>
   </div>
 
-  <!-- CARDS -->
   <div class="cards-wrap">
     <div class="cards-shell">
       <div class="cards-grid">
@@ -298,9 +286,7 @@
             <div class="card-media"></div>
             <div class="card-body">
               <h3>Al-Asma Ul Husna</h3>
-              <p>
-                A guided space to learn, reflect on, and internalize the Beautiful Names — with meaning, context, and daily remembrance.
-              </p>
+              <p>A guided space to learn, reflect on, and internalize the Beautiful Names — with meaning, context, and daily remembrance.</p>
             </div>
           </article>
         </a>
@@ -310,9 +296,7 @@
             <div class="card-media"></div>
             <div class="card-body">
               <h3>Lessons of Luqman (AS)</h3>
-              <p>
-                Practical wisdom from Surah Luqman — advice on gratitude, character, humility, prayer, and family life.
-              </p>
+              <p>Practical wisdom from Surah Luqman — advice on gratitude, character, humility, prayer, and family life.</p>
             </div>
           </article>
         </a>
@@ -322,33 +306,7 @@
             <div class="card-media"></div>
             <div class="card-body">
               <h3>Essential Arabics for Every Muslim</h3>
-              <p>
-                A gentle, practical primer: key words in Salah, common Qur’anic terms, and everyday phrases every Muslim benefits from knowing.
-              </p>
-            </div>
-          </article>
-        </a>
-
-        <a class="card-link" href="#">
-          <article class="card" style="--img: url('daily-dhikr.jpg');">
-            <div class="card-media"></div>
-            <div class="card-body">
-              <h3>Daily Dhikr & Du&#8217;a</h3>
-              <p>
-                Morning and evening remembrances, short du&#8217;as, and a simple routine to keep the heart anchored throughout the day.
-              </p>
-            </div>
-          </article>
-        </a>
-
-        <a class="card-link" href="#">
-          <article class="card" style="--img: url('prophets-stories.jpg');">
-            <div class="card-media"></div>
-            <div class="card-body">
-              <h3>Stories of the Prophets</h3>
-              <p>
-                A calm, reflective collection of prophetic stories — focusing on lessons, patience, and timeless guidance for everyday life.
-              </p>
+              <p>A gentle, practical primer: key words in Salah, common Qur’anic terms, and everyday phrases every Muslim benefits from knowing.</p>
             </div>
           </article>
         </a>
