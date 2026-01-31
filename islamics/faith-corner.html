@@ -16,8 +16,15 @@
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
       color: #e5e7eb;
 
+      /* ✅ FIXED: smoother gradient transition (no abrupt cutoff) */
       background:
-        radial-gradient(circle at top left, rgba(16,185,129,0.18), transparent 55%),
+        radial-gradient(
+          circle at top left,
+          rgba(16,185,129,0.18) 0%,
+          rgba(16,185,129,0.10) 35%,
+          rgba(16,185,129,0.04) 55%,
+          rgba(16,185,129,0.00) 75%
+        ),
         linear-gradient(180deg, #04130c 0%, #020617 100%);
 
       position: relative;
@@ -47,9 +54,6 @@
       box-shadow: 0 20px 60px rgba(0,0,0,0.6);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
-
-      /* ✅ IMPORTANT: remove height:100% so grid stretching works correctly */
-      /* height: 100%; */
     }
 
     /* Header row */
@@ -110,10 +114,6 @@
       -webkit-backdrop-filter: blur(12px);
       overflow: hidden;
       position: relative;
-
-      /* ✅ Let grid stretch this naturally to match left card */
-      /* height: 100%; */
-      /* min-height: 220px; */
     }
 
     .calligraphy-slot::before{
@@ -137,8 +137,6 @@
     /* ===== Cards section ===== */
     .cards-wrap{
       padding: 0 1.6rem 1.6rem;
-
-      /* ✅ Extra separation so it visually sits lower */
       margin-top: 1.2rem;
     }
 
@@ -241,12 +239,9 @@
       .top-wrap{
         grid-template-columns: 1fr;
         padding: 1.2rem;
-
-        /* keep the larger spacing on mobile too */
         margin-bottom: 2rem;
       }
 
-      /* ✅ Give the image a reasonable minimum on stacked layout */
       .calligraphy-slot{
         min-height: 210px;
       }
