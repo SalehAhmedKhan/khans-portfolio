@@ -13,7 +13,7 @@ export const FAITH_CARDS = [
     title: "Lessons of Luqman (AS)",
     description:
       "Practical wisdom from Surah Luqman — advice on gratitude, character, humility, prayer, and family life.",
-    image: "main_images/luqman101.jpg",
+    image: "./main_images/luqman101.jpg",
     module: "js/tabs/luqman.js",
   },
   {
