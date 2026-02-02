@@ -6,12 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Khan's Portfolio</title>
 
-    <link rel="icon" href="favicon.ico" sizes="any">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="favicon-180.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="favicon-512.png">
+    <!-- ✅ Single favicon only -->
+    <link rel="icon" type="image/png" href="favicon.png">
 
     <style>
         html, body {
@@ -76,7 +72,7 @@
             flex: 1.6;
         }
 
-        /* ✅ Uniform hero typography (only typography change in hero) */
+        /* ✅ Uniform hero typography */
         .hero-title {
             font-size: 2.15rem;
             font-weight: 700;
@@ -169,7 +165,7 @@
         /* Justified tab labels */
         .tab-labels {
             display: flex;
-            justify-content: space-between; /* spreads buttons evenly */
+            justify-content: space-between;
             gap: 0.6rem;
             margin-bottom: 0.7rem;
             width: 100%;
@@ -180,7 +176,6 @@
             flex: 1;
             text-align: center;
             white-space: nowrap;
-
             padding: 0.35rem 0.8rem;
             border-radius: 999px;
             border: 1px solid rgba(148,163,184,0.5);
@@ -202,10 +197,9 @@
             box-shadow: 0 10px 25px rgba(15,23,42,0.6);
             font-size: 0.84rem;
             position: relative;
-            min-height: 145px; /* keeps box from jumping in height */
+            min-height: 145px;
         }
 
-        /* ✅ Force JSON + non-JSON panels to match typography exactly */
         .tab-panel {
             display: none;
             opacity: 0;
@@ -255,18 +249,11 @@
             background: rgba(148,163,184,0.28);
         }
 
-        .btn-row{
+        .btn-row {
             display: flex;
             gap: 0.55rem;
             flex-wrap: wrap;
             align-items: center;
-        }
-
-        .btn-faith{
-            background: #064e3b; /* deep dark green */
-        }
-        .btn-faith:hover{
-            background: #065f46;
         }
 
         /* Hide the radio buttons */
@@ -285,7 +272,6 @@
             to   { opacity: 1; transform: translateX(0); }
         }
 
-        /* Left three tabs slide from left */
         #tab-pubs:checked      ~ .tab-contents #content-pubs,
         #tab-edu:checked       ~ .tab-contents #content-edu,
         #tab-prof:checked      ~ .tab-contents #content-prof {
@@ -294,7 +280,6 @@
             animation: fadeSlideLeft 0.25s ease forwards;
         }
 
-        /* Right three tabs slide from right */
         #tab-tools:checked     ~ .tab-contents #content-tools,
         #tab-research:checked  ~ .tab-contents #content-research,
         #tab-hobbies:checked   ~ .tab-contents #content-hobbies {
@@ -303,7 +288,6 @@
             animation: fadeSlideRight 0.25s ease forwards;
         }
 
-        /* Active tab label styling */
         #tab-pubs:checked      ~ .tab-labels label[for="tab-pubs"],
         #tab-edu:checked       ~ .tab-labels label[for="tab-edu"],
         #tab-prof:checked      ~ .tab-labels label[for="tab-prof"],
@@ -314,7 +298,6 @@
             border-color: #60a5fa;
         }
 
-        /* ===== Credit line under cards ===== */
         .page-credit {
             text-align: center;
             margin-top: 0.3rem;
@@ -328,15 +311,7 @@
             display: none;
         }
 
-        /* ✅ Mobile/narrow screens:
-              - image on top
-              - diagonal preserved
-              - face cropping fixed */
         @media (max-width: 900px) {
-            html, body {
-                overflow: auto;
-            }
-
             .hero-card {
                 flex-direction: column;
                 align-items: stretch;
@@ -351,27 +326,17 @@
 
             .hero-image {
                 width: 100%;
-                max-width: none;
                 height: 340px;
-
-                /* keep diagonal style */
                 clip-path: polygon(12% 0, 100% 0, 100% 100%, 0 100%);
-
-                /* ✅ keep face visible */
                 background-position: center 18%;
             }
 
             .tab-labels {
                 justify-content: center;
             }
+
             .tab-label {
                 flex: unset;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .tab-labels {
-                gap: 0.3rem;
             }
         }
 
@@ -379,6 +344,7 @@
         .hero-actions {
             margin-top: 0.7rem;
         }
+
         .hero-actions p {
             margin: 0.15rem 0;
             font-size: 0.9rem;
@@ -390,7 +356,6 @@
 
 <body>
 <div class="page">
-
     <div class="container">
 
         <!-- ===== HERO CARD ===== -->
@@ -413,7 +378,8 @@
                 </p>
 
                 <p class="hero-socials">
-                    LinkedIn: <a href="https://www.linkedin.com/in/saleh-ahmed-khan/" target="_blank" rel="noopener">saleh-ahmed-khan</a>
+                    LinkedIn: <a href="https://www.linkedin.com/in/saleh-ahmed-khan/" target="_blank" rel="noopener">
+                        saleh-ahmed-khan</a>
                 </p>
 
                 <div class="hero-actions">
@@ -424,6 +390,7 @@
                         <a class="btn btn-muted" href="https://scholar.google.com/citations?user=Jh4FxU4AAAAJ&hl=en" target="_blank">Google Scholar</a>
                         <a class="btn btn-muted" href="https://github.com/SalehAhmedKhan" target="_blank">GitHub</a>
                     </div>
+
                     <p style="margin: 0.35rem 0 0; font-size: 0.82rem; color: #cbd5f5;">
                         Last Update: <span id="last-updated">—</span>
                     </p>
@@ -438,7 +405,6 @@
         <!-- ===== TABBED CARDS ===== -->
         <section class="glass tabs">
 
-            <!-- Radio controls -->
             <input type="radio" name="tabset" id="tab-pubs" checked>
             <input type="radio" name="tabset" id="tab-edu">
             <input type="radio" name="tabset" id="tab-prof">
@@ -446,7 +412,6 @@
             <input type="radio" name="tabset" id="tab-research">
             <input type="radio" name="tabset" id="tab-hobbies">
 
-            <!-- Labels -->
             <div class="tab-labels">
                 <label class="tab-label" for="tab-pubs">Publications</label>
                 <label class="tab-label" for="tab-edu">Education</label>
@@ -456,34 +421,29 @@
                 <label class="tab-label" for="tab-hobbies">Hobbies</label>
             </div>
 
-            <!-- Contents -->
             <div class="tab-contents">
 
-                <!-- Publications (JSON) -->
                 <div class="tab-panel" id="content-pubs">
                     <h3>Publications</h3>
                     <p>Loading...</p>
                 </div>
 
-                <!-- Education (JSON) -->
                 <div class="tab-panel" id="content-edu">
                     <h3>Education</h3>
                     <p>Loading...</p>
                 </div>
 
-                <!-- Professional Experience (JSON) -->
                 <div class="tab-panel" id="content-prof">
                     <h3>Professional Experience</h3>
                     <p>Loading...</p>
                 </div>
 
-                <!-- Tools (JSON) -->
                 <div class="tab-panel" id="content-tools">
                     <h3>References</h3>
                     <p>Loading...</p>
                 </div>
 
-                <!-- Research Interests (hardcoded) -->
+                <!-- ✅ Research tab with Bhuiyan button -->
                 <div class="tab-panel" id="content-research">
                     <h3>Research Interests</h3>
                     <p>My research focuses on novel wide bandgap semiconductors and their application in high-power and high-frequency electronics.</p>
@@ -492,9 +452,15 @@
                         <li>Dielectric engineering and breakdown management</li>
                         <li>Defect spectroscopy and radiation hardness</li>
                     </ul>
+
+                    <a class="btn btn-muted"
+                       href="https://sites.uml.edu/anhar_bhuiyan/"
+                       target="_blank"
+                       rel="noopener">
+                        Visit Bhuiyan Research Group
+                    </a>
                 </div>
 
-                <!-- Hobbies (hardcoded) -->
                 <div class="tab-panel" id="content-hobbies">
                     <h3>Hobbies</h3>
                     <p>Outside the lab, I enjoy building clean digital designs and exploring creative projects.</p>
@@ -547,7 +513,6 @@
                 }
             }
 
-            // fallback: page last modified
             const fallback = new Date(document.lastModified);
             el.textContent = isNaN(fallback.getTime()) ? "—" : formatFullDate(fallback);
         } catch (e) {
