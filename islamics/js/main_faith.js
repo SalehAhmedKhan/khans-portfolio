@@ -37,7 +37,7 @@ export const FAITH_CARDS = [
     title: "Stories of the Prophets",
     description:
       "A calm, reflective collection of prophetic stories — focusing on lessons, patience, and timeless guidance for everyday life.",
-    image: "main_images/image_5.jpg",
+    image: "./main_images/journey.png",
     module: "js/tabs/prophets.js",
   },
 ];
