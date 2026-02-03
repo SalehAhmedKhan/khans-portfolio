@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Khan's Krafts</title>
 
+  <link rel="icon" type="image/png" href="krafts-images/krafts.png" />
+
   <style>
     :root {
       --glass-bg: rgba(15,23,42,0.82);
@@ -341,7 +343,7 @@
         <!-- Manual footer under the gallery (ONLY ADDITION) -->
         <div class="gallery-footer">
           <span>© Khan’s Krafts </span>
-          <span>• Last updated: Dec 25, 2025 </span>
+          <span>• Last updated: <span id="gallery-last-updated">—</span> </span>
           <span>• For suggestions or custom projects, <a href="mailto:salehahmedkhan1998@gmail.com">Contact Me!</a></span>
         </div>
       </section>
@@ -405,6 +407,28 @@
         const res = await fetch(url, { cache: "no-store" });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         cfg = await res.json();
+        const updatedEl = document.getElementById("gallery-last-updated");
+        if (updatedEl) {
+          const formatFullDate = (d) =>
+            new Intl.DateTimeFormat("en-US", { year: "numeric", month: "long", day: "numeric" }).format(d);
+
+          const raw =
+            cfg.last_updated ??
+            cfg.lastUpdated ??
+            cfg.last_update ??
+            cfg.lastUpdate ??
+            cfg.updated ??
+            cfg.updated_at ??
+            cfg.updatedAt;
+
+          if (typeof raw === "string" && raw.trim()) {
+            const parsed = new Date(raw);
+            updatedEl.textContent = isNaN(parsed.getTime()) ? "—" : formatFullDate(parsed);
+          } else {
+            const fallback = new Date(document.lastModified);
+            updatedEl.textContent = isNaN(fallback.getTime()) ? "—" : formatFullDate(fallback);
+          }
+        }
       } catch (e) {
         track.innerHTML = `<div style="padding:12px;opacity:.85">Couldn’t load ${JSON_PATH}: ${e.message}</div>`;
         return;
