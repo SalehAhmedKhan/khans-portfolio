@@ -1,11 +1,64 @@
 {
-  "h3": "Experimental Tools",
-  "paragraphs": [
-    "Hands-on experience with fabrication and characterization tools."
-  ],
-  "bullets": [
-    "Thin-film growth & etching systems",
-    "Electrical characterization setups",
-    "Microscopy & materials analysis techniques"
+  "tab": "references",
+  "h3": "References",
+  "intro": "This page is shaped by the guidance of mentors and the support of collaborators I\u2019ve worked with along the way.",
+  "sections": [
+    {
+      "id": "professional",
+      "title": "Professional References",
+      "enabled": true,
+      "entries": [
+        {
+          "name": "Dr. A F M Anhar Uddin Bhuiyan",
+          "relationship": "Research Advisor (UMass Lowell)",
+          "role_title": "Assistant Professor",
+          "department": "Department of Electrical and Computer Engineering",
+          "organization": "University of Massachusetts Lowell",
+          "email": "anhar_bhuiyan@uml.edu",
+          "website": ""
+        },
+        {
+          "name": "Dr. Quazi Deen Mohd Khosru",
+          "relationship": "Academic Referee (BUET)",
+          "role_title": "Professor",
+          "department": "Department of Electrical and Electronic Engineering",
+          "organization": "Bangladesh University of Engineering and Technology",
+          "email": "qdmkhosru@eee.buet.ac.bd",
+          "website": ""
+        }
+      ]
+    },
+    {
+      "id": "collaborators",
+      "title": "Colleagues & Collaborators",
+      "enabled": true,
+      "entries": [
+        {
+          "name": "Dr. Placeholder Name",
+          "relationship": "Collaborator / Colleague",
+          "role_title": "Title / Position",
+          "department": "Department / Lab / Group",
+          "organization": "Institution / Company",
+          "email": "placeholder@email.com",
+          "website": ""
+        }
+      ]
+    },
+    {
+      "id": "mentees",
+      "title": "Mentees",
+      "enabled": true,
+      "entries": [
+        {
+          "name": "Student Placeholder Name",
+          "relationship": "Mentee",
+          "role_title": "Undergraduate / Graduate Student",
+          "department": "Department / Program",
+          "organization": "Institution",
+          "email": "student@email.com",
+          "website": ""
+        }
+      ]
+    }
   ]
 }
