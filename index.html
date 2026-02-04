@@ -226,6 +226,71 @@
             font-size: 0.82rem;
         }
 
+        /* ===== Publications tab layout (scoped) ===== */
+        .pub-intro{
+            margin: 0 0 0.6rem;
+            color: #d1d5db;
+        }
+
+        .pub-section{
+            margin-top: 0.9rem;
+        }
+
+        .pub-section-title{
+            margin: 0 0 0.55rem;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #f1f5f9;
+        }
+
+        .pub-entry{
+            margin: 0;
+        }
+
+        .pub-title{
+            font-weight: 700;
+            color: #e5e7eb;
+            margin: 0 0 0.22rem;
+        }
+
+        .pub-authors{
+            margin: 0 0 0.18rem;
+            color: #cbd5f5;
+            font-size: 0.83rem;
+            line-height: 1.4;
+        }
+
+        .pub-venue{
+            margin: 0 0 0.28rem;
+            color: #dbeafe;
+            font-size: 0.82rem;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .pub-desc{
+            margin: 0 0 0.3rem;
+            color: #d1d5db;
+            font-size: 0.83rem;
+            line-height: 1.45;
+        }
+
+        .pub-doi a{
+            color: #93c5fd;
+            text-decoration: none;
+            font-size: 0.83rem;
+        }
+        .pub-doi a:hover{
+            text-decoration: underline;
+        }
+
+        .pub-divider{
+            border: none;
+            border-top: 1px solid rgba(148,163,184,0.35);
+            margin: 0.9rem 0;
+            width: 100%;
+        }
+
         /* ===== Education tab layout (scoped) ===== */
         .edu-entry{
             display: flex;
@@ -600,9 +665,9 @@
 
                 <!-- Tab labels -->
                 <div class="tab-labels">
+                    <label class="tab-label" for="tab-edu">Educuation</label>
                     <label class="tab-label" for="tab-pubs">Publications</label>
                     <label class="tab-label" for="tab-prof">Experiences</label>
-                    <label class="tab-label" for="tab-edu">Educuation</label>
                     <label class="tab-label" for="tab-tools">References</label>
                     <label class="tab-label" for="tab-research">Research Hub</label>
                     <label class="tab-label" for="tab-hobbies">Hobbies and Interests</label>
@@ -729,6 +794,71 @@
                 : "";
 
             panelEl.innerHTML = h3 + paras + bullets;
+        } catch (e) {
+            // fail silently
+        }
+    }
+
+    async function renderPublicationsFromFile(jsonUrl, targetPanelId) {
+        const panelEl = document.getElementById(targetPanelId);
+        if (!panelEl) return;
+
+        const escapeHTML = (str) =>
+            String(str ?? "").replace(/[&<>"']/g, (m) => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;"
+            }[m]));
+
+        try {
+            const res = await fetch(jsonUrl, { cache: "no-store" });
+            if (!res.ok) return;
+            const data = await res.json();
+
+            const title = `<h3>${escapeHTML(data.h3 || "Publications")}</h3>`;
+            const intro = data.intro ? `<p class="pub-intro">${escapeHTML(data.intro)}</p>` : "";
+
+            const sections = Array.isArray(data.sections) ? data.sections : [];
+            const sectionsHTML = sections
+                .filter(sec => sec && sec.enabled !== false)
+                .map(sec => {
+                    const secTitle = escapeHTML(sec.title || "");
+                    const entries = Array.isArray(sec.entries) ? sec.entries : [];
+
+                    const entriesHTML = entries.map((e) => {
+                        const pubTitle = escapeHTML(e.title || "");
+                        const authors = escapeHTML(e.authors || "");
+                        const venue = escapeHTML(e.venue || "");
+                        const desc = escapeHTML(e.description || "");
+                        const doiText = escapeHTML(e.doi_text || "DOI");
+                        const doiUrl = escapeHTML(e.doi_url || "#");
+
+                        return `
+                            <div class="pub-entry">
+                                <div class="pub-title">${pubTitle}</div>
+                                <div class="pub-authors">${authors}</div>
+                                <div class="pub-venue">${venue}</div>
+                                <div class="pub-desc">${desc}</div>
+                                <div class="pub-doi"><a href="${doiUrl}" target="_blank" rel="noopener">${doiText}</a></div>
+                            </div>
+                            <hr class="pub-divider">
+                        `;
+                    }).join("");
+
+                    if (!secTitle && !entriesHTML) return "";
+
+                    return `
+                        <div class="pub-section">
+                            ${secTitle ? `<div class="pub-section-title">${secTitle}</div>` : ""}
+                            ${entriesHTML || ""}
+                        </div>
+                    `;
+                })
+                .join("");
+
+            panelEl.innerHTML = title + intro + sectionsHTML;
         } catch (e) {
             // fail silently
         }
@@ -869,7 +999,7 @@
 
     updateLastUpdatedFromFile("tab-publications.json", "last-updated");
 
-    renderTabFromFile("tab-publications.json", "content-pubs");
+    renderPublicationsFromFile("tab-publications.json", "content-pubs");
     renderEducationFromFile("tab-education.json", "content-edu");
     renderTabFromFile("tab-experiences.json", "content-prof");
     renderReferencesFromFile("tab-references.json", "content-tools");
