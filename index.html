@@ -226,6 +226,19 @@
             font-size: 0.82rem;
         }
 
+        /* ===== WRAP FIX for ALL JSON-loaded tabs (scoped) ===== */
+        #content-pubs, #content-edu, #content-prof, #content-tools,
+        #content-pubs *, #content-edu *, #content-prof *, #content-tools *{
+            max-width: 100%;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+
+        .pub-desc{
+            white-space: pre-line;
+        }
+        /* ===== END WRAP FIX ===== */
+
         /* ===== Publications tab layout (scoped) ===== */
         .pub-intro{
             margin: 0 0 0.6rem;
