@@ -31,7 +31,7 @@
     {
       "id": "collaborators",
       "title": "Colleagues & Collaborators",
-      "enabled": true,
+      "enabled": false,
       "entries": [
         {
           "name": "Dr. Placeholder Name",
@@ -47,7 +47,7 @@
     {
       "id": "mentees",
       "title": "Mentees",
-      "enabled": true,
+      "enabled": false,
       "entries": [
         {
           "name": "Student Placeholder Name",
