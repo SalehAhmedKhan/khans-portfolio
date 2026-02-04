@@ -226,31 +226,82 @@
             font-size: 0.82rem;
         }
 
+        /* ===== Education tab layout (scoped) ===== */
+        .edu-entry{
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .edu-left{
+            flex: 1;
+            min-width: 0;
+        }
+
+        .edu-title{
+            font-weight: 700;
+            color: #e5e7eb;
+            margin: 0 0 0.18rem;
+        }
+
+        .edu-lines{
+            color: #cbd5f5;
+            line-height: 1.4;
+            font-size: 0.83rem;
+        }
+
+        .edu-right{
+            flex: 0 0 auto;
+            text-align: right;
+            max-width: 46%;
+        }
+
+        .edu-dates{
+            font-size: 0.82rem;
+            color: #dbeafe;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .edu-divider{
+            border: none;
+            border-top: 1px solid rgba(148,163,184,0.35);
+            margin: 0.9rem 0;
+            width: 100%;
+        }
+
+        @media (max-width: 640px){
+            .edu-entry{
+                flex-direction: column;
+                gap: 0.35rem;
+            }
+            .edu-right{
+                text-align: left;
+                max-width: 100%;
+            }
+            .edu-dates{
+                white-space: normal;
+            }
+        }
+
         /* ===== References tab layout (scoped) ===== */
         .ref-intro{
             margin: 0 0 0.7rem;
             color: #d1d5db;
         }
 
-        /* References main header style (scoped) */
-        #content-tools h3{
-            font-family: inherit;
-            font-size: 1rem;
-            font-weight: 700;
-            margin-bottom: 0.45rem;
-            color: #93c5fd; /* blue highlight */
-        }
-
         .ref-section{
             margin-top: 0.9rem;
         }
 
-        /* References section title style (scoped) */
         .ref-section-title{
             margin: 0 0 0.55rem;
             font-size: 0.95rem;
             font-weight: 700;
-            color: #93c5fd; /* keep blue only */
+            color: #f1f5f9;
         }
 
         .ref-entry{
@@ -266,11 +317,9 @@
         }
 
         .ref-name{
-            font-weight: 650;
-            font-size: 0.92rem;
-            letter-spacing: 0.01em;
+            font-weight: 700;
             color: #e5e7eb;
-            margin: 0 0 0.28rem;
+            margin: 0 0 0.25rem;
         }
 
         .ref-lines{
@@ -552,8 +601,8 @@
                 <!-- Tab labels -->
                 <div class="tab-labels">
                     <label class="tab-label" for="tab-pubs">Publications</label>
-                    <label class="tab-label" for="tab-edu">Educuation</label>
                     <label class="tab-label" for="tab-prof">Experiences</label>
+                    <label class="tab-label" for="tab-edu">Educuation</label>
                     <label class="tab-label" for="tab-tools">References</label>
                     <label class="tab-label" for="tab-research">Research Hub</label>
                     <label class="tab-label" for="tab-hobbies">Hobbies and Interests</label>
@@ -685,6 +734,54 @@
         }
     }
 
+    async function renderEducationFromFile(jsonUrl, targetPanelId) {
+        const panelEl = document.getElementById(targetPanelId);
+        if (!panelEl) return;
+
+        const escapeHTML = (str) =>
+            String(str ?? "").replace(/[&<>"']/g, (m) => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;"
+            }[m]));
+
+        try {
+            const res = await fetch(jsonUrl, { cache: "no-store" });
+            if (!res.ok) return;
+            const data = await res.json();
+
+            const title = `<h3>${escapeHTML(data.h3 || "Education")}</h3>`;
+            const entries = Array.isArray(data.entries) ? data.entries : [];
+
+            const entriesHTML = entries.map((e) => {
+                const degree = escapeHTML(e.degree || "");
+                const dates = escapeHTML(e.dates || "");
+                const lines = Array.isArray(e.lines) ? e.lines : [];
+
+                return `
+                    <div class="edu-entry">
+                        <div class="edu-left">
+                            <div class="edu-title">${degree}</div>
+                            <div class="edu-lines">
+                                ${lines.map(l => `${escapeHTML(l)}<br>`).join("")}
+                            </div>
+                        </div>
+                        <div class="edu-right">
+                            <div class="edu-dates">${dates}</div>
+                        </div>
+                    </div>
+                    <hr class="edu-divider">
+                `;
+            }).join("");
+
+            panelEl.innerHTML = title + entriesHTML;
+        } catch (e) {
+            // fail silently
+        }
+    }
+
     async function renderReferencesFromFile(jsonUrl, targetPanelId) {
         const panelEl = document.getElementById(targetPanelId);
         if (!panelEl) return;
@@ -748,7 +845,7 @@
                             </div>
                         `;
 
-                        const divider = `<hr class="ref-divider">`;
+                        const divider = (idx < entries.length - 1) ? `<hr class="ref-divider">` : "";
 
                         return `<div class="ref-entry">${leftHTML}${rightHTML}</div>${divider}`;
                     }).join("");
@@ -773,7 +870,7 @@
     updateLastUpdatedFromFile("tab-publications.json", "last-updated");
 
     renderTabFromFile("tab-publications.json", "content-pubs");
-    renderTabFromFile("tab-education.json", "content-edu");
+    renderEducationFromFile("tab-education.json", "content-edu");
     renderTabFromFile("tab-experiences.json", "content-prof");
     renderReferencesFromFile("tab-references.json", "content-tools");
 </script>
