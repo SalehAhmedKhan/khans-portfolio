@@ -1,11 +1,22 @@
 {
   "h3": "Education",
-  "paragraphs": [
-    "A brief overview of my academic background."
-  ],
-  "bullets": [
-    "Ph.D. studies in ultrawide-bandgap semiconductor devices",
-    "Graduate training in solid-state electronics and materials",
-    "Foundations in physics, electronics, and device engineering"
+  "entries": [
+    {
+      "degree": "Ph.D. in Electrical Engineering",
+      "dates": "January, 2024 – Present",
+      "lines": [
+        "University of Massachusetts Lowell",
+        "CGPA: 4.00/4.00 (upto 2nd semester)"
+      ]
+    },
+    {
+      "degree": "B.Sc. in Electrical and Electronic Engineering",
+      "dates": "March, 2018 – May, 2023",
+      "lines": [
+        "Bangladesh University of Engineering and Technology, Dhaka",
+        "GPA: 3.71/4.00",
+        "Major: Electronics"
+      ]
+    }
   ]
 }
