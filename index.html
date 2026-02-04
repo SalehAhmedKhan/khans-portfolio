@@ -365,6 +365,96 @@
             }
         }
 
+        /* ===== Experiences tab layout (scoped) ===== */
+        .exp-section{
+            margin-top: 0.9rem;
+        }
+
+        .exp-section-title{
+            margin: 0 0 0.55rem;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #f1f5f9;
+        }
+
+        .exp-subtitle{
+            margin: 0.55rem 0 0.2rem;
+            font-size: 0.86rem;
+            font-weight: 700;
+            color: #93c5fd;
+        }
+
+        .exp-entry{
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .exp-left{
+            flex: 1;
+            min-width: 0;
+        }
+
+        .exp-role{
+            font-weight: 700;
+            color: #e5e7eb;
+            margin: 0 0 0.18rem;
+        }
+
+        .exp-org{
+            color: #93c5fd;
+            font-size: 0.83rem;
+            margin: 0 0 0.25rem;
+        }
+
+        .exp-desc{
+            color: #cbd5f5;
+            font-size: 0.83rem;
+            line-height: 1.4;
+        }
+
+        .exp-right{
+            flex: 0 0 auto;
+            text-align: right;
+            max-width: 46%;
+        }
+
+        .exp-dates{
+            font-size: 0.82rem;
+            color: #dbeafe;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .exp-tools{
+            margin: 0.2rem 0 0.35rem;
+            padding-left: 1.1rem;
+            color: #cbd5f5;
+            font-size: 0.82rem;
+        }
+
+        .exp-divider{
+            border: none;
+            border-top: 1px solid rgba(148,163,184,0.35);
+            margin: 0.9rem 0;
+            width: 100%;
+        }
+
+        @media (max-width: 640px){
+            .exp-entry{
+                flex-direction: column;
+                gap: 0.35rem;
+            }
+            .exp-right{
+                text-align: left;
+                max-width: 100%;
+            }
+            .exp-dates{
+                white-space: normal;
+            }
+        }
+
         /* ===== References tab layout (scoped) ===== */
         .ref-intro{
             margin: 0 0 0.7rem;
@@ -925,6 +1015,85 @@
         }
     }
 
+    async function renderExperiencesFromFile(jsonUrl, targetPanelId) {
+        const panelEl = document.getElementById(targetPanelId);
+        if (!panelEl) return;
+
+        const escapeHTML = (str) =>
+            String(str ?? "").replace(/[&<>"']/g, (m) => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;"
+            }[m]));
+
+        try {
+            const res = await fetch(jsonUrl, { cache: "no-store" });
+            if (!res.ok) return;
+            const data = await res.json();
+
+            const title = `<h3>${escapeHTML(data.h3 || "Experiences")}</h3>`;
+            const sections = Array.isArray(data.sections) ? data.sections : [];
+
+            const sectionsHTML = sections
+                .filter(sec => sec && sec.enabled !== false)
+                .map(sec => {
+                    const secTitle = escapeHTML(sec.title || "");
+                    const entries = Array.isArray(sec.entries) ? sec.entries : [];
+                    const tool_groups = Array.isArray(sec.tool_groups) ? sec.tool_groups : [];
+
+                    const entriesHTML = entries.map((e) => {
+                        const role = escapeHTML(e.role || "");
+                        const org = escapeHTML(e.organization || "");
+                        const desc = escapeHTML(e.description || "");
+                        const dates = escapeHTML(e.dates || "");
+
+                        return `
+                            <div class="exp-entry">
+                                <div class="exp-left">
+                                    <div class="exp-role">${role}</div>
+                                    <div class="exp-org">${org}</div>
+                                    <div class="exp-desc">${desc}</div>
+                                </div>
+                                <div class="exp-right">
+                                    <div class="exp-dates">${dates}</div>
+                                </div>
+                            </div>
+                            <hr class="exp-divider">
+                        `;
+                    }).join("");
+
+                    const toolsHTML = tool_groups.map(g => {
+                        const gTitle = escapeHTML(g.title || "");
+                        const tools = Array.isArray(g.tools) ? g.tools : [];
+                        if (!gTitle && !tools.length) return "";
+                        return `
+                            <div class="exp-subtitle">${gTitle}</div>
+                            <ul class="exp-tools">
+                                ${tools.map(t => `<li>${escapeHTML(t)}</li>`).join("")}
+                            </ul>
+                        `;
+                    }).join("");
+
+                    if (!secTitle && !entriesHTML && !toolsHTML) return "";
+
+                    return `
+                        <div class="exp-section">
+                            ${secTitle ? `<div class="exp-section-title">${secTitle}</div>` : ""}
+                            ${entriesHTML}
+                            ${toolsHTML}
+                        </div>
+                    `;
+                })
+                .join("");
+
+            panelEl.innerHTML = title + sectionsHTML;
+        } catch (e) {
+            // fail silently
+        }
+    }
+
     async function renderReferencesFromFile(jsonUrl, targetPanelId) {
         const panelEl = document.getElementById(targetPanelId);
         if (!panelEl) return;
@@ -1014,7 +1183,7 @@
 
     renderPublicationsFromFile("tab-publications.json", "content-pubs");
     renderEducationFromFile("tab-education.json", "content-edu");
-    renderTabFromFile("tab-experiences.json", "content-prof");
+    renderExperiencesFromFile("tab-experiences.json", "content-prof");
     renderReferencesFromFile("tab-references.json", "content-tools");
 </script>
 
