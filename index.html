@@ -232,15 +232,28 @@
             color: #d1d5db;
         }
 
+        /* References main header style (scoped) */
+        #content-tools h3{
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            margin-bottom: 0.45rem;
+        }
+
         .ref-section{
             margin-top: 0.9rem;
         }
 
+        /* References section title style (scoped) */
         .ref-section-title{
-            margin: 0 0 0.55rem;
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: #f1f5f9;
+            margin: 0 0 0.7rem;
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #93c5fd;
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
         }
 
         .ref-entry{
@@ -256,9 +269,11 @@
         }
 
         .ref-name{
-            font-weight: 700;
+            font-weight: 650;
+            font-size: 0.92rem;
+            letter-spacing: 0.01em;
             color: #e5e7eb;
-            margin: 0 0 0.25rem;
+            margin: 0 0 0.28rem;
         }
 
         .ref-lines{
@@ -736,7 +751,7 @@
                             </div>
                         `;
 
-                        const divider = (idx < entries.length - 1) ? `<hr class="ref-divider">` : "";
+                        const divider = `<hr class="ref-divider">`;
 
                         return `<div class="ref-entry">${leftHTML}${rightHTML}</div>${divider}`;
                     }).join("");
