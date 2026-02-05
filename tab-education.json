@@ -25,7 +25,21 @@
     },
     {
       "title": "Relevant Coursework",
-      "courses": []
+      "courses": [
+        "Quantum Electronics for Engineers",
+        "Solid State Devices",
+        "Power Electronics",
+        "VLSI Circuits Design",
+        "Semiconductor and Nano Devices",
+        "Optoelectronics",
+        "Fabrication Technology",
+        "Microprocessors and Embedded Systems",
+        "Analog Integrated Circuits Design",
+        "Compound Semiconductor Devices",
+        "Numerical Techniques (MATLAB)",
+        "Communication Systems",
+        "Electrical and Electronic Circuits"
+      ]
     },
     {
       "title": "Standardized Test Scores",
