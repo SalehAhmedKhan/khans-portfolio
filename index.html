@@ -1,4 +1,4 @@
-<!-- File: index.html -->
+<!-- Source file used: index (2).html :contentReference[oaicite:0]{index=0} -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +13,8 @@
             margin: 0;
             padding: 0;
             height: 100%;
-            overflow-y: auto;
+            /* ✅ Keep scrollbar always present to prevent width "jump" when switching tabs */
+            overflow-y: scroll;
             overflow-x: hidden;
         }
 
@@ -198,6 +199,11 @@
             font-size: 0.84rem;
             position: relative;
             min-height: 145px; /* keeps box from jumping in height */
+
+            /* ✅ Make the card width constant and prevent content from forcing expansion */
+            width: 100%;
+            box-sizing: border-box;
+            overflow-x: hidden;
         }
 
         /* ✅ Force JSON + non-JSON panels to match typography exactly */
@@ -207,6 +213,12 @@
             font-family: inherit;
             font-size: 0.84rem;
             line-height: 1.4;
+
+            /* ✅ Prevent long JSON strings from affecting layout width */
+            width: 100%;
+            box-sizing: border-box;
+            min-width: 0;
+            max-width: 100%;
         }
 
         .tab-panel h3 {
@@ -232,6 +244,15 @@
             max-width: 100%;
             overflow-wrap: anywhere;
             word-break: break-word;
+            min-width: 0; /* ✅ critical for flex + long content */
+        }
+
+        /* ✅ Also ensure long URLs/strings inside ALL panels never dictate width */
+        .tab-contents, .tab-contents *{
+            max-width: 100%;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+            min-width: 0;
         }
 
         .pub-desc{
@@ -333,6 +354,7 @@
             flex: 0 0 auto;
             text-align: right;
             max-width: 46%;
+            min-width: 0; /* ✅ keep dates column from forcing width */
         }
 
         .edu-dates{
@@ -418,6 +440,7 @@
             flex: 0 0 auto;
             text-align: right;
             max-width: 46%;
+            min-width: 0; /* ✅ prevent dates column from forcing width */
         }
 
         .exp-dates{
@@ -549,6 +572,7 @@
             flex: 0 0 auto;
             text-align: right;
             max-width: 44%;
+            min-width: 0; /* ✅ prevent right column from forcing width */
         }
 
         .ref-relation{
