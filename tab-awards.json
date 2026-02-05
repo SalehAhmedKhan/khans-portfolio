@@ -1,24 +1,24 @@
 {
   "h3": "Awards",
-  "intro": "",
+  "intro": "A selection of academic awards and scholarship recognitions earned throughout my academic journey.",
   "sections": [
     {
-      "title": "Awards",
-      "enabled": true,
-      "entries": [
-        {
-          "title": "EEE Faculty Dean’s List Award, BUET",
-          "description": "for obtaining a GPA of 3.75 of higher in two consecutive terms."
-        }
-      ]
-    },
-    {
-      "title": "Scholarships",
+      "title": "Scholarships and Grants",
       "enabled": true,
       "entries": [
         {
           "title": "RISE Student Research Grant, BUET",
-          "description": "for most prominent thesis topic amongst undergraduate students."
+          "description": "For most prominent thesis topic amongst undergraduate students."
+        }
+      ]
+    },
+    {
+      "title": "Achievements",
+      "enabled": true,
+      "entries": [
+        {
+          "title": "EEE Faculty Dean’s List Award, BUET",
+          "description": "For obtaining a GPA of 3.75 of higher in two consecutive terms."
         }
       ]
     }
