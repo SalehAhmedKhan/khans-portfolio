@@ -1,21 +1,37 @@
 {
   "h3": "Education",
-  "entries": [
+  "sections": [
     {
-      "degree": "Ph.D. in Electrical Engineering",
-      "dates": "January, 2024 – Present",
-      "lines": [
-        "University of Massachusetts Lowell",
-        "CGPA: 4.00/4.00 (upto 2nd semester)"
+      "title": "Education",
+      "entries": [
+        {
+          "degree": "Ph.D. in Electrical Engineering",
+          "dates": "January, 2024 – Present",
+          "lines": [
+            "University of Massachusetts Lowell",
+            "CGPA: 4.00/4.00 (upto 2nd semester)"
+          ]
+        },
+        {
+          "degree": "B.Sc. in Electrical and Electronic Engineering",
+          "dates": "March, 2018 – May, 2023",
+          "lines": [
+            "Bangladesh University of Engineering and Technology, Dhaka",
+            "GPA: 3.71/4.00",
+            "Major: Electronics"
+          ]
+        }
       ]
     },
     {
-      "degree": "B.Sc. in Electrical and Electronic Engineering",
-      "dates": "March, 2018 – May, 2023",
-      "lines": [
-        "Bangladesh University of Engineering and Technology, Dhaka",
-        "GPA: 3.71/4.00",
-        "Major: Electronics"
+      "title": "Relevant Coursework",
+      "courses": []
+    },
+    {
+      "title": "Standardized Test Scores",
+      "scores": [
+        "GRE: Analytical: 4/6, Verbal: 157/170, Quant: 162/170, Total: 319/340",
+        "TOEFL: Reading: 30/30, Listening: 28/30, Speaking: 22/30, Writing: 27/30, Total: 107/120"
       ]
     }
   ]
