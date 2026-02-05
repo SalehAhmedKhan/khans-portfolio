@@ -211,7 +211,8 @@
         /* Publications */
         .pub-intro{ margin: 0 0 0.6rem; color: #d1d5db; }
         .pub-section{ margin-top: 0.9rem; }
-        .pub-section-title{ margin: 0 0 0.55rem; font-size: 0.95rem; font-weight: 700; color: #f1f5f9; }
+        /* ✅ SUBHEADER COLOR (JSON section titles) */
+        .pub-section-title{ margin: 0 0 0.55rem; font-size: 0.95rem; font-weight: 700; color: #93c5fd; }
         .pub-entry{ margin: 0; }
         .pub-title{ font-weight: 700; color: #e5e7eb; margin: 0 0 0.22rem; }
         .pub-authors{ margin: 0 0 0.18rem; color: #cbd5f5; font-size: 0.83rem; line-height: 1.4; }
@@ -238,7 +239,8 @@
 
         /* Experiences */
         .exp-section{ margin-top: 0.9rem; }
-        .exp-section-title{ margin: 0 0 0.55rem; font-size: 0.95rem; font-weight: 700; color: #f1f5f9; }
+        /* ✅ SUBHEADER COLOR (JSON section titles) */
+        .exp-section-title{ margin: 0 0 0.55rem; font-size: 0.95rem; font-weight: 700; color: #93c5fd; }
         .exp-subtitle{ margin: 0.55rem 0 0.2rem; font-size: 0.86rem; font-weight: 700; color: #93c5fd; }
 
         .exp-entry{ display: flex; justify-content: space-between; gap: 1rem; align-items: flex-start; }
@@ -261,7 +263,8 @@
         /* Awards */
         .awd-intro{ margin: 0 0 0.6rem; color: #d1d5db; }
         .awd-section{ margin-top: 0.9rem; }
-        .awd-section-title{ margin: 0 0 0.55rem; font-size: 0.95rem; font-weight: 700; color: #f1f5f9; }
+        /* ✅ SUBHEADER COLOR (JSON section titles) */
+        .awd-section-title{ margin: 0 0 0.55rem; font-size: 0.95rem; font-weight: 700; color: #93c5fd; }
         .awd-entry{ margin: 0; }
         .awd-title{ font-weight: 700; color: #e5e7eb; margin: 0 0 0.22rem; }
         .awd-desc{ margin: 0 0 0.3rem; color: #cbd5f5; font-size: 0.83rem; line-height: 1.45; }
@@ -270,7 +273,8 @@
         /* References */
         .ref-intro{ margin: 0 0 0.7rem; color: #d1d5db; }
         .ref-section{ margin-top: 0.9rem; }
-        .ref-section-title{ margin: 0 0 0.55rem; font-size: 0.95rem; font-weight: 700; color: #f1f5f9; }
+        /* ✅ SUBHEADER COLOR (JSON section titles) */
+        .ref-section-title{ margin: 0 0 0.55rem; font-size: 0.95rem; font-weight: 700; color: #93c5fd; }
 
         .ref-entry{ display: flex; justify-content: space-between; gap: 1rem; align-items: flex-start; }
         .ref-left{ flex: 1; min-width: 0; }
@@ -548,9 +552,8 @@
 <script>
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // ✅ CORE FIX:
     // - keep \n line breaks if you add them
-    // - BUT collapse multiple blank lines so you never get huge empty space
+    // - collapse multiple blank lines
     // - convert \n to <br> consistently across ALL JSON tabs
     const normalizeText = (v) => String(v ?? "").replace(/\r\n/g, "\n");
     const collapseNewlines = (s) => normalizeText(s).replace(/\n{3,}/g, "\n\n").trim();
@@ -564,7 +567,6 @@
             "'": "&#39;"
         }[m]));
 
-    // escape, collapse, then convert \n -> <br>
     const htmlWithBreaks = (str) =>
         escapeHTML(collapseNewlines(str)).replace(/\n/g, "<br>");
 
