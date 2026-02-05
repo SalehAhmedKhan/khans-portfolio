@@ -227,8 +227,8 @@
         }
 
         /* ===== WRAP FIX for ALL JSON-loaded tabs (scoped) ===== */
-        #content-pubs, #content-edu, #content-prof, #content-tools,
-        #content-pubs *, #content-edu *, #content-prof *, #content-tools *{
+        #content-pubs, #content-edu, #content-prof, #content-awards, #content-tools,
+        #content-pubs *, #content-edu *, #content-prof *, #content-awards *, #content-tools *{
             max-width: 100%;
             overflow-wrap: anywhere;
             word-break: break-word;
@@ -455,6 +455,47 @@
             }
         }
 
+        /* ===== Awards tab layout (scoped) ===== */
+        .awd-intro{
+            margin: 0 0 0.6rem;
+            color: #d1d5db;
+        }
+
+        .awd-section{
+            margin-top: 0.9rem;
+        }
+
+        .awd-section-title{
+            margin: 0 0 0.55rem;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #f1f5f9;
+        }
+
+        .awd-entry{
+            margin: 0;
+        }
+
+        .awd-title{
+            font-weight: 700;
+            color: #e5e7eb;
+            margin: 0 0 0.22rem;
+        }
+
+        .awd-desc{
+            margin: 0 0 0.3rem;
+            color: #cbd5f5;
+            font-size: 0.83rem;
+            line-height: 1.45;
+        }
+
+        .awd-divider{
+            border: none;
+            border-top: 1px solid rgba(148,163,184,0.35);
+            margin: 0.9rem 0;
+            width: 100%;
+        }
+
         /* ===== References tab layout (scoped) ===== */
         .ref-intro{
             margin: 0 0 0.7rem;
@@ -594,10 +635,11 @@
             to   { opacity: 1; transform: translateX(0); }
         }
 
-        /* Left three tabs slide from left */
+        /* Left four tabs slide from left */
         #tab-pubs:checked      ~ .tab-contents #content-pubs,
         #tab-edu:checked       ~ .tab-contents #content-edu,
-        #tab-prof:checked      ~ .tab-contents #content-prof {
+        #tab-prof:checked      ~ .tab-contents #content-prof,
+        #tab-awards:checked    ~ .tab-contents #content-awards {
             display: block;
             opacity: 1;
             animation: fadeSlideLeft 0.25s ease forwards;
@@ -616,6 +658,7 @@
         #tab-pubs:checked      ~ .tab-labels label[for="tab-pubs"],
         #tab-edu:checked       ~ .tab-labels label[for="tab-edu"],
         #tab-prof:checked      ~ .tab-labels label[for="tab-prof"],
+        #tab-awards:checked    ~ .tab-labels label[for="tab-awards"],
         #tab-tools:checked     ~ .tab-labels label[for="tab-tools"],
         #tab-research:checked  ~ .tab-labels label[for="tab-research"],
         #tab-hobbies:checked   ~ .tab-labels label[for="tab-hobbies"] {
@@ -759,18 +802,20 @@
         <section class="glass cards-section">
             <div class="tabs">
                 <!-- Radios -->
-                <input type="radio" name="tabs" id="tab-pubs">
-                <input type="radio" name="tabs" id="tab-edu" checked>
+                <input type="radio" name="tabs" id="tab-pubs" checked>
+                <input type="radio" name="tabs" id="tab-edu">
                 <input type="radio" name="tabs" id="tab-research">
                 <input type="radio" name="tabs" id="tab-prof">
+                <input type="radio" name="tabs" id="tab-awards">
                 <input type="radio" name="tabs" id="tab-tools">
                 <input type="radio" name="tabs" id="tab-hobbies">
 
                 <!-- Tab labels -->
                 <div class="tab-labels">
-                    <label class="tab-label" for="tab-edu">Educuation</label>
                     <label class="tab-label" for="tab-pubs">Publications</label>
+                    <label class="tab-label" for="tab-edu">Academics</label>
                     <label class="tab-label" for="tab-prof">Experiences</label>
+                    <label class="tab-label" for="tab-awards">Awards</label>
                     <label class="tab-label" for="tab-tools">References</label>
                     <label class="tab-label" for="tab-research">Research</label>
                     <label class="tab-label" for="tab-hobbies">Interests</label>
@@ -778,10 +823,11 @@
 
                 <!-- Tab contents -->
                 <div class="tab-contents">
-                    <!-- These 4 panels are filled from external JSON files -->
+                    <!-- These 5 panels are filled from external JSON files -->
                     <div class="tab-panel" id="content-pubs"></div>
                     <div class="tab-panel" id="content-edu"></div>
                     <div class="tab-panel" id="content-prof"></div>
+                    <div class="tab-panel" id="content-awards"></div>
                     <div class="tab-panel" id="content-tools"></div>
 
                     <!-- Research Hub (kept exactly) -->
@@ -1094,6 +1140,64 @@
         }
     }
 
+    async function renderAwardsFromFile(jsonUrl, targetPanelId) {
+        const panelEl = document.getElementById(targetPanelId);
+        if (!panelEl) return;
+
+        const escapeHTML = (str) =>
+            String(str ?? "").replace(/[&<>"']/g, (m) => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;"
+            }[m]));
+
+        try {
+            const res = await fetch(jsonUrl, { cache: "no-store" });
+            if (!res.ok) return;
+            const data = await res.json();
+
+            const title = `<h3>${escapeHTML(data.h3 || "Awards")}</h3>`;
+            const intro = data.intro ? `<p class="awd-intro">${escapeHTML(data.intro)}</p>` : "";
+
+            const sections = Array.isArray(data.sections) ? data.sections : [];
+            const sectionsHTML = sections
+                .filter(sec => sec && sec.enabled !== false)
+                .map(sec => {
+                    const secTitle = escapeHTML(sec.title || "");
+                    const entries = Array.isArray(sec.entries) ? sec.entries : [];
+
+                    const entriesHTML = entries.map((e) => {
+                        const aTitle = escapeHTML(e.title || "");
+                        const aDesc = escapeHTML(e.description || "");
+
+                        return `
+                            <div class="awd-entry">
+                                <div class="awd-title">${aTitle}</div>
+                                <div class="awd-desc">${aDesc}</div>
+                            </div>
+                            <hr class="awd-divider">
+                        `;
+                    }).join("");
+
+                    if (!secTitle && !entriesHTML) return "";
+
+                    return `
+                        <div class="awd-section">
+                            ${secTitle ? `<div class="awd-section-title">${secTitle}</div>` : ""}
+                            ${entriesHTML || ""}
+                        </div>
+                    `;
+                })
+                .join("");
+
+            panelEl.innerHTML = title + intro + sectionsHTML;
+        } catch (e) {
+            // fail silently
+        }
+    }
+
     async function renderReferencesFromFile(jsonUrl, targetPanelId) {
         const panelEl = document.getElementById(targetPanelId);
         if (!panelEl) return;
@@ -1184,6 +1288,7 @@
     renderPublicationsFromFile("tab-publications.json", "content-pubs");
     renderEducationFromFile("tab-education.json", "content-edu");
     renderExperiencesFromFile("tab-experiences.json", "content-prof");
+    renderAwardsFromFile("tab-awards.json", "content-awards");
     renderReferencesFromFile("tab-references.json", "content-tools");
 </script>
 
