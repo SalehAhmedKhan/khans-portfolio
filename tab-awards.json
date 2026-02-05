@@ -1,0 +1,26 @@
+{
+  "h3": "Awards",
+  "intro": "",
+  "sections": [
+    {
+      "title": "Awards",
+      "enabled": true,
+      "entries": [
+        {
+          "title": "EEE Faculty Dean’s List Award, BUET",
+          "description": "for obtaining a GPA of 3.75 of higher in two consecutive terms."
+        }
+      ]
+    },
+    {
+      "title": "Scholarships",
+      "enabled": true,
+      "entries": [
+        {
+          "title": "RISE Student Research Grant, BUET",
+          "description": "for most prominent thesis topic amongst undergraduate students."
+        }
+      ]
+    }
+  ]
+}
