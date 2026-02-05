@@ -193,7 +193,7 @@
         .tab-panel p { margin: 0 0 0.4rem; color: #d1d5db; }
         .tab-panel ul { margin: 0.2rem 0 0; padding-left: 1.1rem; color: #cbd5f5; font-size: 0.82rem; }
 
-        /* ===== WRAP FIX (kept) ===== */
+        /* wrap fix stays */
         #content-pubs, #content-edu, #content-prof, #content-awards, #content-tools,
         #content-pubs *, #content-edu *, #content-prof *, #content-awards *, #content-tools *{
             max-width: 100%;
@@ -201,7 +201,6 @@
             word-break: break-word;
             min-width: 0;
         }
-
         .tab-contents, .tab-contents *{
             max-width: 100%;
             overflow-wrap: anywhere;
@@ -209,19 +208,7 @@
             min-width: 0;
         }
 
-        /* ===== ✅ NEWLINE FIX: make \n in JSON render as real line breaks consistently ===== */
-        #content-pubs, #content-edu, #content-prof, #content-awards, #content-tools {
-            white-space: pre-line; /* this is the key */
-        }
-        /* Keep specific items that MUST stay on one line */
-        .edu-dates,
-        .exp-dates,
-        .ref-relation {
-            white-space: nowrap;
-        }
-        /* ===== END NEWLINE FIX ===== */
-
-        /* ===== Publications tab layout (scoped) ===== */
+        /* Publications */
         .pub-intro{ margin: 0 0 0.6rem; color: #d1d5db; }
         .pub-section{ margin-top: 0.9rem; }
         .pub-section-title{ margin: 0 0 0.55rem; font-size: 0.95rem; font-weight: 700; color: #f1f5f9; }
@@ -229,18 +216,18 @@
         .pub-title{ font-weight: 700; color: #e5e7eb; margin: 0 0 0.22rem; }
         .pub-authors{ margin: 0 0 0.18rem; color: #cbd5f5; font-size: 0.83rem; line-height: 1.4; }
         .pub-venue{ margin: 0 0 0.28rem; color: #dbeafe; font-size: 0.82rem; font-weight: 600; line-height: 1.4; }
-        .pub-desc{ margin: 0 0 0.3rem; color: #d1d5db; font-size: 0.83rem; line-height: 1.45; }
+        .pub-desc{ margin: 0 0 0.3rem; color: #d1d5db; font-size: 0.83rem; line-height: 1.45; white-space: normal; }
         .pub-doi a{ color: #93c5fd; text-decoration: none; font-size: 0.83rem; }
         .pub-doi a:hover{ text-decoration: underline; }
         .pub-divider{ border: none; border-top: 1px solid rgba(148,163,184,0.35); margin: 0.9rem 0; width: 100%; }
 
-        /* ===== Education tab layout (scoped) ===== */
+        /* Education */
         .edu-entry{ display: flex; justify-content: space-between; gap: 1rem; align-items: flex-start; }
         .edu-left{ flex: 1; min-width: 0; }
         .edu-title{ font-weight: 700; color: #e5e7eb; margin: 0 0 0.18rem; }
         .edu-lines{ color: #cbd5f5; line-height: 1.4; font-size: 0.83rem; }
         .edu-right{ flex: 0 0 auto; text-align: right; max-width: 46%; min-width: 0; }
-        .edu-dates{ font-size: 0.82rem; color: #dbeafe; font-weight: 600; overflow: hidden; text-overflow: ellipsis; }
+        .edu-dates{ font-size: 0.82rem; color: #dbeafe; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .edu-divider{ border: none; border-top: 1px solid rgba(148,163,184,0.35); margin: 0.9rem 0; width: 100%; }
 
         @media (max-width: 640px){
@@ -249,17 +236,19 @@
             .edu-dates{ white-space: normal; }
         }
 
-        /* ===== Experiences tab layout (scoped) ===== */
+        /* Experiences */
         .exp-section{ margin-top: 0.9rem; }
         .exp-section-title{ margin: 0 0 0.55rem; font-size: 0.95rem; font-weight: 700; color: #f1f5f9; }
         .exp-subtitle{ margin: 0.55rem 0 0.2rem; font-size: 0.86rem; font-weight: 700; color: #93c5fd; }
+
         .exp-entry{ display: flex; justify-content: space-between; gap: 1rem; align-items: flex-start; }
         .exp-left{ flex: 1; min-width: 0; }
         .exp-role{ font-weight: 700; color: #e5e7eb; margin: 0 0 0.18rem; }
         .exp-org{ color: #93c5fd; font-size: 0.83rem; margin: 0 0 0.25rem; }
         .exp-desc{ color: #cbd5f5; font-size: 0.83rem; line-height: 1.4; }
         .exp-right{ flex: 0 0 auto; text-align: right; max-width: 46%; min-width: 0; }
-        .exp-dates{ font-size: 0.82rem; color: #dbeafe; font-weight: 600; }
+        .exp-dates{ font-size: 0.82rem; color: #dbeafe; font-weight: 600; white-space: nowrap; }
+
         .exp-tools{ margin: 0.2rem 0 0.35rem; padding-left: 1.1rem; color: #cbd5f5; font-size: 0.82rem; }
         .exp-divider{ border: none; border-top: 1px solid rgba(148,163,184,0.35); margin: 0.9rem 0; width: 100%; }
 
@@ -269,7 +258,7 @@
             .exp-dates{ white-space: normal; }
         }
 
-        /* ===== Awards tab layout (scoped) ===== */
+        /* Awards */
         .awd-intro{ margin: 0 0 0.6rem; color: #d1d5db; }
         .awd-section{ margin-top: 0.9rem; }
         .awd-section-title{ margin: 0 0 0.55rem; font-size: 0.95rem; font-weight: 700; color: #f1f5f9; }
@@ -278,18 +267,21 @@
         .awd-desc{ margin: 0 0 0.3rem; color: #cbd5f5; font-size: 0.83rem; line-height: 1.45; }
         .awd-divider{ border: none; border-top: 1px solid rgba(148,163,184,0.35); margin: 0.9rem 0; width: 100%; }
 
-        /* ===== References tab layout (scoped) ===== */
+        /* References */
         .ref-intro{ margin: 0 0 0.7rem; color: #d1d5db; }
         .ref-section{ margin-top: 0.9rem; }
         .ref-section-title{ margin: 0 0 0.55rem; font-size: 0.95rem; font-weight: 700; color: #f1f5f9; }
+
         .ref-entry{ display: flex; justify-content: space-between; gap: 1rem; align-items: flex-start; }
         .ref-left{ flex: 1; min-width: 0; }
         .ref-name{ font-weight: 700; color: #e5e7eb; margin: 0 0 0.25rem; }
         .ref-lines{ color: #cbd5f5; line-height: 1.4; font-size: 0.83rem; }
         .ref-lines a{ color: #93c5fd; text-decoration: none; }
         .ref-lines a:hover{ text-decoration: underline; }
+
         .ref-right{ flex: 0 0 auto; text-align: right; max-width: 44%; min-width: 0; }
-        .ref-relation{ font-size: 0.82rem; color: #dbeafe; font-weight: 600; overflow: hidden; text-overflow: ellipsis; }
+        .ref-relation{ font-size: 0.82rem; color: #dbeafe; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
         .ref-divider{ border: none; border-top: 1px solid rgba(148,163,184,0.35); margin: 0.9rem 0; width: 100%; }
 
         @media (max-width: 640px){
@@ -308,13 +300,23 @@
             border-radius: 999px;
             font-size: 0.8rem;
         }
+
         .btn:hover { background: #1d4ed8; }
+
         .btn-muted {
             background: rgba(148,163,184,0.18);
             border: 1px solid rgba(148,163,184,0.35);
         }
+
         .btn-muted:hover { background: rgba(148,163,184,0.28); }
-        .btn-row{ display: flex; gap: 0.55rem; flex-wrap: wrap; align-items: center; }
+
+        .btn-row{
+            display: flex;
+            gap: 0.55rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
         .btn-faith{ background: #064e3b; }
         .btn-faith:hover{ background: #065f46; }
 
@@ -546,9 +548,25 @@
 <script>
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // IMPORTANT:
-    // We DO NOT strip \n anymore. We keep it so CSS white-space: pre-line can render it.
+    // ✅ CORE FIX:
+    // - keep \n line breaks if you add them
+    // - BUT collapse multiple blank lines so you never get huge empty space
+    // - convert \n to <br> consistently across ALL JSON tabs
     const normalizeText = (v) => String(v ?? "").replace(/\r\n/g, "\n");
+    const collapseNewlines = (s) => normalizeText(s).replace(/\n{3,}/g, "\n\n").trim();
+
+    const escapeHTML = (str) =>
+        String(str ?? "").replace(/[&<>"']/g, (m) => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+        }[m]));
+
+    // escape, collapse, then convert \n -> <br>
+    const htmlWithBreaks = (str) =>
+        escapeHTML(collapseNewlines(str)).replace(/\n/g, "<br>");
 
     async function updateLastUpdatedFromFile(jsonUrl, targetSpanId) {
         const el = document.getElementById(targetSpanId);
@@ -591,39 +609,28 @@
         const panelEl = document.getElementById(targetPanelId);
         if (!panelEl) return;
 
-        const escapeHTML = (str) => {
-            const s = normalizeText(str);
-            return s.replace(/[&<>"']/g, (m) => ({
-                "&": "&amp;",
-                "<": "&lt;",
-                ">": "&gt;",
-                '"': "&quot;",
-                "'": "&#39;"
-            }[m]));
-        };
-
         try {
             const res = await fetch(jsonUrl, { cache: "no-store" });
             if (!res.ok) return;
             const data = await res.json();
 
-            const title = `<h3>${escapeHTML(data.h3 || "Publications")}</h3>`;
-            const intro = data.intro ? `<p class="pub-intro">${escapeHTML(data.intro)}</p>` : "";
+            const title = `<h3>${htmlWithBreaks(data.h3 || "Publications")}</h3>`;
+            const intro = data.intro ? `<p class="pub-intro">${htmlWithBreaks(data.intro)}</p>` : "";
 
             const sections = Array.isArray(data.sections) ? data.sections : [];
             const sectionsHTML = sections
                 .filter(sec => sec && sec.enabled !== false)
                 .map(sec => {
-                    const secTitle = escapeHTML(sec.title || "");
+                    const secTitle = htmlWithBreaks(sec.title || "");
                     const entries = Array.isArray(sec.entries) ? sec.entries : [];
 
                     const entriesHTML = entries.map((e) => {
-                        const pubTitle = escapeHTML(e.title || "");
-                        const authors = escapeHTML(e.authors || "");
-                        const venue = escapeHTML(e.venue || "");
-                        const desc = escapeHTML(e.description || "");
-                        const doiText = escapeHTML(e.doi_text || "DOI");
-                        const doiUrl = escapeHTML(e.doi_url || "#");
+                        const pubTitle = htmlWithBreaks(e.title || "");
+                        const authors = htmlWithBreaks(e.authors || "");
+                        const venue = htmlWithBreaks(e.venue || "");
+                        const desc = htmlWithBreaks(e.description || "");
+                        const doiText = htmlWithBreaks(e.doi_text || "DOI");
+                        const doiUrl = escapeHTML((e.doi_url || "#").trim());
 
                         return `
                             <div class="pub-entry">
@@ -649,37 +656,24 @@
                 .join("");
 
             panelEl.innerHTML = title + intro + sectionsHTML;
-        } catch (e) {
-            // fail silently
-        }
+        } catch (e) {}
     }
 
     async function renderEducationFromFile(jsonUrl, targetPanelId) {
         const panelEl = document.getElementById(targetPanelId);
         if (!panelEl) return;
 
-        const escapeHTML = (str) => {
-            const s = normalizeText(str);
-            return s.replace(/[&<>"']/g, (m) => ({
-                "&": "&amp;",
-                "<": "&lt;",
-                ">": "&gt;",
-                '"': "&quot;",
-                "'": "&#39;"
-            }[m]));
-        };
-
         try {
             const res = await fetch(jsonUrl, { cache: "no-store" });
             if (!res.ok) return;
             const data = await res.json();
 
-            const title = `<h3>${escapeHTML(data.h3 || "Education")}</h3>`;
+            const title = `<h3>${htmlWithBreaks(data.h3 || "Education")}</h3>`;
             const entries = Array.isArray(data.entries) ? data.entries : [];
 
             const entriesHTML = entries.map((e) => {
-                const degree = escapeHTML(e.degree || "");
-                const dates = escapeHTML(e.dates || "");
+                const degree = htmlWithBreaks(e.degree || "");
+                const dates = htmlWithBreaks(e.dates || "");
                 const lines = Array.isArray(e.lines) ? e.lines : [];
 
                 return `
@@ -687,7 +681,7 @@
                         <div class="edu-left">
                             <div class="edu-title">${degree}</div>
                             <div class="edu-lines">
-                                ${lines.map(l => `${escapeHTML(l)}<br>`).join("")}
+                                ${lines.map(l => `${htmlWithBreaks(l)}<br>`).join("")}
                             </div>
                         </div>
                         <div class="edu-right">
@@ -699,46 +693,33 @@
             }).join("");
 
             panelEl.innerHTML = title + entriesHTML;
-        } catch (e) {
-            // fail silently
-        }
+        } catch (e) {}
     }
 
     async function renderExperiencesFromFile(jsonUrl, targetPanelId) {
         const panelEl = document.getElementById(targetPanelId);
         if (!panelEl) return;
 
-        const escapeHTML = (str) => {
-            const s = normalizeText(str);
-            return s.replace(/[&<>"']/g, (m) => ({
-                "&": "&amp;",
-                "<": "&lt;",
-                ">": "&gt;",
-                '"': "&quot;",
-                "'": "&#39;"
-            }[m]));
-        };
-
         try {
             const res = await fetch(jsonUrl, { cache: "no-store" });
             if (!res.ok) return;
             const data = await res.json();
 
-            const title = `<h3>${escapeHTML(data.h3 || "Experiences")}</h3>`;
+            const title = `<h3>${htmlWithBreaks(data.h3 || "Experiences")}</h3>`;
             const sections = Array.isArray(data.sections) ? data.sections : [];
 
             const sectionsHTML = sections
                 .filter(sec => sec && sec.enabled !== false)
                 .map(sec => {
-                    const secTitle = escapeHTML(sec.title || "");
+                    const secTitle = htmlWithBreaks(sec.title || "");
                     const entries = Array.isArray(sec.entries) ? sec.entries : [];
                     const tool_groups = Array.isArray(sec.tool_groups) ? sec.tool_groups : [];
 
                     const entriesHTML = entries.map((e) => {
-                        const role = escapeHTML(e.role || "");
-                        const org = escapeHTML(e.organization || "");
-                        const desc = escapeHTML(e.description || "");
-                        const dates = escapeHTML(e.dates || "");
+                        const role = htmlWithBreaks(e.role || "");
+                        const org = htmlWithBreaks(e.organization || "");
+                        const desc = htmlWithBreaks(e.description || "");
+                        const dates = htmlWithBreaks(e.dates || "");
 
                         return `
                             <div class="exp-entry">
@@ -756,13 +737,13 @@
                     }).join("");
 
                     const toolsHTML = tool_groups.map(g => {
-                        const gTitle = escapeHTML(g.title || "");
+                        const gTitle = htmlWithBreaks(g.title || "");
                         const tools = Array.isArray(g.tools) ? g.tools : [];
                         if (!gTitle && !tools.length) return "";
                         return `
                             <div class="exp-subtitle">${gTitle}</div>
                             <ul class="exp-tools">
-                                ${tools.map(t => `<li>${escapeHTML(t)}</li>`).join("")}
+                                ${tools.map(t => `<li>${htmlWithBreaks(t)}</li>`).join("")}
                             </ul>
                         `;
                     }).join("");
@@ -780,44 +761,31 @@
                 .join("");
 
             panelEl.innerHTML = title + sectionsHTML;
-        } catch (e) {
-            // fail silently
-        }
+        } catch (e) {}
     }
 
     async function renderAwardsFromFile(jsonUrl, targetPanelId) {
         const panelEl = document.getElementById(targetPanelId);
         if (!panelEl) return;
 
-        const escapeHTML = (str) => {
-            const s = normalizeText(str);
-            return s.replace(/[&<>"']/g, (m) => ({
-                "&": "&amp;",
-                "<": "&lt;",
-                ">": "&gt;",
-                '"': "&quot;",
-                "'": "&#39;"
-            }[m]));
-        };
-
         try {
             const res = await fetch(jsonUrl, { cache: "no-store" });
             if (!res.ok) return;
             const data = await res.json();
 
-            const title = `<h3>${escapeHTML(data.h3 || "Awards")}</h3>`;
-            const intro = data.intro ? `<p class="awd-intro">${escapeHTML(data.intro)}</p>` : "";
+            const title = `<h3>${htmlWithBreaks(data.h3 || "Awards")}</h3>`;
+            const intro = data.intro ? `<p class="awd-intro">${htmlWithBreaks(data.intro)}</p>` : "";
 
             const sections = Array.isArray(data.sections) ? data.sections : [];
             const sectionsHTML = sections
                 .filter(sec => sec && sec.enabled !== false)
                 .map(sec => {
-                    const secTitle = escapeHTML(sec.title || "");
+                    const secTitle = htmlWithBreaks(sec.title || "");
                     const entries = Array.isArray(sec.entries) ? sec.entries : [];
 
                     const entriesHTML = entries.map((e) => {
-                        const aTitle = escapeHTML(e.title || "");
-                        const aDesc = escapeHTML(e.description || "");
+                        const aTitle = htmlWithBreaks(e.title || "");
+                        const aDesc = htmlWithBreaks(e.description || "");
 
                         return `
                             <div class="awd-entry">
@@ -840,54 +808,41 @@
                 .join("");
 
             panelEl.innerHTML = title + intro + sectionsHTML;
-        } catch (e) {
-            // fail silently
-        }
+        } catch (e) {}
     }
 
     async function renderReferencesFromFile(jsonUrl, targetPanelId) {
         const panelEl = document.getElementById(targetPanelId);
         if (!panelEl) return;
 
-        const escapeHTML = (str) => {
-            const s = normalizeText(str);
-            return s.replace(/[&<>"']/g, (m) => ({
-                "&": "&amp;",
-                "<": "&lt;",
-                ">": "&gt;",
-                '"': "&quot;",
-                "'": "&#39;"
-            }[m]));
-        };
-
         try {
             const res = await fetch(jsonUrl, { cache: "no-store" });
             if (!res.ok) return;
             const data = await res.json();
 
-            const title = `<h3>${escapeHTML(data.h3 || "References")}</h3>`;
-            const intro = data.intro ? `<p class="ref-intro">${escapeHTML(data.intro)}</p>` : "";
+            const title = `<h3>${htmlWithBreaks(data.h3 || "References")}</h3>`;
+            const intro = data.intro ? `<p class="ref-intro">${htmlWithBreaks(data.intro)}</p>` : "";
 
             const sections = Array.isArray(data.sections) ? data.sections : [];
             const sectionsHTML = sections
                 .filter(sec => sec && sec.enabled !== false)
                 .map(sec => {
-                    const secTitle = escapeHTML(sec.title || "");
+                    const secTitle = htmlWithBreaks(sec.title || "");
                     const entries = Array.isArray(sec.entries) ? sec.entries : [];
 
                     const entriesHTML = entries.map((e, idx) => {
-                        const name = escapeHTML(e.name || "");
-                        const role = escapeHTML(e.role_title || "");
-                        const dept = escapeHTML(e.department || "");
-                        const org = escapeHTML(e.organization || "");
-                        const email = escapeHTML(e.email || "");
-                        const website = escapeHTML(e.website || "");
-                        const relation = escapeHTML(e.relationship || "");
+                        const name = htmlWithBreaks(e.name || "");
+                        const role = htmlWithBreaks(e.role_title || "");
+                        const dept = htmlWithBreaks(e.department || "");
+                        const org = htmlWithBreaks(e.organization || "");
+                        const email = (e.email || "").trim();
+                        const website = (e.website || "").trim();
+                        const relation = htmlWithBreaks(e.relationship || "");
 
                         const lines = [role, dept, org].filter(Boolean);
 
-                        const emailLine = email ? `E-mail: <a href="mailto:${email}">${email}</a>` : "";
-                        const websiteLine = website ? `Website: <a href="${website}" target="_blank" rel="noopener">${website}</a>` : "";
+                        const emailLine = email ? `E-mail: <a href="mailto:${escapeHTML(email)}">${escapeHTML(email)}</a>` : "";
+                        const websiteLine = website ? `Website: <a href="${escapeHTML(website)}" target="_blank" rel="noopener">${escapeHTML(website)}</a>` : "";
 
                         const leftHTML = `
                             <div class="ref-left">
@@ -923,9 +878,7 @@
                 .join("");
 
             panelEl.innerHTML = title + intro + sectionsHTML;
-        } catch (e) {
-            // fail silently
-        }
+        } catch (e) {}
     }
 
     updateLastUpdatedFromFile("tab-publications.json", "last-updated");
