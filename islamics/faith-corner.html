@@ -169,7 +169,6 @@
       margin-top: 0.2rem;
     }
 
-    /* ✅ FIX: remove max-width cap so right edge aligns with top row */
     .cards-shell{
       max-width: none; /* was 1400px */
       width: 100%;
@@ -181,7 +180,7 @@
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       overflow: hidden;
-      padding: 1rem;
+      padding: 0; /* ✅ FIX: remove inner inset so cards align to right edge */
     }
 
     .cards-grid{
