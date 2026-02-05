@@ -12,7 +12,6 @@
             margin: 0;
             padding: 0;
             height: 100%;
-            /* ✅ Keep scrollbar always present to prevent width "jump" when switching tabs */
             overflow-y: scroll;
             overflow-x: hidden;
         }
@@ -21,7 +20,6 @@
             font-family: Arial, Helvetica, sans-serif;
             color: #e5e7eb;
 
-            /* Background graphic + dark blue tint */
             background:
                 linear-gradient(rgba(15,23,42,0.85), rgba(15,23,42,0.85)),
                 url("ChatGPT%20Image%20Dec%208,%202025,%2007_22_56%20PM.png");
@@ -36,7 +34,6 @@
             flex-direction: column;
         }
 
-        /* ===== Central container (squeezed layout) ===== */
         .container {
             max-width: 1024px;
             margin: 1.2rem auto 0.4rem;
@@ -46,7 +43,6 @@
             gap: 0.9rem;
         }
 
-        /* ===== Shared glass style ===== */
         .glass {
             background: rgba(15,23,42,0.78);
             border-radius: 18px;
@@ -59,7 +55,6 @@
             padding: 1.3rem 1.6rem;
         }
 
-        /* ===== Hero card ===== */
         .hero-card {
             display: flex;
             align-items: flex-start;
@@ -67,11 +62,8 @@
             gap: 1.4rem;
         }
 
-        .hero-text {
-            flex: 1.6;
-        }
+        .hero-text { flex: 1.6; }
 
-        /* ✅ Uniform hero typography (only typography change in hero) */
         .hero-title {
             font-size: 2.15rem;
             font-weight: 700;
@@ -110,14 +102,8 @@
             color: #cbd5f5;
         }
 
-        .hero-contact a {
-            color: #93c5fd;
-            text-decoration: none;
-        }
-
-        .hero-contact a:hover {
-            text-decoration: underline;
-        }
+        .hero-contact a { color: #93c5fd; text-decoration: none; }
+        .hero-contact a:hover { text-decoration: underline; }
 
         .hero-socials {
             margin: 0.55rem 0 0;
@@ -126,14 +112,8 @@
             color: #cbd5f5;
         }
 
-        .hero-socials a {
-            color: #93c5fd;
-            text-decoration: none;
-        }
-
-        .hero-socials a:hover {
-            text-decoration: underline;
-        }
+        .hero-socials a { color: #93c5fd; text-decoration: none; }
+        .hero-socials a:hover { text-decoration: underline; }
 
         .hero-image-wrapper {
             flex: 0 0 auto;
@@ -141,7 +121,6 @@
             justify-content: flex-end;
         }
 
-        /* Portrait frame with diagonal edge, fixed size */
         .hero-image {
             width: 240px;
             height: 360px;
@@ -155,16 +134,11 @@
             clip-path: polygon(18% 0, 100% 0, 100% 100%, 0 100%);
         }
 
-        /* ===== Tabbed cards section ===== */
-        .tabs {
-            display: flex;
-            flex-direction: column;
-        }
+        .tabs { display: flex; flex-direction: column; }
 
-        /* Justified tab labels */
         .tab-labels {
             display: flex;
-            justify-content: space-between; /* spreads buttons evenly */
+            justify-content: space-between;
             gap: 0.6rem;
             margin-bottom: 0.7rem;
             width: 100%;
@@ -185,9 +159,7 @@
             color: #e5e7eb;
         }
 
-        .tab-label:hover {
-            background: rgba(37,99,235,0.4);
-        }
+        .tab-label:hover { background: rgba(37,99,235,0.4); }
 
         .tab-contents {
             background: rgba(15,23,42,0.9);
@@ -197,15 +169,13 @@
             box-shadow: 0 10px 25px rgba(15,23,42,0.6);
             font-size: 0.84rem;
             position: relative;
-            min-height: 145px; /* keeps box from jumping in height */
+            min-height: 145px;
 
-            /* ✅ Make the card width constant and prevent content from forcing expansion */
             width: 100%;
             box-sizing: border-box;
             overflow-x: hidden;
         }
 
-        /* ✅ Force JSON + non-JSON panels to match typography exactly */
         .tab-panel {
             display: none;
             opacity: 0;
@@ -213,40 +183,25 @@
             font-size: 0.84rem;
             line-height: 1.4;
 
-            /* ✅ Prevent long JSON strings from affecting layout width */
             width: 100%;
             box-sizing: border-box;
             min-width: 0;
             max-width: 100%;
         }
 
-        .tab-panel h3 {
-            margin: 0 0 0.3rem;
-            font-size: 1rem;
-        }
+        .tab-panel h3 { margin: 0 0 0.3rem; font-size: 1rem; }
+        .tab-panel p { margin: 0 0 0.4rem; color: #d1d5db; }
+        .tab-panel ul { margin: 0.2rem 0 0; padding-left: 1.1rem; color: #cbd5f5; font-size: 0.82rem; }
 
-        .tab-panel p {
-            margin: 0 0 0.4rem;
-            color: #d1d5db;
-        }
-
-        .tab-panel ul {
-            margin: 0.2rem 0 0;
-            padding-left: 1.1rem;
-            color: #cbd5f5;
-            font-size: 0.82rem;
-        }
-
-        /* ===== WRAP FIX for ALL JSON-loaded tabs (scoped) ===== */
+        /* ===== WRAP FIX (kept) ===== */
         #content-pubs, #content-edu, #content-prof, #content-awards, #content-tools,
         #content-pubs *, #content-edu *, #content-prof *, #content-awards *, #content-tools *{
             max-width: 100%;
             overflow-wrap: anywhere;
             word-break: break-word;
-            min-width: 0; /* ✅ critical for flex + long content */
+            min-width: 0;
         }
 
-        /* ✅ Also ensure long URLs/strings inside ALL panels never dictate width */
         .tab-contents, .tab-contents *{
             max-width: 100%;
             overflow-wrap: anywhere;
@@ -254,351 +209,93 @@
             min-width: 0;
         }
 
+        /* ===== ✅ NEWLINE FIX: make \n in JSON render as real line breaks consistently ===== */
+        #content-pubs, #content-edu, #content-prof, #content-awards, #content-tools {
+            white-space: pre-line; /* this is the key */
+        }
+        /* Keep specific items that MUST stay on one line */
+        .edu-dates,
+        .exp-dates,
+        .ref-relation {
+            white-space: nowrap;
+        }
+        /* ===== END NEWLINE FIX ===== */
+
         /* ===== Publications tab layout (scoped) ===== */
-        .pub-intro{
-            margin: 0 0 0.6rem;
-            color: #d1d5db;
-        }
-
-        .pub-section{
-            margin-top: 0.9rem;
-        }
-
-        .pub-section-title{
-            margin: 0 0 0.55rem;
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: #f1f5f9;
-        }
-
-        .pub-entry{
-            margin: 0;
-        }
-
-        .pub-title{
-            font-weight: 700;
-            color: #e5e7eb;
-            margin: 0 0 0.22rem;
-        }
-
-        .pub-authors{
-            margin: 0 0 0.18rem;
-            color: #cbd5f5;
-            font-size: 0.83rem;
-            line-height: 1.4;
-        }
-
-        .pub-venue{
-            margin: 0 0 0.28rem;
-            color: #dbeafe;
-            font-size: 0.82rem;
-            font-weight: 600;
-            line-height: 1.4;
-        }
-
-        .pub-desc{
-            margin: 0 0 0.3rem;
-            color: #d1d5db;
-            font-size: 0.83rem;
-            line-height: 1.45;
-            /* ✅ IMPORTANT: let HTML/CSS handle wrapping; don't honor \n from JSON */
-            white-space: normal;
-        }
-
-        .pub-doi a{
-            color: #93c5fd;
-            text-decoration: none;
-            font-size: 0.83rem;
-        }
-        .pub-doi a:hover{
-            text-decoration: underline;
-        }
-
-        .pub-divider{
-            border: none;
-            border-top: 1px solid rgba(148,163,184,0.35);
-            margin: 0.9rem 0;
-            width: 100%;
-        }
+        .pub-intro{ margin: 0 0 0.6rem; color: #d1d5db; }
+        .pub-section{ margin-top: 0.9rem; }
+        .pub-section-title{ margin: 0 0 0.55rem; font-size: 0.95rem; font-weight: 700; color: #f1f5f9; }
+        .pub-entry{ margin: 0; }
+        .pub-title{ font-weight: 700; color: #e5e7eb; margin: 0 0 0.22rem; }
+        .pub-authors{ margin: 0 0 0.18rem; color: #cbd5f5; font-size: 0.83rem; line-height: 1.4; }
+        .pub-venue{ margin: 0 0 0.28rem; color: #dbeafe; font-size: 0.82rem; font-weight: 600; line-height: 1.4; }
+        .pub-desc{ margin: 0 0 0.3rem; color: #d1d5db; font-size: 0.83rem; line-height: 1.45; }
+        .pub-doi a{ color: #93c5fd; text-decoration: none; font-size: 0.83rem; }
+        .pub-doi a:hover{ text-decoration: underline; }
+        .pub-divider{ border: none; border-top: 1px solid rgba(148,163,184,0.35); margin: 0.9rem 0; width: 100%; }
 
         /* ===== Education tab layout (scoped) ===== */
-        .edu-entry{
-            display: flex;
-            justify-content: space-between;
-            gap: 1rem;
-            align-items: flex-start;
-        }
-
-        .edu-left{
-            flex: 1;
-            min-width: 0;
-        }
-
-        .edu-title{
-            font-weight: 700;
-            color: #e5e7eb;
-            margin: 0 0 0.18rem;
-        }
-
-        .edu-lines{
-            color: #cbd5f5;
-            line-height: 1.4;
-            font-size: 0.83rem;
-        }
-
-        .edu-right{
-            flex: 0 0 auto;
-            text-align: right;
-            max-width: 46%;
-            min-width: 0; /* ✅ keep dates column from forcing width */
-        }
-
-        .edu-dates{
-            font-size: 0.82rem;
-            color: #dbeafe;
-            font-weight: 600;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .edu-divider{
-            border: none;
-            border-top: 1px solid rgba(148,163,184,0.35);
-            margin: 0.9rem 0;
-            width: 100%;
-        }
+        .edu-entry{ display: flex; justify-content: space-between; gap: 1rem; align-items: flex-start; }
+        .edu-left{ flex: 1; min-width: 0; }
+        .edu-title{ font-weight: 700; color: #e5e7eb; margin: 0 0 0.18rem; }
+        .edu-lines{ color: #cbd5f5; line-height: 1.4; font-size: 0.83rem; }
+        .edu-right{ flex: 0 0 auto; text-align: right; max-width: 46%; min-width: 0; }
+        .edu-dates{ font-size: 0.82rem; color: #dbeafe; font-weight: 600; overflow: hidden; text-overflow: ellipsis; }
+        .edu-divider{ border: none; border-top: 1px solid rgba(148,163,184,0.35); margin: 0.9rem 0; width: 100%; }
 
         @media (max-width: 640px){
-            .edu-entry{
-                flex-direction: column;
-                gap: 0.35rem;
-            }
-            .edu-right{
-                text-align: left;
-                max-width: 100%;
-            }
-            .edu-dates{
-                white-space: normal;
-            }
+            .edu-entry{ flex-direction: column; gap: 0.35rem; }
+            .edu-right{ text-align: left; max-width: 100%; }
+            .edu-dates{ white-space: normal; }
         }
 
         /* ===== Experiences tab layout (scoped) ===== */
-        .exp-section{
-            margin-top: 0.9rem;
-        }
-
-        .exp-section-title{
-            margin: 0 0 0.55rem;
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: #f1f5f9;
-        }
-
-        .exp-subtitle{
-            margin: 0.55rem 0 0.2rem;
-            font-size: 0.86rem;
-            font-weight: 700;
-            color: #93c5fd;
-        }
-
-        .exp-entry{
-            display: flex;
-            justify-content: space-between;
-            gap: 1rem;
-            align-items: flex-start;
-        }
-
-        .exp-left{
-            flex: 1;
-            min-width: 0;
-        }
-
-        .exp-role{
-            font-weight: 700;
-            color: #e5e7eb;
-            margin: 0 0 0.18rem;
-        }
-
-        .exp-org{
-            color: #93c5fd;
-            font-size: 0.83rem;
-            margin: 0 0 0.25rem;
-        }
-
-        .exp-desc{
-            color: #cbd5f5;
-            font-size: 0.83rem;
-            line-height: 1.4;
-        }
-
-        .exp-right{
-            flex: 0 0 auto;
-            text-align: right;
-            max-width: 46%;
-            min-width: 0; /* ✅ prevent dates column from forcing width */
-        }
-
-        .exp-dates{
-            font-size: 0.82rem;
-            color: #dbeafe;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        .exp-tools{
-            margin: 0.2rem 0 0.35rem;
-            padding-left: 1.1rem;
-            color: #cbd5f5;
-            font-size: 0.82rem;
-        }
-
-        .exp-divider{
-            border: none;
-            border-top: 1px solid rgba(148,163,184,0.35);
-            margin: 0.9rem 0;
-            width: 100%;
-        }
+        .exp-section{ margin-top: 0.9rem; }
+        .exp-section-title{ margin: 0 0 0.55rem; font-size: 0.95rem; font-weight: 700; color: #f1f5f9; }
+        .exp-subtitle{ margin: 0.55rem 0 0.2rem; font-size: 0.86rem; font-weight: 700; color: #93c5fd; }
+        .exp-entry{ display: flex; justify-content: space-between; gap: 1rem; align-items: flex-start; }
+        .exp-left{ flex: 1; min-width: 0; }
+        .exp-role{ font-weight: 700; color: #e5e7eb; margin: 0 0 0.18rem; }
+        .exp-org{ color: #93c5fd; font-size: 0.83rem; margin: 0 0 0.25rem; }
+        .exp-desc{ color: #cbd5f5; font-size: 0.83rem; line-height: 1.4; }
+        .exp-right{ flex: 0 0 auto; text-align: right; max-width: 46%; min-width: 0; }
+        .exp-dates{ font-size: 0.82rem; color: #dbeafe; font-weight: 600; }
+        .exp-tools{ margin: 0.2rem 0 0.35rem; padding-left: 1.1rem; color: #cbd5f5; font-size: 0.82rem; }
+        .exp-divider{ border: none; border-top: 1px solid rgba(148,163,184,0.35); margin: 0.9rem 0; width: 100%; }
 
         @media (max-width: 640px){
-            .exp-entry{
-                flex-direction: column;
-                gap: 0.35rem;
-            }
-            .exp-right{
-                text-align: left;
-                max-width: 100%;
-            }
-            .exp-dates{
-                white-space: normal;
-            }
+            .exp-entry{ flex-direction: column; gap: 0.35rem; }
+            .exp-right{ text-align: left; max-width: 100%; }
+            .exp-dates{ white-space: normal; }
         }
 
         /* ===== Awards tab layout (scoped) ===== */
-        .awd-intro{
-            margin: 0 0 0.6rem;
-            color: #d1d5db;
-        }
-
-        .awd-section{
-            margin-top: 0.9rem;
-        }
-
-        .awd-section-title{
-            margin: 0 0 0.55rem;
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: #f1f5f9;
-        }
-
-        .awd-entry{
-            margin: 0;
-        }
-
-        .awd-title{
-            font-weight: 700;
-            color: #e5e7eb;
-            margin: 0 0 0.22rem;
-        }
-
-        .awd-desc{
-            margin: 0 0 0.3rem;
-            color: #cbd5f5;
-            font-size: 0.83rem;
-            line-height: 1.45;
-        }
-
-        .awd-divider{
-            border: none;
-            border-top: 1px solid rgba(148,163,184,0.35);
-            margin: 0.9rem 0;
-            width: 100%;
-        }
+        .awd-intro{ margin: 0 0 0.6rem; color: #d1d5db; }
+        .awd-section{ margin-top: 0.9rem; }
+        .awd-section-title{ margin: 0 0 0.55rem; font-size: 0.95rem; font-weight: 700; color: #f1f5f9; }
+        .awd-entry{ margin: 0; }
+        .awd-title{ font-weight: 700; color: #e5e7eb; margin: 0 0 0.22rem; }
+        .awd-desc{ margin: 0 0 0.3rem; color: #cbd5f5; font-size: 0.83rem; line-height: 1.45; }
+        .awd-divider{ border: none; border-top: 1px solid rgba(148,163,184,0.35); margin: 0.9rem 0; width: 100%; }
 
         /* ===== References tab layout (scoped) ===== */
-        .ref-intro{
-            margin: 0 0 0.7rem;
-            color: #d1d5db;
-        }
-
-        .ref-section{
-            margin-top: 0.9rem;
-        }
-
-        .ref-section-title{
-            margin: 0 0 0.55rem;
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: #f1f5f9;
-        }
-
-        .ref-entry{
-            display: flex;
-            justify-content: space-between;
-            gap: 1rem;
-            align-items: flex-start;
-        }
-
-        .ref-left{
-            flex: 1;
-            min-width: 0;
-        }
-
-        .ref-name{
-            font-weight: 700;
-            color: #e5e7eb;
-            margin: 0 0 0.25rem;
-        }
-
-        .ref-lines{
-            color: #cbd5f5;
-            line-height: 1.4;
-            font-size: 0.83rem;
-        }
-
-        .ref-lines a{
-            color: #93c5fd;
-            text-decoration: none;
-        }
-        .ref-lines a:hover{
-            text-decoration: underline;
-        }
-
-        .ref-right{
-            flex: 0 0 auto;
-            text-align: right;
-            max-width: 44%;
-            min-width: 0; /* ✅ prevent right column from forcing width */
-        }
-
-        .ref-relation{
-            font-size: 0.82rem;
-            color: #dbeafe;
-            font-weight: 600;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .ref-divider{
-            border: none;
-            border-top: 1px solid rgba(148,163,184,0.35);
-            margin: 0.9rem 0;
-            width: 100%;
-        }
+        .ref-intro{ margin: 0 0 0.7rem; color: #d1d5db; }
+        .ref-section{ margin-top: 0.9rem; }
+        .ref-section-title{ margin: 0 0 0.55rem; font-size: 0.95rem; font-weight: 700; color: #f1f5f9; }
+        .ref-entry{ display: flex; justify-content: space-between; gap: 1rem; align-items: flex-start; }
+        .ref-left{ flex: 1; min-width: 0; }
+        .ref-name{ font-weight: 700; color: #e5e7eb; margin: 0 0 0.25rem; }
+        .ref-lines{ color: #cbd5f5; line-height: 1.4; font-size: 0.83rem; }
+        .ref-lines a{ color: #93c5fd; text-decoration: none; }
+        .ref-lines a:hover{ text-decoration: underline; }
+        .ref-right{ flex: 0 0 auto; text-align: right; max-width: 44%; min-width: 0; }
+        .ref-relation{ font-size: 0.82rem; color: #dbeafe; font-weight: 600; overflow: hidden; text-overflow: ellipsis; }
+        .ref-divider{ border: none; border-top: 1px solid rgba(148,163,184,0.35); margin: 0.9rem 0; width: 100%; }
 
         @media (max-width: 640px){
-            .ref-entry{
-                flex-direction: column;
-                gap: 0.35rem;
-            }
-            .ref-right{
-                text-align: left;
-                max-width: 100%;
-            }
-            .ref-relation{
-                white-space: normal;
-            }
+            .ref-entry{ flex-direction: column; gap: 0.35rem; }
+            .ref-right{ text-align: left; max-width: 100%; }
+            .ref-relation{ white-space: normal; }
         }
 
         .btn {
@@ -611,40 +308,18 @@
             border-radius: 999px;
             font-size: 0.8rem;
         }
-
-        .btn:hover {
-            background: #1d4ed8;
-        }
-
+        .btn:hover { background: #1d4ed8; }
         .btn-muted {
             background: rgba(148,163,184,0.18);
             border: 1px solid rgba(148,163,184,0.35);
         }
+        .btn-muted:hover { background: rgba(148,163,184,0.28); }
+        .btn-row{ display: flex; gap: 0.55rem; flex-wrap: wrap; align-items: center; }
+        .btn-faith{ background: #064e3b; }
+        .btn-faith:hover{ background: #065f46; }
 
-        .btn-muted:hover {
-            background: rgba(148,163,184,0.28);
-        }
+        .tabs input[type="radio"] { display: none; }
 
-        .btn-row{
-            display: flex;
-            gap: 0.55rem;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .btn-faith{
-            background: #064e3b; /* deep dark green */
-        }
-        .btn-faith:hover{
-            background: #065f46;
-        }
-
-        /* Hide the radio buttons */
-        .tabs input[type="radio"] {
-            display: none;
-        }
-
-        /* Animations */
         @keyframes fadeSlideLeft {
             from { opacity: 0; transform: translateX(-12px); }
             to   { opacity: 1; transform: translateX(0); }
@@ -655,7 +330,6 @@
             to   { opacity: 1; transform: translateX(0); }
         }
 
-        /* Left four tabs slide from left */
         #tab-pubs:checked      ~ .tab-contents #content-pubs,
         #tab-edu:checked       ~ .tab-contents #content-edu,
         #tab-prof:checked      ~ .tab-contents #content-prof,
@@ -665,7 +339,6 @@
             animation: fadeSlideLeft 0.25s ease forwards;
         }
 
-        /* Right three tabs slide from right */
         #tab-tools:checked     ~ .tab-contents #content-tools,
         #tab-research:checked  ~ .tab-contents #content-research,
         #tab-hobbies:checked   ~ .tab-contents #content-hobbies {
@@ -674,7 +347,6 @@
             animation: fadeSlideRight 0.25s ease forwards;
         }
 
-        /* Active tab label styling */
         #tab-pubs:checked      ~ .tab-labels label[for="tab-pubs"],
         #tab-edu:checked       ~ .tab-labels label[for="tab-edu"],
         #tab-prof:checked      ~ .tab-labels label[for="tab-prof"],
@@ -686,7 +358,6 @@
             border-color: #60a5fa;
         }
 
-        /* ===== Credit line under cards ===== */
         .page-credit {
             text-align: center;
             margin-top: 0.3rem;
@@ -696,24 +367,12 @@
             text-shadow: 0 1px 2px rgba(15,23,42,0.9);
         }
 
-        footer {
-            display: none;
-        }
+        footer { display: none; }
 
-        /* ✅ Mobile/narrow screens:
-              - image on top
-              - diagonal preserved
-              - face cropping fixed */
         @media (max-width: 900px) {
-            html, body {
-                overflow: auto;
-            }
+            html, body { overflow: auto; }
 
-            .hero-card {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
+            .hero-card { flex-direction: column; align-items: stretch; }
             .hero-image-wrapper {
                 order: -1;
                 width: 100%;
@@ -725,32 +384,19 @@
                 width: 100%;
                 max-width: none;
                 height: 340px;
-
-                /* keep diagonal style */
                 clip-path: polygon(12% 0, 100% 0, 100% 100%, 0 100%);
-
-                /* ✅ keep face visible */
                 background-position: center 18%;
             }
 
-            .tab-labels {
-                justify-content: center;
-            }
-            .tab-label {
-                flex: unset;
-            }
+            .tab-labels { justify-content: center; }
+            .tab-label { flex: unset; }
         }
 
         @media (max-width: 640px) {
-            .tab-labels {
-                gap: 0.3rem;
-            }
+            .tab-labels { gap: 0.3rem; }
         }
 
-        /* Hero actions */
-        .hero-actions {
-            margin-top: 0.7rem;
-        }
+        .hero-actions { margin-top: 0.7rem; }
         .hero-actions p {
             margin: 0.15rem 0;
             font-size: 0.9rem;
@@ -765,7 +411,6 @@
 
     <main class="container">
 
-        <!-- HERO GLASS PANEL -->
         <section class="glass hero-card">
             <div class="hero-text">
                 <h1 class="hero-title">Welcome to Khan's Portfolio</h1>
@@ -818,10 +463,8 @@
             </div>
         </section>
 
-        <!-- TABBED GLASS PANEL -->
         <section class="glass cards-section">
             <div class="tabs">
-                <!-- Radios -->
                 <input type="radio" name="tabs" id="tab-pubs" checked>
                 <input type="radio" name="tabs" id="tab-edu">
                 <input type="radio" name="tabs" id="tab-research">
@@ -830,7 +473,6 @@
                 <input type="radio" name="tabs" id="tab-tools">
                 <input type="radio" name="tabs" id="tab-hobbies">
 
-                <!-- Tab labels -->
                 <div class="tab-labels">
                     <label class="tab-label" for="tab-pubs">Publications</label>
                     <label class="tab-label" for="tab-edu">Academics</label>
@@ -841,29 +483,26 @@
                     <label class="tab-label" for="tab-hobbies">Interests</label>
                 </div>
 
-                <!-- Tab contents -->
                 <div class="tab-contents">
-                    <!-- These 5 panels are filled from external JSON files -->
                     <div class="tab-panel" id="content-pubs"></div>
                     <div class="tab-panel" id="content-edu"></div>
                     <div class="tab-panel" id="content-prof"></div>
                     <div class="tab-panel" id="content-awards"></div>
                     <div class="tab-panel" id="content-tools"></div>
 
-                    <!-- Research Hub (kept exactly) -->
                     <div class="tab-panel" id="content-research">
                         <h3>Research Hub</h3>
                         <p>
-                          Explore research pages and technical analyses centered on β-Ga₂O₃ materials, nanofabrication, epitaxy,<br>  
+                          Explore research pages and technical analyses centered on β-Ga₂O₃ materials, nanofabrication, epitaxy,<br>
                           and device-level engineering.
                         </p>
-                        
+
                         <p>
-                          It brings together key insights, experimental observations,<br> and evolving research notes developed during my doctoral work. 
+                          It brings together key insights, experimental observations,<br> and evolving research notes developed during my doctoral work.
                         </p>
-                        
+
                         <p>
-                          The research documented here is the result of continued collaboration and productive exchanges with<br>  
+                          The research documented here is the result of continued collaboration and productive exchanges with<br>
                           Professor Anhar Bhuiyan and my research group at the University of Massachusetts Lowell.
                         </p>
                         <div class="btn-row">
@@ -872,7 +511,6 @@
                         </div>
                     </div>
 
-                    <!-- Hobbies & Interests (kept exactly, + Facebook button) -->
                     <div class="tab-panel" id="content-hobbies">
                         <h3>Hobbies & Interests</h3>
                         <p>
@@ -908,8 +546,9 @@
 <script>
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // ✅ NORMALIZE: remove \n from JSON text so line breaks are NOT dictated by JSON
-    const normalizeText = (v) => String(v ?? "").replace(/\r?\n+/g, " ").trim();
+    // IMPORTANT:
+    // We DO NOT strip \n anymore. We keep it so CSS white-space: pre-line can render it.
+    const normalizeText = (v) => String(v ?? "").replace(/\r\n/g, "\n");
 
     async function updateLastUpdatedFromFile(jsonUrl, targetSpanId) {
         const el = document.getElementById(targetSpanId);
@@ -945,29 +584,6 @@
         } catch (e) {
             const fallback = new Date(document.lastModified);
             el.textContent = isNaN(fallback.getTime()) ? "—" : formatFullDate(fallback);
-        }
-    }
-
-    async function renderTabFromFile(jsonUrl, targetPanelId) {
-        const panelEl = document.getElementById(targetPanelId);
-        if (!panelEl) return;
-
-        try {
-            const res = await fetch(jsonUrl, { cache: "no-store" });
-            if (!res.ok) return;
-            const data = await res.json();
-
-            const h3 = `<h3>${normalizeText(data.h3 || "")}</h3>`;
-            const paras = Array.isArray(data.paragraphs)
-                ? data.paragraphs.map(t => `<p>${normalizeText(t)}</p>`).join("")
-                : "";
-            const bullets = Array.isArray(data.bullets) && data.bullets.length
-                ? `<ul>${data.bullets.map(li => `<li>${normalizeText(li)}</li>`).join("")}</ul>`
-                : "";
-
-            panelEl.innerHTML = h3 + paras + bullets;
-        } catch (e) {
-            // fail silently
         }
     }
 
