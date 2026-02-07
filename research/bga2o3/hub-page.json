@@ -29,11 +29,28 @@
       ]
     },
     {
+      "title": "Research Toolkit",
+      "intro": "Quick-access tools, calculators, and workflow helpers for daily research.",
+      "cards": [
+        {
+          "title": "Unit Converter",
+          "desc": "Fast conversions for mobility, resistivity, and common lab units.",
+          "href": "#"
+        },
+        {
+          "title": "Plot & Fit Helper",
+          "desc": "Quick plotting templates and fit checks for repeated datasets.",
+          "href": "#"
+        },
+        {
+          "title": "Equation Reference",
+          "desc": "A compact library of key equations used across your notes.",
+          "href": "#"
+        }
+      ]
+    },
+    {
       "title": "Know Your Peers",
-      "quote": {
-        "text": "“If I am walking with two other men, each of them will serve as my teacher.”",
-        "author": "Confucius"
-      },
       "intro": "Leading β-Ga₂O₃ materials and device research teams across the globe, whose work shapes our understanding of ultrawide-bandgap electronics.",
       "cards": [
         {
