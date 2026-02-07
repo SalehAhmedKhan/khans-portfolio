@@ -42,7 +42,7 @@
         .container {
             max-width: 900px;
             margin: 2rem auto;
-            padding: 0 1.5rem;
+            padding: 0 1.5rem 2rem;
         }
 
         /* ===== Sections ===== */
@@ -74,7 +74,7 @@
             opacity: 0.9;
         }
 
-        /* ===== Scroll Row ===== */
+        /* ===== Scroll Row (keep for groups + other hubs) ===== */
         .scroll-row {
             display: flex;
             overflow-x: auto;
@@ -82,15 +82,31 @@
             padding-bottom: 0.5rem;
         }
 
+        /* ===== Stacked Cards Row (for research topics) ===== */
+        .stack-row {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
         /* ===== Cards ===== */
         .hub-card {
-            min-width: 220px;
             background: rgba(255, 255, 255, 0.15);
             border: 1px solid rgba(255,255,255,0.2);
             border-radius: 10px;
             padding: 1rem;
             backdrop-filter: blur(4px);
             color: #fff;
+            box-sizing: border-box;
+        }
+
+        /* scroll cards need min-width; stacked cards should be full-width */
+        .scroll-row .hub-card {
+            min-width: 220px;
+        }
+
+        .stack-row .hub-card {
+            width: 100%;
         }
 
         .hub-card-title {
@@ -99,7 +115,7 @@
         }
 
         .hub-card-desc {
-            margin: 0;
+            margin: 0 0 0.7rem;
             font-size: 0.85rem;
             opacity: 0.8;
         }
@@ -116,30 +132,53 @@
         }
 
         .group-description {
-            margin: 0.4rem 0 0.2rem;
+            margin: 0.4rem 0 0.7rem;
             font-size: 0.85rem;
             opacity: 0.85;
         }
 
         /* ===== Links ===== */
-        a.topic-link,
-        a.back-link {
+        a.topic-link {
             color: #9fc9ff;
             font-weight: 600;
             text-decoration: none;
         }
 
-        a.topic-link:hover,
-        a.back-link:hover {
+        a.topic-link:hover {
             text-decoration: underline;
         }
 
-        /* Optional: keep “Coming soon” clickable behavior off, without changing style much */
         a.topic-link.disabled {
             opacity: 0.75;
             pointer-events: none;
             cursor: default;
             text-decoration: none;
+        }
+
+        /* ===== Back Button (center, no arrow) ===== */
+        .back-wrap {
+            display: flex;
+            justify-content: center;
+            margin-top: 1.25rem;
+        }
+
+        a.back-btn {
+            display: inline-block;
+            text-decoration: none;
+            font-weight: 700;
+            color: #eaf2ff;
+            background: rgba(159, 201, 255, 0.16);
+            border: 1px solid rgba(159, 201, 255, 0.28);
+            padding: 0.8rem 1.2rem;
+            border-radius: 12px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 10px 28px rgba(0,0,0,0.35);
+        }
+
+        a.back-btn:hover {
+            text-decoration: none;
+            border-color: rgba(159, 201, 255, 0.42);
+            background: rgba(159, 201, 255, 0.22);
         }
 
         /* Small error box if JSON fails */
@@ -161,7 +200,10 @@
 
 <div class="container" id="content-root">
     <!-- Sections injected here -->
-    <a class="back-link" id="back-link" href="../../index.html">← Back</a>
+
+    <div class="back-wrap">
+        <a class="back-btn" id="back-link" href="../../index.html">Back to my Portfolio</a>
+    </div>
 </div>
 
 <script>
@@ -169,6 +211,9 @@
  * Template page loader:
  * - All text + links live in hub-page.json
  * - This file renders the UI from that JSON
+ * Layout rules:
+ * - Section 0 (Research Topics) uses stacked cards (no horizontal scroll)
+ * - Other sections remain horizontally scrollable
  */
 
 function el(tag, className, text) {
@@ -193,13 +238,10 @@ function makeLink(href, text, className) {
     return a;
 }
 
-function renderSection(section) {
+function renderSection(section, index) {
     const wrap = el("div", "section");
 
-    // Title
     if (section.title) wrap.appendChild(el("h2", "", section.title));
-
-    // Intro / subtitle / quote (order controlled by JSON fields)
     if (section.intro) wrap.appendChild(el("p", "", section.intro));
 
     if (section.quote && (section.quote.text || section.quote.author)) {
@@ -207,7 +249,6 @@ function renderSection(section) {
         const qText = (section.quote.text || "").trim();
         const author = (section.quote.author || "").trim();
 
-        // “Quote” — Author
         const combined = author ? `${qText} — ` : qText;
         q.textContent = combined;
 
@@ -219,16 +260,14 @@ function renderSection(section) {
         }
 
         wrap.appendChild(q);
-
-        // Optional extra spacing if requested
         if (section.quote.addBreakAfter) wrap.appendChild(document.createElement("br"));
     }
 
     if (section.subtitle) wrap.appendChild(el("p", "section-subtitle", section.subtitle));
 
-    // Cards row
     if (Array.isArray(section.cards) && section.cards.length > 0) {
-        const row = el("div", "scroll-row");
+        // Only the FIRST section (Research Topics) is stacked; others scroll horizontally
+        const row = el("div", index === 0 ? "stack-row" : "scroll-row");
 
         section.cards.forEach(card => {
             const isGroup = !!card.affiliation || !!card.descriptionLong;
@@ -273,36 +312,33 @@ async function loadHubPage() {
 
         const data = await res.json();
 
-        // Meta
         if (data.meta?.title) document.title = data.meta.title;
         if (data.meta?.favicon) favicon.href = data.meta.favicon;
 
-        // Header
         if (data.header?.h1) h1.textContent = data.header.h1;
         if (data.header?.p) subtitle.textContent = data.header.p;
 
-        // Clear any existing injected sections but keep back link at end
-        // We'll remove everything except the back link, then re-append back link.
-        const savedBack = backLink;
+        // Keep the back button wrapper at the bottom
+        const backWrap = backLink.closest(".back-wrap");
         root.innerHTML = "";
-        root.appendChild(savedBack);
+        root.appendChild(backWrap);
 
-        // Sections
-        (data.sections || []).forEach(section => {
-            const node = renderSection(section);
-            root.insertBefore(node, savedBack);
+        (data.sections || []).forEach((section, i) => {
+            const node = renderSection(section, i);
+            root.insertBefore(node, backWrap);
         });
 
-        // Back link
-        if (data.backLink?.text) savedBack.textContent = data.backLink.text;
-        if (data.backLink?.href) savedBack.href = data.backLink.href;
+        if (data.backLink?.text) backLink.textContent = data.backLink.text;
+        if (data.backLink?.href) backLink.href = data.backLink.href;
 
     } catch (err) {
         subtitle.textContent = "Could not load hub content.";
         const errorBox = el("div", "load-error");
         errorBox.appendChild(el("div", "", "Error loading hub-page.json:"));
         errorBox.appendChild(el("div", "", String(err && err.message ? err.message : err)));
-        root.insertBefore(errorBox, backLink);
+
+        const backWrap = backLink.closest(".back-wrap");
+        root.insertBefore(errorBox, backWrap);
     }
 }
 
