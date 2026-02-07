@@ -5,7 +5,7 @@
     {
       "title": "Research Topics",
       "intro": "Focused pages with logs, paper lists, and detailed notes.",
-      "layout": "stack",
+      "layout": "grid",
       "cards": [
         {
           "title": "Mobilities",
