@@ -1,0 +1,53 @@
+{
+  "title": "β-Ga₂O₃ Journal Notes",
+  "intro": "Curated journal entries with quick metadata, keywords, and links for fast retrieval.",
+  "entries": [
+    {
+      "publishedDate": "2025-01-01",
+      "link": "#",
+      "gist": "LPCVD β-Ga₂O₃ with 162 cm²/V·s electron mobility",
+      "title": "High-mobility β-Ga₂O₃ grown by Ga-assisted LPCVD.",
+      "firstAuthor": "S. A. Khan",
+      "group": "Bhuiyan Group",
+      "institution": "UMass Lowell",
+      "country": "USA",
+      "keywords": ["LPCVD", "Mobility", "Keyword 3", "Keyword 4"]
+    },
+    {
+      "publishedDate": "2023-01-01",
+      "link": "#",
+      "gist": "MOCVD β-Ga₂O₃ with improved oxygen stoichiometry",
+      "title": "Mobility enhancement in MOCVD-grown β-Ga₂O₃ via VI/III ratio engineering.",
+      "firstAuthor": "Z. Feng",
+      "group": "Ohio State University",
+      "institution": "Ohio State University",
+      "country": "USA",
+      "keywords": ["MOCVD", "Hall Mobility", "Keyword 3", "Keyword 4"]
+    },
+    {
+      "publishedDate": "2021-01-01",
+      "link": "#",
+      "gist": "UCSB mobility + breakdown benchmark study",
+      "title": "Transport and breakdown characteristics of β-Ga₂O₃ devices grown by MBE.",
+      "firstAuthor": "A. N. Author",
+      "group": "S. Krishnamoorthy Group",
+      "institution": "UCSB",
+      "country": "USA",
+      "keywords": ["MBE", "Vertical SBD", "Keyword 3", "Keyword 4"]
+    }
+  ],
+  "updateLog": [
+    {
+      "date": "Today",
+      "text": "Page initialized with first 3 benchmark papers."
+    },
+    {
+      "date": "2025-01-10",
+      "text": "Draft literature list created."
+    },
+    {
+      "date": "2024-12-05",
+      "text": "Added historical mobility notes."
+    }
+  ]
+}
