@@ -61,8 +61,8 @@
 
         .section h2 { margin-top: 0; }
 
-        .section-subtitle {
-            margin: 0.25rem 0 0.5rem;
+        .section-intro {
+            margin: 0.35rem 0 0.9rem;
             font-size: 0.95rem;
             opacity: 0.95;
         }
@@ -74,7 +74,7 @@
             opacity: 0.9;
         }
 
-        /* ===== Scroll Row (keep for groups + other hubs) ===== */
+        /* ===== Scroll Row (for scroll sections) ===== */
         .scroll-row {
             display: flex;
             overflow-x: auto;
@@ -82,14 +82,22 @@
             padding-bottom: 0.5rem;
         }
 
-        /* ===== Stacked Cards Row (for research topics) ===== */
-        .stack-row {
-            display: flex;
-            flex-direction: column;
+        /* ===== Responsive Grid (for stack/grid sections like Research Topics) ===== */
+        .grid-row {
+            display: grid;
             gap: 1rem;
+            /* 3 columns when space allows, automatically wraps down */
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
         }
 
-        /* ===== Cards ===== */
+        /* Force “prefer 3 columns” behavior on wide screens */
+        @media (min-width: 900px) {
+            .grid-row {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        /* ===== Cards (clickable) ===== */
         .hub-card {
             background: rgba(255, 255, 255, 0.15);
             border: 1px solid rgba(255,255,255,0.2);
@@ -98,51 +106,61 @@
             backdrop-filter: blur(4px);
             color: #fff;
             box-sizing: border-box;
+
+            /* clickable feel */
+            display: block;
+            text-decoration: none;
+            transition: transform 0.12s ease, border-color 0.12s ease, background 0.12s ease;
         }
 
-        /* scroll cards need min-width; stacked cards should be full-width */
-        .scroll-row .hub-card { min-width: 220px; }
-        .stack-row .hub-card { width: 100%; }
+        .hub-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(159, 201, 255, 0.42);
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        /* “disabled” cards when no href */
+        .hub-card.disabled {
+            cursor: default;
+            opacity: 0.78;
+        }
+        .hub-card.disabled:hover {
+            transform: none;
+            border-color: rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        /* scroll cards need min-width */
+        .scroll-row .hub-card {
+            min-width: 240px;
+        }
 
         .hub-card-title {
             margin: 0 0 0.4rem;
             font-weight: 600;
+            color: #ffffff;
         }
 
         .hub-card-desc {
-            margin: 0 0 0.7rem;
+            margin: 0;
             font-size: 0.85rem;
-            opacity: 0.8;
+            opacity: 0.85;
         }
 
         /* ===== Group Cards (NO LOGOS) ===== */
         .group-card { min-width: 260px; }
 
         .group-affiliation {
-            margin: 0;
+            margin: 0 0 0.35rem;
             font-size: 0.8rem;
-            opacity: 0.9;
+            opacity: 0.92;
+            font-weight: 600;
         }
 
         .group-description {
-            margin: 0.4rem 0 0.7rem;
+            margin: 0;
             font-size: 0.85rem;
             opacity: 0.85;
-        }
-
-        /* ===== Links ===== */
-        a.topic-link {
-            color: #9fc9ff;
-            font-weight: 600;
-            text-decoration: none;
-        }
-        a.topic-link:hover { text-decoration: underline; }
-
-        a.topic-link.disabled {
-            opacity: 0.75;
-            pointer-events: none;
-            cursor: default;
-            text-decoration: none;
         }
 
         /* ===== Back Button (STATIC: NOT FROM JSON) ===== */
@@ -184,7 +202,7 @@
 <body>
 
 <header>
-    <h1 id="page-title">β-Ga₂O₃ Research Hub</h1>
+    <h1 id="page-title">Loading…</h1>
     <p id="page-subtitle">Loading…</p>
 </header>
 
@@ -199,13 +217,28 @@
 
 <script>
 /**
- * Template page loader:
- * - All text + links live in hub-page.json
- * - This file renders the UI from that JSON
- * Layout rules:
- * - Section 0 (Research Topics) uses stacked cards (no horizontal scroll)
- * - Other sections remain horizontally scrollable
- * NOTE: favicon + back button are STATIC and NOT controlled by JSON.
+ * JSON format expected (simple):
+ * {
+ *   "title": "...",
+ *   "subtitle": "...",
+ *   "sections": [
+ *     {
+ *       "title": "...",
+ *       "intro": "...",
+ *       "layout": "grid" | "scroll" | "stack",
+ *       "quote": {"text":"...", "author":"..."},
+ *       "cards": [
+ *          {"title":"...", "desc":"...", "href":"..."},
+ *          {"title":"...", "affiliation":"...", "desc":"...", "href":"..."}
+ *       ]
+ *     }
+ *   ]
+ * }
+ *
+ * NOTES:
+ * - favicon + back button are STATIC and NOT controlled by JSON.
+ * - cards are fully clickable (entire card is the link).
+ * - if card.href is missing, card renders as non-clickable (disabled).
  */
 
 function el(tag, className, text) {
@@ -215,34 +248,42 @@ function el(tag, className, text) {
     return node;
 }
 
-function makeLink(href, text, className) {
-    const a = document.createElement("a");
-    a.className = className || "";
-    a.textContent = text || "Open";
+function makeCard(card) {
+    const isGroup = !!card.affiliation;
 
-    if (!href || href === "#") {
-        a.href = "#";
-        a.classList.add("disabled");
-        return a;
+    const clickable = !!(card.href && card.href !== "#");
+    const a = document.createElement(clickable ? "a" : "div");
+    a.className = `hub-card${isGroup ? " group-card" : ""}${clickable ? "" : " disabled"}`;
+
+    if (clickable) {
+        a.href = card.href;
     }
 
-    a.href = href;
+    const title = el("div", "hub-card-title", card.title || "");
+    a.appendChild(title);
+
+    if (isGroup) {
+        if (card.affiliation) a.appendChild(el("p", "group-affiliation", card.affiliation));
+        if (card.desc) a.appendChild(el("p", "group-description", card.desc));
+    } else {
+        if (card.desc) a.appendChild(el("p", "hub-card-desc", card.desc));
+    }
+
     return a;
 }
 
-function renderSection(section, index) {
+function renderSection(section) {
     const wrap = el("div", "section");
 
     if (section.title) wrap.appendChild(el("h2", "", section.title));
-    if (section.intro) wrap.appendChild(el("p", "", section.intro));
 
+    // Quote (optional)
     if (section.quote && (section.quote.text || section.quote.author)) {
         const q = el("p", "section-quote");
         const qText = (section.quote.text || "").trim();
         const author = (section.quote.author || "").trim();
 
-        const combined = author ? `${qText} — ` : qText;
-        q.textContent = combined;
+        q.textContent = author ? `${qText} — ` : qText;
 
         if (author) {
             const span = document.createElement("span");
@@ -250,42 +291,27 @@ function renderSection(section, index) {
             span.textContent = author;
             q.appendChild(span);
         }
-
         wrap.appendChild(q);
-        if (section.quote.addBreakAfter) wrap.appendChild(document.createElement("br"));
+        wrap.appendChild(document.createElement("br"));
     }
 
-    if (section.subtitle) wrap.appendChild(el("p", "section-subtitle", section.subtitle));
+    if (section.intro) wrap.appendChild(el("p", "section-intro", section.intro));
 
-    if (Array.isArray(section.cards) && section.cards.length > 0) {
-        const row = el("div", index === 0 ? "stack-row" : "scroll-row");
+    // Layout selection
+    const layout = (section.layout || "").toLowerCase();
 
-        section.cards.forEach(card => {
-            const isGroup = !!card.affiliation || !!card.descriptionLong;
-            const cardEl = el("div", `hub-card${isGroup ? " group-card" : ""}`);
+    let row;
+    if (layout === "scroll") row = el("div", "scroll-row");
+    else if (layout === "stack") row = el("div", "stack-row"); // stack-row not defined now; fall back to grid feel
+    else row = el("div", "grid-row"); // default grid
 
-            cardEl.appendChild(el("div", "hub-card-title", card.title || ""));
+    // For true "stack", we can just use grid-row with 1 column, but you asked for 3-column grid for topics.
+    // Your JSON sets topics to layout "stack" earlier — change to "grid" or keep it and we treat it as grid.
+    // We'll treat "stack" as grid too, unless you later want literal 1-column.
+    if (layout === "stack") row.className = "grid-row";
 
-            if (!isGroup) {
-                if (card.desc) cardEl.appendChild(el("p", "hub-card-desc", card.desc));
-            } else {
-                if (card.affiliation) {
-                    const aff = el("p", "group-affiliation", card.affiliation);
-                    aff.style.fontWeight = "600";
-                    cardEl.appendChild(aff);
-                }
-                const d = card.descriptionLong || card.desc;
-                if (d) cardEl.appendChild(el("p", "group-description", d));
-            }
-
-            const linkText = card.linkText || (card.href ? "Open" : "Coming soon");
-            cardEl.appendChild(makeLink(card.href, linkText, "topic-link"));
-
-            row.appendChild(cardEl);
-        });
-
-        wrap.appendChild(row);
-    }
+    (section.cards || []).forEach(card => row.appendChild(makeCard(card)));
+    wrap.appendChild(row);
 
     return wrap;
 }
@@ -302,22 +328,28 @@ async function loadHubPage() {
 
         const data = await res.json();
 
-        // Only JSON-controlled header title/subtitle + page title
-        if (data.meta?.title) document.title = data.meta.title;
-        if (data.header?.h1) h1.textContent = data.header.h1;
-        if (data.header?.p) subtitle.textContent = data.header.p;
+        // Header + document title
+        if (data.title) {
+            document.title = data.title;
+            h1.textContent = data.title;
+        } else {
+            h1.textContent = "Research Hub";
+        }
+
+        subtitle.textContent = data.subtitle || "";
 
         // Keep the back button wrapper at the bottom (STATIC)
         const backWrap = backLink.closest(".back-wrap");
         root.innerHTML = "";
         root.appendChild(backWrap);
 
-        (data.sections || []).forEach((section, i) => {
-            const node = renderSection(section, i);
+        (data.sections || []).forEach(section => {
+            const node = renderSection(section);
             root.insertBefore(node, backWrap);
         });
 
     } catch (err) {
+        h1.textContent = "Research Hub";
         subtitle.textContent = "Could not load hub content.";
 
         const errorBox = el("div", "load-error");
