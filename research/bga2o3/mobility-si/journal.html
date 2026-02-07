@@ -4,15 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loading…</title>
+    <title>β-Ga₂O₃ Journal Notes</title>
 
     <!-- FAVICON (STATIC) -->
-    <link rel="icon" type="image/png" href="../../../favicon1.png">
+    <link rel="icon" type="image/png" href="../../favicon1.png">
 
     <style>
         :root {
-            /* Dark theme variables (match mobility-bgo aesthetic) */
-            --bg: #0b1020;
+            /* Mobility-bgo aesthetic variables */
             --card-bg: rgba(255, 255, 255, 0.08);
             --border: rgba(255, 255, 255, 0.14);
             --accent: #60a5fa;
@@ -49,7 +48,6 @@
         a { color: var(--accent); text-decoration: none; }
         a:hover { text-decoration: underline; }
 
-        /* Page shell */
         .page {
             max-width: 1200px;
             margin: 0 auto;
@@ -58,7 +56,6 @@
 
         header.page-header { margin-bottom: 1.5rem; }
 
-        /* ===== TITLE AREA ===== */
         .topic-label {
             font-size: 0.75rem;
             letter-spacing: 0.12em;
@@ -80,7 +77,6 @@
             font-size: 0.95rem;
         }
 
-        /* Back link under title */
         .back-link {
             display: inline-block;
             margin-top: 0.6rem;
@@ -89,7 +85,6 @@
             color: var(--accent);
         }
 
-        /* Layout */
         .layout {
             display: flex;
             gap: 1.5rem;
@@ -104,7 +99,7 @@
             aside.sidebar { order: -1; }
         }
 
-        /* ===== UPDATE LOG ===== */
+        /* Sidebar */
         .sidebar-card {
             background: var(--card-bg);
             border-radius: var(--radius);
@@ -113,10 +108,7 @@
             border: 1px solid var(--border);
         }
 
-        .sidebar-card h2 {
-            font-size: 1rem;
-            margin: 0 0 0.5rem;
-        }
+        .sidebar-card h2 { font-size: 1rem; margin: 0 0 0.5rem; }
 
         .log-help {
             font-size: 0.8rem;
@@ -142,7 +134,7 @@
         .log-date { font-size: 0.8rem; color: var(--text-muted); }
         .log-text { font-size: 0.85rem; }
 
-        /* ===== PAPER LIST ===== */
+        /* Paper list header */
         .section-header {
             margin-bottom: 0.75rem;
             display: flex;
@@ -150,15 +142,8 @@
             gap: 0.5rem;
         }
 
-        .section-header h2 {
-            margin: 0;
-            font-size: 1.15rem;
-        }
-
-        .section-header span {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
+        .section-header h2 { margin: 0; font-size: 1.15rem; }
+        .section-header span { font-size: 0.8rem; color: var(--text-muted); }
 
         .paper-list {
             display: flex;
@@ -166,8 +151,8 @@
             gap: 0.9rem;
         }
 
+        /* Paper cards */
         .paper-card {
-            position: relative;
             background: var(--card-bg);
             border-radius: var(--radius);
             box-shadow: var(--shadow-soft);
@@ -185,6 +170,7 @@
 
         .paper-main { flex: 1; }
 
+        /* Top row MUST look like screenshot: date + journal link */
         .paper-top-row {
             display: flex;
             flex-wrap: wrap;
@@ -208,313 +194,4 @@
         }
 
         .paper-title {
-            margin: 0;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
-
-        .paper-authors {
-            margin-top: 0.25rem;
-            font-size: 0.83rem;
-            color: var(--text-muted);
-        }
-
-        .paper-affil {
-            margin-top: 0.2rem;
-            font-size: 0.83rem;
-            color: var(--text-muted);
-        }
-
-        /* Journal page link at bottom */
-        .paper-footer {
-            margin-top: 0.7rem;
-            font-size: 0.88rem;
-        }
-
-        .paper-footer a {
-            color: var(--accent);
-            font-weight: 600;
-        }
-
-        /* Tags right aligned */
-        .paper-tags {
-            min-width: 140px;
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-            align-items: flex-end;
-            justify-content: center;
-        }
-
-        @media (max-width: 700px) {
-            .paper-card { flex-direction: column; }
-            .paper-tags { align-items: flex-start; }
-        }
-
-        .tag {
-            display: inline-block;
-            padding: 0.18rem 0.45rem;
-            border-radius: 999px;
-            background: var(--accent-soft);
-            color: var(--accent);
-            font-size: 0.75rem;
-            white-space: nowrap;
-        }
-
-        .tag.method { background: #fef3c7; color: #92400e; }
-        .tag.device { background: #ecfdf3; color: #166534; }
-        .tag.year   { background: #f3e8ff; color: #6b21a8; }
-
-        /* optional subtle tag styling for extra keywords */
-        .tag.other  { background: var(--accent-soft); color: var(--accent); }
-    </style>
-</head>
-
-<body>
-<div class="page">
-
-    <!-- ===== TOPIC TITLE AREA ===== -->
-    <header class="page-header">
-        <div class="topic-label">Research Topic</div>
-        <h1 class="topic-title" id="page-title">Loading…</h1>
-        <p class="topic-subtitle" id="page-subtitle">Loading…</p>
-
-        <!-- Back link to research hub (STATIC) -->
-        <a class="back-link" href="../hub-page.html">← Back to Research Home</a>
-    </header>
-
-    <div class="layout">
-
-        <!-- ===== MAIN CONTENT: PAPERS ===== -->
-        <main>
-            <div class="section-header">
-                <h2>Paper log</h2>
-                <span>(older at the top → newer towards the bottom)</span>
-            </div>
-
-            <div class="paper-list" id="paper-list">
-                <!-- injected -->
-            </div>
-        </main>
-
-        <!-- ===== SIDEBAR ===== -->
-        <aside class="sidebar">
-            <div class="sidebar-card">
-                <h2>Update log</h2>
-                <p class="log-help">
-                    Latest updates appear at top. Edit manually as you add more papers.
-                </p>
-
-                <ul class="log-list" id="log-list">
-                    <!-- injected -->
-                </ul>
-            </div>
-        </aside>
-
-    </div>
-</div>
-
-<script>
-/* ========== Seeded gradient from JSON title (keeps same aesthetic) ========== */
-function hash32(str){
-  let h = 0x811c9dc5; // FNV-1a
-  for(let i=0;i<str.length;i++){
-    h ^= str.charCodeAt(i);
-    h = Math.imul(h, 0x01000193);
-  }
-  return h >>> 0;
-}
-
-function mulberry32(seed){
-  let t = seed >>> 0;
-  return function(){
-    t += 0x6D2B79F5;
-    let x = Math.imul(t ^ (t >>> 15), 1 | t);
-    x ^= x + Math.imul(x ^ (x >>> 7), 61 | x);
-    return ((x ^ (x >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
-function clamp(v,min,max){ return Math.max(min, Math.min(max, v)); }
-function rgba(r,g,b,a){ return `rgba(${r|0}, ${g|0}, ${b|0}, ${a})`; }
-function hexFromRGB(r,g,b){
-  const toHex = n => n.toString(16).padStart(2, "0");
-  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
-}
-
-function applySeededGradient(title){
-  const seed = hash32(title || "Journal");
-  const rand = mulberry32(seed);
-
-  // Warm-ish / cool-ish radials (subtle)
-  const r1 = clamp(120 + Math.floor(120 * rand()), 90, 240);
-  const g1 = clamp(60  + Math.floor(120 * rand()), 50, 220);
-  const b1 = clamp(60  + Math.floor(120 * rand()), 50, 220);
-
-  const r2 = clamp(60  + Math.floor(140 * rand()), 50, 230);
-  const g2 = clamp(60  + Math.floor(140 * rand()), 50, 230);
-  const b2 = clamp(120 + Math.floor(140 * rand()), 90, 255);
-
-  const a1 = 0.08 + rand() * 0.05;
-  const a2 = 0.08 + rand() * 0.05;
-
-  // Deep linear gradient anchors
-  const base1 = { r: 6 + Math.floor(10 * rand()), g: 8 + Math.floor(12 * rand()), b: 16 + Math.floor(18 * rand()) };
-  const base2 = { r: 8 + Math.floor(12 * rand()), g: 10 + Math.floor(14 * rand()), b: 26 + Math.floor(20 * rand()) };
-  const base3 = { r: 6 + Math.floor(10 * rand()), g: 8 + Math.floor(12 * rand()), b: 16 + Math.floor(18 * rand()) };
-
-  document.documentElement.style.setProperty("--rg1", rgba(r1,g1,b1,a1));
-  document.documentElement.style.setProperty("--rg2", rgba(r2,g2,b2,a2));
-  document.documentElement.style.setProperty("--lg1", hexFromRGB(base1.r, base1.g, base1.b));
-  document.documentElement.style.setProperty("--lg2", hexFromRGB(base2.r, base2.g, base2.b));
-  document.documentElement.style.setProperty("--lg3", hexFromRGB(base3.r, base3.g, base3.b));
-}
-
-/* ========== Renderer ========== */
-function el(tag, className, text){
-  const n = document.createElement(tag);
-  if(className) n.className = className;
-  if(text !== undefined && text !== null) n.textContent = text;
-  return n;
-}
-
-function yearFromDate(iso){
-  if(!iso) return "";
-  const m = String(iso).match(/^(\d{4})/);
-  return m ? m[1] : "";
-}
-
-function groupFromByline(byline){
-  if(!byline) return "";
-  const parts = String(byline).split("—");
-  return (parts[1] || "").trim();
-}
-
-function classifyTag(text, idx){
-  // Keep the same tag color logic as your example:
-  // method, device, year are colored; extras are default accent-soft.
-  if(idx === 0) return "method";
-  if(idx === 1) return "device";
-  return "other";
-}
-
-function renderPaperCard(p){
-  const card = el("article", "paper-card");
-
-  const main = el("div", "paper-main");
-
-  const topRow = el("div", "paper-top-row");
-  topRow.appendChild(el("span", "paper-date", p.publishedDate || ""));
-  main.appendChild(topRow);
-
-  main.appendChild(el("h3", "paper-gist", p.gist || ""));
-  main.appendChild(el("p", "paper-title", p.title || ""));
-
-  // authors line = byline + et al. (matches original style)
-  const authors = el("p", "paper-authors");
-  authors.innerHTML = `${(p.byline || "").replace(/</g,"&lt;").replace(/>/g,"&gt;")} <em>et al.</em>`;
-  main.appendChild(authors);
-
-  if(p.affiliation){
-    main.appendChild(el("p", "paper-affil", p.affiliation));
-  }
-
-  // Link at bottom
-  const footer = el("div", "paper-footer");
-  const a = document.createElement("a");
-  a.href = p.link || "#";
-  a.target = "_blank";
-  a.rel = "noopener";
-  a.textContent = "Journal page";
-  footer.appendChild(a);
-  main.appendChild(footer);
-
-  // Right tags
-  const tags = el("div", "paper-tags");
-
-  const grp = groupFromByline(p.byline);
-  if(grp){
-    tags.appendChild(el("span", "tag", grp));
-  }
-
-  const kws = Array.isArray(p.keywords) ? p.keywords : [];
-  kws.forEach((k, idx) => {
-    tags.appendChild(el("span", "tag " + classifyTag(k, idx), k));
-  });
-
-  const yr = yearFromDate(p.publishedDate);
-  if(yr){
-    tags.appendChild(el("span", "tag year", yr));
-  }
-
-  card.appendChild(main);
-  card.appendChild(tags);
-  return card;
-}
-
-function renderLogItem(item, isLatest){
-  const li = el("li", "log-item" + (isLatest ? " latest" : ""));
-  const d = el("div", "log-date", item.date || "");
-  d.dataset.rawDate = item.date || "";
-  li.appendChild(d);
-  li.appendChild(el("div", "log-text", item.text || ""));
-  return li;
-}
-
-function resolveTodayLabels(){
-  const nodes = document.querySelectorAll(".log-date");
-  const now = new Date();
-  const todayISO =
-    now.getFullYear() + "-" +
-    String(now.getMonth()+1).padStart(2,"0") + "-" +
-    String(now.getDate()).padStart(2,"0");
-
-  nodes.forEach(n => {
-    const raw = (n.dataset.rawDate || n.textContent || "").trim();
-    if(raw.toLowerCase() === "today") n.textContent = todayISO;
-  });
-}
-
-async function load(){
-  const titleEl = document.getElementById("page-title");
-  const subtitleEl = document.getElementById("page-subtitle");
-  const listEl = document.getElementById("paper-list");
-  const logEl = document.getElementById("log-list");
-
-  try{
-    const res = await fetch("journal.json", { cache: "no-store" });
-    if(!res.ok) throw new Error(`Failed to fetch journal.json (HTTP ${res.status})`);
-    const data = await res.json();
-
-    document.title = data.title || "Journal";
-    titleEl.textContent = data.title || "Journal";
-    subtitleEl.textContent = data.intro || "";
-
-    applySeededGradient(data.title || "Journal");
-
-    listEl.innerHTML = "";
-    (data.entries || []).forEach(p => listEl.appendChild(renderPaperCard(p)));
-
-    logEl.innerHTML = "";
-    (data.updateLog || []).forEach((u, idx) => logEl.appendChild(renderLogItem(u, idx === 0)));
-
-    resolveTodayLabels();
-
-  } catch(err){
-    titleEl.textContent = "β-Ga₂O₃ Journal Notes";
-    subtitleEl.textContent = "Could not load journal content.";
-
-    const box = document.createElement("div");
-    box.className = "sidebar-card";
-    box.innerHTML = `<h2>Error</h2><p class="log-help">${String(err && err.message ? err.message : err)}</p>`;
-    logEl.innerHTML = "";
-    listEl.innerHTML = "";
-    listEl.appendChild(box);
-  }
-}
-
-document.addEventListener("DOMContentLoaded", load);
-</script>
-
-</body>
-</html>
+            mar
