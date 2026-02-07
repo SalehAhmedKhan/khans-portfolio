@@ -56,8 +56,9 @@
 
         header.page-header { margin-bottom: 1.5rem; }
 
+        /* (1) Make this bigger */
         .topic-label {
-            font-size: 0.75rem;
+            font-size: 0.92rem; /* was 0.75rem */
             letter-spacing: 0.12em;
             text-transform: uppercase;
             font-weight: 600;
@@ -77,12 +78,29 @@
             font-size: 0.95rem;
         }
 
-        .back-link {
+        /* (2) Back link -> button */
+        .back-btn {
             display: inline-block;
-            margin-top: 0.6rem;
+            margin-top: 0.7rem;
             margin-bottom: 1rem;
+
             font-size: 0.9rem;
-            color: var(--accent);
+            font-weight: 700;
+            color: #eaf2ff;
+
+            background: rgba(96, 165, 250, 0.14);
+            border: 1px solid rgba(96, 165, 250, 0.26);
+            border-radius: 10px;
+
+            padding: 0.55rem 0.9rem;
+            box-shadow: var(--shadow-soft);
+            backdrop-filter: blur(6px);
+        }
+
+        .back-btn:hover {
+            text-decoration: none;
+            background: rgba(96, 165, 250, 0.18);
+            border-color: rgba(96, 165, 250, 0.38);
         }
 
         .layout {
@@ -143,7 +161,7 @@
         }
 
         .section-header h2 { margin: 0; font-size: 1.15rem; }
-        .section-header span { font-size: 0.8rem; color: var(--text-muted); }
+        /* (3) removed the extra span, so nothing else here */
 
         .paper-list {
             display: flex;
@@ -170,7 +188,6 @@
 
         .paper-main { flex: 1; }
 
-        /* Top row MUST look like screenshot: date + journal link */
         .paper-top-row {
             display: flex;
             flex-wrap: wrap;
@@ -199,16 +216,30 @@
             color: var(--text-muted);
         }
 
+        /* (5) We'll render "First Author et. al. — Group" */
         .paper-authors {
             margin-top: 0.25rem;
             font-size: 0.83rem;
             color: var(--text-muted);
+            line-height: 1.35;
         }
 
+        /* (6) normalize spacing + line height */
         .paper-affil {
-            margin-top: 0.2rem;
+            margin-top: 0.25rem;
             font-size: 0.83rem;
             color: var(--text-muted);
+            line-height: 1.35;
+        }
+
+        /* (8) link goes to bottom */
+        .paper-footer {
+            margin-top: 0.7rem;
+            font-size: 0.88rem;
+        }
+
+        .paper-footer a {
+            font-weight: 600;
         }
 
         /* Tags (right aligned) */
@@ -251,7 +282,8 @@
         <h1 class="topic-title" id="page-title"></h1>
         <p class="topic-subtitle" id="page-subtitle"></p>
 
-        <a class="back-link" href="hub-bga2o3.html">← Back to Research Home</a>
+        <!-- (2) button, no arrow -->
+        <a class="back-btn" href="../hub-page.html">Back to Research Hub</a>
     </header>
 
     <div class="layout">
@@ -259,7 +291,7 @@
         <main>
             <div class="section-header">
                 <h2>Paper log</h2>
-                <span>(newer at the top → older towards the bottom)</span>
+                <!-- (3) removed span text entirely -->
             </div>
 
             <div class="paper-list" id="paper-list"></div>
@@ -336,9 +368,48 @@ function el(tag, className, text){
   if(text !== undefined && text !== null) n.textContent = text;
   return n;
 }
-
 function safeText(s){
   return String(s || "").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+/* (7) Format ISO date -> "01 February 2025" */
+function formatFullDate(iso){
+  if(!iso) return "";
+  // Expecting YYYY-MM-DD (or at least YYYY-MM)
+  const parts = String(iso).split("-");
+  const y = Number(parts[0]);
+  const m = Number(parts[1] || 1);
+  const d = Number(parts[2] || 1);
+
+  const dt = new Date(Date.UTC(y, m - 1, d));
+  if (isNaN(dt.getTime())) return iso;
+
+  const day = String(dt.getUTCDate()).padStart(2, "0");
+  const monthName = dt.toLocaleString("en-US", { month: "long", timeZone: "UTC" });
+  const year = dt.getUTCFullYear();
+  return `${day} ${monthName} ${year}`;
+}
+
+/* (4) Sort using real Date objects (newest first) */
+function toSortableTime(iso){
+  if(!iso) return -Infinity;
+  const parts = String(iso).split("-");
+  const y = Number(parts[0]);
+  const m = Number(parts[1] || 1);
+  const d = Number(parts[2] || 1);
+  const t = Date.UTC(y, m - 1, d);
+  return isNaN(t) ? -Infinity : t;
+}
+
+/* (5) Build "First Author et. al. — Group" from byline "X — Group" */
+function formatByline(byline){
+  const raw = String(byline || "");
+  const parts = raw.split("—");
+  const author = (parts[0] || "").trim();
+  const group = (parts[1] || "").trim();
+  if(author && group) return `${author} et. al. — ${group}`;
+  if(author) return `${author} et. al.`;
+  return raw;
 }
 
 function classifyKeyword(idx){
@@ -351,28 +422,30 @@ function renderPaperCard(p){
   const card = el("article", "paper-card");
   const main = el("div", "paper-main");
 
+  // Top: date only (formatted)
   const top = el("div", "paper-top-row");
-  top.appendChild(el("span", "paper-date", p.publishedDate || ""));
-
-  const linkSpan = document.createElement("span");
-  const a = document.createElement("a");
-  a.href = p.link || "#";
-  a.target = "_blank";
-  a.rel = "noopener";
-  a.textContent = "Journal page";
-  linkSpan.appendChild(a);
-  top.appendChild(linkSpan);
-
+  top.appendChild(el("span", "paper-date", formatFullDate(p.publishedDate)));
   main.appendChild(top);
+
   main.appendChild(el("h3", "paper-gist", p.gist || ""));
   main.appendChild(el("p", "paper-title", p.title || ""));
 
   const authors = document.createElement("p");
   authors.className = "paper-authors";
-  authors.innerHTML = `${safeText(p.byline)} <em>et al.</em>`;
+  authors.textContent = formatByline(p.byline);
   main.appendChild(authors);
 
   if(p.affiliation) main.appendChild(el("p", "paper-affil", p.affiliation));
+
+  // (8) Link moved to bottom + renamed
+  const footer = el("div", "paper-footer");
+  const a = document.createElement("a");
+  a.href = p.link || "#";
+  a.target = "_blank";
+  a.rel = "noopener";
+  a.textContent = "Open journal page";
+  footer.appendChild(a);
+  main.appendChild(footer);
 
   const tags = el("div", "paper-tags");
   const kws = Array.isArray(p.keywords) ? p.keywords : [];
@@ -409,11 +482,13 @@ async function load(){
     titleEl.textContent = data.title || "";
     subtitleEl.textContent = data.intro || "";
 
-    listEl.innerHTML = "";
-    // newer at top -> older towards bottom (like screenshot note)
-    (data.entries || []).slice().sort((a,b) => String(b.publishedDate).localeCompare(String(a.publishedDate)))
-      .forEach(p => listEl.appendChild(renderPaperCard(p)));
+    // (4) Sort newest first automatically
+    const entries = (data.entries || []).slice().sort((a,b) => toSortableTime(b.publishedDate) - toSortableTime(a.publishedDate));
 
+    listEl.innerHTML = "";
+    entries.forEach(p => listEl.appendChild(renderPaperCard(p)));
+
+    // Update log as-is (assumes JSON has real date for first entry)
     logEl.innerHTML = "";
     (data.updateLog || []).forEach((u, idx) => logEl.appendChild(renderLogItem(u, idx === 0)));
 
