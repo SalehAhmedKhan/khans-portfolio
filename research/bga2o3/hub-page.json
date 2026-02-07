@@ -5,7 +5,6 @@
     {
       "title": "Research Topics",
       "intro": "Focused pages with logs, paper lists, and detailed notes.",
-      "layout": "grid",
       "cards": [
         {
           "title": "Mobilities",
@@ -14,15 +13,18 @@
         },
         {
           "title": "Etching & Patterning",
-          "desc": "ICP-RIE chemistries, LPCVD etching, damage studies."
+          "desc": "ICP-RIE chemistries, LPCVD etching, damage studies.",
+          "href": "#"
         },
         {
           "title": "Breakdown Engineering",
-          "desc": "JTEs, field plates, BV scaling."
+          "desc": "JTEs, field plates, BV scaling.",
+          "href": "#"
         },
         {
           "title": "Defects & Irradiation",
-          "desc": "DLTS, Raman, neutron/gamma studies."
+          "desc": "DLTS, Raman, neutron/gamma studies.",
+          "href": "#"
         }
       ]
     },
@@ -33,46 +35,51 @@
         "author": "Confucius"
       },
       "intro": "Leading β-Ga₂O₃ materials and device research teams across the globe, whose work shapes our understanding of ultrawide-bandgap electronics.",
-      "layout": "scroll",
       "cards": [
         {
           "title": "Bhuiyan Group",
           "affiliation": "University of Massachusetts Lowell",
-          "desc": "LPCVD-grown β-Ga₂O₃, device-oriented etching strategies, and high-mobility vertical SBDs."
+          "desc": "LPCVD-grown β-Ga₂O₃, device-oriented etching strategies, and high-mobility vertical SBDs.",
+          "href": "#"
         },
         {
           "title": "Zhao Labs",
           "affiliation": "The Ohio State University",
-          "desc": "MOCVD β-Ga₂O₃ epitaxy, defect engineering, and mobility optimization in thin films."
+          "desc": "MOCVD β-Ga₂O₃ epitaxy, defect engineering, and mobility optimization in thin films.",
+          "href": "#"
         },
         {
           "title": "Krishnamoorthy Group",
           "affiliation": "University of California, Santa Barbara (UCSB)",
-          "desc": "β-Ga₂O₃ device physics, breakdown engineering, and field-management strategies for power devices."
+          "desc": "β-Ga₂O₃ device physics, breakdown engineering, and field-management strategies for power devices.",
+          "href": "#"
         },
         {
           "title": "Pearton Group",
           "affiliation": "University of Florida (UF)",
-          "desc": "Defect spectroscopy, etching, and reliability studies in β-Ga₂O₃ and related UWBG materials."
+          "desc": "Defect spectroscopy, etching, and reliability studies in β-Ga₂O₃ and related UWBG materials.",
+          "href": "#"
         }
       ]
     },
     {
       "title": "Other Research Hubs",
       "intro": "Explore related semiconductor fields.",
-      "layout": "scroll",
       "cards": [
         {
           "title": "GaN & AlGaN",
-          "desc": "Polarization engineering, HEMTs."
+          "desc": "Polarization engineering, HEMTs.",
+          "href": "#"
         },
         {
           "title": "Power Devices",
-          "desc": "Vertical devices, drift engineering."
+          "desc": "Vertical devices, drift engineering.",
+          "href": "#"
         },
         {
           "title": "Growth Systems",
-          "desc": "MBE / MOCVD / LPCVD / HVPE."
+          "desc": "MBE / MOCVD / LPCVD / HVPE.",
+          "href": "#"
         }
       ]
     }
