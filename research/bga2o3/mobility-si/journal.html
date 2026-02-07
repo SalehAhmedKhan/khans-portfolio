@@ -14,8 +14,13 @@
       font-family: Arial, Helvetica, sans-serif;
       color:#f5f5f5;
 
+      /* Defaults; overridden by seeded variation */
       --g1: rgba(80,120,255,0.12);
       --g2: rgba(0,200,180,0.08);
+      --g3: rgba(255, 80, 120, 0.06); /* extra layer, seeded */
+      --g3x: 55%;
+      --g3y: 72%;
+
       --bgA: #0b0f1a;
       --bgB: #111827;
       --bgC: #0a0e17;
@@ -23,6 +28,7 @@
       background:
         radial-gradient(circle at 18% 20%, var(--g1), transparent 42%),
         radial-gradient(circle at 82% 28%, var(--g2), transparent 46%),
+        radial-gradient(circle at var(--g3x) var(--g3y), var(--g3), transparent 48%),
         linear-gradient(135deg, var(--bgA), var(--bgB) 62%, var(--bgC));
       background-attachment: fixed;
     }
@@ -135,7 +141,7 @@
 
     .paper-authors{
       margin: 0;
-      opacity: 0.9;
+      opacity: 0.92;
       font-size: 0.92rem;
       line-height: 1.35;
     }
@@ -311,12 +317,25 @@
     const g2 = clamp(25 + Math.floor(150 * rand()), 25, 210);
     const b2 = clamp(25 + Math.floor(150 * rand()), 25, 210);
 
+    // Extra gradient layer (g3) + position seeded too
+    const r3 = clamp(35 + Math.floor(160 * rand()), 35, 210);
+    const g3 = clamp(25 + Math.floor(170 * rand()), 25, 215);
+    const b3 = clamp(35 + Math.floor(170 * rand()), 35, 220);
+    const a3 = 0.045 + (rand() * 0.04); // subtle
+
+    const g3x = Math.round(10 + rand() * 80);
+    const g3y = Math.round(12 + rand() * 78);
+
     const base1 = { r: 7 + Math.floor(12 * rand()),  g: 9 + Math.floor(16 * rand()),  b: 16 + Math.floor(18 * rand()) };
     const base2 = { r: 10 + Math.floor(16 * rand()), g: 14 + Math.floor(20 * rand()), b: 26 + Math.floor(22 * rand()) };
     const base3 = { r: 6 + Math.floor(12 * rand()),  g: 8 + Math.floor(14 * rand()),  b: 14 + Math.floor(18 * rand()) };
 
     document.body.style.setProperty("--g1", rgba(r1,g1,b1,0.12));
     document.body.style.setProperty("--g2", rgba(r2,g2,b2,0.08));
+    document.body.style.setProperty("--g3", rgba(r3,g3,b3,a3));
+    document.body.style.setProperty("--g3x", g3x + "%");
+    document.body.style.setProperty("--g3y", g3y + "%");
+
     document.body.style.setProperty("--bgA", hexFromRGB(base1.r, base1.g, base1.b));
     document.body.style.setProperty("--bgB", hexFromRGB(base2.r, base2.g, base2.b));
     document.body.style.setProperty("--bgC", hexFromRGB(base3.r, base3.g, base3.b));
@@ -349,12 +368,8 @@
     main.appendChild(top);
     main.appendChild(el("h3", "paper-gist", p.gist || ""));
     main.appendChild(el("p", "paper-title", p.title || ""));
-
-    const authorsLine = [p.firstAuthor, "et al.", "—", p.group].filter(Boolean).join(" ");
-    main.appendChild(el("p", "paper-authors", authorsLine));
-
-    const affilLine = [p.institution, p.country].filter(Boolean).join(", ");
-    if (affilLine) main.appendChild(el("p", "paper-affil", affilLine));
+    main.appendChild(el("p", "paper-authors", (p.byline || "") + " et al."));
+    main.appendChild(el("p", "paper-affil", p.affiliation || ""));
 
     card.appendChild(main);
 
