@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>β-Ga₂O₃ Research Hub</title>
-    <link rel="icon" type="image/png" href="../../favicon1.png">
+    <title>Loading…</title>
+    <link id="page-favicon" rel="icon" type="image/png" href="../../favicon1.png">
 
     <style>
         /* ===== Dark Technical Gradient Background (NO IMAGES) ===== */
@@ -133,153 +133,181 @@
         a.back-link:hover {
             text-decoration: underline;
         }
+
+        /* Optional: keep “Coming soon” clickable behavior off, without changing style much */
+        a.topic-link.disabled {
+            opacity: 0.75;
+            pointer-events: none;
+            cursor: default;
+            text-decoration: none;
+        }
+
+        /* Small error box if JSON fails */
+        .load-error {
+            background: rgba(255, 80, 80, 0.12);
+            border: 1px solid rgba(255, 80, 80, 0.25);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>β-Ga₂O₃ Research Hub</h1>
-    <p>Central index for β-Ga₂O₃ device, material, and physics research.</p>
+    <h1 id="page-title">β-Ga₂O₃ Research Hub</h1>
+    <p id="page-subtitle">Loading…</p>
 </header>
 
-<div class="container">
-
-    <!-- ======================= -->
-    <!-- Research Topics Section -->
-    <!-- ======================= -->
-    <div class="section">
-        <h2>β-Ga₂O₃ Research Topics</h2>
-        <p>Focused pages with logs, paper lists, and detailed notes.</p>
-
-        <div class="scroll-row">
-
-            <div class="hub-card">
-                <div class="hub-card-title">Mobilities</div>
-                <p class="hub-card-desc">Hall mobility, drift mobility, epitaxy dependence.</p>
-                <a class="topic-link" href="mobility-si/log-page.html">Open</a>
-            </div>
-
-            <div class="hub-card">
-                <div class="hub-card-title">Etching & Patterning</div>
-                <p class="hub-card-desc">ICP-RIE chemistries, LPCVD etching, damage studies.</p>
-                <a class="topic-link" href="#">Coming soon</a>
-            </div>
-
-            <div class="hub-card">
-                <div class="hub-card-title">Breakdown Engineering</div>
-                <p class="hub-card-desc">JTEs, field plates, BV scaling.</p>
-                <a class="topic-link" href="#">Coming soon</a>
-            </div>
-
-            <div class="hub-card">
-                <div class="hub-card-title">Defects & Irradiation</div>
-                <p class="hub-card-desc">DLTS, Raman, neutron/gamma studies.</p>
-                <a class="topic-link" href="#">Coming soon</a>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- ======================= -->
-    <!-- Know Your Peers -->
-    <!-- ======================= -->
-    <div class="section">
-        <h2>Know Your Peers</h2>
-
-        <p class="section-quote">
-            “If I am walking with two other men, each of them will serve as my teacher.” —
-            <span style="font-style: normal;">Confucius</span>
-        </p>
-
-        <br>
-
-        <p class="section-subtitle">
-            Leading β-Ga₂O₃ materials and device research teams across the globe, whose work shapes our
-            understanding of ultrawide-bandgap electronics.
-        </p>
-
-        <div class="scroll-row">
-
-            <div class="hub-card group-card">
-                <div class="hub-card-title">Bhuiyan Group</div>
-                <p class="group-affiliation" style="font-weight:600;">
-                    University of Massachusetts Lowell
-                </p>
-                <p class="group-description">
-                    LPCVD-grown β-Ga₂O₃, device-oriented etching strategies, and high-mobility vertical SBDs.
-                </p>
-                <a class="topic-link" href="#">Group Page</a>
-            </div>
-
-            <div class="hub-card group-card">
-                <div class="hub-card-title">Zhao Labs</div>
-                <p class="group-affiliation" style="font-weight:600;">
-                    The Ohio State University
-                </p>
-                <p class="group-description">
-                    MOCVD β-Ga₂O₃ epitaxy, defect engineering, and mobility optimization in thin films.
-                </p>
-                <a class="topic-link" href="#">Group Page</a>
-            </div>
-
-            <div class="hub-card group-card">
-                <div class="hub-card-title">Krishnamoorthy Group</div>
-                <p class="group-affiliation" style="font-weight:600;">
-                    University of California, Santa Barbara (UCSB)
-                </p>
-                <p class="group-description">
-                    β-Ga₂O₃ device physics, breakdown engineering, and field-management strategies for power devices.
-                </p>
-                <a class="topic-link" href="#">Group Page</a>
-            </div>
-
-            <div class="hub-card group-card">
-                <div class="hub-card-title">Pearton Group</div>
-                <p class="group-affiliation" style="font-weight:600;">
-                    University of Florida (UF)
-                </p>
-                <p class="group-description">
-                    Defect spectroscopy, etching, and reliability studies in β-Ga₂O₃ and related UWBG materials.
-                </p>
-                <a class="topic-link" href="#">Group Page</a>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- ======================= -->
-    <!-- Other Research Hubs -->
-    <!-- ======================= -->
-    <div class="section">
-        <h2>Other Research Hubs</h2>
-        <p>Explore related semiconductor fields.</p>
-
-        <div class="scroll-row">
-
-            <div class="hub-card">
-                <div class="hub-card-title">GaN & AlGaN</div>
-                <p class="hub-card-desc">Polarization engineering, HEMTs.</p>
-                <a class="topic-link" href="#">Open Hub</a>
-            </div>
-
-            <div class="hub-card">
-                <div class="hub-card-title">Power Devices</div>
-                <p class="hub-card-desc">Vertical devices, drift engineering.</p>
-                <a class="topic-link" href="#">Open Hub</a>
-            </div>
-
-            <div class="hub-card">
-                <div class="hub-card-title">Growth Systems</div>
-                <p class="hub-card-desc">MBE / MOCVD / LPCVD / HVPE.</p>
-                <a class="topic-link" href="#">Open Hub</a>
-            </div>
-
-        </div>
-    </div>
-
-    <a class="back-link" href="../../index.html">← Back to Portfolio</a>
-
+<div class="container" id="content-root">
+    <!-- Sections injected here -->
+    <a class="back-link" id="back-link" href="../../index.html">← Back</a>
 </div>
+
+<script>
+/**
+ * Template page loader:
+ * - All text + links live in hub-page.json
+ * - This file renders the UI from that JSON
+ */
+
+function el(tag, className, text) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined && text !== null) node.textContent = text;
+    return node;
+}
+
+function makeLink(href, text, className) {
+    const a = document.createElement("a");
+    a.className = className || "";
+    a.textContent = text || "Open";
+
+    if (!href || href === "#") {
+        a.href = "#";
+        a.classList.add("disabled");
+        return a;
+    }
+
+    a.href = href;
+    return a;
+}
+
+function renderSection(section) {
+    const wrap = el("div", "section");
+
+    // Title
+    if (section.title) wrap.appendChild(el("h2", "", section.title));
+
+    // Intro / subtitle / quote (order controlled by JSON fields)
+    if (section.intro) wrap.appendChild(el("p", "", section.intro));
+
+    if (section.quote && (section.quote.text || section.quote.author)) {
+        const q = el("p", "section-quote");
+        const qText = (section.quote.text || "").trim();
+        const author = (section.quote.author || "").trim();
+
+        // “Quote” — Author
+        const combined = author ? `${qText} — ` : qText;
+        q.textContent = combined;
+
+        if (author) {
+            const span = document.createElement("span");
+            span.style.fontStyle = "normal";
+            span.textContent = author;
+            q.appendChild(span);
+        }
+
+        wrap.appendChild(q);
+
+        // Optional extra spacing if requested
+        if (section.quote.addBreakAfter) wrap.appendChild(document.createElement("br"));
+    }
+
+    if (section.subtitle) wrap.appendChild(el("p", "section-subtitle", section.subtitle));
+
+    // Cards row
+    if (Array.isArray(section.cards) && section.cards.length > 0) {
+        const row = el("div", "scroll-row");
+
+        section.cards.forEach(card => {
+            const isGroup = !!card.affiliation || !!card.descriptionLong;
+            const cardEl = el("div", `hub-card${isGroup ? " group-card" : ""}`);
+
+            cardEl.appendChild(el("div", "hub-card-title", card.title || ""));
+
+            if (!isGroup) {
+                if (card.desc) cardEl.appendChild(el("p", "hub-card-desc", card.desc));
+            } else {
+                if (card.affiliation) {
+                    const aff = el("p", "group-affiliation", card.affiliation);
+                    aff.style.fontWeight = "600";
+                    cardEl.appendChild(aff);
+                }
+                const d = card.descriptionLong || card.desc;
+                if (d) cardEl.appendChild(el("p", "group-description", d));
+            }
+
+            const linkText = card.linkText || (card.href ? "Open" : "Coming soon");
+            cardEl.appendChild(makeLink(card.href, linkText, "topic-link"));
+
+            row.appendChild(cardEl);
+        });
+
+        wrap.appendChild(row);
+    }
+
+    return wrap;
+}
+
+async function loadHubPage() {
+    const root = document.getElementById("content-root");
+    const h1 = document.getElementById("page-title");
+    const subtitle = document.getElementById("page-subtitle");
+    const backLink = document.getElementById("back-link");
+    const favicon = document.getElementById("page-favicon");
+
+    try {
+        const res = await fetch("hub-page.json", { cache: "no-store" });
+        if (!res.ok) throw new Error(`Failed to fetch hub-page.json (HTTP ${res.status})`);
+
+        const data = await res.json();
+
+        // Meta
+        if (data.meta?.title) document.title = data.meta.title;
+        if (data.meta?.favicon) favicon.href = data.meta.favicon;
+
+        // Header
+        if (data.header?.h1) h1.textContent = data.header.h1;
+        if (data.header?.p) subtitle.textContent = data.header.p;
+
+        // Clear any existing injected sections but keep back link at end
+        // We'll remove everything except the back link, then re-append back link.
+        const savedBack = backLink;
+        root.innerHTML = "";
+        root.appendChild(savedBack);
+
+        // Sections
+        (data.sections || []).forEach(section => {
+            const node = renderSection(section);
+            root.insertBefore(node, savedBack);
+        });
+
+        // Back link
+        if (data.backLink?.text) savedBack.textContent = data.backLink.text;
+        if (data.backLink?.href) savedBack.href = data.backLink.href;
+
+    } catch (err) {
+        subtitle.textContent = "Could not load hub content.";
+        const errorBox = el("div", "load-error");
+        errorBox.appendChild(el("div", "", "Error loading hub-page.json:"));
+        errorBox.appendChild(el("div", "", String(err && err.message ? err.message : err)));
+        root.insertBefore(errorBox, backLink);
+    }
+}
+
+document.addEventListener("DOMContentLoaded", loadHubPage);
+</script>
 
 </body>
 </html>
