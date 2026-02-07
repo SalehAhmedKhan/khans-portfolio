@@ -1,15 +1,9 @@
 {
-  "meta": {
-    "title": "β-Ga₂O₃ Research Hub",
-    "favicon": "../../favicon1.png"
-  },
-  "header": {
-    "h1": "β-Ga₂O₃ Re{
   "title": "β-Ga₂O₃ Research Hub",
   "subtitle": "Central index for β-Ga₂O₃ device, material, and physics research.",
   "sections": [
     {
-      "title": "β-Ga₂O₃ Research Topics",
+      "title": "Research Topics",
       "intro": "Focused pages with logs, paper lists, and detailed notes.",
       "layout": "stack",
       "cards": [
@@ -83,107 +77,4 @@
       ]
     }
   ]
-}
-search Hub",
-    "p": "Central index for β-Ga₂O₃ device, material, and physics research."
-  },
-  "sections": [
-    {
-      "title": "β-Ga₂O₃ Research Topics",
-      "intro": "Focused pages with logs, paper lists, and detailed notes.",
-      "cards": [
-        {
-          "title": "Mobilities",
-          "desc": "Hall mobility, drift mobility, epitaxy dependence.",
-          "href": "mobility-si/log-page.html",
-          "linkText": "Open"
-        },
-        {
-          "title": "Etching & Patterning",
-          "desc": "ICP-RIE chemistries, LPCVD etching, damage studies.",
-          "href": "#",
-          "linkText": "Coming soon"
-        },
-        {
-          "title": "Breakdown Engineering",
-          "desc": "JTEs, field plates, BV scaling.",
-          "href": "#",
-          "linkText": "Coming soon"
-        },
-        {
-          "title": "Defects & Irradiation",
-          "desc": "DLTS, Raman, neutron/gamma studies.",
-          "href": "#",
-          "linkText": "Coming soon"
-        }
-      ]
-    },
-    {
-      "title": "Know Your Peers",
-      "quote": {
-        "text": "“If I am walking with two other men, each of them will serve as my teacher.”",
-        "author": "Confucius",
-        "addBreakAfter": true
-      },
-      "subtitle": "Leading β-Ga₂O₃ materials and device research teams across the globe, whose work shapes our understanding of ultrawide-bandgap electronics.",
-      "cards": [
-        {
-          "title": "Bhuiyan Group",
-          "affiliation": "University of Massachusetts Lowell",
-          "descriptionLong": "LPCVD-grown β-Ga₂O₃, device-oriented etching strategies, and high-mobility vertical SBDs.",
-          "href": "#",
-          "linkText": "Group Page"
-        },
-        {
-          "title": "Zhao Labs",
-          "affiliation": "The Ohio State University",
-          "descriptionLong": "MOCVD β-Ga₂O₃ epitaxy, defect engineering, and mobility optimization in thin films.",
-          "href": "#",
-          "linkText": "Group Page"
-        },
-        {
-          "title": "Krishnamoorthy Group",
-          "affiliation": "University of California, Santa Barbara (UCSB)",
-          "descriptionLong": "β-Ga₂O₃ device physics, breakdown engineering, and field-management strategies for power devices.",
-          "href": "#",
-          "linkText": "Group Page"
-        },
-        {
-          "title": "Pearton Group",
-          "affiliation": "University of Florida (UF)",
-          "descriptionLong": "Defect spectroscopy, etching, and reliability studies in β-Ga₂O₃ and related UWBG materials.",
-          "href": "#",
-          "linkText": "Group Page"
-        }
-      ]
-    },
-    {
-      "title": "Other Research Hubs",
-      "intro": "Explore related semiconductor fields.",
-      "cards": [
-        {
-          "title": "GaN & AlGaN",
-          "desc": "Polarization engineering, HEMTs.",
-          "href": "#",
-          "linkText": "Open Hub"
-        },
-        {
-          "title": "Power Devices",
-          "desc": "Vertical devices, drift engineering.",
-          "href": "#",
-          "linkText": "Open Hub"
-        },
-        {
-          "title": "Growth Systems",
-          "desc": "MBE / MOCVD / LPCVD / HVPE.",
-          "href": "#",
-          "linkText": "Open Hub"
-        }
-      ]
-    }
-  ],
-  "backLink": {
-    "text": "← Back to Portfolio",
-    "href": "../../index.html"
-  }
 }
