@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Loading…</title>
-    <link id="page-favicon" rel="icon" type="image/png" href="../../favicon1.png">
+
+    <!-- FAVICON (STATIC: NOT FROM JSON) -->
+    <link rel="icon" type="image/png" href="../../favicon1.png">
 
     <style>
         /* ===== Dark Technical Gradient Background (NO IMAGES) ===== */
@@ -57,9 +59,7 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.25);
         }
 
-        .section h2 {
-            margin-top: 0;
-        }
+        .section h2 { margin-top: 0; }
 
         .section-subtitle {
             margin: 0.25rem 0 0.5rem;
@@ -101,13 +101,8 @@
         }
 
         /* scroll cards need min-width; stacked cards should be full-width */
-        .scroll-row .hub-card {
-            min-width: 220px;
-        }
-
-        .stack-row .hub-card {
-            width: 100%;
-        }
+        .scroll-row .hub-card { min-width: 220px; }
+        .stack-row .hub-card { width: 100%; }
 
         .hub-card-title {
             margin: 0 0 0.4rem;
@@ -121,9 +116,7 @@
         }
 
         /* ===== Group Cards (NO LOGOS) ===== */
-        .group-card {
-            min-width: 260px;
-        }
+        .group-card { min-width: 260px; }
 
         .group-affiliation {
             margin: 0;
@@ -143,10 +136,7 @@
             font-weight: 600;
             text-decoration: none;
         }
-
-        a.topic-link:hover {
-            text-decoration: underline;
-        }
+        a.topic-link:hover { text-decoration: underline; }
 
         a.topic-link.disabled {
             opacity: 0.75;
@@ -155,7 +145,7 @@
             text-decoration: none;
         }
 
-        /* ===== Back Button (center, no arrow) ===== */
+        /* ===== Back Button (STATIC: NOT FROM JSON) ===== */
         .back-wrap {
             display: flex;
             justify-content: center;
@@ -201,6 +191,7 @@
 <div class="container" id="content-root">
     <!-- Sections injected here -->
 
+    <!-- BACK BUTTON (STATIC: NOT FROM JSON) -->
     <div class="back-wrap">
         <a class="back-btn" id="back-link" href="../../index.html">Back to my Portfolio</a>
     </div>
@@ -214,6 +205,7 @@
  * Layout rules:
  * - Section 0 (Research Topics) uses stacked cards (no horizontal scroll)
  * - Other sections remain horizontally scrollable
+ * NOTE: favicon + back button are STATIC and NOT controlled by JSON.
  */
 
 function el(tag, className, text) {
@@ -266,7 +258,6 @@ function renderSection(section, index) {
     if (section.subtitle) wrap.appendChild(el("p", "section-subtitle", section.subtitle));
 
     if (Array.isArray(section.cards) && section.cards.length > 0) {
-        // Only the FIRST section (Research Topics) is stacked; others scroll horizontally
         const row = el("div", index === 0 ? "stack-row" : "scroll-row");
 
         section.cards.forEach(card => {
@@ -304,7 +295,6 @@ async function loadHubPage() {
     const h1 = document.getElementById("page-title");
     const subtitle = document.getElementById("page-subtitle");
     const backLink = document.getElementById("back-link");
-    const favicon = document.getElementById("page-favicon");
 
     try {
         const res = await fetch("hub-page.json", { cache: "no-store" });
@@ -312,13 +302,12 @@ async function loadHubPage() {
 
         const data = await res.json();
 
+        // Only JSON-controlled header title/subtitle + page title
         if (data.meta?.title) document.title = data.meta.title;
-        if (data.meta?.favicon) favicon.href = data.meta.favicon;
-
         if (data.header?.h1) h1.textContent = data.header.h1;
         if (data.header?.p) subtitle.textContent = data.header.p;
 
-        // Keep the back button wrapper at the bottom
+        // Keep the back button wrapper at the bottom (STATIC)
         const backWrap = backLink.closest(".back-wrap");
         root.innerHTML = "";
         root.appendChild(backWrap);
@@ -328,11 +317,9 @@ async function loadHubPage() {
             root.insertBefore(node, backWrap);
         });
 
-        if (data.backLink?.text) backLink.textContent = data.backLink.text;
-        if (data.backLink?.href) backLink.href = data.backLink.href;
-
     } catch (err) {
         subtitle.textContent = "Could not load hub content.";
+
         const errorBox = el("div", "load-error");
         errorBox.appendChild(el("div", "", "Error loading hub-page.json:"));
         errorBox.appendChild(el("div", "", String(err && err.message ? err.message : err)));
