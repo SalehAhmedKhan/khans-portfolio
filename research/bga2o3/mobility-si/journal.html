@@ -27,6 +27,9 @@
             --lg1: #070a14;
             --lg2: #0b1228;
             --lg3: #070a14;
+
+            /* Used to align sidebar card top with first paper card top */
+            --sidebar-align-offset: 2.35rem;
         }
 
         * { box-sizing: border-box; }
@@ -56,7 +59,6 @@
 
         header.page-header { margin-bottom: 1.5rem; }
 
-        /* (1) Make this bigger */
         .topic-label {
             font-size: 0.92rem; /* was 0.75rem */
             letter-spacing: 0.12em;
@@ -78,7 +80,6 @@
             font-size: 0.95rem;
         }
 
-        /* (2) Back link -> button */
         .back-btn {
             display: inline-block;
             margin-top: 0.7rem;
@@ -124,6 +125,13 @@
             box-shadow: var(--shadow-soft);
             padding: 1rem 1rem 0.75rem;
             border: 1px solid var(--border);
+
+            /* Align top edge with first paper card top edge */
+            margin-top: var(--sidebar-align-offset);
+        }
+
+        @media (max-width: 900px) {
+            .sidebar-card { margin-top: 0; }
         }
 
         .sidebar-card h2 { font-size: 1rem; margin: 0 0 0.5rem; }
@@ -161,7 +169,6 @@
         }
 
         .section-header h2 { margin: 0; font-size: 1.15rem; }
-        /* (3) removed the extra span, so nothing else here */
 
         .paper-list {
             display: flex;
@@ -193,7 +200,7 @@
             flex-wrap: wrap;
             gap: 0.4rem 1rem;
             align-items: center;
-            margin-bottom: 0.3rem;
+            margin-bottom: 0.35rem;
         }
 
         .paper-date {
@@ -204,43 +211,41 @@
             font-weight: 600;
         }
 
+        /* Make line spacing consistent across blocks */
         .paper-gist {
-            margin: 0.15rem 0 0.2rem;
+            margin: 0.20rem 0 0.30rem;
             font-size: 1.02rem;
             font-weight: 600;
+            line-height: 1.25;
         }
 
         .paper-title {
-            margin: 0;
+            margin: 0 0 0.30rem;
             font-size: 0.9rem;
             color: var(--text-muted);
+            line-height: 1.35;
         }
 
-        /* (5) We'll render "First Author et. al. — Group" */
         .paper-authors {
-            margin-top: 0.25rem;
+            margin: 0 0 0.30rem;
             font-size: 0.83rem;
             color: var(--text-muted);
             line-height: 1.35;
         }
 
-        /* (6) normalize spacing + line height */
         .paper-affil {
-            margin-top: 0.25rem;
+            margin: 0 0 0.35rem;
             font-size: 0.83rem;
             color: var(--text-muted);
             line-height: 1.35;
         }
 
-        /* (8) link goes to bottom */
         .paper-footer {
-            margin-top: 0.7rem;
+            margin-top: 0.35rem;
             font-size: 0.88rem;
         }
 
-        .paper-footer a {
-            font-weight: 600;
-        }
+        .paper-footer a { font-weight: 600; }
 
         /* Tags (right aligned) */
         .paper-tags {
@@ -271,6 +276,9 @@
         .tag.method { background: #fef3c7; color: #92400e; }
         .tag.device { background: #ecfdf3; color: #166534; }
         .tag.other  { background: #f3e8ff; color: #6b21a8; }
+
+        /* Keyword 4 = light blue, same “soft pill” tone */
+        .tag.other-blue { background: #dbeafe; color: #1d4ed8; }
     </style>
 </head>
 
@@ -282,7 +290,6 @@
         <h1 class="topic-title" id="page-title"></h1>
         <p class="topic-subtitle" id="page-subtitle"></p>
 
-        <!-- (2) button, no arrow -->
         <a class="back-btn" href="../hub-page.html">Back to Research Hub</a>
     </header>
 
@@ -291,7 +298,6 @@
         <main>
             <div class="section-header">
                 <h2>Paper log</h2>
-                <!-- (3) removed span text entirely -->
             </div>
 
             <div class="paper-list" id="paper-list"></div>
@@ -368,14 +374,10 @@ function el(tag, className, text){
   if(text !== undefined && text !== null) n.textContent = text;
   return n;
 }
-function safeText(s){
-  return String(s || "").replace(/</g,"&lt;").replace(/>/g,"&gt;");
-}
 
-/* (7) Format ISO date -> "01 February 2025" */
+/* Format ISO date -> "01 February 2025" */
 function formatFullDate(iso){
   if(!iso) return "";
-  // Expecting YYYY-MM-DD (or at least YYYY-MM)
   const parts = String(iso).split("-");
   const y = Number(parts[0]);
   const m = Number(parts[1] || 1);
@@ -390,7 +392,7 @@ function formatFullDate(iso){
   return `${day} ${monthName} ${year}`;
 }
 
-/* (4) Sort using real Date objects (newest first) */
+/* Sort using real Date objects (newest first) */
 function toSortableTime(iso){
   if(!iso) return -Infinity;
   const parts = String(iso).split("-");
@@ -401,7 +403,7 @@ function toSortableTime(iso){
   return isNaN(t) ? -Infinity : t;
 }
 
-/* (5) Build "First Author et. al. — Group" from byline "X — Group" */
+/* Build "First Author et. al. — Group" from byline "X — Group" */
 function formatByline(byline){
   const raw = String(byline || "");
   const parts = raw.split("—");
@@ -415,14 +417,14 @@ function formatByline(byline){
 function classifyKeyword(idx){
   if(idx === 0) return "method";
   if(idx === 1) return "device";
-  return "other";
+  if(idx === 2) return "other";
+  return "other-blue"; /* keyword 4 */
 }
 
 function renderPaperCard(p){
   const card = el("article", "paper-card");
   const main = el("div", "paper-main");
 
-  // Top: date only (formatted)
   const top = el("div", "paper-top-row");
   top.appendChild(el("span", "paper-date", formatFullDate(p.publishedDate)));
   main.appendChild(top);
@@ -437,13 +439,12 @@ function renderPaperCard(p){
 
   if(p.affiliation) main.appendChild(el("p", "paper-affil", p.affiliation));
 
-  // (8) Link moved to bottom + renamed
   const footer = el("div", "paper-footer");
   const a = document.createElement("a");
   a.href = p.link || "#";
   a.target = "_blank";
   a.rel = "noopener";
-  a.textContent = "Open journal page";
+  a.textContent = "Journal Link";
   footer.appendChild(a);
   main.appendChild(footer);
 
@@ -482,13 +483,11 @@ async function load(){
     titleEl.textContent = data.title || "";
     subtitleEl.textContent = data.intro || "";
 
-    // (4) Sort newest first automatically
     const entries = (data.entries || []).slice().sort((a,b) => toSortableTime(b.publishedDate) - toSortableTime(a.publishedDate));
 
     listEl.innerHTML = "";
     entries.forEach(p => listEl.appendChild(renderPaperCard(p)));
 
-    // Update log as-is (assumes JSON has real date for first entry)
     logEl.innerHTML = "";
     (data.updateLog || []).forEach((u, idx) => logEl.appendChild(renderLogItem(u, idx === 0)));
 
