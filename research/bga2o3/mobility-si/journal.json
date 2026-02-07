@@ -1,6 +1,6 @@
 {
   "title": "β-Ga₂O₃ Journal Notes",
-  "intro": "Curated journal entries with quick metadata, keywords, and links for fast retrieval.",
+  "intro": "Curated notes on experimental mobility benchmarks in β-Ga₂O₃ thin films and devices.",
   "entries": [
     {
       "publishedDate": "2025-01-01",
@@ -32,7 +32,7 @@
   ],
   "updateLog": [
     {
-      "date": "2025-02-07",
+      "date": "Today",
       "text": "Page initialized with first 3 benchmark papers."
     },
     {
