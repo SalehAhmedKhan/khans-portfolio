@@ -10,16 +10,23 @@
     <link rel="icon" type="image/png" href="../../favicon1.png">
 
     <style>
-        /* ===== Dark Technical Gradient Background (NO IMAGES) ===== */
+        /* ===== Dark Technical Gradient Background (VARIES BY JSON TITLE) ===== */
         body {
             margin: 0;
             font-family: Arial, Helvetica, sans-serif;
             color: #f5f5f5;
 
+            /* Defaults (will be overridden by JS after JSON loads) */
+            --g1: rgba(80,120,255,0.12);
+            --g2: rgba(0,200,180,0.08);
+            --bgA: #0b0f1a;
+            --bgB: #111827;
+            --bgC: #0a0e17;
+
             background:
-                radial-gradient(circle at 20% 20%, rgba(80,120,255,0.12), transparent 40%),
-                radial-gradient(circle at 80% 30%, rgba(0,200,180,0.08), transparent 45%),
-                linear-gradient(135deg, #0b0f1a, #111827 60%, #0a0e17);
+                radial-gradient(circle at 20% 20%, var(--g1), transparent 40%),
+                radial-gradient(circle at 80% 30%, var(--g2), transparent 45%),
+                linear-gradient(135deg, var(--bgA), var(--bgB) 60%, var(--bgC));
             background-attachment: fixed;
         }
 
@@ -74,7 +81,7 @@
             opacity: 0.9;
         }
 
-        /* ===== Scroll Row (for scroll sections) ===== */
+        /* ===== Scroll Row (for sections 2 & 3) ===== */
         .scroll-row {
             display: flex;
             overflow-x: auto;
@@ -82,15 +89,14 @@
             padding-bottom: 0.5rem;
         }
 
-        /* ===== Responsive Grid (for stack/grid sections like Research Topics) ===== */
+        /* ===== Responsive Grid (for section 1: Research Topics) ===== */
         .grid-row {
             display: grid;
             gap: 1rem;
-            /* 3 columns when space allows, automatically wraps down */
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
         }
 
-        /* Force “prefer 3 columns” behavior on wide screens */
+        /* Prefer exactly 3 columns on wide screens */
         @media (min-width: 900px) {
             .grid-row {
                 grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -107,7 +113,6 @@
             color: #fff;
             box-sizing: border-box;
 
-            /* clickable feel */
             display: block;
             text-decoration: none;
             transition: transform 0.12s ease, border-color 0.12s ease, background 0.12s ease;
@@ -117,17 +122,6 @@
             transform: translateY(-2px);
             border-color: rgba(159, 201, 255, 0.42);
             background: rgba(255, 255, 255, 0.18);
-        }
-
-        /* “disabled” cards when no href */
-        .hub-card.disabled {
-            cursor: default;
-            opacity: 0.78;
-        }
-        .hub-card.disabled:hover {
-            transform: none;
-            border-color: rgba(255,255,255,0.2);
-            background: rgba(255, 255, 255, 0.15);
         }
 
         /* scroll cards need min-width */
@@ -217,7 +211,7 @@
 
 <script>
 /**
- * JSON format expected (simple):
+ * JSON format expected:
  * {
  *   "title": "...",
  *   "subtitle": "...",
@@ -225,7 +219,6 @@
  *     {
  *       "title": "...",
  *       "intro": "...",
- *       "layout": "grid" | "scroll" | "stack",
  *       "quote": {"text":"...", "author":"..."},
  *       "cards": [
  *          {"title":"...", "desc":"...", "href":"..."},
@@ -237,8 +230,9 @@
  *
  * NOTES:
  * - favicon + back button are STATIC and NOT controlled by JSON.
- * - cards are fully clickable (entire card is the link).
- * - if card.href is missing, card renders as non-clickable (disabled).
+ * - layout is generic: section 0 = grid (3-column responsive), sections 1+ = scroll.
+ * - every card is clickable (entire card is the link).
+ * - background gradient varies deterministically from data.title.
  */
 
 function el(tag, className, text) {
@@ -248,19 +242,80 @@ function el(tag, className, text) {
     return node;
 }
 
+function hash32(str) {
+    // FNV-1a 32-bit hash
+    let h = 0x811c9dc5;
+    for (let i = 0; i < str.length; i++) {
+        h ^= str.charCodeAt(i);
+        h = Math.imul(h, 0x01000193);
+    }
+    return h >>> 0;
+}
+
+function mulberry32(seed) {
+    let t = seed >>> 0;
+    return function() {
+        t += 0x6D2B79F5;
+        let x = Math.imul(t ^ (t >>> 15), 1 | t);
+        x ^= x + Math.imul(x ^ (x >>> 7), 61 | x);
+        return ((x ^ (x >>> 14)) >>> 0) / 4294967296;
+    };
+}
+
+function clamp(v, min, max) {
+    return Math.max(min, Math.min(max, v));
+}
+
+function rgba(r, g, b, a) {
+    return `rgba(${r|0},${g|0},${b|0},${a})`;
+}
+
+function hexFromRGB(r, g, b) {
+    const toHex = (n) => n.toString(16).padStart(2, "0");
+    return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+}
+
+function applySeededBackgroundFromTitle(title) {
+    const seed = hash32(title || "Research Hub");
+    const rand = mulberry32(seed);
+
+    // Pick two accent “glow” colors (dark red/green/blue variations) but keep it subtle
+    const hueA = Math.floor(rand() * 360);
+    const hueB = (hueA + 90 + Math.floor(rand() * 90)) % 360;
+
+    // Convert hue-ish to RGB-ish (quick, controlled palette)
+    // We use pre-shaped channels to keep it dark + technical.
+    const r1 = clamp(40 + Math.floor(120 * rand()), 40, 170);
+    const g1 = clamp(40 + Math.floor(120 * rand()), 40, 170);
+    const b1 = clamp(40 + Math.floor(120 * rand()), 40, 180);
+
+    const r2 = clamp(30 + Math.floor(140 * rand()), 30, 180);
+    const g2 = clamp(30 + Math.floor(140 * rand()), 30, 190);
+    const b2 = clamp(30 + Math.floor(140 * rand()), 30, 190);
+
+    // Base dark gradient anchors
+    const base1 = { r: 8 + Math.floor(10 * rand()),  g: 10 + Math.floor(14 * rand()), b: 18 + Math.floor(16 * rand()) };
+    const base2 = { r: 12 + Math.floor(14 * rand()), g: 16 + Math.floor(18 * rand()), b: 28 + Math.floor(20 * rand()) };
+    const base3 = { r: 7 + Math.floor(10 * rand()),  g: 9 + Math.floor(12 * rand()),  b: 16 + Math.floor(14 * rand()) };
+
+    document.body.style.setProperty("--g1", rgba(r1, g1, b1, 0.12));
+    document.body.style.setProperty("--g2", rgba(r2, g2, b2, 0.08));
+    document.body.style.setProperty("--bgA", hexFromRGB(base1.r, base1.g, base1.b));
+    document.body.style.setProperty("--bgB", hexFromRGB(base2.r, base2.g, base2.b));
+    document.body.style.setProperty("--bgC", hexFromRGB(base3.r, base3.g, base3.b));
+}
+
 function makeCard(card) {
     const isGroup = !!card.affiliation;
 
-    const clickable = !!(card.href && card.href !== "#");
-    const a = document.createElement(clickable ? "a" : "div");
-    a.className = `hub-card${isGroup ? " group-card" : ""}${clickable ? "" : " disabled"}`;
+    // Always clickable; JSON guarantees href exists, but we still fallback safely.
+    const href = card.href || "#";
 
-    if (clickable) {
-        a.href = card.href;
-    }
+    const a = document.createElement("a");
+    a.className = `hub-card${isGroup ? " group-card" : ""}`;
+    a.href = href;
 
-    const title = el("div", "hub-card-title", card.title || "");
-    a.appendChild(title);
+    a.appendChild(el("div", "hub-card-title", card.title || ""));
 
     if (isGroup) {
         if (card.affiliation) a.appendChild(el("p", "group-affiliation", card.affiliation));
@@ -272,12 +327,11 @@ function makeCard(card) {
     return a;
 }
 
-function renderSection(section) {
+function renderSection(section, index) {
     const wrap = el("div", "section");
 
     if (section.title) wrap.appendChild(el("h2", "", section.title));
 
-    // Quote (optional)
     if (section.quote && (section.quote.text || section.quote.author)) {
         const q = el("p", "section-quote");
         const qText = (section.quote.text || "").trim();
@@ -297,18 +351,10 @@ function renderSection(section) {
 
     if (section.intro) wrap.appendChild(el("p", "section-intro", section.intro));
 
-    // Layout selection
-    const layout = (section.layout || "").toLowerCase();
-
-    let row;
-    if (layout === "scroll") row = el("div", "scroll-row");
-    else if (layout === "stack") row = el("div", "stack-row"); // stack-row not defined now; fall back to grid feel
-    else row = el("div", "grid-row"); // default grid
-
-    // For true "stack", we can just use grid-row with 1 column, but you asked for 3-column grid for topics.
-    // Your JSON sets topics to layout "stack" earlier — change to "grid" or keep it and we treat it as grid.
-    // We'll treat "stack" as grid too, unless you later want literal 1-column.
-    if (layout === "stack") row.className = "grid-row";
+    // Generic layout rule (no JSON layout fields):
+    // - section 0: grid (3-column responsive)
+    // - section 1+: scroll (horizontal)
+    const row = el("div", index === 0 ? "grid-row" : "scroll-row");
 
     (section.cards || []).forEach(card => row.appendChild(makeCard(card)));
     wrap.appendChild(row);
@@ -328,6 +374,9 @@ async function loadHubPage() {
 
         const data = await res.json();
 
+        // Apply seeded background variation from title
+        applySeededBackgroundFromTitle(data.title || "Research Hub");
+
         // Header + document title
         if (data.title) {
             document.title = data.title;
@@ -343,8 +392,8 @@ async function loadHubPage() {
         root.innerHTML = "";
         root.appendChild(backWrap);
 
-        (data.sections || []).forEach(section => {
-            const node = renderSection(section);
+        (data.sections || []).forEach((section, i) => {
+            const node = renderSection(section, i);
             root.insertBefore(node, backWrap);
         });
 
