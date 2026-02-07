@@ -81,7 +81,7 @@
             opacity: 0.9;
         }
 
-        /* ===== Scroll Row (for sections 2 & 3) ===== */
+        /* ===== Scroll Row (for sections 1+ except first) ===== */
         .scroll-row {
             display: flex;
             overflow-x: auto;
@@ -89,7 +89,7 @@
             padding-bottom: 0.5rem;
         }
 
-        /* ===== Responsive Grid (for section 1: Research Topics) ===== */
+        /* ===== Responsive Grid (for section 0: Research Topics) ===== */
         .grid-row {
             display: grid;
             gap: 1rem;
@@ -219,7 +219,6 @@
  *     {
  *       "title": "...",
  *       "intro": "...",
- *       "quote": {"text":"...", "author":"..."},
  *       "cards": [
  *          {"title":"...", "desc":"...", "href":"..."},
  *          {"title":"...", "affiliation":"...", "desc":"...", "href":"..."}
@@ -233,7 +232,11 @@
  * - layout is generic: section 0 = grid (3-column responsive), sections 1+ = scroll.
  * - every card is clickable (entire card is the link).
  * - background gradient varies deterministically from data.title.
+ * - Confucius quote is STATIC in HTML (not in JSON).
  */
+
+const STATIC_QUOTE_TEXT = "“If I am walking with two other men, each of them will serve as my teacher.”";
+const STATIC_QUOTE_AUTHOR = "Confucius";
 
 function el(tag, className, text) {
     const node = document.createElement(tag);
@@ -279,12 +282,6 @@ function applySeededBackgroundFromTitle(title) {
     const seed = hash32(title || "Research Hub");
     const rand = mulberry32(seed);
 
-    // Pick two accent “glow” colors (dark red/green/blue variations) but keep it subtle
-    const hueA = Math.floor(rand() * 360);
-    const hueB = (hueA + 90 + Math.floor(rand() * 90)) % 360;
-
-    // Convert hue-ish to RGB-ish (quick, controlled palette)
-    // We use pre-shaped channels to keep it dark + technical.
     const r1 = clamp(40 + Math.floor(120 * rand()), 40, 170);
     const g1 = clamp(40 + Math.floor(120 * rand()), 40, 170);
     const b1 = clamp(40 + Math.floor(120 * rand()), 40, 180);
@@ -293,7 +290,6 @@ function applySeededBackgroundFromTitle(title) {
     const g2 = clamp(30 + Math.floor(140 * rand()), 30, 190);
     const b2 = clamp(30 + Math.floor(140 * rand()), 30, 190);
 
-    // Base dark gradient anchors
     const base1 = { r: 8 + Math.floor(10 * rand()),  g: 10 + Math.floor(14 * rand()), b: 18 + Math.floor(16 * rand()) };
     const base2 = { r: 12 + Math.floor(14 * rand()), g: 16 + Math.floor(18 * rand()), b: 28 + Math.floor(20 * rand()) };
     const base3 = { r: 7 + Math.floor(10 * rand()),  g: 9 + Math.floor(12 * rand()),  b: 16 + Math.floor(14 * rand()) };
@@ -307,8 +303,6 @@ function applySeededBackgroundFromTitle(title) {
 
 function makeCard(card) {
     const isGroup = !!card.affiliation;
-
-    // Always clickable; JSON guarantees href exists, but we still fallback safely.
     const href = card.href || "#";
 
     const a = document.createElement("a");
@@ -332,19 +326,14 @@ function renderSection(section, index) {
 
     if (section.title) wrap.appendChild(el("h2", "", section.title));
 
-    if (section.quote && (section.quote.text || section.quote.author)) {
+    // STATIC Confucius quote only for "Know Your Peers" section (index 2 in current JSON)
+    if (index === 2) {
         const q = el("p", "section-quote");
-        const qText = (section.quote.text || "").trim();
-        const author = (section.quote.author || "").trim();
-
-        q.textContent = author ? `${qText} — ` : qText;
-
-        if (author) {
-            const span = document.createElement("span");
-            span.style.fontStyle = "normal";
-            span.textContent = author;
-            q.appendChild(span);
-        }
+        q.textContent = `${STATIC_QUOTE_TEXT} — `;
+        const span = document.createElement("span");
+        span.style.fontStyle = "normal";
+        span.textContent = STATIC_QUOTE_AUTHOR;
+        q.appendChild(span);
         wrap.appendChild(q);
         wrap.appendChild(document.createElement("br"));
     }
@@ -374,10 +363,8 @@ async function loadHubPage() {
 
         const data = await res.json();
 
-        // Apply seeded background variation from title
         applySeededBackgroundFromTitle(data.title || "Research Hub");
 
-        // Header + document title
         if (data.title) {
             document.title = data.title;
             h1.textContent = data.title;
