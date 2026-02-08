@@ -44,7 +44,14 @@
       display:flex; align-items:center; justify-content:space-between;
       margin:0 0 10px;
     }
-    .panel-title h2{ margin:0; font-size:14px; color:var(--muted); font-weight:700; letter-spacing:.4px; text-transform:uppercase; }
+    .panel-title h2{
+      margin:0;
+      font-size:14px;
+      color:var(--muted);
+      font-weight:700;
+      letter-spacing:.4px;
+      text-transform:uppercase;
+    }
     .pill{
       font-size:12px; color:var(--muted);
       border:1px solid var(--border);
@@ -149,6 +156,31 @@
       margin-top:10px;
       line-height:1.35;
     }
+
+    /* lattice block */
+    .lattice{
+      margin-top:14px;
+      padding:12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.12);
+    }
+    .lattice-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:8px 12px;
+      margin-top:8px;
+      font-size:13px;
+      color:var(--muted);
+    }
+    .lattice-grid b{ color:var(--text); font-weight:800; }
+    .lattice-line{
+      grid-column: 1 / -1;
+      color:var(--muted);
+      font-size:12px;
+      margin-top:2px;
+      line-height:1.35;
+    }
   </style>
 </head>
 
@@ -170,7 +202,6 @@
 
         <div class="panel-title" style="margin-top:14px;">
           <h2>Material</h2>
-          <span class="pill" id="matPill">—</span>
         </div>
 
         <label for="materialSel">Select material</label>
@@ -187,6 +218,21 @@
           <div>
             <label for="xmax">2θ max</label>
             <input id="xmax" type="number" step="0.1" value="100" />
+          </div>
+        </div>
+
+        <!-- Lattice spacings block (from JSON) -->
+        <div class="lattice" id="latticeBox">
+          <div class="panel-title" style="margin:0;">
+            <h2>Lattice Spacings</h2>
+            <span class="pill" id="latticeUnits">Å / °</span>
+          </div>
+
+          <div class="lattice-grid" id="latticeGrid">
+            <div><b>a</b>: —</div><div><b>α</b>: —</div>
+            <div><b>b</b>: —</div><div><b>β</b>: —</div>
+            <div><b>c</b>: —</div><div><b>γ</b>: —</div>
+            <div class="lattice-line" id="latticeNote"></div>
           </div>
         </div>
 
@@ -228,9 +274,8 @@
         <table id="peakTable">
           <thead>
             <tr>
-              <th>2θ (deg)</th>
-              <th>(hkl)</th>
-              <th>Notes</th>
+              <th>2θ (degrees)</th>
+              <th>Miller indices (hkl)</th>
             </tr>
           </thead>
           <tbody></tbody>
@@ -252,7 +297,7 @@ const XRAY_SOURCES_ALL = [
   { id:"mo_ka", label:"Mo Kα", file:"xrd_peaks_mo_ka.json" },
   { id:"cr_ka", label:"Cr Kα", file:"xrd_peaks_cr_ka.json" },
   { id:"fe_ka", label:"Fe Kα", file:"xrd_peaks_fe_ka.json" },
-  { id:"ag_ka", label:"Ag Kα", file:"xrd_peaks_ag_ka.json" } // optional if you add it
+  { id:"ag_ka", label:"Ag Kα", file:"xrd_peaks_ag_ka.json" }
 ];
 
 let XRAY_SOURCES = []; // filtered to only existing files
@@ -264,7 +309,6 @@ const els = {
   xrayPill:    document.getElementById('xrayPill'),
   materialSel: document.getElementById('materialSel'),
   orientSel:   document.getElementById('orientSel'),
-  matPill:     document.getElementById('matPill'),
   xmin:        document.getElementById('xmin'),
   xmax:        document.getElementById('xmax'),
   plot:        document.getElementById('plot'),
@@ -277,7 +321,10 @@ const els = {
   prevLit:     document.getElementById('prevLit'),
   nextLit:     document.getElementById('nextLit'),
   litIdx:      document.getElementById('litIdx'),
-  loadWarn:    document.getElementById('loadWarn')
+  loadWarn:    document.getElementById('loadWarn'),
+  latticeGrid: document.getElementById('latticeGrid'),
+  latticeNote: document.getElementById('latticeNote'),
+  latticeUnits: document.getElementById('latticeUnits')
 };
 
 function clamp(v, a, b){ return Math.max(a, Math.min(b, v)); }
@@ -317,8 +364,29 @@ function setXrayPill(){
   els.xrayPill.textContent = wl ? `λ: ${wl} Å${label ? " ("+label+")" : ""}` : `λ: —`;
 }
 
-function setMaterialPill(mat){
-  els.matPill.textContent = mat.phase ? `Phase: ${mat.phase}` : "—";
+/* Lattice spacings (expects something like:
+   material.lattice = { a:..., b:..., c:..., alpha:..., beta:..., gamma:..., note:"..." }
+   If missing, shows dashes.
+*/
+function renderLattice(mat){
+  const L = mat.lattice || {};
+  const a = (L.a ?? "—");
+  const b = (L.b ?? "—");
+  const c = (L.c ?? "—");
+  const alpha = (L.alpha ?? "—");
+  const beta  = (L.beta  ?? "—");
+  const gamma = (L.gamma ?? "—");
+
+  els.latticeGrid.innerHTML = `
+    <div><b>a</b>: ${a}</div><div><b>α</b>: ${alpha}</div>
+    <div><b>b</b>: ${b}</div><div><b>β</b>: ${beta}</div>
+    <div><b>c</b>: ${c}</div><div><b>γ</b>: ${gamma}</div>
+    <div class="lattice-line" id="latticeNote"></div>
+  `;
+
+  // rebind latticeNote element after innerHTML replace
+  els.latticeNote = document.getElementById('latticeNote');
+  els.latticeNote.textContent = (L.note || "");
 }
 
 function rebuildMaterialDropdown(){
@@ -343,22 +411,14 @@ function renderLiteraturePanel(orient){
   const entry = lit[currentLitIndex];
 
   els.litIdx.textContent = `${currentLitIndex + 1} / ${lit.length}`;
-  els.litTitle.textContent = entry.title || "Literature entry";
 
-  const parts = [];
-  if (entry.authors) parts.push(entry.authors);
-  if (entry.journal) parts.push(entry.journal);
-  if (entry.year) parts.push(entry.year);
-  if (entry.doi) parts.push(`DOI: ${entry.doi}`);
+  // Keep the title (short), but remove all extra metadata; only a clickable link.
+  els.litTitle.textContent = entry.title || "Reference";
 
-  const url = entry.url;
-  const metaText = parts.filter(Boolean).join(" • ");
-
-  if (url){
-    const safe = `${metaText}${metaText ? " • " : ""}Link: <a href="${url}" target="_blank" rel="noopener">open</a>`;
-    els.litMeta.innerHTML = safe + (entry.notes ? `<br>${entry.notes}` : "");
+  if (entry.url){
+    els.litMeta.innerHTML = `Reference: <a href="${entry.url}" target="_blank" rel="noopener">open</a>`;
   } else {
-    els.litMeta.textContent = metaText + (entry.notes ? `\n${entry.notes}` : "");
+    els.litMeta.textContent = "Reference: —";
   }
 
   els.prevLit.disabled = (lit.length <= 1);
@@ -374,7 +434,6 @@ function renderTable(orient){
     tr.innerHTML = `
       <td>${Number(p.twoTheta).toFixed(2)}</td>
       <td>${p.hkl || ""}</td>
-      <td>${p.note || ""}</td>
     `;
     tr.addEventListener('mouseenter', () => drawPlot(orient, p.twoTheta));
     tr.addEventListener('mouseleave', () => drawPlot(orient, null));
@@ -500,10 +559,11 @@ function drawPlot(orient, highlightTwoTheta=null){
 
 function rerenderAll(){
   if (!DB) return;
+
   setXrayPill();
 
   const mat = getSelectedMaterial();
-  setMaterialPill(mat);
+  renderLattice(mat);
 
   const orient = getSelectedOrientation(mat);
   renderLiteraturePanel(orient);
@@ -557,14 +617,10 @@ function wireUI(){
 
 /* Check if a JSON file exists; if HEAD isn't supported, fall back to a tiny GET */
 async function fileExists(file){
-  // Try HEAD first
   try{
     const head = await fetch(`./${file}`, { method: "HEAD", cache: "no-store" });
-    if (head.ok) return true;
-    // If server responds but not OK, treat as missing
-    return false;
+    return head.ok;
   } catch {
-    // Fall back to GET (some static hosts disallow HEAD or local servers behave differently)
     try{
       const res = await fetch(`./${file}`, { method: "GET", cache: "no-store" });
       return res.ok;
@@ -575,7 +631,6 @@ async function fileExists(file){
 }
 
 async function populateSourceDropdown(){
-  // Filter to only sources whose JSON actually exists
   const checks = await Promise.all(
     XRAY_SOURCES_ALL.map(async s => ({ ...s, exists: await fileExists(s.file) }))
   );
@@ -593,7 +648,6 @@ async function populateSourceDropdown(){
     .map(s => `<option value="${s.id}">${s.label}</option>`)
     .join("");
 
-  // Prefer default (Cu Kα) if present, else first available
   const def = XRAY_SOURCES.find(s => s.default) || XRAY_SOURCES[0];
   els.sourceSel.value = def.id;
   return def;
