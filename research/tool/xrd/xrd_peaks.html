@@ -290,7 +290,7 @@ function wire(){
 
 async function init(){
   try{
-    const res = await fetch("./peaks.json", { cache: "no-store" });
+    const res = await fetch("./xrd_peaks.json", { cache: "no-store" });
     DB = await res.json();
 
     // Populate dropdown
