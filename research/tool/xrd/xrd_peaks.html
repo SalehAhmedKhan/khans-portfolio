@@ -64,7 +64,7 @@
 
     label{ display:block; font-size:13px; color:var(--muted); margin:10px 0 6px; }
 
-    /* cleaner dropdown/input */
+    /* clean dropdown/input */
     select, input{
       width:100%;
       padding:11px 40px 11px 12px;
@@ -134,6 +134,26 @@
       line-height:1.35;
     }
     .refbar .left b{ color:var(--text); font-weight:800; }
+
+    .pager{
+      display:flex; gap:8px; align-items:center;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:999px;
+      padding:6px 10px;
+      background:rgba(0,0,0,.10);
+    }
+    .pager button{
+      appearance:none;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.18);
+      color:var(--text);
+      border-radius:10px;
+      padding:6px 10px;
+      cursor:pointer;
+    }
+    .pager button:hover{ border-color:rgba(96,165,250,.55); }
+    .pager .idx{ color:var(--muted); font-size:12px; padding:0 4px; }
+
     .warn{
       color:rgba(245,158,11,.95);
       font-size:12px;
@@ -166,11 +186,14 @@
           <h2>Selection</h2>
         </div>
 
-        <label for="materialSel">Material (ID)</label>
+        <label for="materialSel">Material</label>
         <select id="materialSel"></select>
 
         <label for="orientSel">Orientation</label>
         <select id="orientSel"></select>
+
+        <label for="paperSel">Paper (DOI)</label>
+        <select id="paperSel"></select>
 
         <div class="row" style="margin-top:12px;">
           <div>
@@ -196,6 +219,11 @@
           <div class="left">
             <b>Reference:</b> <span id="doiText">—</span>
           </div>
+          <div class="pager" id="paperPager" style="display:none;">
+            <button id="prevPaper" type="button">&lt;</button>
+            <span class="idx" id="paperIdx">0 / 0</span>
+            <button id="nextPaper" type="button">&gt;</button>
+          </div>
           <div id="doiLinkWrap"></div>
         </div>
 
@@ -214,7 +242,7 @@
   </div>
 
 <script>
-/* ---------- fixed plot params (no user controls) ---------- */
+/* ---------- fixed plot params ---------- */
 const FIXED_SIGMA_DEG = 0.15;
 const FIXED_POINTS    = 2000;
 
@@ -230,6 +258,7 @@ const XRAY_SOURCES_ALL = [
 
 let XRAY_SOURCES = [];
 let DB = null;
+let paperIndex = 0;
 
 const els = {
   sourceSel:   document.getElementById('sourceSel'),
@@ -237,13 +266,18 @@ const els = {
   updatePill:  document.getElementById('updatePill'),
   materialSel: document.getElementById('materialSel'),
   orientSel:   document.getElementById('orientSel'),
+  paperSel:    document.getElementById('paperSel'),
   xmin:        document.getElementById('xmin'),
   xmax:        document.getElementById('xmax'),
   plot:        document.getElementById('plot'),
   tableBody:   document.querySelector('#peakTable tbody'),
   loadWarn:    document.getElementById('loadWarn'),
   doiText:     document.getElementById('doiText'),
-  doiLinkWrap: document.getElementById('doiLinkWrap')
+  doiLinkWrap: document.getElementById('doiLinkWrap'),
+  paperPager:  document.getElementById('paperPager'),
+  prevPaper:   document.getElementById('prevPaper'),
+  nextPaper:   document.getElementById('nextPaper'),
+  paperIdx:    document.getElementById('paperIdx')
 };
 
 function clamp(v, a, b){ return Math.max(a, Math.min(b, v)); }
@@ -257,17 +291,13 @@ function gaussian(x, mu, sigma){
 function parsePeaksLine(line){
   const s = String(line || "").trim();
   if (!s) return [];
-
-  // split by commas
   const parts = s.split(",").map(p => p.trim()).filter(Boolean);
   const out = [];
   for (const p of parts){
     const numMatch = p.match(/[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?/);
     const twoTheta = numMatch ? Number(numMatch[0]) : NaN;
-
     const hklMatch = p.match(/\(([^)]+)\)/);
     const hkl = hklMatch ? `(${hklMatch[1].trim()})` : "";
-
     if (Number.isFinite(twoTheta)) out.push({ twoTheta, hkl });
   }
   return out;
@@ -293,59 +323,116 @@ function setHeaderPills(){
   els.updatePill.textContent = `Updated: ${formatDatePretty(upd)}`;
 }
 
-function getSelectedMaterialId(){
-  return els.materialSel.value;
+function getMaterials(){
+  return DB?.materials || [];
 }
 
-function getSelectedOrientation(){
-  return els.orientSel.value;
+function getSelectedMaterialId(){ return els.materialSel.value; }
+function getSelectedOrientation(){ return els.orientSel.value; }
+function getSelectedPaperKey(){ return els.paperSel.value; }
+
+function findMaterial(matId){
+  return getMaterials().find(m => m.id === matId) || null;
 }
 
-/* Find the "best" entry for current selections */
-function getActiveEntry(){
-  const matId = getSelectedMaterialId();
-  const orient = getSelectedOrientation();
-  const list = DB?.materials || [];
-  return list.find(e => e.id === matId && e.orientation === orient) || null;
+function getOrientationsForMaterial(mat){
+  return (mat?.orientations || []).map(o => o.name);
+}
+
+function findOrientation(mat, orientName){
+  return (mat?.orientations || []).find(o => o.name === orientName) || null;
+}
+
+function getPapersForOrientation(orient){
+  return orient?.papers || [];
 }
 
 function rebuildMaterialDropdown(){
-  const list = DB?.materials || [];
-  const ids = Array.from(new Set(list.map(e => e.id))).sort((a,b)=>a.localeCompare(b));
-  els.materialSel.innerHTML = ids.map(id => `<option value="${id}">${id}</option>`).join("");
+  const mats = getMaterials();
+  els.materialSel.innerHTML = mats.map(m => {
+    const label = m.name ? m.name : m.id;
+    return `<option value="${m.id}">${label}</option>`;
+  }).join("");
 }
 
 function rebuildOrientationDropdown(){
-  const list = DB?.materials || [];
-  const matId = getSelectedMaterialId();
-  const orients = Array.from(new Set(list.filter(e => e.id === matId).map(e => e.orientation)))
-    .sort((a,b)=>a.localeCompare(b));
-
+  const mat = findMaterial(getSelectedMaterialId());
+  const orients = (mat?.orientations || []).map(o => o.name);
   els.orientSel.innerHTML = orients.map(o => `<option value="${o}">${o}</option>`).join("");
 }
 
-function renderReference(entry){
-  const doi = entry?.doi || "";
-  if (!doi){
-    els.doiText.textContent = "—";
-    els.doiLinkWrap.innerHTML = "";
-    return;
-  }
-  els.doiText.textContent = doi;
-  els.doiLinkWrap.innerHTML = `<a href="${doi}" target="_blank" rel="noopener">open</a>`;
+function rebuildPaperDropdown(){
+  const mat = findMaterial(getSelectedMaterialId());
+  const orient = findOrientation(mat, getSelectedOrientation());
+  const papers = getPapersForOrientation(orient);
+
+  // Paper dropdown shows short "Paper 1/2/3" but stores index
+  els.paperSel.innerHTML = papers.map((p, idx) => {
+    const tag = `Paper ${idx+1}`;
+    return `<option value="${idx}">${tag}</option>`;
+  }).join("");
+
+  paperIndex = 0;
+  if (papers.length) els.paperSel.value = "0";
 }
 
-function renderTable(entry){
-  const peaks = parsePeaksLine(entry?.peaks || "").sort((a,b)=>a.twoTheta - b.twoTheta);
-  els.tableBody.innerHTML = "";
+function getActivePaper(){
+  const mat = findMaterial(getSelectedMaterialId());
+  const orient = findOrientation(mat, getSelectedOrientation());
+  const papers = getPapersForOrientation(orient);
+  if (!papers.length) return null;
 
-  for (const p of peaks){
+  // prefer dropdown selection
+  const sel = Number(getSelectedPaperKey());
+  if (Number.isFinite(sel) && papers[sel]) {
+    paperIndex = sel;
+    return papers[sel];
+  }
+
+  paperIndex = clamp(paperIndex, 0, papers.length - 1);
+  return papers[paperIndex];
+}
+
+function renderReference(){
+  const mat = findMaterial(getSelectedMaterialId());
+  const orient = findOrientation(mat, getSelectedOrientation());
+  const papers = getPapersForOrientation(orient);
+  const p = getActivePaper();
+
+  if (!p){
+    els.doiText.textContent = "—";
+    els.doiLinkWrap.innerHTML = "";
+    els.paperPager.style.display = "none";
+    return;
+  }
+
+  const doi = p.doi || "";
+  els.doiText.textContent = doi || "—";
+  els.doiLinkWrap.innerHTML = doi ? `<a href="${doi}" target="_blank" rel="noopener">open</a>` : "";
+
+  // pager visibility
+  if (papers.length > 1){
+    els.paperPager.style.display = "";
+    els.paperIdx.textContent = `${paperIndex + 1} / ${papers.length}`;
+    els.prevPaper.disabled = (paperIndex === 0);
+    els.nextPaper.disabled = (paperIndex === papers.length - 1);
+  } else {
+    els.paperPager.style.display = "none";
+  }
+}
+
+function renderTableAndPlot(){
+  const p = getActivePaper();
+  const peaks = parsePeaksLine(p?.peaks || "").sort((a,b) => a.twoTheta - b.twoTheta);
+
+  els.tableBody.innerHTML = "";
+  for (const pk of peaks){
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td>${Number(p.twoTheta).toFixed(2)}</td>
-      <td>${p.hkl || ""}</td>
+      <td>${Number(pk.twoTheta).toFixed(2)}</td>
+      <td>${pk.hkl || ""}</td>
     `;
-    tr.addEventListener('mouseenter', () => drawPlot(peaks, p.twoTheta));
+    tr.addEventListener('mouseenter', () => drawPlot(peaks, pk.twoTheta));
     tr.addEventListener('mouseleave', () => drawPlot(peaks, null));
     els.tableBody.appendChild(tr);
   }
@@ -368,7 +455,6 @@ function drawPlot(peaks, highlightTwoTheta=null){
     .map(p => ({ mu: Number(p.twoTheta), amp: 1 }))
     .filter(p => Number.isFinite(p.mu) && p.mu >= xmin && p.mu <= xmax);
 
-  // Build x grid + summed Gaussian y (visual only)
   const xs = new Float64Array(N);
   const ys = new Float64Array(N);
 
@@ -376,7 +462,10 @@ function drawPlot(peaks, highlightTwoTheta=null){
     const x = xmin + (xmax - xmin) * (i / (N - 1));
     xs[i] = x;
     let y = 0;
-    for (const pk of filtered) y += pk.amp * gaussian(x, pk.mu, sigma);
+    for (const pk of filtered){
+      const t = (x - pk.mu) / sigma;
+      y += Math.exp(-0.5 * t * t);
+    }
     ys[i] = y;
   }
 
@@ -393,7 +482,7 @@ function drawPlot(peaks, highlightTwoTheta=null){
   const xToPx = x => mL + (x - xmin) / (xmax - xmin) * pW;
   const yToPx = y => mT + (1 - (y / ymax)) * pH;
 
-  // subtle grid
+  // grid
   ctx.lineWidth = 1;
   for (let i=0; i<=6; i++){
     const y = mT + (pH * i / 6);
@@ -413,7 +502,7 @@ function drawPlot(peaks, highlightTwoTheta=null){
   ctx.lineTo(mL + pW, mT + pH);
   ctx.stroke();
 
-  // x ticks + labels
+  // x ticks
   ctx.fillStyle = "rgba(255,255,255,0.85)";
   ctx.font = "18px system-ui, Segoe UI, Arial";
   const tickCount = 7;
@@ -431,7 +520,7 @@ function drawPlot(peaks, highlightTwoTheta=null){
     ctx.fillText(txt, px - (txt.length*5), mT + pH + 40);
   }
 
-  // axis labels
+  // labels
   ctx.fillStyle = "rgba(255,255,255,0.92)";
   ctx.font = "20px system-ui, Segoe UI, Arial";
   ctx.fillText("2θ (degrees)", mL + pW/2 - 62, H - 18);
@@ -479,24 +568,48 @@ function drawPlot(peaks, highlightTwoTheta=null){
 
 function rerenderAll(){
   if (!DB) return;
-
   setHeaderPills();
-
-  const entry = getActiveEntry();
-  renderReference(entry);
-  renderTable(entry);
+  renderReference();
+  renderTableAndPlot();
 }
 
+/* ---------- UI wiring ---------- */
 function wireUI(){
   els.materialSel.addEventListener("change", () => {
     rebuildOrientationDropdown();
-    // set to first orientation for this material
     const first = els.orientSel.querySelector("option");
     if (first) els.orientSel.value = first.value;
+    rebuildPaperDropdown();
     rerenderAll();
   });
 
-  els.orientSel.addEventListener("change", () => rerenderAll());
+  els.orientSel.addEventListener("change", () => {
+    rebuildPaperDropdown();
+    rerenderAll();
+  });
+
+  els.paperSel.addEventListener("change", () => {
+    paperIndex = Number(els.paperSel.value || "0") || 0;
+    rerenderAll();
+  });
+
+  els.prevPaper.addEventListener("click", () => {
+    const mat = findMaterial(getSelectedMaterialId());
+    const orient = findOrientation(mat, getSelectedOrientation());
+    const papers = getPapersForOrientation(orient);
+    paperIndex = Math.max(0, paperIndex - 1);
+    if (papers.length) els.paperSel.value = String(paperIndex);
+    rerenderAll();
+  });
+
+  els.nextPaper.addEventListener("click", () => {
+    const mat = findMaterial(getSelectedMaterialId());
+    const orient = findOrientation(mat, getSelectedOrientation());
+    const papers = getPapersForOrientation(orient);
+    paperIndex = Math.min(papers.length - 1, paperIndex + 1);
+    if (papers.length) els.paperSel.value = String(paperIndex);
+    rerenderAll();
+  });
 
   els.xmin.addEventListener("input", () => rerenderAll());
   els.xmax.addEventListener("input", () => rerenderAll());
@@ -508,6 +621,7 @@ function wireUI(){
   });
 }
 
+/* ---------- only show sources whose JSON exists ---------- */
 async function fileExists(file){
   try{
     const head = await fetch(`./${file}`, { method: "HEAD", cache: "no-store" });
@@ -555,9 +669,10 @@ async function loadDB(filename){
 
     DB = await res.json();
 
+    // Populate material dropdown with material names (single entries)
     rebuildMaterialDropdown();
 
-    // select first material + first orientation
+    // Select first material/orientation/paper
     const firstMat = els.materialSel.querySelector("option");
     if (firstMat) els.materialSel.value = firstMat.value;
 
@@ -565,6 +680,9 @@ async function loadDB(filename){
     const firstOri = els.orientSel.querySelector("option");
     if (firstOri) els.orientSel.value = firstOri.value;
 
+    rebuildPaperDropdown();
+
+    paperIndex = 0;
     rerenderAll();
   } catch (e){
     console.error(e);
