@@ -16,7 +16,6 @@
             font-family: Arial, Helvetica, sans-serif;
             color: #f5f5f5;
 
-            /* Defaults (will be overridden by JS after JSON loads) */
             --g1: rgba(80,120,255,0.12);
             --g2: rgba(0,200,180,0.08);
             --bgA: #0b0f1a;
@@ -30,31 +29,16 @@
             background-attachment: fixed;
         }
 
-        /* ===== Header ===== */
-        header {
-            padding: 2rem 1.5rem;
-            text-align: center;
-        }
+        header { padding: 2rem 1.5rem; text-align: center; }
+        header h1 { margin: 0 0 0.5rem 0; font-size: 2rem; font-weight: 600; }
+        header p { margin: 0; opacity: 0.9; }
 
-        header h1 {
-            margin: 0 0 0.5rem 0;
-            font-size: 2rem;
-            font-weight: 600;
-        }
-
-        header p {
-            margin: 0;
-            opacity: 0.9;
-        }
-
-        /* ===== Content Containers ===== */
         .container {
             max-width: 900px;
             margin: 2rem auto;
             padding: 0 1.5rem 2rem;
         }
 
-        /* ===== Sections ===== */
         .section {
             background: rgba(255, 255, 255, 0.12);
             border: 1px solid rgba(255,255,255,0.15);
@@ -65,8 +49,6 @@
             color: #f5f5f5;
             box-shadow: 0 4px 12px rgba(0,0,0,0.25);
         }
-
-        .section h2 { margin-top: 0; }
 
         .section-intro {
             margin: 0.35rem 0 0.9rem;
@@ -81,7 +63,6 @@
             opacity: 0.9;
         }
 
-        /* ===== Scroll Row (for sections 1+ except first) ===== */
         .scroll-row {
             display: flex;
             overflow-x: auto;
@@ -89,21 +70,18 @@
             padding-bottom: 0.5rem;
         }
 
-        /* ===== Responsive Grid (for section 0: Research Topics) ===== */
         .grid-row {
             display: grid;
             gap: 1rem;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
         }
 
-        /* Prefer exactly 3 columns on wide screens */
         @media (min-width: 900px) {
             .grid-row {
                 grid-template-columns: repeat(3, minmax(0, 1fr));
             }
         }
 
-        /* ===== Cards (clickable) ===== */
         .hub-card {
             background: rgba(255, 255, 255, 0.15);
             border: 1px solid rgba(255,255,255,0.2);
@@ -112,7 +90,6 @@
             backdrop-filter: blur(4px);
             color: #fff;
             box-sizing: border-box;
-
             display: block;
             text-decoration: none;
             transition: transform 0.12s ease, border-color 0.12s ease, background 0.12s ease;
@@ -124,40 +101,15 @@
             background: rgba(255, 255, 255, 0.18);
         }
 
-        /* scroll cards need min-width */
-        .scroll-row .hub-card {
-            min-width: 240px;
-        }
+        .scroll-row .hub-card { min-width: 240px; }
 
-        .hub-card-title {
-            margin: 0 0 0.4rem;
-            font-weight: 600;
-            color: #ffffff;
-        }
+        .hub-card-title { margin: 0 0 0.4rem; font-weight: 600; }
+        .hub-card-desc { margin: 0; font-size: 0.85rem; opacity: 0.85; }
 
-        .hub-card-desc {
-            margin: 0;
-            font-size: 0.85rem;
-            opacity: 0.85;
-        }
-
-        /* ===== Group Cards (NO LOGOS) ===== */
         .group-card { min-width: 260px; }
+        .group-affiliation { margin: 0 0 0.35rem; font-size: 0.8rem; opacity: 0.92; font-weight: 600; }
+        .group-description { margin: 0; font-size: 0.85rem; opacity: 0.85; }
 
-        .group-affiliation {
-            margin: 0 0 0.35rem;
-            font-size: 0.8rem;
-            opacity: 0.92;
-            font-weight: 600;
-        }
-
-        .group-description {
-            margin: 0;
-            font-size: 0.85rem;
-            opacity: 0.85;
-        }
-
-        /* ===== Back Button (STATIC: NOT FROM JSON) ===== */
         .back-wrap {
             display: flex;
             justify-content: center;
@@ -176,21 +128,6 @@
             backdrop-filter: blur(8px);
             box-shadow: 0 10px 28px rgba(0,0,0,0.35);
         }
-
-        a.back-btn:hover {
-            text-decoration: none;
-            border-color: rgba(159, 201, 255, 0.42);
-            background: rgba(159, 201, 255, 0.22);
-        }
-
-        /* Small error box if JSON fails */
-        .load-error {
-            background: rgba(255, 80, 80, 0.12);
-            border: 1px solid rgba(255, 80, 80, 0.25);
-            border-radius: 10px;
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-        }
     </style>
 </head>
 <body>
@@ -201,40 +138,12 @@
 </header>
 
 <div class="container" id="content-root">
-    <!-- Sections injected here -->
-
-    <!-- BACK BUTTON (STATIC: NOT FROM JSON) -->
     <div class="back-wrap">
         <a class="back-btn" id="back-link" href="../../index.html">Back to my Portfolio</a>
     </div>
 </div>
 
 <script>
-/**
- * JSON format expected:
- * {
- *   "title": "...",
- *   "subtitle": "...",
- *   "sections": [
- *     {
- *       "title": "...",
- *       "intro": "...",
- *       "cards": [
- *          {"title":"...", "desc":"...", "href":"..."},
- *          {"title":"...", "affiliation":"...", "desc":"...", "href":"..."}
- *       ]
- *     }
- *   ]
- * }
- *
- * NOTES:
- * - favicon + back button are STATIC and NOT controlled by JSON.
- * - layout is generic: section 0 = grid (3-column responsive), sections 1+ = scroll.
- * - every card is clickable (entire card is the link).
- * - background gradient varies deterministically from data.title.
- * - Confucius quote is STATIC in HTML (not in JSON).
- */
-
 const STATIC_QUOTE_TEXT = "“If I am walking with two other men, each of them will serve as my teacher.”";
 const STATIC_QUOTE_AUTHOR = "Confucius";
 
@@ -245,69 +154,19 @@ function el(tag, className, text) {
     return node;
 }
 
-function hash32(str) {
-    // FNV-1a 32-bit hash
-    let h = 0x811c9dc5;
-    for (let i = 0; i < str.length; i++) {
-        h ^= str.charCodeAt(i);
-        h = Math.imul(h, 0x01000193);
-    }
-    return h >>> 0;
-}
-
-function mulberry32(seed) {
-    let t = seed >>> 0;
-    return function() {
-        t += 0x6D2B79F5;
-        let x = Math.imul(t ^ (t >>> 15), 1 | t);
-        x ^= x + Math.imul(x ^ (x >>> 7), 61 | x);
-        return ((x ^ (x >>> 14)) >>> 0) / 4294967296;
-    };
-}
-
-function clamp(v, min, max) {
-    return Math.max(min, Math.min(max, v));
-}
-
-function rgba(r, g, b, a) {
-    return `rgba(${r|0},${g|0},${b|0},${a})`;
-}
-
-function hexFromRGB(r, g, b) {
-    const toHex = (n) => n.toString(16).padStart(2, "0");
-    return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
-}
-
-function applySeededBackgroundFromTitle(title) {
-    const seed = hash32(title || "Research Hub");
-    const rand = mulberry32(seed);
-
-    const r1 = clamp(40 + Math.floor(120 * rand()), 40, 170);
-    const g1 = clamp(40 + Math.floor(120 * rand()), 40, 170);
-    const b1 = clamp(40 + Math.floor(120 * rand()), 40, 180);
-
-    const r2 = clamp(30 + Math.floor(140 * rand()), 30, 180);
-    const g2 = clamp(30 + Math.floor(140 * rand()), 30, 190);
-    const b2 = clamp(30 + Math.floor(140 * rand()), 30, 190);
-
-    const base1 = { r: 8 + Math.floor(10 * rand()),  g: 10 + Math.floor(14 * rand()), b: 18 + Math.floor(16 * rand()) };
-    const base2 = { r: 12 + Math.floor(14 * rand()), g: 16 + Math.floor(18 * rand()), b: 28 + Math.floor(20 * rand()) };
-    const base3 = { r: 7 + Math.floor(10 * rand()),  g: 9 + Math.floor(12 * rand()),  b: 16 + Math.floor(14 * rand()) };
-
-    document.body.style.setProperty("--g1", rgba(r1, g1, b1, 0.12));
-    document.body.style.setProperty("--g2", rgba(r2, g2, b2, 0.08));
-    document.body.style.setProperty("--bgA", hexFromRGB(base1.r, base1.g, base1.b));
-    document.body.style.setProperty("--bgB", hexFromRGB(base2.r, base2.g, base2.b));
-    document.body.style.setProperty("--bgC", hexFromRGB(base3.r, base3.g, base3.b));
-}
-
-function makeCard(card) {
+/* UPDATED: allow new-tab control */
+function makeCard(card, openNewTab) {
     const isGroup = !!card.affiliation;
     const href = card.href || "#";
 
     const a = document.createElement("a");
     a.className = `hub-card${isGroup ? " group-card" : ""}`;
     a.href = href;
+
+    if (openNewTab) {
+        a.target = "_blank";
+        a.rel = "noopener";
+    }
 
     a.appendChild(el("div", "hub-card-title", card.title || ""));
 
@@ -326,7 +185,6 @@ function renderSection(section, index) {
 
     if (section.title) wrap.appendChild(el("h2", "", section.title));
 
-    // STATIC Confucius quote only for "Know Your Peers" section (index 2 in current JSON)
     if (index === 2) {
         const q = el("p", "section-quote");
         q.textContent = `${STATIC_QUOTE_TEXT} — `;
@@ -340,14 +198,16 @@ function renderSection(section, index) {
 
     if (section.intro) wrap.appendChild(el("p", "section-intro", section.intro));
 
-    // Generic layout rule (no JSON layout fields):
-    // - section 0: grid (3-column responsive)
-    // - section 1+: scroll (horizontal)
     const row = el("div", index === 0 ? "grid-row" : "scroll-row");
 
-    (section.cards || []).forEach(card => row.appendChild(makeCard(card)));
-    wrap.appendChild(row);
+    /* UPDATED: sections 1 and 2 open in new tab */
+    const openNewTab = (index === 1 || index === 2);
 
+    (section.cards || []).forEach(card =>
+        row.appendChild(makeCard(card, openNewTab))
+    );
+
+    wrap.appendChild(row);
     return wrap;
 }
 
@@ -357,44 +217,21 @@ async function loadHubPage() {
     const subtitle = document.getElementById("page-subtitle");
     const backLink = document.getElementById("back-link");
 
-    try {
-        const res = await fetch("hub-page.json", { cache: "no-store" });
-        if (!res.ok) throw new Error(`Failed to fetch hub-page.json (HTTP ${res.status})`);
+    const res = await fetch("hub-page.json", { cache: "no-store" });
+    const data = await res.json();
 
-        const data = await res.json();
+    document.title = data.title || "Research Hub";
+    h1.textContent = data.title || "Research Hub";
+    subtitle.textContent = data.subtitle || "";
 
-        applySeededBackgroundFromTitle(data.title || "Research Hub");
+    const backWrap = backLink.closest(".back-wrap");
+    root.innerHTML = "";
+    root.appendChild(backWrap);
 
-        if (data.title) {
-            document.title = data.title;
-            h1.textContent = data.title;
-        } else {
-            h1.textContent = "Research Hub";
-        }
-
-        subtitle.textContent = data.subtitle || "";
-
-        // Keep the back button wrapper at the bottom (STATIC)
-        const backWrap = backLink.closest(".back-wrap");
-        root.innerHTML = "";
-        root.appendChild(backWrap);
-
-        (data.sections || []).forEach((section, i) => {
-            const node = renderSection(section, i);
-            root.insertBefore(node, backWrap);
-        });
-
-    } catch (err) {
-        h1.textContent = "Research Hub";
-        subtitle.textContent = "Could not load hub content.";
-
-        const errorBox = el("div", "load-error");
-        errorBox.appendChild(el("div", "", "Error loading hub-page.json:"));
-        errorBox.appendChild(el("div", "", String(err && err.message ? err.message : err)));
-
-        const backWrap = backLink.closest(".back-wrap");
-        root.insertBefore(errorBox, backWrap);
-    }
+    (data.sections || []).forEach((section, i) => {
+        const node = renderSection(section, i);
+        root.insertBefore(node, backWrap);
+    });
 }
 
 document.addEventListener("DOMContentLoaded", loadHubPage);
