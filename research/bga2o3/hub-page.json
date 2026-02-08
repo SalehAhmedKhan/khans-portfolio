@@ -33,9 +33,9 @@
       "intro": "Quick-access tools, calculators, and workflow helpers for daily research.",
       "cards": [
         {
-          "title": "Unit Converter",
-          "desc": "Fast conversions for mobility, resistivity, and common lab units.",
-          "href": "#"
+          "title": "XRD Peaks",
+          "desc": "Google, ChatGPT giving you a bunch of useless XRD peaks? Try this instead!",
+          "href": "../tool/xrd/xrd_peaks.html"
         },
         {
           "title": "Plot & Fit Helper",
