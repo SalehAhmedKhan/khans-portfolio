@@ -7,7 +7,6 @@
   <title>A.I. Art</title>
   <link rel="icon" type="image/png" href="../krafts-images/krafts.png">
 
-
   <style>
     :root{
       --bg1:#050712;
@@ -55,16 +54,8 @@
       backdrop-filter: blur(16px);
     }
 
-    .titleblock h1{
-      margin:0;
-      font-size: clamp(1.35rem, 2.6vw, 1.9rem);
-    }
-
-    .titleblock p{
-      margin: 0.35rem 0 0;
-      color: var(--muted);
-      max-width: 70ch;
-    }
+    .titleblock h1{ margin:0; font-size: clamp(1.35rem, 2.6vw, 1.9rem); }
+    .titleblock p{ margin: 0.35rem 0 0; color: var(--muted); max-width: 70ch; }
 
     .back{
       padding: 0.5rem 0.9rem;
@@ -104,7 +95,6 @@
 
     .card.horizontal{ aspect-ratio: 16 / 10; }
     .card.vertical{ aspect-ratio: 3 / 4; }
-
     .card:hover{ transform: translateY(-4px); }
 
     .card-media{
@@ -129,7 +119,6 @@
       font-weight: 650;
     }
 
-    /* ===== Slide Panel ===== */
     .scrim{
       position: fixed;
       inset: 0;
@@ -139,7 +128,6 @@
       transition: opacity 0.18s ease;
       z-index: 50;
     }
-
     .scrim.open{ opacity:1; pointer-events:auto; }
 
     .panel{
@@ -171,10 +159,7 @@
       border-bottom: 1px solid var(--border);
     }
 
-    .panel-header h2{
-      margin:0;
-      font-size: 1.25rem;
-    }
+    .panel-header h2{ margin:0; font-size: 1.25rem; }
 
     .close{
       background:none;
@@ -201,7 +186,6 @@
       overflow:hidden;
     }
 
-    /* ✅ FIXED IMAGE BEHAVIOR */
     .panel-media img{
       width:100%;
       height:auto;
@@ -227,6 +211,33 @@
       color: var(--muted);
       line-height: 1.55;
       white-space: pre-line;
+    }
+
+    /* ===== MOBILE PANEL FIX (ONLY CHANGE) ===== */
+    @media (max-width: 700px){
+      .panel{
+        inset: 4vh 4vw;
+      }
+
+      .panel-body{
+        grid-template-columns: 1fr;
+        overflow:auto;
+      }
+
+      .panel-media{
+        max-height: 40vh;
+      }
+
+      .panel-media img{
+        max-height: 40vh;
+        width: auto;
+        max-width: 100%;
+      }
+
+      .panel-text{
+        overflow: visible;
+        padding-right: 0;
+      }
     }
   </style>
 </head>
