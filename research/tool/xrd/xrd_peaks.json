@@ -1,29 +1,87 @@
 {
-  "meta": {
-    "wavelength_angstrom": 1.5406,
-    "label": "Cu Kα"
+  "xray": {
+    "label": "Cu Kα",
+    "wavelength_angstrom": 1.5406
   },
   "materials": [
     {
       "id": "beta_ga2o3",
       "name": "β-Ga₂O₃",
       "phase": "beta",
-      "notes": "Theoretical peak positions",
-      "reference_url": "https://example.com/paper",
-      "peaks": [
-        { "twoTheta": 18.90, "hkl": "(-201)", "orientation": "(-201)", "relI": 1.0 },
-        { "twoTheta": 38.40, "hkl": "(-402)", "orientation": "(-201)", "relI": 0.7 },
-        { "twoTheta": 45.20, "hkl": "(603)",  "orientation": "(-201)", "relI": 0.5 }
+      "orientations": [
+        {
+          "name": "(-201)",
+          "peaks": [
+            { "twoTheta": 18.90, "hkl": "(-201)", "note": "theoretical" },
+            { "twoTheta": 38.40, "hkl": "(-402)", "note": "theoretical" },
+            { "twoTheta": 45.20, "hkl": "(603)",  "note": "theoretical" }
+          ],
+          "literature": [
+            {
+              "title": "Example paper A (placeholder)",
+              "authors": "Author et al.",
+              "journal": "Journal Name",
+              "year": 2021,
+              "doi": "10.0000/exampleA",
+              "url": "https://example.com/paperA",
+              "notes": "Literature peaks shown for (-201) oriented films (example placeholders).",
+              "peaks": [
+                { "twoTheta": 18.95, "hkl": "(-201)", "note": "reported" },
+                { "twoTheta": 38.46, "hkl": "(-402)", "note": "reported" }
+              ]
+            },
+            {
+              "title": "Example paper B (placeholder)",
+              "authors": "Another et al.",
+              "journal": "Another Journal",
+              "year": 2023,
+              "doi": "10.0000/exampleB",
+              "url": "https://example.com/paperB",
+              "notes": "Second literature entry to test the < 1 > pager.",
+              "peaks": [
+                { "twoTheta": 18.92, "hkl": "(-201)", "note": "reported" },
+                { "twoTheta": 45.18, "hkl": "(603)",  "note": "reported" }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "(010)",
+          "peaks": [
+            { "twoTheta": 30.20, "hkl": "(020)", "note": "theoretical" },
+            { "twoTheta": 60.90, "hkl": "(040)", "note": "theoretical" }
+          ],
+          "literature": []
+        }
       ]
     },
     {
       "id": "sapphire",
       "name": "Al₂O₃ (Sapphire)",
       "phase": "alpha",
-      "reference_url": "https://example.com/another",
-      "peaks": [
-        { "twoTheta": 41.70, "hkl": "(006)", "orientation": "(0001)", "relI": 1.0 },
-        { "twoTheta": 90.80, "hkl": "(0012)", "orientation": "(0001)", "relI": 0.6 }
+      "orientations": [
+        {
+          "name": "(0001)",
+          "peaks": [
+            { "twoTheta": 41.70, "hkl": "(006)",  "note": "theoretical" },
+            { "twoTheta": 90.80, "hkl": "(0012)", "note": "theoretical" }
+          ],
+          "literature": [
+            {
+              "title": "Sapphire reference (placeholder)",
+              "authors": "Ref et al.",
+              "journal": "Database/Reference",
+              "year": 2018,
+              "doi": "",
+              "url": "https://example.com/sapphire-ref",
+              "notes": "Placeholder literature entry.",
+              "peaks": [
+                { "twoTheta": 41.68, "hkl": "(006)",  "note": "reported" },
+                { "twoTheta": 90.78, "hkl": "(0012)", "note": "reported" }
+              ]
+            }
+          ]
+        }
       ]
     }
   ]
