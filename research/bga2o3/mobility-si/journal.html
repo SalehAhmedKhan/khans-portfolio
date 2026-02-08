@@ -6,10 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Journal Page</title>
 
+    <!-- FAVICON (STATIC) -->
     <link rel="icon" type="image/png" href="../../../favicon1.png">
 
     <style>
         :root {
+            /* Aesthetic variables */
             --card-bg: rgba(255, 255, 255, 0.08);
             --border: rgba(255, 255, 255, 0.14);
             --accent: #60a5fa;
@@ -25,6 +27,9 @@
             --lg1: #070a14;
             --lg2: #0b1228;
             --lg3: #070a14;
+
+            /* Align sidebar top with first card (tune if needed) */
+            --sidebar-align-offset: 2.35rem;
         }
 
         * { box-sizing: border-box; }
@@ -94,9 +99,24 @@
             border-color: rgba(96, 165, 250, 0.38);
         }
 
+        /* ===== LAYOUT (RESTORED) ===== */
+        .layout {
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+        }
+
+        main { flex: 1.7; }
+        aside.sidebar { flex: 0.9; }
+
+        @media (max-width: 900px) {
+            .layout { flex-direction: column; }
+            aside.sidebar { order: -1; }
+        }
+
         /* ===== SECTION HEADERS ===== */
         .section-header {
-            margin: 1.2rem 0 0.75rem;
+            margin-bottom: 0.75rem;
             display: flex;
             align-items: baseline;
             gap: 0.5rem;
@@ -104,17 +124,17 @@
 
         .section-header h2 {
             margin: 0;
-            font-size: 1.25rem;
+            font-size: 1.15rem;
         }
 
-        /* Distinct update log header */
-        .update-header h2 {
-            font-weight: 600;
+        /* Distinct Update Log title (but keep old aesthetic) */
+        .update-title {
+            font-weight: 650;
             letter-spacing: 0.04em;
             color: #c7d8ff;
         }
 
-        /* ===== ARTICLE LIST ===== */
+        /* ===== PAPER LIST ===== */
         .paper-list {
             display: flex;
             flex-direction: column;
@@ -128,12 +148,14 @@
             border-radius: var(--radius);
         }
 
+        .paper-link:hover { text-decoration: none; }
+
         .paper-card {
             background: var(--card-bg);
             border-radius: var(--radius);
             box-shadow: var(--shadow-soft);
             border: 1px solid var(--border);
-            padding: 1rem;
+            padding: 1rem 1rem;
             display: flex;
             gap: 1rem;
             align-items: stretch;
@@ -193,6 +215,7 @@
             line-height: 1.35;
         }
 
+        /* Tags (right aligned) */
         .paper-tags {
             min-width: 140px;
             display: flex;
@@ -217,11 +240,35 @@
 
         .tag.method { background: #fef3c7; color: #92400e; }
         .tag.device { background: #ecfdf3; color: #166534; }
-        .tag.other { background: #f3e8ff; color: #6b21a8; }
+        .tag.other  { background: #f3e8ff; color: #6b21a8; }
         .tag.other-blue { background: #dbeafe; color: #1d4ed8; }
 
-        /* ===== UPDATE LOG ===== */
-        .update-log { margin-top: 2rem; }
+        .paper-link:focus-visible {
+            outline: 2px solid rgba(96,165,250,0.75);
+            outline-offset: 4px;
+            border-radius: calc(var(--radius) + 4px);
+        }
+
+        /* ===== UPDATE LOG (RESTORED SIDEBAR CARD) ===== */
+        .sidebar-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-soft);
+            padding: 1rem 1rem 0.75rem;
+            border: 1px solid var(--border);
+
+            /* align top edge with first paper card */
+            margin-top: var(--sidebar-align-offset);
+        }
+
+        @media (max-width: 900px) {
+            .sidebar-card { margin-top: 0; }
+        }
+
+        .sidebar-card h2 {
+            font-size: 1rem;
+            margin: 0 0 0.6rem;
+        }
 
         .log-list {
             list-style: none;
@@ -244,38 +291,37 @@
 
         .log-date { font-size: 0.8rem; color: var(--text-muted); }
         .log-text { font-size: 0.85rem; }
-
-        .paper-link:focus-visible {
-            outline: 2px solid rgba(96,165,250,0.75);
-            outline-offset: 4px;
-            border-radius: calc(var(--radius) + 4px);
-        }
     </style>
 </head>
 
 <body>
 <div class="page">
 
-<header class="page-header">
-    <div class="topic-label">Research Topic</div>
-    <h1 class="topic-title" id="page-title"></h1>
-    <p class="topic-subtitle" id="page-subtitle"></p>
-    <a class="back-btn" href="../hub-page.html">Back to Research Hub</a>
-</header>
+    <header class="page-header">
+        <div class="topic-label">Research Topic</div>
+        <h1 class="topic-title" id="page-title"></h1>
+        <p class="topic-subtitle" id="page-subtitle"></p>
+        <a class="back-btn" href="../hub-page.html">Back to Research Hub</a>
+    </header>
 
-<div class="section-header">
-    <h2>Article List</h2>
-</div>
+    <div class="layout">
 
-<div class="paper-list" id="paper-list"></div>
+        <main>
+            <div class="section-header">
+                <h2>Article List</h2>
+            </div>
 
-<div class="update-log">
-    <div class="section-header update-header">
-        <h2>Update Log</h2>
+            <div class="paper-list" id="paper-list"></div>
+        </main>
+
+        <aside class="sidebar">
+            <div class="sidebar-card">
+                <h2 class="update-title">Update Log</h2>
+                <ul class="log-list" id="log-list"></ul>
+            </div>
+        </aside>
+
     </div>
-    <ul class="log-list" id="log-list"></ul>
-</div>
-
 </div>
 
 <script>
@@ -329,7 +375,7 @@ function applySeededGradient(title){
   document.documentElement.style.setProperty("--lg3", hexFromRGB(base3.r, base3.g, base3.b));
 }
 
-/* ===== Helpers ===== */
+/* ===== Render helpers ===== */
 function el(tag, className, text){
   const n = document.createElement(tag);
   if(className) n.className = className;
@@ -337,20 +383,24 @@ function el(tag, className, text){
   return n;
 }
 
+/* Format ISO date -> "01 February 2025" */
 function formatFullDate(iso){
   if(!iso) return "";
   const parts = String(iso).split("-");
   const y = Number(parts[0]);
   const m = Number(parts[1] || 1);
   const d = Number(parts[2] || 1);
+
   const dt = new Date(Date.UTC(y, m - 1, d));
   if (isNaN(dt.getTime())) return iso;
+
   const day = String(dt.getUTCDate()).padStart(2, "0");
   const monthName = dt.toLocaleString("en-US", { month: "long", timeZone: "UTC" });
   const year = dt.getUTCFullYear();
   return `${day} ${monthName} ${year}`;
 }
 
+/* Sort using real Date objects (newest first) */
 function toSortableTime(iso){
   if(!iso) return -Infinity;
   const parts = String(iso).split("-");
@@ -361,6 +411,7 @@ function toSortableTime(iso){
   return isNaN(t) ? -Infinity : t;
 }
 
+/* Build "First Author et. al. — Group" from byline "X — Group" */
 function formatByline(byline){
   const raw = String(byline || "");
   const parts = raw.split("—");
@@ -414,7 +465,6 @@ function renderPaperCard(p){
 
   card.appendChild(main);
   card.appendChild(tags);
-
   link.appendChild(card);
   return link;
 }
