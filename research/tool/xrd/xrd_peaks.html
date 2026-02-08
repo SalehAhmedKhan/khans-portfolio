@@ -4,51 +4,180 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>XRD Peak Quick Reference</title>
+
+  <!-- favicon lives three directories up -->
+  <link rel="icon" type="image/png" href="../../../favicon1.png">
+
   <style>
     :root{
-      --bg:#0b1020; --card:rgba(255,255,255,.06); --border:rgba(255,255,255,.14);
-      --text:#e8eefc; --muted:rgba(232,238,252,.72); --accent:#60a5fa;
+      --bg:#0b1020;
+      --card:rgba(255,255,255,.06);
+      --border:rgba(255,255,255,.14);
+      --text:#e8eefc;
+      --muted:rgba(232,238,252,.72);
+      --accent:#60a5fa;
+      --warn:#f59e0b;
     }
-    body{ margin:0; font-family:system-ui,Segoe UI,Roboto,Arial; background:linear-gradient(180deg,#070a14,#0b1020); color:var(--text); }
-    .wrap{ max-width:1100px; margin:0 auto; padding:22px; }
+    body{
+      margin:0;
+      font-family:system-ui,Segoe UI,Roboto,Arial;
+      background:linear-gradient(180deg,#070a14,#0b1020);
+      color:var(--text);
+    }
+    .wrap{ max-width:1160px; margin:0 auto; padding:22px; }
     h1{ margin:0 0 6px; font-size:22px; letter-spacing:.2px; }
     .sub{ color:var(--muted); margin:0 0 16px; }
+
     .grid{ display:grid; grid-template-columns: 1fr; gap:14px; }
-    @media (min-width: 900px){ .grid{ grid-template-columns: 420px 1fr; } }
+    @media (min-width: 980px){ .grid{ grid-template-columns: 420px 1fr; } }
+
     .card{
-      background:var(--card); border:1px solid var(--border); border-radius:16px;
-      box-shadow:0 18px 50px rgba(0,0,0,.35); padding:14px;
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:16px;
+      box-shadow:0 18px 50px rgba(0,0,0,.35);
+      padding:14px;
       backdrop-filter: blur(10px);
     }
-    label{ display:block; font-size:13px; color:var(--muted); margin-bottom:6px; }
-    select, input{
-      width:100%; padding:10px 12px; border-radius:12px; border:1px solid var(--border);
-      background:rgba(0,0,0,.18); color:var(--text); outline:none;
+
+    .panel-title{
+      display:flex; align-items:center; justify-content:space-between;
+      margin:0 0 10px;
     }
+    .panel-title h2{ margin:0; font-size:14px; color:var(--muted); font-weight:700; letter-spacing:.4px; text-transform:uppercase; }
+    .pill{
+      font-size:12px; color:var(--muted);
+      border:1px solid var(--border);
+      padding:6px 10px; border-radius:999px;
+      background:rgba(0,0,0,.14);
+      white-space:nowrap;
+    }
+
+    label{ display:block; font-size:13px; color:var(--muted); margin:10px 0 6px; }
+    select, input{
+      width:100%;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:rgba(0,0,0,.18);
+      color:var(--text);
+      outline:none;
+    }
+
     .row{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
-    .hint{ font-size:12px; color:var(--muted); margin-top:8px; line-height:1.35; }
-    .meta{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:10px; }
-    .pill{ font-size:12px; color:var(--muted); border:1px solid var(--border); padding:6px 10px; border-radius:999px; }
+
     a{ color:var(--accent); text-decoration:none; }
     a:hover{ text-decoration:underline; }
 
+    .canvas-wrap{ padding:10px; }
+    canvas{
+      width:100%;
+      height:300px;
+      display:block;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.18);
+    }
+
     table{ width:100%; border-collapse:collapse; margin-top:10px; font-size:13px; }
     th, td{ padding:10px 8px; border-bottom:1px solid rgba(255,255,255,.10); }
-    th{ text-align:left; color:var(--muted); font-weight:600; }
+    th{ text-align:left; color:var(--muted); font-weight:700; }
     tr:hover{ background:rgba(96,165,250,.08); }
-    .canvas-wrap{ padding:10px; }
-    canvas{ width:100%; height:280px; display:block; border-radius:12px; border:1px solid rgba(255,255,255,.10); background:rgba(0,0,0,.18); }
+
+    .mode-row{
+      display:flex; gap:14px; align-items:center; flex-wrap:wrap;
+      margin:10px 4px 6px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .mode-row strong{ color:var(--text); font-weight:700; }
+    .radio{
+      display:flex; gap:8px; align-items:center;
+      padding:8px 10px;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:999px;
+      background:rgba(0,0,0,.10);
+    }
+    .radio input{ width:auto; }
+
+    .lit-panel{
+      margin-top:10px;
+      padding:12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.12);
+    }
+    .lit-top{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:8px;
+    }
+    .pager{
+      display:flex; gap:8px; align-items:center;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:999px;
+      padding:6px 10px;
+      background:rgba(0,0,0,.10);
+    }
+    .pager button{
+      appearance:none;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.18);
+      color:var(--text);
+      border-radius:10px;
+      padding:6px 10px;
+      cursor:pointer;
+    }
+    .pager button:hover{ border-color:rgba(96,165,250,.55); }
+    .pager .idx{ color:var(--muted); font-size:12px; padding:0 4px; }
+
+    .lit-title{
+      font-weight:800;
+      font-size:14px;
+      margin:0;
+    }
+    .lit-meta{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.35;
+    }
+
+    .warn{
+      color:rgba(245,158,11,.95);
+      font-size:12px;
+      margin-top:10px;
+      line-height:1.35;
+    }
   </style>
 </head>
+
 <body>
   <div class="wrap">
     <h1>XRD 2θ–ω Peak Toolkit</h1>
-    <p class="sub">Interactive quick reference for theoretical peak positions (from your JSON).</p>
+    <p class="sub">Interactive quick reference for theoretical peaks and literature peaks (from JSON).</p>
 
     <div class="grid">
+      <!-- LEFT COLUMN -->
       <div class="card">
-        <label for="materialSel">Material</label>
+        <div class="panel-title">
+          <h2>X-ray Properties</h2>
+          <span class="pill" id="xrayPill">λ: —</span>
+        </div>
+
+        <label for="sourceSel">X-ray source</label>
+        <select id="sourceSel"></select>
+
+        <div class="panel-title" style="margin-top:14px;">
+          <h2>Material</h2>
+          <span class="pill" id="matPill">—</span>
+        </div>
+
+        <label for="materialSel">Select material</label>
         <select id="materialSel"></select>
+
+        <label for="orientSel">Orientation</label>
+        <select id="orientSel"></select>
 
         <div class="row" style="margin-top:12px;">
           <div>
@@ -61,26 +190,39 @@
           </div>
         </div>
 
-        <div class="row" style="margin-top:10px;">
-          <div>
-            <label for="sigma">Gaussian width (σ, degrees)</label>
-            <input id="sigma" type="number" step="0.01" value="0.15" />
-          </div>
-          <div>
-            <label for="points">Plot resolution (points)</label>
-            <input id="points" type="number" step="50" value="2000" />
-          </div>
-        </div>
-
-        <div class="meta" id="metaLine"></div>
-        <div class="hint">
-          Tip: keep σ small (0.05–0.25°) for sharp peaks. Intensities are arbitrary; we just visualize positions.
-        </div>
+        <div class="warn" id="loadWarn" style="display:none;"></div>
       </div>
 
+      <!-- RIGHT COLUMN -->
       <div class="card">
         <div class="canvas-wrap">
-          <canvas id="plot" width="1200" height="420"></canvas>
+          <canvas id="plot" width="1400" height="460"></canvas>
+        </div>
+
+        <div class="mode-row">
+          <strong>View mode:</strong>
+          <label class="radio">
+            <input type="radio" name="mode" id="modeTheoretical" value="theoretical" checked />
+            Theoretical
+          </label>
+          <label class="radio">
+            <input type="radio" name="mode" id="modeLiterature" value="literature" />
+            Literature
+          </label>
+        </div>
+
+        <div class="lit-panel" id="litPanel" style="display:none;">
+          <div class="lit-top">
+            <div>
+              <p class="lit-title" id="litTitle">—</p>
+              <p class="lit-meta" id="litMeta">—</p>
+            </div>
+            <div class="pager">
+              <button id="prevLit" type="button">&lt;</button>
+              <span class="idx" id="litIdx">0 / 0</span>
+              <button id="nextLit" type="button">&gt;</button>
+            </div>
+          </div>
         </div>
 
         <table id="peakTable">
@@ -88,31 +230,52 @@
             <tr>
               <th>2θ (deg)</th>
               <th>(hkl)</th>
-              <th>Orientation</th>
-              <th>Rel. I</th>
+              <th>Notes</th>
             </tr>
           </thead>
           <tbody></tbody>
         </table>
 
-        <div class="hint" id="refLine"></div>
       </div>
     </div>
   </div>
 
 <script>
+/* ---------- fixed plot params (no user controls) ---------- */
+const FIXED_SIGMA_DEG = 0.15;   // looks good
+const FIXED_POINTS    = 2000;   // looks good
+
+/* ---------- X-ray source list (each maps to a JSON file) ---------- */
+const XRAY_SOURCES = [
+  { id:"cu_ka",  label:"Cu Kα",  file:"xrd_peaks_cu_ka.json",  default:true },
+  { id:"co_ka",  label:"Co Kα",  file:"xrd_peaks_co_ka.json" },
+  { id:"mo_ka",  label:"Mo Kα",  file:"xrd_peaks_mo_ka.json" },
+  { id:"cr_ka",  label:"Cr Kα",  file:"xrd_peaks_cr_ka.json" },
+  { id:"fe_ka",  label:"Fe Kα",  file:"xrd_peaks_fe_ka.json" }
+];
+
 let DB = null;
+let currentLitIndex = 0;
 
 const els = {
+  sourceSel:   document.getElementById('sourceSel'),
+  xrayPill:    document.getElementById('xrayPill'),
   materialSel: document.getElementById('materialSel'),
-  xmin: document.getElementById('xmin'),
-  xmax: document.getElementById('xmax'),
-  sigma: document.getElementById('sigma'),
-  points: document.getElementById('points'),
-  plot: document.getElementById('plot'),
-  metaLine: document.getElementById('metaLine'),
-  refLine: document.getElementById('refLine'),
-  tableBody: document.querySelector('#peakTable tbody')
+  orientSel:   document.getElementById('orientSel'),
+  matPill:     document.getElementById('matPill'),
+  xmin:        document.getElementById('xmin'),
+  xmax:        document.getElementById('xmax'),
+  plot:        document.getElementById('plot'),
+  tableBody:   document.querySelector('#peakTable tbody'),
+  modeTheoretical: document.getElementById('modeTheoretical'),
+  modeLiterature:  document.getElementById('modeLiterature'),
+  litPanel:    document.getElementById('litPanel'),
+  litTitle:    document.getElementById('litTitle'),
+  litMeta:     document.getElementById('litMeta'),
+  prevLit:     document.getElementById('prevLit'),
+  nextLit:     document.getElementById('nextLit'),
+  litIdx:      document.getElementById('litIdx'),
+  loadWarn:    document.getElementById('loadWarn')
 };
 
 function clamp(v, a, b){ return Math.max(a, Math.min(b, v)); }
@@ -127,56 +290,132 @@ function getSelectedMaterial(){
   return DB.materials.find(m => m.id === id) || DB.materials[0];
 }
 
-function renderMeta(mat){
-  const wl = DB.meta?.wavelength_angstrom;
-  const label = DB.meta?.label;
-  els.metaLine.innerHTML = "";
-  if (mat.phase) els.metaLine.innerHTML += `<span class="pill">Phase: ${mat.phase}</span>`;
-  if (wl) els.metaLine.innerHTML += `<span class="pill">λ: ${wl} Å${label ? " ("+label+")" : ""}</span>`;
-  if (mat.notes) els.metaLine.innerHTML += `<span class="pill">${mat.notes}</span>`;
+function getSelectedOrientation(mat){
+  const name = els.orientSel.value;
+  return mat.orientations.find(o => o.name === name) || mat.orientations[0];
+}
 
-  if (mat.reference_url){
-    els.refLine.innerHTML = `Reference: <a href="${mat.reference_url}" target="_blank" rel="noopener">paper / database link</a>`;
+function currentMode(){
+  return els.modeLiterature.checked ? "literature" : "theoretical";
+}
+
+function getActivePeaks(orient){
+  if (currentMode() === "literature"){
+    const lit = orient.literature || [];
+    if (!lit.length) return [];
+    const entry = lit[clamp(currentLitIndex, 0, lit.length - 1)];
+    return entry.peaks || [];
+  }
+  return orient.peaks || [];
+}
+
+function setXrayPill(){
+  const wl = DB?.xray?.wavelength_angstrom;
+  const label = DB?.xray?.label;
+  if (wl){
+    els.xrayPill.textContent = `λ: ${wl} Å${label ? " ("+label+")" : ""}`;
   } else {
-    els.refLine.textContent = "";
+    els.xrayPill.textContent = `λ: —`;
   }
 }
 
-function renderTable(mat){
-  const peaks = [...mat.peaks].sort((a,b) => a.twoTheta - b.twoTheta);
+function setMaterialPill(mat){
+  const bits = [];
+  if (mat.phase) bits.push(`Phase: ${mat.phase}`);
+  els.matPill.textContent = bits.length ? bits.join(" • ") : "—";
+}
+
+function rebuildMaterialDropdown(){
+  els.materialSel.innerHTML = DB.materials
+    .map(m => `<option value="${m.id}">${m.name}</option>`)
+    .join("");
+}
+
+function rebuildOrientationDropdown(mat){
+  els.orientSel.innerHTML = (mat.orientations || [])
+    .map(o => `<option value="${o.name}">${o.name}</option>`)
+    .join("");
+}
+
+function renderLiteraturePanel(orient){
+  const lit = orient.literature || [];
+  const enabled = (currentMode() === "literature" && lit.length > 0);
+  els.litPanel.style.display = enabled ? "" : "none";
+
+  if (!enabled) return;
+
+  currentLitIndex = clamp(currentLitIndex, 0, lit.length - 1);
+  const entry = lit[currentLitIndex];
+
+  els.litIdx.textContent = `${currentLitIndex + 1} / ${lit.length}`;
+
+  // Title line
+  els.litTitle.textContent = entry.title || "Literature entry";
+
+  // Meta line (compact)
+  const parts = [];
+  if (entry.authors) parts.push(entry.authors);
+  if (entry.journal) parts.push(entry.journal);
+  if (entry.year) parts.push(entry.year);
+  if (entry.doi) parts.push(`DOI: ${entry.doi}`);
+  if (entry.url) parts.push(`Link: ${entry.url}`);
+
+  // Make URL clickable if present
+  const url = entry.url;
+  const metaText = parts.filter(Boolean).join(" • ");
+
+  if (url){
+    // Replace raw "Link: url" with clickable link
+    const safe = metaText.replace(`Link: ${url}`, `Link: <a href="${url}" target="_blank" rel="noopener">open</a>`);
+    els.litMeta.innerHTML = safe + (entry.notes ? `<br>${entry.notes}` : "");
+  } else {
+    els.litMeta.textContent = metaText + (entry.notes ? `\n${entry.notes}` : "");
+  }
+
+  els.prevLit.disabled = (lit.length <= 1);
+  els.nextLit.disabled = (lit.length <= 1);
+}
+
+function renderTable(orient){
+  const peaks = [...getActivePeaks(orient)].sort((a,b) => a.twoTheta - b.twoTheta);
   els.tableBody.innerHTML = "";
+
   for (const p of peaks){
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td>${p.twoTheta.toFixed(2)}</td>
+      <td>${Number(p.twoTheta).toFixed(2)}</td>
       <td>${p.hkl || ""}</td>
-      <td>${p.orientation || ""}</td>
-      <td>${(p.relI ?? 1).toFixed(2)}</td>
+      <td>${p.note || ""}</td>
     `;
-    tr.addEventListener('mouseenter', () => drawPlot(mat, p.twoTheta));
-    tr.addEventListener('mouseleave', () => drawPlot(mat, null));
+
+    tr.addEventListener('mouseenter', () => drawPlot(orient, p.twoTheta));
+    tr.addEventListener('mouseleave', () => drawPlot(orient, null));
+
     els.tableBody.appendChild(tr);
   }
 }
 
-function drawPlot(mat, highlightTwoTheta=null){
+function drawPlot(orient, highlightTwoTheta=null){
   const canvas = els.plot;
   const ctx = canvas.getContext('2d');
   const W = canvas.width, H = canvas.height;
 
   const xmin = parseFloat(els.xmin.value);
   const xmax = parseFloat(els.xmax.value);
-  const sigma = Math.max(0.001, parseFloat(els.sigma.value));
-  const N = clamp(parseInt(els.points.value || "2000", 10), 300, 20000);
+
+  const sigma = FIXED_SIGMA_DEG;
+  const N = FIXED_POINTS;
+
+  const peaks = (getActivePeaks(orient) || [])
+    .map(p => ({
+      mu: Number(p.twoTheta),
+      amp: Number(p.amp ?? 1) // arbitrary intensity (optional)
+    }))
+    .filter(p => Number.isFinite(p.mu) && p.mu >= xmin && p.mu <= xmax);
 
   // Build x grid + summed Gaussian y
   const xs = new Float64Array(N);
   const ys = new Float64Array(N);
-
-  const peaks = mat.peaks.map(p => ({
-    mu: p.twoTheta,
-    amp: (p.relI ?? 1)
-  })).filter(p => p.mu >= xmin && p.mu <= xmax);
 
   for (let i=0; i<N; i++){
     const x = xmin + (xmax - xmin) * (i / (N - 1));
@@ -189,7 +428,7 @@ function drawPlot(mat, highlightTwoTheta=null){
     ys[i] = y;
   }
 
-  // Normalize y to fit plot area (arbitrary scale)
+  // Normalize y to plot area
   let ymax = 0;
   for (let i=0; i<N; i++) if (ys[i] > ymax) ymax = ys[i];
   ymax = ymax || 1;
@@ -198,7 +437,7 @@ function drawPlot(mat, highlightTwoTheta=null){
   ctx.clearRect(0,0,W,H);
 
   // Margins
-  const mL = 70, mR = 20, mT = 18, mB = 48;
+  const mL = 100, mR = 26, mT = 22, mB = 72;
   const pW = W - mL - mR;
   const pH = H - mT - mB;
 
@@ -206,39 +445,61 @@ function drawPlot(mat, highlightTwoTheta=null){
   const xToPx = x => mL + (x - xmin) / (xmax - xmin) * pW;
   const yToPx = y => mT + (1 - (y / ymax)) * pH;
 
-  // Axes
-  ctx.globalAlpha = 1;
+  // --- background subtle grid ---
   ctx.lineWidth = 1;
+  for (let i=0; i<=6; i++){
+    const y = mT + (pH * i / 6);
+    ctx.strokeStyle = "rgba(255,255,255,0.07)";
+    ctx.beginPath();
+    ctx.moveTo(mL, y);
+    ctx.lineTo(mL + pW, y);
+    ctx.stroke();
+  }
 
-  // axis lines
+  // Axes
   ctx.strokeStyle = "rgba(255,255,255,0.22)";
+  ctx.lineWidth = 1.2;
   ctx.beginPath();
   ctx.moveTo(mL, mT);
   ctx.lineTo(mL, mT + pH);
   ctx.lineTo(mL + pW, mT + pH);
   ctx.stroke();
 
-  // x ticks
-  ctx.fillStyle = "rgba(255,255,255,0.75)";
-  ctx.font = "14px system-ui, Segoe UI, Arial";
+  // x ticks + labels (bigger)
+  ctx.fillStyle = "rgba(255,255,255,0.85)";
+  ctx.font = "18px system-ui, Segoe UI, Arial";
   const tickCount = 7;
   for (let t=0; t<=tickCount; t++){
     const x = xmin + (xmax - xmin) * (t / tickCount);
     const px = xToPx(x);
 
-    ctx.strokeStyle = "rgba(255,255,255,0.12)";
+    ctx.strokeStyle = "rgba(255,255,255,0.10)";
     ctx.beginPath();
     ctx.moveTo(px, mT);
     ctx.lineTo(px, mT + pH);
     ctx.stroke();
 
-    ctx.fillText(x.toFixed(0), px - 8, mT + pH + 26);
+    const txt = x.toFixed(0);
+    ctx.fillText(txt, px - (txt.length*5), mT + pH + 40);
   }
-  ctx.fillText("2θ (degrees)", mL + pW/2 - 40, H - 12);
+
+  // y label + x label (bigger)
+  ctx.fillStyle = "rgba(255,255,255,0.92)";
+  ctx.font = "20px system-ui, Segoe UI, Arial";
+
+  // X label
+  ctx.fillText("2θ (degrees)", mL + pW/2 - 62, H - 18);
+
+  // Y label rotated
+  ctx.save();
+  ctx.translate(28, mT + pH/2 + 62);
+  ctx.rotate(-Math.PI/2);
+  ctx.fillText("Intensity (arb. units)", 0, 0);
+  ctx.restore();
 
   // Plot curve
   ctx.strokeStyle = "rgba(96,165,250,0.95)";
-  ctx.lineWidth = 2;
+  ctx.lineWidth = 2.4;
   ctx.beginPath();
   for (let i=0; i<N; i++){
     const px = xToPx(xs[i]);
@@ -249,21 +510,21 @@ function drawPlot(mat, highlightTwoTheta=null){
   ctx.stroke();
 
   // Stick markers at peak centers
-  ctx.strokeStyle = "rgba(255,255,255,0.40)";
-  ctx.lineWidth = 1;
+  ctx.strokeStyle = "rgba(255,255,255,0.42)";
+  ctx.lineWidth = 1.2;
   for (const pk of peaks){
     const px = xToPx(pk.mu);
     ctx.beginPath();
     ctx.moveTo(px, mT + pH);
-    ctx.lineTo(px, mT + pH - 26);
+    ctx.lineTo(px, mT + pH - 30);
     ctx.stroke();
   }
 
-  // Highlight (hover)
+  // Highlight line
   if (highlightTwoTheta != null){
     const px = xToPx(highlightTwoTheta);
     ctx.strokeStyle = "rgba(245,158,11,0.95)";
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 2.6;
     ctx.beginPath();
     ctx.moveTo(px, mT);
     ctx.lineTo(px, mT + pH);
@@ -271,38 +532,110 @@ function drawPlot(mat, highlightTwoTheta=null){
   }
 }
 
-function wire(){
-  const rerender = () => {
+function rerenderAll(){
+  if (!DB) return;
+
+  setXrayPill();
+
+  const mat = getSelectedMaterial();
+  setMaterialPill(mat);
+
+  const orient = getSelectedOrientation(mat);
+
+  // Literature panel depends on mode + available entries
+  renderLiteraturePanel(orient);
+
+  // Table + plot
+  renderTable(orient);
+  drawPlot(orient, null);
+}
+
+function wireUI(){
+  els.materialSel.addEventListener('change', () => {
+    currentLitIndex = 0;
     const mat = getSelectedMaterial();
-    renderMeta(mat);
-    renderTable(mat);
-    drawPlot(mat);
-  };
+    rebuildOrientationDropdown(mat);
+    rerenderAll();
+  });
 
-  els.materialSel.addEventListener('change', rerender);
-  els.xmin.addEventListener('input', rerender);
-  els.xmax.addEventListener('input', rerender);
-  els.sigma.addEventListener('input', rerender);
-  els.points.addEventListener('input', rerender);
+  els.orientSel.addEventListener('change', () => {
+    currentLitIndex = 0;
+    rerenderAll();
+  });
 
-  rerender();
+  els.xmin.addEventListener('input', () => rerenderAll());
+  els.xmax.addEventListener('input', () => rerenderAll());
+
+  els.modeTheoretical.addEventListener('change', () => {
+    currentLitIndex = 0;
+    rerenderAll();
+  });
+  els.modeLiterature.addEventListener('change', () => {
+    currentLitIndex = 0;
+    rerenderAll();
+  });
+
+  els.prevLit.addEventListener('click', () => {
+    currentLitIndex = Math.max(0, currentLitIndex - 1);
+    rerenderAll();
+  });
+  els.nextLit.addEventListener('click', () => {
+    const mat = getSelectedMaterial();
+    const orient = getSelectedOrientation(mat);
+    const lit = orient.literature || [];
+    currentLitIndex = Math.min(lit.length - 1, currentLitIndex + 1);
+    rerenderAll();
+  });
+
+  // Source selector: load different JSON file
+  els.sourceSel.addEventListener('change', async () => {
+    const srcId = els.sourceSel.value;
+    const src = XRAY_SOURCES.find(s => s.id === srcId) || XRAY_SOURCES[0];
+    await loadDB(src.file);
+  });
+}
+
+function populateSourceDropdown(){
+  els.sourceSel.innerHTML = XRAY_SOURCES
+    .map(s => `<option value="${s.id}">${s.label}</option>`)
+    .join("");
+
+  const def = XRAY_SOURCES.find(s => s.default) || XRAY_SOURCES[0];
+  els.sourceSel.value = def.id;
+  return def;
+}
+
+async function loadDB(filename){
+  try{
+    els.loadWarn.style.display = "none";
+    els.loadWarn.textContent = "";
+
+    const res = await fetch(`./${filename}`, { cache: "no-store" });
+    if (!res.ok) throw new Error(`HTTP ${res.status} loading ${filename}`);
+
+    DB = await res.json();
+
+    // Build dropdowns
+    rebuildMaterialDropdown();
+    const mat = getSelectedMaterial();
+    rebuildOrientationDropdown(mat);
+
+    // reset literature index on load
+    currentLitIndex = 0;
+
+    rerenderAll();
+  } catch (e){
+    console.error(e);
+    els.loadWarn.style.display = "";
+    els.loadWarn.textContent =
+      `Failed to load "${filename}". If you opened the HTML by double-clicking it, fetch() may be blocked. Run a local server (VS Code Live Server or "python -m http.server") and reload.`;
+  }
 }
 
 async function init(){
-  try{
-    const res = await fetch("./xrd_peaks.json", { cache: "no-store" });
-    DB = await res.json();
-
-    // Populate dropdown
-    els.materialSel.innerHTML = DB.materials
-      .map(m => `<option value="${m.id}">${m.name}</option>`)
-      .join("");
-
-    wire();
-  } catch (e){
-    document.body.innerHTML = "<pre style='padding:18px;color:white;background:#111'>Failed to load peaks.json. If you opened index.html directly, fetch() may be blocked. Serve with a local server (VS Code Live Server / python -m http.server).</pre>";
-    console.error(e);
-  }
+  const def = populateSourceDropdown();
+  wireUI();
+  await loadDB(def.file);
 }
 init();
 </script>
