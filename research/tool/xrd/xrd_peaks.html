@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>XRD Peak Quick Reference</title>
+  <style>
+    :root{
+      --bg:#0b1020; --card:rgba(255,255,255,.06); --border:rgba(255,255,255,.14);
+      --text:#e8eefc; --muted:rgba(232,238,252,.72); --accent:#60a5fa;
+    }
+    body{ margin:0; font-family:system-ui,Segoe UI,Roboto,Arial; background:linear-gradient(180deg,#070a14,#0b1020); color:var(--text); }
+    .wrap{ max-width:1100px; margin:0 auto; padding:22px; }
+    h1{ margin:0 0 6px; font-size:22px; letter-spacing:.2px; }
+    .sub{ color:var(--muted); margin:0 0 16px; }
+    .grid{ display:grid; grid-template-columns: 1fr; gap:14px; }
+    @media (min-width: 900px){ .grid{ grid-template-columns: 420px 1fr; } }
+    .card{
+      background:var(--card); border:1px solid var(--border); border-radius:16px;
+      box-shadow:0 18px 50px rgba(0,0,0,.35); padding:14px;
+      backdrop-filter: blur(10px);
+    }
+    label{ display:block; font-size:13px; color:var(--muted); margin-bottom:6px; }
+    select, input{
+      width:100%; padding:10px 12px; border-radius:12px; border:1px solid var(--border);
+      background:rgba(0,0,0,.18); color:var(--text); outline:none;
+    }
+    .row{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+    .hint{ font-size:12px; color:var(--muted); margin-top:8px; line-height:1.35; }
+    .meta{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:10px; }
+    .pill{ font-size:12px; color:var(--muted); border:1px solid var(--border); padding:6px 10px; border-radius:999px; }
+    a{ color:var(--accent); text-decoration:none; }
+    a:hover{ text-decoration:underline; }
+
+    table{ width:100%; border-collapse:collapse; margin-top:10px; font-size:13px; }
+    th, td{ padding:10px 8px; border-bottom:1px solid rgba(255,255,255,.10); }
+    th{ text-align:left; color:var(--muted); font-weight:600; }
+    tr:hover{ background:rgba(96,165,250,.08); }
+    .canvas-wrap{ padding:10px; }
+    canvas{ width:100%; height:280px; display:block; border-radius:12px; border:1px solid rgba(255,255,255,.10); background:rgba(0,0,0,.18); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>XRD 2θ–ω Peak Toolkit</h1>
+    <p class="sub">Interactive quick reference for theoretical peak positions (from your JSON).</p>
+
+    <div class="grid">
+      <div class="card">
+        <label for="materialSel">Material</label>
+        <select id="materialSel"></select>
+
+        <div class="row" style="margin-top:12px;">
+          <div>
+            <label for="xmin">2θ min</label>
+            <input id="xmin" type="number" step="0.1" value="10" />
+          </div>
+          <div>
+            <label for="xmax">2θ max</label>
+            <input id="xmax" type="number" step="0.1" value="100" />
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:10px;">
+          <div>
+            <label for="sigma">Gaussian width (σ, degrees)</label>
+            <input id="sigma" type="number" step="0.01" value="0.15" />
+          </div>
+          <div>
+            <label for="points">Plot resolution (points)</label>
+            <input id="points" type="number" step="50" value="2000" />
+          </div>
+        </div>
+
+        <div class="meta" id="metaLine"></div>
+        <div class="hint">
+          Tip: keep σ small (0.05–0.25°) for sharp peaks. Intensities are arbitrary; we just visualize positions.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="canvas-wrap">
+          <canvas id="plot" width="1200" height="420"></canvas>
+        </div>
+
+        <table id="peakTable">
+          <thead>
+            <tr>
+              <th>2θ (deg)</th>
+              <th>(hkl)</th>
+              <th>Orientation</th>
+              <th>Rel. I</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+
+        <div class="hint" id="refLine"></div>
+      </div>
+    </div>
+  </div>
+
+<script>
+let DB = null;
+
+const els = {
+  materialSel: document.getElementById('materialSel'),
+  xmin: document.getElementById('xmin'),
+  xmax: document.getElementById('xmax'),
+  sigma: document.getElementById('sigma'),
+  points: document.getElementById('points'),
+  plot: document.getElementById('plot'),
+  metaLine: document.getElementById('metaLine'),
+  refLine: document.getElementById('refLine'),
+  tableBody: document.querySelector('#peakTable tbody')
+};
+
+function clamp(v, a, b){ return Math.max(a, Math.min(b, v)); }
+
+function gaussian(x, mu, sigma){
+  const t = (x - mu) / sigma;
+  return Math.exp(-0.5 * t * t);
+}
+
+function getSelectedMaterial(){
+  const id = els.materialSel.value;
+  return DB.materials.find(m => m.id === id) || DB.materials[0];
+}
+
+function renderMeta(mat){
+  const wl = DB.meta?.wavelength_angstrom;
+  const label = DB.meta?.label;
+  els.metaLine.innerHTML = "";
+  if (mat.phase) els.metaLine.innerHTML += `<span class="pill">Phase: ${mat.phase}</span>`;
+  if (wl) els.metaLine.innerHTML += `<span class="pill">λ: ${wl} Å${label ? " ("+label+")" : ""}</span>`;
+  if (mat.notes) els.metaLine.innerHTML += `<span class="pill">${mat.notes}</span>`;
+
+  if (mat.reference_url){
+    els.refLine.innerHTML = `Reference: <a href="${mat.reference_url}" target="_blank" rel="noopener">paper / database link</a>`;
+  } else {
+    els.refLine.textContent = "";
+  }
+}
+
+function renderTable(mat){
+  const peaks = [...mat.peaks].sort((a,b) => a.twoTheta - b.twoTheta);
+  els.tableBody.innerHTML = "";
+  for (const p of peaks){
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${p.twoTheta.toFixed(2)}</td>
+      <td>${p.hkl || ""}</td>
+      <td>${p.orientation || ""}</td>
+      <td>${(p.relI ?? 1).toFixed(2)}</td>
+    `;
+    tr.addEventListener('mouseenter', () => drawPlot(mat, p.twoTheta));
+    tr.addEventListener('mouseleave', () => drawPlot(mat, null));
+    els.tableBody.appendChild(tr);
+  }
+}
+
+function drawPlot(mat, highlightTwoTheta=null){
+  const canvas = els.plot;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+
+  const xmin = parseFloat(els.xmin.value);
+  const xmax = parseFloat(els.xmax.value);
+  const sigma = Math.max(0.001, parseFloat(els.sigma.value));
+  const N = clamp(parseInt(els.points.value || "2000", 10), 300, 20000);
+
+  // Build x grid + summed Gaussian y
+  const xs = new Float64Array(N);
+  const ys = new Float64Array(N);
+
+  const peaks = mat.peaks.map(p => ({
+    mu: p.twoTheta,
+    amp: (p.relI ?? 1)
+  })).filter(p => p.mu >= xmin && p.mu <= xmax);
+
+  for (let i=0; i<N; i++){
+    const x = xmin + (xmax - xmin) * (i / (N - 1));
+    xs[i] = x;
+
+    let y = 0;
+    for (const pk of peaks){
+      y += pk.amp * gaussian(x, pk.mu, sigma);
+    }
+    ys[i] = y;
+  }
+
+  // Normalize y to fit plot area (arbitrary scale)
+  let ymax = 0;
+  for (let i=0; i<N; i++) if (ys[i] > ymax) ymax = ys[i];
+  ymax = ymax || 1;
+
+  // Clear
+  ctx.clearRect(0,0,W,H);
+
+  // Margins
+  const mL = 70, mR = 20, mT = 18, mB = 48;
+  const pW = W - mL - mR;
+  const pH = H - mT - mB;
+
+  // Helpers
+  const xToPx = x => mL + (x - xmin) / (xmax - xmin) * pW;
+  const yToPx = y => mT + (1 - (y / ymax)) * pH;
+
+  // Axes
+  ctx.globalAlpha = 1;
+  ctx.lineWidth = 1;
+
+  // axis lines
+  ctx.strokeStyle = "rgba(255,255,255,0.22)";
+  ctx.beginPath();
+  ctx.moveTo(mL, mT);
+  ctx.lineTo(mL, mT + pH);
+  ctx.lineTo(mL + pW, mT + pH);
+  ctx.stroke();
+
+  // x ticks
+  ctx.fillStyle = "rgba(255,255,255,0.75)";
+  ctx.font = "14px system-ui, Segoe UI, Arial";
+  const tickCount = 7;
+  for (let t=0; t<=tickCount; t++){
+    const x = xmin + (xmax - xmin) * (t / tickCount);
+    const px = xToPx(x);
+
+    ctx.strokeStyle = "rgba(255,255,255,0.12)";
+    ctx.beginPath();
+    ctx.moveTo(px, mT);
+    ctx.lineTo(px, mT + pH);
+    ctx.stroke();
+
+    ctx.fillText(x.toFixed(0), px - 8, mT + pH + 26);
+  }
+  ctx.fillText("2θ (degrees)", mL + pW/2 - 40, H - 12);
+
+  // Plot curve
+  ctx.strokeStyle = "rgba(96,165,250,0.95)";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  for (let i=0; i<N; i++){
+    const px = xToPx(xs[i]);
+    const py = yToPx(ys[i]);
+    if (i === 0) ctx.moveTo(px, py);
+    else ctx.lineTo(px, py);
+  }
+  ctx.stroke();
+
+  // Stick markers at peak centers
+  ctx.strokeStyle = "rgba(255,255,255,0.40)";
+  ctx.lineWidth = 1;
+  for (const pk of peaks){
+    const px = xToPx(pk.mu);
+    ctx.beginPath();
+    ctx.moveTo(px, mT + pH);
+    ctx.lineTo(px, mT + pH - 26);
+    ctx.stroke();
+  }
+
+  // Highlight (hover)
+  if (highlightTwoTheta != null){
+    const px = xToPx(highlightTwoTheta);
+    ctx.strokeStyle = "rgba(245,158,11,0.95)";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(px, mT);
+    ctx.lineTo(px, mT + pH);
+    ctx.stroke();
+  }
+}
+
+function wire(){
+  const rerender = () => {
+    const mat = getSelectedMaterial();
+    renderMeta(mat);
+    renderTable(mat);
+    drawPlot(mat);
+  };
+
+  els.materialSel.addEventListener('change', rerender);
+  els.xmin.addEventListener('input', rerender);
+  els.xmax.addEventListener('input', rerender);
+  els.sigma.addEventListener('input', rerender);
+  els.points.addEventListener('input', rerender);
+
+  rerender();
+}
+
+async function init(){
+  try{
+    const res = await fetch("./peaks.json", { cache: "no-store" });
+    DB = await res.json();
+
+    // Populate dropdown
+    els.materialSel.innerHTML = DB.materials
+      .map(m => `<option value="${m.id}">${m.name}</option>`)
+      .join("");
+
+    wire();
+  } catch (e){
+    document.body.innerHTML = "<pre style='padding:18px;color:white;background:#111'>Failed to load peaks.json. If you opened index.html directly, fetch() may be blocked. Serve with a local server (VS Code Live Server / python -m http.server).</pre>";
+    console.error(e);
+  }
+}
+init();
+</script>
+</body>
+</html>
