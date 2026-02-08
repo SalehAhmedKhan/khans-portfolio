@@ -242,18 +242,20 @@
 
 <script>
 /* ---------- fixed plot params (no user controls) ---------- */
-const FIXED_SIGMA_DEG = 0.15;   // looks good
-const FIXED_POINTS    = 2000;   // looks good
+const FIXED_SIGMA_DEG = 0.15;
+const FIXED_POINTS    = 2000;
 
-/* ---------- X-ray source list (each maps to a JSON file) ---------- */
-const XRAY_SOURCES = [
-  { id:"cu_ka",  label:"Cu Kα",  file:"xrd_peaks_cu_ka.json",  default:true },
-  { id:"co_ka",  label:"Co Kα",  file:"xrd_peaks_co_ka.json" },
-  { id:"mo_ka",  label:"Mo Kα",  file:"xrd_peaks_mo_ka.json" },
-  { id:"cr_ka",  label:"Cr Kα",  file:"xrd_peaks_cr_ka.json" },
-  { id:"fe_ka",  label:"Fe Kα",  file:"xrd_peaks_fe_ka.json" }
+/* ---------- X-ray sources (each maps to a JSON file) ---------- */
+const XRAY_SOURCES_ALL = [
+  { id:"cu_ka", label:"Cu Kα", file:"xrd_peaks_cu_ka.json", default:true },
+  { id:"co_ka", label:"Co Kα", file:"xrd_peaks_co_ka.json" },
+  { id:"mo_ka", label:"Mo Kα", file:"xrd_peaks_mo_ka.json" },
+  { id:"cr_ka", label:"Cr Kα", file:"xrd_peaks_cr_ka.json" },
+  { id:"fe_ka", label:"Fe Kα", file:"xrd_peaks_fe_ka.json" },
+  { id:"ag_ka", label:"Ag Kα", file:"xrd_peaks_ag_ka.json" } // optional if you add it
 ];
 
+let XRAY_SOURCES = []; // filtered to only existing files
 let DB = null;
 let currentLitIndex = 0;
 
@@ -312,17 +314,11 @@ function getActivePeaks(orient){
 function setXrayPill(){
   const wl = DB?.xray?.wavelength_angstrom;
   const label = DB?.xray?.label;
-  if (wl){
-    els.xrayPill.textContent = `λ: ${wl} Å${label ? " ("+label+")" : ""}`;
-  } else {
-    els.xrayPill.textContent = `λ: —`;
-  }
+  els.xrayPill.textContent = wl ? `λ: ${wl} Å${label ? " ("+label+")" : ""}` : `λ: —`;
 }
 
 function setMaterialPill(mat){
-  const bits = [];
-  if (mat.phase) bits.push(`Phase: ${mat.phase}`);
-  els.matPill.textContent = bits.length ? bits.join(" • ") : "—";
+  els.matPill.textContent = mat.phase ? `Phase: ${mat.phase}` : "—";
 }
 
 function rebuildMaterialDropdown(){
@@ -341,32 +337,25 @@ function renderLiteraturePanel(orient){
   const lit = orient.literature || [];
   const enabled = (currentMode() === "literature" && lit.length > 0);
   els.litPanel.style.display = enabled ? "" : "none";
-
   if (!enabled) return;
 
   currentLitIndex = clamp(currentLitIndex, 0, lit.length - 1);
   const entry = lit[currentLitIndex];
 
   els.litIdx.textContent = `${currentLitIndex + 1} / ${lit.length}`;
-
-  // Title line
   els.litTitle.textContent = entry.title || "Literature entry";
 
-  // Meta line (compact)
   const parts = [];
   if (entry.authors) parts.push(entry.authors);
   if (entry.journal) parts.push(entry.journal);
   if (entry.year) parts.push(entry.year);
   if (entry.doi) parts.push(`DOI: ${entry.doi}`);
-  if (entry.url) parts.push(`Link: ${entry.url}`);
 
-  // Make URL clickable if present
   const url = entry.url;
   const metaText = parts.filter(Boolean).join(" • ");
 
   if (url){
-    // Replace raw "Link: url" with clickable link
-    const safe = metaText.replace(`Link: ${url}`, `Link: <a href="${url}" target="_blank" rel="noopener">open</a>`);
+    const safe = `${metaText}${metaText ? " • " : ""}Link: <a href="${url}" target="_blank" rel="noopener">open</a>`;
     els.litMeta.innerHTML = safe + (entry.notes ? `<br>${entry.notes}` : "");
   } else {
     els.litMeta.textContent = metaText + (entry.notes ? `\n${entry.notes}` : "");
@@ -387,10 +376,8 @@ function renderTable(orient){
       <td>${p.hkl || ""}</td>
       <td>${p.note || ""}</td>
     `;
-
     tr.addEventListener('mouseenter', () => drawPlot(orient, p.twoTheta));
     tr.addEventListener('mouseleave', () => drawPlot(orient, null));
-
     els.tableBody.appendChild(tr);
   }
 }
@@ -407,45 +394,33 @@ function drawPlot(orient, highlightTwoTheta=null){
   const N = FIXED_POINTS;
 
   const peaks = (getActivePeaks(orient) || [])
-    .map(p => ({
-      mu: Number(p.twoTheta),
-      amp: Number(p.amp ?? 1) // arbitrary intensity (optional)
-    }))
+    .map(p => ({ mu: Number(p.twoTheta), amp: Number(p.amp ?? 1) }))
     .filter(p => Number.isFinite(p.mu) && p.mu >= xmin && p.mu <= xmax);
 
-  // Build x grid + summed Gaussian y
   const xs = new Float64Array(N);
   const ys = new Float64Array(N);
 
   for (let i=0; i<N; i++){
     const x = xmin + (xmax - xmin) * (i / (N - 1));
     xs[i] = x;
-
     let y = 0;
-    for (const pk of peaks){
-      y += pk.amp * gaussian(x, pk.mu, sigma);
-    }
+    for (const pk of peaks) y += pk.amp * gaussian(x, pk.mu, sigma);
     ys[i] = y;
   }
 
-  // Normalize y to plot area
   let ymax = 0;
   for (let i=0; i<N; i++) if (ys[i] > ymax) ymax = ys[i];
   ymax = ymax || 1;
 
-  // Clear
   ctx.clearRect(0,0,W,H);
 
-  // Margins
   const mL = 100, mR = 26, mT = 22, mB = 72;
   const pW = W - mL - mR;
   const pH = H - mT - mB;
 
-  // Helpers
   const xToPx = x => mL + (x - xmin) / (xmax - xmin) * pW;
   const yToPx = y => mT + (1 - (y / ymax)) * pH;
 
-  // --- background subtle grid ---
   ctx.lineWidth = 1;
   for (let i=0; i<=6; i++){
     const y = mT + (pH * i / 6);
@@ -456,7 +431,6 @@ function drawPlot(orient, highlightTwoTheta=null){
     ctx.stroke();
   }
 
-  // Axes
   ctx.strokeStyle = "rgba(255,255,255,0.22)";
   ctx.lineWidth = 1.2;
   ctx.beginPath();
@@ -465,7 +439,6 @@ function drawPlot(orient, highlightTwoTheta=null){
   ctx.lineTo(mL + pW, mT + pH);
   ctx.stroke();
 
-  // x ticks + labels (bigger)
   ctx.fillStyle = "rgba(255,255,255,0.85)";
   ctx.font = "18px system-ui, Segoe UI, Arial";
   const tickCount = 7;
@@ -483,21 +456,16 @@ function drawPlot(orient, highlightTwoTheta=null){
     ctx.fillText(txt, px - (txt.length*5), mT + pH + 40);
   }
 
-  // y label + x label (bigger)
   ctx.fillStyle = "rgba(255,255,255,0.92)";
   ctx.font = "20px system-ui, Segoe UI, Arial";
-
-  // X label
   ctx.fillText("2θ (degrees)", mL + pW/2 - 62, H - 18);
 
-  // Y label rotated
   ctx.save();
   ctx.translate(28, mT + pH/2 + 62);
   ctx.rotate(-Math.PI/2);
   ctx.fillText("Intensity (arb. units)", 0, 0);
   ctx.restore();
 
-  // Plot curve
   ctx.strokeStyle = "rgba(96,165,250,0.95)";
   ctx.lineWidth = 2.4;
   ctx.beginPath();
@@ -509,7 +477,6 @@ function drawPlot(orient, highlightTwoTheta=null){
   }
   ctx.stroke();
 
-  // Stick markers at peak centers
   ctx.strokeStyle = "rgba(255,255,255,0.42)";
   ctx.lineWidth = 1.2;
   for (const pk of peaks){
@@ -520,7 +487,6 @@ function drawPlot(orient, highlightTwoTheta=null){
     ctx.stroke();
   }
 
-  // Highlight line
   if (highlightTwoTheta != null){
     const px = xToPx(highlightTwoTheta);
     ctx.strokeStyle = "rgba(245,158,11,0.95)";
@@ -534,18 +500,13 @@ function drawPlot(orient, highlightTwoTheta=null){
 
 function rerenderAll(){
   if (!DB) return;
-
   setXrayPill();
 
   const mat = getSelectedMaterial();
   setMaterialPill(mat);
 
   const orient = getSelectedOrientation(mat);
-
-  // Literature panel depends on mode + available entries
   renderLiteraturePanel(orient);
-
-  // Table + plot
   renderTable(orient);
   drawPlot(orient, null);
 }
@@ -587,7 +548,6 @@ function wireUI(){
     rerenderAll();
   });
 
-  // Source selector: load different JSON file
   els.sourceSel.addEventListener('change', async () => {
     const srcId = els.sourceSel.value;
     const src = XRAY_SOURCES.find(s => s.id === srcId) || XRAY_SOURCES[0];
@@ -595,11 +555,45 @@ function wireUI(){
   });
 }
 
-function populateSourceDropdown(){
+/* Check if a JSON file exists; if HEAD isn't supported, fall back to a tiny GET */
+async function fileExists(file){
+  // Try HEAD first
+  try{
+    const head = await fetch(`./${file}`, { method: "HEAD", cache: "no-store" });
+    if (head.ok) return true;
+    // If server responds but not OK, treat as missing
+    return false;
+  } catch {
+    // Fall back to GET (some static hosts disallow HEAD or local servers behave differently)
+    try{
+      const res = await fetch(`./${file}`, { method: "GET", cache: "no-store" });
+      return res.ok;
+    } catch {
+      return false;
+    }
+  }
+}
+
+async function populateSourceDropdown(){
+  // Filter to only sources whose JSON actually exists
+  const checks = await Promise.all(
+    XRAY_SOURCES_ALL.map(async s => ({ ...s, exists: await fileExists(s.file) }))
+  );
+  XRAY_SOURCES = checks.filter(s => s.exists);
+
+  if (!XRAY_SOURCES.length){
+    els.sourceSel.innerHTML = "";
+    els.loadWarn.style.display = "";
+    els.loadWarn.textContent =
+      `No X-ray source JSON files were found in this folder. Put at least one JSON (e.g., "xrd_peaks_cu_ka.json") next to this HTML.`;
+    return null;
+  }
+
   els.sourceSel.innerHTML = XRAY_SOURCES
     .map(s => `<option value="${s.id}">${s.label}</option>`)
     .join("");
 
+  // Prefer default (Cu Kα) if present, else first available
   const def = XRAY_SOURCES.find(s => s.default) || XRAY_SOURCES[0];
   els.sourceSel.value = def.id;
   return def;
@@ -615,14 +609,11 @@ async function loadDB(filename){
 
     DB = await res.json();
 
-    // Build dropdowns
     rebuildMaterialDropdown();
     const mat = getSelectedMaterial();
     rebuildOrientationDropdown(mat);
 
-    // reset literature index on load
     currentLitIndex = 0;
-
     rerenderAll();
   } catch (e){
     console.error(e);
@@ -633,9 +624,9 @@ async function loadDB(filename){
 }
 
 async function init(){
-  const def = populateSourceDropdown();
   wireUI();
-  await loadDB(def.file);
+  const def = await populateSourceDropdown();
+  if (def) await loadDB(def.file);
 }
 init();
 </script>
