@@ -28,8 +28,8 @@
             --lg2: #0b1228;
             --lg3: #070a14;
 
-            /* Align sidebar top with first card (tune if needed) */
-            --sidebar-align-offset: 2.35rem;
+            /* Align sidebar card top with first card (tune if needed) */
+            --sidebar-align-offset: 0rem;
         }
 
         * { box-sizing: border-box; }
@@ -99,24 +99,18 @@
             border-color: rgba(96, 165, 250, 0.38);
         }
 
-        /* ===== LAYOUT (RESTORED) ===== */
-        .layout {
+        /* ===== HEADER ROW ABOVE COLUMNS (NEW) ===== */
+        .columns-head {
             display: flex;
             gap: 1.5rem;
-            align-items: flex-start;
-        }
-
-        main { flex: 1.7; }
-        aside.sidebar { flex: 0.9; }
-
-        @media (max-width: 900px) {
-            .layout { flex-direction: column; }
-            aside.sidebar { order: -1; }
-        }
-
-        /* ===== SECTION HEADERS ===== */
-        .section-header {
+            align-items: baseline;
             margin-bottom: 0.75rem;
+        }
+
+        .columns-head .left-head { flex: 1.7; }
+        .columns-head .right-head { flex: 0.9; }
+
+        .section-header {
             display: flex;
             align-items: baseline;
             gap: 0.5rem;
@@ -132,6 +126,22 @@
             font-weight: 650;
             letter-spacing: 0.04em;
             color: #c7d8ff;
+        }
+
+        /* ===== LAYOUT (TWO COLUMN) ===== */
+        .layout {
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+        }
+
+        main { flex: 1.7; }
+        aside.sidebar { flex: 0.9; }
+
+        @media (max-width: 900px) {
+            .columns-head { display: none; } /* stack view uses original flow */
+            .layout { flex-direction: column; }
+            aside.sidebar { order: -1; }
         }
 
         /* ===== PAPER LIST ===== */
@@ -249,25 +259,14 @@
             border-radius: calc(var(--radius) + 4px);
         }
 
-        /* ===== UPDATE LOG (RESTORED SIDEBAR CARD) ===== */
+        /* ===== UPDATE LOG (SIDEBAR CARD, TITLE REMOVED INSIDE) ===== */
         .sidebar-card {
             background: var(--card-bg);
             border-radius: var(--radius);
             box-shadow: var(--shadow-soft);
             padding: 1rem 1rem 0.75rem;
             border: 1px solid var(--border);
-
-            /* align top edge with first paper card */
             margin-top: var(--sidebar-align-offset);
-        }
-
-        @media (max-width: 900px) {
-            .sidebar-card { margin-top: 0; }
-        }
-
-        .sidebar-card h2 {
-            font-size: 1rem;
-            margin: 0 0 0.6rem;
         }
 
         .log-list {
@@ -304,10 +303,25 @@
         <a class="back-btn" href="../hub-page.html">Back to Research Hub</a>
     </header>
 
+    <!-- NEW: BOTH TITLES OUTSIDE, SAME LINE -->
+    <div class="columns-head">
+        <div class="left-head">
+            <div class="section-header">
+                <h2>Article List</h2>
+            </div>
+        </div>
+        <div class="right-head">
+            <div class="section-header">
+                <h2 class="update-title">Update Log</h2>
+            </div>
+        </div>
+    </div>
+
     <div class="layout">
 
         <main>
-            <div class="section-header">
+            <!-- mobile fallback title -->
+            <div class="section-header" style="display:none;" id="mobile-article-title">
                 <h2>Article List</h2>
             </div>
 
@@ -315,8 +329,12 @@
         </main>
 
         <aside class="sidebar">
-            <div class="sidebar-card">
+            <!-- mobile fallback title -->
+            <div class="section-header" style="display:none;" id="mobile-update-title">
                 <h2 class="update-title">Update Log</h2>
+            </div>
+
+            <div class="sidebar-card">
                 <ul class="log-list" id="log-list"></ul>
             </div>
         </aside>
