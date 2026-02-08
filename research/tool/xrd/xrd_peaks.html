@@ -8,6 +8,9 @@
   <!-- favicon lives three directories up -->
   <link rel="icon" type="image/png" href="../../../favicon1.png">
 
+  <!-- SheetJS for reading .xlsx in-browser -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
   <style>
     :root{
       --bg:#0b1020;
@@ -64,7 +67,6 @@
 
     label{ display:block; font-size:13px; color:var(--muted); margin:10px 0 6px; }
 
-    /* clean dropdown/input */
     select, input{
       width:100%;
       padding:11px 40px 11px 12px;
@@ -135,25 +137,6 @@
     }
     .refbar .left b{ color:var(--text); font-weight:800; }
 
-    .pager{
-      display:flex; gap:8px; align-items:center;
-      border:1px solid rgba(255,255,255,.12);
-      border-radius:999px;
-      padding:6px 10px;
-      background:rgba(0,0,0,.10);
-    }
-    .pager button{
-      appearance:none;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(0,0,0,.18);
-      color:var(--text);
-      border-radius:10px;
-      padding:6px 10px;
-      cursor:pointer;
-    }
-    .pager button:hover{ border-color:rgba(96,165,250,.55); }
-    .pager .idx{ color:var(--muted); font-size:12px; padding:0 4px; }
-
     .warn{
       color:rgba(245,158,11,.95);
       font-size:12px;
@@ -166,7 +149,7 @@
 <body>
   <div class="wrap">
     <h1>XRD 2θ–ω Peak Toolkit</h1>
-    <p class="sub">Interactive quick reference for XRD peaks (from JSON).</p>
+    <p class="sub">Interactive quick reference for XRD peaks (from Excel).</p>
 
     <div class="grid">
       <!-- LEFT COLUMN -->
@@ -179,8 +162,8 @@
           </div>
         </div>
 
-        <label for="sourceSel">X-ray source</label>
-        <select id="sourceSel"></select>
+        <label for="dbSel">Data file</label>
+        <select id="dbSel"></select>
 
         <div class="panel-title" style="margin-top:14px;">
           <h2>Selection</h2>
@@ -219,11 +202,6 @@
           <div class="left">
             <b>Reference:</b> <span id="doiText">—</span>
           </div>
-          <div class="pager" id="paperPager" style="display:none;">
-            <button id="prevPaper" type="button">&lt;</button>
-            <span class="idx" id="paperIdx">0 / 0</span>
-            <button id="nextPaper" type="button">&gt;</button>
-          </div>
           <div id="doiLinkWrap"></div>
         </div>
 
@@ -246,22 +224,16 @@
 const FIXED_SIGMA_DEG = 0.15;
 const FIXED_POINTS    = 2000;
 
-/* ---------- X-ray sources (each maps to a JSON file) ---------- */
-const XRAY_SOURCES_ALL = [
-  { id:"cu_ka", label:"Cu Kα", file:"xrd_peaks_cu_ka.json", default:true },
-  { id:"co_ka", label:"Co Kα", file:"xrd_peaks_co_ka.json" },
-  { id:"mo_ka", label:"Mo Kα", file:"xrd_peaks_mo_ka.json" },
-  { id:"cr_ka", label:"Cr Kα", file:"xrd_peaks_cr_ka.json" },
-  { id:"fe_ka", label:"Fe Kα", file:"xrd_peaks_fe_ka.json" },
-  { id:"ag_ka", label:"Ag Kα", file:"xrd_peaks_ag_ka.json" }
+/* ---------- Excel files (you can add more later) ---------- */
+const DB_FILES_ALL = [
+  { id:"cu_ka", label:"Cu Kα (Excel)", file:"xrd_database.xlsx", default:true }
 ];
 
-let XRAY_SOURCES = [];
-let DB = null;
-let paperIndex = 0;
+let DB_FILES = [];
+let STORE = null; // normalized structure: { meta:{...}, materials:[{id,name, orientations:[{name, papers:[{doi,peaks}]}]}] }
 
 const els = {
-  sourceSel:   document.getElementById('sourceSel'),
+  dbSel:       document.getElementById('dbSel'),
   xrayPill:    document.getElementById('xrayPill'),
   updatePill:  document.getElementById('updatePill'),
   materialSel: document.getElementById('materialSel'),
@@ -273,11 +245,7 @@ const els = {
   tableBody:   document.querySelector('#peakTable tbody'),
   loadWarn:    document.getElementById('loadWarn'),
   doiText:     document.getElementById('doiText'),
-  doiLinkWrap: document.getElementById('doiLinkWrap'),
-  paperPager:  document.getElementById('paperPager'),
-  prevPaper:   document.getElementById('prevPaper'),
-  nextPaper:   document.getElementById('nextPaper'),
-  paperIdx:    document.getElementById('paperIdx')
+  doiLinkWrap: document.getElementById('doiLinkWrap')
 };
 
 function clamp(v, a, b){ return Math.max(a, Math.min(b, v)); }
@@ -287,7 +255,7 @@ function gaussian(x, mu, sigma){
   return Math.exp(-0.5 * t * t);
 }
 
-/* Parses "18.90 (-201), 38.40 (-402)" => [{twoTheta,hkl}, ...] */
+/* Peaks parser: "18.90 (-201), 38.40 (-402)" => [{twoTheta,hkl}, ...] */
 function parsePeaksLine(line){
   const s = String(line || "").trim();
   if (!s) return [];
@@ -313,39 +281,20 @@ function formatDatePretty(iso){
 }
 
 function setHeaderPills(){
-  const label = DB?.xray_label;
-  const wl = DB?.wavelength_angstrom;
-  const upd = DB?.db_last_updated;
+  const meta = STORE?.meta || {};
+  const label = meta.xray_label;
+  const wl = meta.wavelength_angstrom;
+  const upd = meta.db_last_updated;
 
   els.xrayPill.textContent = (wl && label) ? `λ: ${wl} Å (${label})`
     : (wl ? `λ: ${wl} Å` : `λ: —`);
-
   els.updatePill.textContent = `Updated: ${formatDatePretty(upd)}`;
 }
 
-function getMaterials(){
-  return DB?.materials || [];
-}
+function getMaterials(){ return STORE?.materials || []; }
 
-function getSelectedMaterialId(){ return els.materialSel.value; }
-function getSelectedOrientation(){ return els.orientSel.value; }
-function getSelectedPaperKey(){ return els.paperSel.value; }
-
-function findMaterial(matId){
-  return getMaterials().find(m => m.id === matId) || null;
-}
-
-function getOrientationsForMaterial(mat){
-  return (mat?.orientations || []).map(o => o.name);
-}
-
-function findOrientation(mat, orientName){
-  return (mat?.orientations || []).find(o => o.name === orientName) || null;
-}
-
-function getPapersForOrientation(orient){
-  return orient?.papers || [];
-}
+function findMaterial(id){ return getMaterials().find(m => m.id === id) || null; }
+function findOrientation(mat, name){ return (mat?.orientations || []).find(o => o.name === name) || null; }
 
 function rebuildMaterialDropdown(){
   const mats = getMaterials();
@@ -356,69 +305,39 @@ function rebuildMaterialDropdown(){
 }
 
 function rebuildOrientationDropdown(){
-  const mat = findMaterial(getSelectedMaterialId());
+  const mat = findMaterial(els.materialSel.value);
   const orients = (mat?.orientations || []).map(o => o.name);
   els.orientSel.innerHTML = orients.map(o => `<option value="${o}">${o}</option>`).join("");
 }
 
 function rebuildPaperDropdown(){
-  const mat = findMaterial(getSelectedMaterialId());
-  const orient = findOrientation(mat, getSelectedOrientation());
-  const papers = getPapersForOrientation(orient);
+  const mat = findMaterial(els.materialSel.value);
+  const orient = findOrientation(mat, els.orientSel.value);
+  const papers = orient?.papers || [];
 
-  // Paper dropdown shows short "Paper 1/2/3" but stores index
   els.paperSel.innerHTML = papers.map((p, idx) => {
-    const tag = `Paper ${idx+1}`;
+    const tag = `Paper ${idx + 1}`;
     return `<option value="${idx}">${tag}</option>`;
   }).join("");
 
-  paperIndex = 0;
   if (papers.length) els.paperSel.value = "0";
 }
 
 function getActivePaper(){
-  const mat = findMaterial(getSelectedMaterialId());
-  const orient = findOrientation(mat, getSelectedOrientation());
-  const papers = getPapersForOrientation(orient);
+  const mat = findMaterial(els.materialSel.value);
+  const orient = findOrientation(mat, els.orientSel.value);
+  const papers = orient?.papers || [];
   if (!papers.length) return null;
 
-  // prefer dropdown selection
-  const sel = Number(getSelectedPaperKey());
-  if (Number.isFinite(sel) && papers[sel]) {
-    paperIndex = sel;
-    return papers[sel];
-  }
-
-  paperIndex = clamp(paperIndex, 0, papers.length - 1);
-  return papers[paperIndex];
+  const idx = clamp(Number(els.paperSel.value || 0) || 0, 0, papers.length - 1);
+  return papers[idx];
 }
 
 function renderReference(){
-  const mat = findMaterial(getSelectedMaterialId());
-  const orient = findOrientation(mat, getSelectedOrientation());
-  const papers = getPapersForOrientation(orient);
   const p = getActivePaper();
-
-  if (!p){
-    els.doiText.textContent = "—";
-    els.doiLinkWrap.innerHTML = "";
-    els.paperPager.style.display = "none";
-    return;
-  }
-
-  const doi = p.doi || "";
+  const doi = p?.doi || "";
   els.doiText.textContent = doi || "—";
   els.doiLinkWrap.innerHTML = doi ? `<a href="${doi}" target="_blank" rel="noopener">open</a>` : "";
-
-  // pager visibility
-  if (papers.length > 1){
-    els.paperPager.style.display = "";
-    els.paperIdx.textContent = `${paperIndex + 1} / ${papers.length}`;
-    els.prevPaper.disabled = (paperIndex === 0);
-    els.nextPaper.disabled = (paperIndex === papers.length - 1);
-  } else {
-    els.paperPager.style.display = "none";
-  }
 }
 
 function renderTableAndPlot(){
@@ -428,21 +347,17 @@ function renderTableAndPlot(){
   els.tableBody.innerHTML = "";
   for (const pk of peaks){
     const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${Number(pk.twoTheta).toFixed(2)}</td>
-      <td>${pk.hkl || ""}</td>
-    `;
-    tr.addEventListener('mouseenter', () => drawPlot(peaks, pk.twoTheta));
-    tr.addEventListener('mouseleave', () => drawPlot(peaks, null));
+    tr.innerHTML = `<td>${Number(pk.twoTheta).toFixed(2)}</td><td>${pk.hkl || ""}</td>`;
+    tr.addEventListener("mouseenter", () => drawPlot(peaks, pk.twoTheta));
+    tr.addEventListener("mouseleave", () => drawPlot(peaks, null));
     els.tableBody.appendChild(tr);
   }
-
   drawPlot(peaks, null);
 }
 
 function drawPlot(peaks, highlightTwoTheta=null){
   const canvas = els.plot;
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext("2d");
   const W = canvas.width, H = canvas.height;
 
   const xmin = parseFloat(els.xmin.value);
@@ -487,10 +402,7 @@ function drawPlot(peaks, highlightTwoTheta=null){
   for (let i=0; i<=6; i++){
     const y = mT + (pH * i / 6);
     ctx.strokeStyle = "rgba(255,255,255,0.07)";
-    ctx.beginPath();
-    ctx.moveTo(mL, y);
-    ctx.lineTo(mL + pW, y);
-    ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(mL, y); ctx.lineTo(mL + pW, y); ctx.stroke();
   }
 
   // axes
@@ -502,20 +414,15 @@ function drawPlot(peaks, highlightTwoTheta=null){
   ctx.lineTo(mL + pW, mT + pH);
   ctx.stroke();
 
-  // x ticks
+  // ticks
   ctx.fillStyle = "rgba(255,255,255,0.85)";
   ctx.font = "18px system-ui, Segoe UI, Arial";
   const tickCount = 7;
   for (let t=0; t<=tickCount; t++){
     const x = xmin + (xmax - xmin) * (t / tickCount);
     const px = xToPx(x);
-
     ctx.strokeStyle = "rgba(255,255,255,0.10)";
-    ctx.beginPath();
-    ctx.moveTo(px, mT);
-    ctx.lineTo(px, mT + pH);
-    ctx.stroke();
-
+    ctx.beginPath(); ctx.moveTo(px, mT); ctx.lineTo(px, mT + pH); ctx.stroke();
     const txt = x.toFixed(0);
     ctx.fillText(txt, px - (txt.length*5), mT + pH + 40);
   }
@@ -567,14 +474,152 @@ function drawPlot(peaks, highlightTwoTheta=null){
 }
 
 function rerenderAll(){
-  if (!DB) return;
+  if (!STORE) return;
   setHeaderPills();
   renderReference();
   renderTableAndPlot();
 }
 
+/* ---------- Excel read + normalization ---------- */
+function sheetToJson(wb, sheetName){
+  const ws = wb.Sheets[sheetName];
+  if (!ws) return [];
+  return XLSX.utils.sheet_to_json(ws, { defval:"" });
+}
+
+function readMeta(metaRows){
+  // expects columns: key, value
+  const meta = {};
+  for (const r of metaRows){
+    const k = String(r.key || "").trim();
+    if (!k) continue;
+    meta[k] = r.value;
+  }
+  // normalize numeric wavelength
+  if (meta.wavelength_angstrom !== undefined){
+    const n = Number(meta.wavelength_angstrom);
+    meta.wavelength_angstrom = Number.isFinite(n) ? n : meta.wavelength_angstrom;
+  }
+  return meta;
+}
+
+function normalizeEntries(rows){
+  // expects headers: material_id, material_name, orientation, doi, peaks
+  const byMat = new Map();
+
+  for (const r of rows){
+    const id = String(r.material_id || "").trim();
+    if (!id) continue;
+    const name = String(r.material_name || "").trim();
+    const orient = String(r.orientation || "").trim();
+    const doi = String(r.doi || "").trim();
+    const peaks = String(r.peaks || "").trim();
+
+    if (!byMat.has(id)){
+      byMat.set(id, { id, name: name || id, orientations: [] });
+    } else if (name && !byMat.get(id).name){
+      byMat.get(id).name = name;
+    }
+
+    const mat = byMat.get(id);
+
+    let o = mat.orientations.find(x => x.name === orient);
+    if (!o){
+      o = { name: orient, papers: [] };
+      mat.orientations.push(o);
+    }
+    o.papers.push({ doi, peaks });
+  }
+
+  // stable ordering
+  const materials = Array.from(byMat.values()).sort((a,b)=> (a.name||a.id).localeCompare(b.name||b.id));
+  for (const m of materials){
+    m.orientations.sort((a,b)=>a.name.localeCompare(b.name));
+  }
+  return materials;
+}
+
+async function loadExcel(file){
+  try{
+    els.loadWarn.style.display = "none";
+    els.loadWarn.textContent = "";
+
+    const res = await fetch(`./${file}`, { cache:"no-store" });
+    if (!res.ok) throw new Error(`HTTP ${res.status} loading ${file}`);
+
+    const buf = await res.arrayBuffer();
+    const wb = XLSX.read(buf, { type:"array" });
+
+    const metaRows = sheetToJson(wb, "meta");
+    const entryRows = sheetToJson(wb, "entries");
+
+    const meta = readMeta(metaRows);
+    const materials = normalizeEntries(entryRows);
+
+    STORE = { meta, materials };
+
+    // Populate dropdowns
+    rebuildMaterialDropdown();
+
+    const firstMat = els.materialSel.querySelector("option");
+    if (firstMat) els.materialSel.value = firstMat.value;
+
+    rebuildOrientationDropdown();
+    const firstOri = els.orientSel.querySelector("option");
+    if (firstOri) els.orientSel.value = firstOri.value;
+
+    rebuildPaperDropdown();
+
+    rerenderAll();
+  } catch (e){
+    console.error(e);
+    els.loadWarn.style.display = "";
+    els.loadWarn.textContent =
+      `Failed to load "${file}". Make sure "xrd_database.xlsx" is in the same folder as this HTML, and open via GitHub Pages (not double-click).`;
+  }
+}
+
+/* ---------- only show Excel options that exist ---------- */
+async function fileExists(file){
+  try{
+    const head = await fetch(`./${file}`, { method:"HEAD", cache:"no-store" });
+    return head.ok;
+  } catch {
+    try{
+      const res = await fetch(`./${file}`, { method:"GET", cache:"no-store" });
+      return res.ok;
+    } catch {
+      return false;
+    }
+  }
+}
+
+async function populateDbDropdown(){
+  const checks = await Promise.all(DB_FILES_ALL.map(async d => ({...d, exists: await fileExists(d.file)})));
+  DB_FILES = checks.filter(d => d.exists);
+
+  if (!DB_FILES.length){
+    els.dbSel.innerHTML = "";
+    els.loadWarn.style.display = "";
+    els.loadWarn.textContent =
+      `No Excel database file found. Put "xrd_database.xlsx" next to this HTML file.`;
+    return null;
+  }
+
+  els.dbSel.innerHTML = DB_FILES.map(d => `<option value="${d.id}">${d.label}</option>`).join("");
+  const def = DB_FILES.find(d => d.default) || DB_FILES[0];
+  els.dbSel.value = def.id;
+  return def;
+}
+
 /* ---------- UI wiring ---------- */
 function wireUI(){
+  els.dbSel.addEventListener("change", async () => {
+    const id = els.dbSel.value;
+    const item = DB_FILES.find(d => d.id === id) || DB_FILES[0];
+    if (item) await loadExcel(item.file);
+  });
+
   els.materialSel.addEventListener("change", () => {
     rebuildOrientationDropdown();
     const first = els.orientSel.querySelector("option");
@@ -588,114 +633,16 @@ function wireUI(){
     rerenderAll();
   });
 
-  els.paperSel.addEventListener("change", () => {
-    paperIndex = Number(els.paperSel.value || "0") || 0;
-    rerenderAll();
-  });
-
-  els.prevPaper.addEventListener("click", () => {
-    const mat = findMaterial(getSelectedMaterialId());
-    const orient = findOrientation(mat, getSelectedOrientation());
-    const papers = getPapersForOrientation(orient);
-    paperIndex = Math.max(0, paperIndex - 1);
-    if (papers.length) els.paperSel.value = String(paperIndex);
-    rerenderAll();
-  });
-
-  els.nextPaper.addEventListener("click", () => {
-    const mat = findMaterial(getSelectedMaterialId());
-    const orient = findOrientation(mat, getSelectedOrientation());
-    const papers = getPapersForOrientation(orient);
-    paperIndex = Math.min(papers.length - 1, paperIndex + 1);
-    if (papers.length) els.paperSel.value = String(paperIndex);
-    rerenderAll();
-  });
+  els.paperSel.addEventListener("change", () => rerenderAll());
 
   els.xmin.addEventListener("input", () => rerenderAll());
   els.xmax.addEventListener("input", () => rerenderAll());
-
-  els.sourceSel.addEventListener("change", async () => {
-    const srcId = els.sourceSel.value;
-    const src = XRAY_SOURCES.find(s => s.id === srcId) || XRAY_SOURCES[0];
-    await loadDB(src.file);
-  });
-}
-
-/* ---------- only show sources whose JSON exists ---------- */
-async function fileExists(file){
-  try{
-    const head = await fetch(`./${file}`, { method: "HEAD", cache: "no-store" });
-    return head.ok;
-  } catch {
-    try{
-      const res = await fetch(`./${file}`, { method: "GET", cache: "no-store" });
-      return res.ok;
-    } catch {
-      return false;
-    }
-  }
-}
-
-async function populateSourceDropdown(){
-  const checks = await Promise.all(
-    XRAY_SOURCES_ALL.map(async s => ({ ...s, exists: await fileExists(s.file) }))
-  );
-  XRAY_SOURCES = checks.filter(s => s.exists);
-
-  if (!XRAY_SOURCES.length){
-    els.sourceSel.innerHTML = "";
-    els.loadWarn.style.display = "";
-    els.loadWarn.textContent =
-      `No X-ray source JSON files were found in this folder. Put at least one JSON (e.g., "xrd_peaks_cu_ka.json") next to this HTML.`;
-    return null;
-  }
-
-  els.sourceSel.innerHTML = XRAY_SOURCES
-    .map(s => `<option value="${s.id}">${s.label}</option>`)
-    .join("");
-
-  const def = XRAY_SOURCES.find(s => s.default) || XRAY_SOURCES[0];
-  els.sourceSel.value = def.id;
-  return def;
-}
-
-async function loadDB(filename){
-  try{
-    els.loadWarn.style.display = "none";
-    els.loadWarn.textContent = "";
-
-    const res = await fetch(`./${filename}`, { cache: "no-store" });
-    if (!res.ok) throw new Error(`HTTP ${res.status} loading ${filename}`);
-
-    DB = await res.json();
-
-    // Populate material dropdown with material names (single entries)
-    rebuildMaterialDropdown();
-
-    // Select first material/orientation/paper
-    const firstMat = els.materialSel.querySelector("option");
-    if (firstMat) els.materialSel.value = firstMat.value;
-
-    rebuildOrientationDropdown();
-    const firstOri = els.orientSel.querySelector("option");
-    if (firstOri) els.orientSel.value = firstOri.value;
-
-    rebuildPaperDropdown();
-
-    paperIndex = 0;
-    rerenderAll();
-  } catch (e){
-    console.error(e);
-    els.loadWarn.style.display = "";
-    els.loadWarn.textContent =
-      `Failed to load "${filename}". If you opened the HTML by double-clicking it, fetch() may be blocked. Run a local server (VS Code Live Server or "python -m http.server") and reload.`;
-  }
 }
 
 async function init(){
   wireUI();
-  const def = await populateSourceDropdown();
-  if (def) await loadDB(def.file);
+  const def = await populateDbDropdown();
+  if (def) await loadExcel(def.file);
 }
 init();
 </script>
