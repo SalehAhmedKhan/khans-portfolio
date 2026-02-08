@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "wavelength_angstrom": 1.5406,
+    "label": "Cu Kα"
+  },
+  "materials": [
+    {
+      "id": "beta_ga2o3",
+      "name": "β-Ga₂O₃",
+      "phase": "beta",
+      "notes": "Theoretical peak positions",
+      "reference_url": "https://example.com/paper",
+      "peaks": [
+        { "twoTheta": 18.90, "hkl": "(-201)", "orientation": "(-201)", "relI": 1.0 },
+        { "twoTheta": 38.40, "hkl": "(-402)", "orientation": "(-201)", "relI": 0.7 },
+        { "twoTheta": 45.20, "hkl": "(603)",  "orientation": "(-201)", "relI": 0.5 }
+      ]
+    },
+    {
+      "id": "sapphire",
+      "name": "Al₂O₃ (Sapphire)",
+      "phase": "alpha",
+      "reference_url": "https://example.com/another",
+      "peaks": [
+        { "twoTheta": 41.70, "hkl": "(006)", "orientation": "(0001)", "relI": 1.0 },
+        { "twoTheta": 90.80, "hkl": "(0012)", "orientation": "(0001)", "relI": 0.6 }
+      ]
+    }
+  ]
+}
