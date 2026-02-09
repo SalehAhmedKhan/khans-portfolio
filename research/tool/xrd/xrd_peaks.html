@@ -1,242 +1,692 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>XRD Peak Toolkit</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>XRD Peak Toolkit</title>
 
-<link rel="icon" type="image/png" href="../../../favicon1.png">
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <!-- favicon lives three directories up -->
+  <link rel="icon" type="image/png" href="../../../favicon1.png">
 
-<style>
-:root{
-  --text:#e8eefc;
-  --muted:rgba(232,238,252,.75);
-  --border:rgba(255,255,255,.14);
-  --border2:rgba(255,255,255,.18);
-  --accent:#60a5fa;
-}
+  <!-- SheetJS for reading .xlsx in-browser -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
-body{
-  margin:0;
-  font-family:system-ui,Segoe UI,Roboto,Arial;
-  background:linear-gradient(180deg,#070a14,#0b1020);
-  color:var(--text);
-  font-size:16px; /* slightly larger base */
-}
+  <style>
+    :root{
+      --bg:#0b1020;
+      --card:rgba(255,255,255,.06);
+      --border:rgba(255,255,255,.14);
+      --border2:rgba(255,255,255,.18);
+      --text:#e8eefc;
+      --muted:rgba(232,238,252,.75);
+      --accent:#60a5fa;
+      --warn:#f59e0b;
+    }
 
-.wrap{max-width:1160px;margin:0 auto;padding:22px;}
+    *{ box-sizing: border-box; }
 
-h1{
-  margin:0 0 6px;
-  font-size:26px;
-  font-weight:600;
-}
+    body{
+      margin:0;
+      font-family:system-ui, Segoe UI, Roboto, Arial;
+      background:linear-gradient(180deg,#070a14,#0b1020);
+      color:var(--text);
+      font-size:16px; /* slightly bigger */
+    }
 
-.sub{
-  color:var(--muted);
-  margin:0 0 16px;
-  font-size:16px;
-}
+    .wrap{ max-width:1160px; margin:0 auto; padding:22px; }
+    h1{ margin:0 0 6px; font-size:28px; letter-spacing:.2px; font-weight:600; }
+    .sub{ color:var(--muted); margin:0 0 16px; font-size:16px; }
 
-.grid{display:grid;grid-template-columns:1fr;gap:14px;}
-@media (min-width:980px){.grid{grid-template-columns:420px 1fr;}}
+    .grid{ display:grid; grid-template-columns: 1fr; gap:14px; }
+    @media (min-width: 980px){ .grid{ grid-template-columns: 440px 1fr; } }
 
-.card{
-  background:rgba(255,255,255,.06);
-  border:1px solid var(--border);
-  border-radius:16px;
-  box-shadow:0 18px 50px rgba(0,0,0,.35);
-  padding:16px;
-}
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:16px;
+      box-shadow:0 18px 50px rgba(0,0,0,.35);
+      padding:16px;
+      backdrop-filter: blur(10px);
+    }
 
-.topbar{display:flex;justify-content:flex-end;margin-bottom:10px;}
+    .topbar{
+      display:flex;
+      justify-content:flex-end;
+      margin-bottom:10px;
+    }
 
-.pill{
-  font-size:14px;
-  font-weight:500;
-  border:1px solid rgba(255,255,255,.14);
-  padding:8px 13px;
-  border-radius:999px;
-  background:rgba(0,0,0,.14);
-}
+    .pill{
+      font-size:14px;
+      font-weight:600; /* bold but slimmer than 800 */
+      color:rgba(232,238,252,.90);
+      border:1px solid rgba(255,255,255,.14);
+      padding:8px 14px;
+      border-radius:999px;
+      background:rgba(0,0,0,.14);
+      white-space:nowrap;
+    }
 
-label{
-  display:block;
-  font-size:14px;
-  color:var(--muted);
-  margin:12px 0 6px;
-}
+    label{
+      display:block;
+      font-size:14px;
+      font-weight:600; /* slimmer bold */
+      color:rgba(232,238,252,.80);
+      margin:12px 0 7px;
+    }
 
-select,input{
-  width:100%;
-  padding:12px 40px 12px 12px;
-  border-radius:14px;
-  border:1px solid var(--border2);
-  background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(0,0,0,.12));
-  color:var(--text);
-  font-size:15px;
-}
+    select, input{
+      width:100%;
+      padding:12px 42px 12px 12px;
+      border-radius:14px;
+      border:1px solid var(--border2);
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.12));
+      color:var(--text);
+      outline:none;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+      transition: border-color .15s ease, box-shadow .15s ease;
+      font-size:15px; /* bigger */
+      font-weight:500;
+    }
 
-.row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    select{
+      appearance:none;
+      -webkit-appearance:none;
+      -moz-appearance:none;
+      cursor:pointer;
+      background-image:
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.12)),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath fill='rgba(232,238,252,0.80)' d='M5.3 7.7a1 1 0 0 1 1.4 0L10 11l3.3-3.3a1 1 0 1 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 0-1.4z'/%3E%3C/svg%3E");
+      background-repeat:no-repeat;
+      background-position: 0 0, right 12px center;
+      background-size: auto, 18px 18px;
+    }
+    select option{ background:#0b1020; color:#e8eefc; }
 
-canvas{
-  width:100%;
-  height:320px;
-  border-radius:12px;
-  border:1px solid rgba(255,255,255,.1);
-  background:rgba(0,0,0,.18);
-}
+    input[type="number"]{ padding-right:12px; }
 
-.below-plot{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-top:8px;
-}
+    select:hover, input:hover{ border-color: rgba(96,165,250,.35); }
+    select:focus, input:focus{
+      border-color: rgba(96,165,250,.55);
+      box-shadow: 0 0 0 4px rgba(96,165,250,.10), inset 0 1px 0 rgba(255,255,255,.06);
+    }
 
-.pager{
-  display:flex;
-  gap:10px;
-  align-items:center;
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:999px;
-  padding:7px 12px;
-  background:rgba(0,0,0,.10);
-}
+    .row{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+    .row > div{ min-width:0; }
 
-.pager button{
-  border:1px solid rgba(255,255,255,.14);
-  background:rgba(0,0,0,.18);
-  color:var(--text);
-  border-radius:10px;
-  padding:7px 11px;
-  font-size:14px;
-}
+    a{ color:var(--accent); text-decoration:none; font-weight:600; }
+    a:hover{ text-decoration:underline; }
 
-.refline{font-size:14px;}
+    .canvas-wrap{ padding:10px; }
+    canvas{
+      width:100%;
+      height:320px;
+      display:block;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.18);
+    }
 
-table{
-  width:100%;
-  border-collapse:collapse;
-  margin-top:14px;
-  font-size:15px;
-}
+    .below-plot{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      padding:10px 10px 6px 10px;
+    }
 
-th,td{
-  padding:12px 8px;
-  border-bottom:1px solid rgba(255,255,255,.10);
-}
+    .pager{
+      display:flex; gap:10px; align-items:center;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:999px;
+      padding:8px 14px;
+      background:rgba(0,0,0,.10);
+    }
+    .pager button{
+      appearance:none;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.18);
+      color:var(--text);
+      border-radius:10px;
+      padding:8px 12px;
+      cursor:pointer;
+      font-size:14px; /* match */
+      font-weight:600;
+      line-height:1;
+    }
+    .pager button:hover{ border-color:rgba(96,165,250,.55); }
+    .pager .idx{
+      color:rgba(232,238,252,.85);
+      font-size:14px;
+      font-weight:600;
+      padding:0 2px;
+    }
 
-th{
-  text-align:left;
-  color:var(--muted);
-  font-weight:600;
-}
-</style>
+    .refline{ color:rgba(232,238,252,.85); font-size:14px; font-weight:600; }
+
+    table{ width:100%; border-collapse:collapse; margin-top:10px; font-size:15px; }
+    th, td{ padding:12px 10px; border-bottom:1px solid rgba(255,255,255,.10); }
+    th{
+      text-align:left;
+      color:rgba(232,238,252,.75);
+      font-weight:600; /* slimmer bold */
+      font-size:15px;
+    }
+    tr:hover{ background:rgba(96,165,250,.08); }
+
+    .warn{
+      color:rgba(245,158,11,.95);
+      font-size:13px;
+      margin-top:10px;
+      line-height:1.35;
+    }
+  </style>
 </head>
 
 <body>
-<div class="wrap">
-<h1 id="pageTitle">XRD 2θ–ω Peak Toolkit</h1>
-<p class="sub" id="pageIntro">Interactive quick reference for XRD peaks (from Excel).</p>
+  <div class="wrap">
+    <h1 id="pageTitle">XRD 2θ–ω Peak Toolkit</h1>
+    <p class="sub" id="pageIntro">Interactive quick reference for XRD peaks (from Excel).</p>
 
-<div class="grid">
-<div class="card">
-<div class="topbar">
-<span class="pill" id="updatePill">Updated: —</span>
-</div>
+    <div class="grid">
+      <!-- LEFT -->
+      <div class="card">
+        <div class="topbar">
+          <span class="pill" id="updatePill">Updated: —</span>
+        </div>
 
-<label>Beam Type</label>
-<select id="dbSel"></select>
+        <label for="dbSel">Beam Type</label>
+        <select id="dbSel"></select>
 
-<label>Material</label>
-<select id="materialSel"></select>
+        <label for="materialSel">Material</label>
+        <select id="materialSel"></select>
 
-<label>Orientation</label>
-<select id="orientSel"></select>
+        <label for="orientSel">Orientation</label>
+        <select id="orientSel"></select>
 
-<div class="row">
-<div>
-<label>2θ min</label>
-<input id="xmin" type="number" value="10"/>
-</div>
-<div>
-<label>2θ max</label>
-<input id="xmax" type="number" value="100"/>
-</div>
-</div>
-</div>
+        <div class="row" style="margin-top:12px;">
+          <div>
+            <label for="xmin">2θ min</label>
+            <input id="xmin" type="number" step="0.1" value="10" />
+          </div>
+          <div>
+            <label for="xmax">2θ max</label>
+            <input id="xmax" type="number" step="0.1" value="100" />
+          </div>
+        </div>
 
-<div class="card">
-<canvas id="plot" width="1400" height="560"></canvas>
+        <div class="warn" id="loadWarn" style="display:none;"></div>
+      </div>
 
-<div class="below-plot">
-<div class="refline" id="refWrap">—</div>
-<div class="pager">
-<button id="prevPaper">&lt;</button>
-<span id="paperIdx">1 / 1</span>
-<button id="nextPaper">&gt;</button>
-</div>
-</div>
+      <!-- RIGHT -->
+      <div class="card">
+        <div class="canvas-wrap">
+          <canvas id="plot" width="1400" height="600"></canvas>
+        </div>
 
-<table>
-<thead>
-<tr>
-<th>2θ (degrees)</th>
-<th>Miller indices (hkl)</th>
-</tr>
-</thead>
-<tbody id="peakTable"></tbody>
-</table>
-</div>
-</div>
-</div>
+        <div class="below-plot">
+          <div class="refline" id="refWrap">—</div>
+
+          <div class="pager" id="paperPager">
+            <button id="prevPaper" type="button">&lt;</button>
+            <span class="idx" id="paperIdx">1 / 1</span>
+            <button id="nextPaper" type="button">&gt;</button>
+          </div>
+        </div>
+
+        <table id="peakTable">
+          <thead>
+            <tr>
+              <th>2θ (degrees)</th>
+              <th>Miller indices (hkl)</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 
 <script>
-const DB_FILES=[{id:"cu",label:"Cu Kα",file:"xrd_peaks_cu_ka.xlsx"}];
-let STORE=null,paperIndex=0;
+/* ---- plot params ---- */
+const FIXED_SIGMA_DEG = 0.15;
+const FIXED_POINTS    = 2200;
 
-function drawPlot(peaks){
-const c=document.getElementById("plot");
-const ctx=c.getContext("2d");
-ctx.clearRect(0,0,c.width,c.height);
+/* ---- database files ---- */
+const DB_FILES_ALL = [
+  { id:"cu_ka", label:"Cu Kα", file:"xrd_peaks_cu_ka.xlsx", default:true }
+];
 
-ctx.font="22px system-ui";
-ctx.fillText("Intensity (arb. units)",40,120);
+let DB_FILES = [];
+let STORE = null; // { meta:{...}, materials:[{id,name, orientations:[{name, papers:[{doi,peaks}]}]}] }
+let paperIndex = 0;
 
-ctx.font="22px system-ui";
-ctx.fillText("2θ (degrees)",600,520);
+const els = {
+  pageTitle:   document.getElementById('pageTitle'),
+  pageIntro:   document.getElementById('pageIntro'),
+  dbSel:       document.getElementById('dbSel'),
+  updatePill:  document.getElementById('updatePill'),
+  materialSel: document.getElementById('materialSel'),
+  orientSel:   document.getElementById('orientSel'),
+  xmin:        document.getElementById('xmin'),
+  xmax:        document.getElementById('xmax'),
+  plot:        document.getElementById('plot'),
+  tableBody:   document.querySelector('#peakTable tbody'),
+  loadWarn:    document.getElementById('loadWarn'),
+  prevPaper:   document.getElementById('prevPaper'),
+  nextPaper:   document.getElementById('nextPaper'),
+  paperIdx:    document.getElementById('paperIdx'),
+  refWrap:     document.getElementById('refWrap')
+};
 
-ctx.strokeStyle="#60a5fa";
-ctx.lineWidth=2.5;
-ctx.beginPath();
-ctx.moveTo(100,500);
-ctx.lineTo(1300,500);
-ctx.stroke();
+function clamp(v, a, b){ return Math.max(a, Math.min(b, v)); }
+
+function parsePeaksLine(line){
+  const s = String(line || "").trim();
+  if (!s) return [];
+  const parts = s.split(",").map(p => p.trim()).filter(Boolean);
+  const out = [];
+  for (const p of parts){
+    const numMatch = p.match(/[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?/);
+    const twoTheta = numMatch ? Number(numMatch[0]) : NaN;
+    const hklMatch = p.match(/\(([^)]+)\)/);
+    const hkl = hklMatch ? `(${hklMatch[1].trim()})` : "";
+    if (Number.isFinite(twoTheta)) out.push({ twoTheta, hkl });
+  }
+  return out;
 }
 
-function updateBeamLabel(meta){
-const opt=document.querySelector("#dbSel option");
-opt.textContent=`Cu Kα (λ = ${meta.wavelength_angstrom} Å)`;
+function formatDatePretty(iso){
+  if (!iso) return "—";
+  const m = String(iso).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!m) return iso;
+  const y = Number(m[1]), mo = Number(m[2]) - 1, d = Number(m[3]);
+  const dt = new Date(Date.UTC(y, mo, d));
+  return dt.toLocaleDateString(undefined, { year:"numeric", month:"short", day:"2-digit", timeZone:"UTC" });
+}
+
+function sheetToJson(wb, sheetName){
+  const ws = wb.Sheets[sheetName];
+  if (!ws) return [];
+  return XLSX.utils.sheet_to_json(ws, { defval:"" });
+}
+
+function readMeta(metaRows){
+  // meta sheet is key/value rows (NOT a single header object)
+  const meta = {};
+  for (const r of metaRows){
+    const k = String(r.key || "").trim();
+    if (!k) continue;
+    meta[k] = r.value;
+  }
+  if (meta.wavelength_angstrom !== undefined){
+    const n = Number(meta.wavelength_angstrom);
+    meta.wavelength_angstrom = Number.isFinite(n) ? n : meta.wavelength_angstrom;
+  }
+  return meta;
+}
+
+function normalizeEntries(rows){
+  const byMat = new Map();
+  for (const r of rows){
+    const id = String(r.material_id || "").trim();
+    if (!id) continue;
+
+    const name  = String(r.material_name || "").trim();
+    const orient= String(r.orientation || "").trim();
+    const doi   = String(r.doi || "").trim();
+    const peaks = String(r.peaks || "").trim();
+
+    if (!byMat.has(id)){
+      byMat.set(id, { id, name: name || id, orientations: [] });
+    }
+    const mat = byMat.get(id);
+
+    let o = mat.orientations.find(x => x.name === orient);
+    if (!o){
+      o = { name: orient, papers: [] };
+      mat.orientations.push(o);
+    }
+    o.papers.push({ doi, peaks });
+  }
+
+  const materials = Array.from(byMat.values()).sort((a,b)=> (a.name||a.id).localeCompare(b.name||b.id));
+  for (const m of materials) m.orientations.sort((a,b)=>a.name.localeCompare(b.name));
+  return materials;
+}
+
+function applyPageMeta(){
+  const meta = STORE?.meta || {};
+  const t = String(meta.page_title || "").trim();
+  const intro = String(meta.intro_text || "").trim();
+  if (t){ els.pageTitle.textContent = t; document.title = t; }
+  if (intro){ els.pageIntro.textContent = intro; }
+}
+
+function setUpdatePill(){
+  const meta = STORE?.meta || {};
+  els.updatePill.textContent = `Updated: ${formatDatePretty(meta.db_last_updated)}`;
+}
+
+function updateBeamTypeLabelWithLambda(){
+  // show: Cu Kα (λ = 1.5406 Å)
+  const meta = STORE?.meta || {};
+  const wl = meta.wavelength_angstrom;
+  const xrayLabel = String(meta.xray_label || "").trim();
+
+  const opt = els.dbSel.querySelector(`option[value="${els.dbSel.value}"]`);
+  if (!opt) return;
+
+  const base = xrayLabel || opt.textContent.replace(/\s*\(λ.*\)\s*$/,'').trim();
+  if (wl && Number.isFinite(Number(wl))){
+    opt.textContent = `${base} (λ = ${Number(wl).toFixed(4)} Å)`;
+  } else {
+    opt.textContent = base;
+  }
+}
+
+function getMaterials(){ return STORE?.materials || []; }
+function findMaterial(id){ return getMaterials().find(m => m.id === id) || null; }
+function findOrientation(mat, name){ return (mat?.orientations || []).find(o => o.name === name) || null; }
+
+function rebuildMaterialDropdown(){
+  const mats = getMaterials();
+  els.materialSel.innerHTML = mats.map(m => {
+    const label = m.name ? m.name : m.id;
+    return `<option value="${m.id}">${label}</option>`;
+  }).join("");
+}
+
+function rebuildOrientationDropdown(){
+  const mat = findMaterial(els.materialSel.value);
+  const orients = (mat?.orientations || []).map(o => o.name);
+  els.orientSel.innerHTML = orients.map(o => `<option value="${o}">${o}</option>`).join("");
+}
+
+function getPapersForSelection(){
+  const mat = findMaterial(els.materialSel.value);
+  const orient = findOrientation(mat, els.orientSel.value);
+  return orient?.papers || [];
+}
+
+function getActivePaper(){
+  const papers = getPapersForSelection();
+  if (!papers.length) return null;
+  paperIndex = clamp(paperIndex, 0, papers.length - 1);
+  return papers[paperIndex];
+}
+
+function renderPager(){
+  const papers = getPapersForSelection();
+  const total = Math.max(1, papers.length);
+  const shownIndex = Math.min(paperIndex + 1, total);
+
+  els.paperIdx.textContent = `${shownIndex} / ${total}`;
+  els.prevPaper.disabled = (papers.length <= 1 || paperIndex === 0);
+  els.nextPaper.disabled = (papers.length <= 1 || paperIndex === papers.length - 1);
+}
+
+function renderReferenceLink(){
+  const p = getActivePaper();
+  const doi = p?.doi || "";
+  if (!doi){ els.refWrap.textContent = "—"; return; }
+  els.refWrap.innerHTML = `<a href="${doi}" target="_blank" rel="noopener">Reference Link</a>`;
+}
+
+function renderTableAndPlot(){
+  const p = getActivePaper();
+  const peaks = parsePeaksLine(p?.peaks || "").sort((a,b)=>a.twoTheta-b.twoTheta);
+
+  els.tableBody.innerHTML = "";
+  for (const pk of peaks){
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${Number(pk.twoTheta).toFixed(2)}</td><td>${pk.hkl || ""}</td>`;
+    tr.addEventListener("mouseenter", () => drawPlot(peaks, pk.twoTheta));
+    tr.addEventListener("mouseleave", () => drawPlot(peaks, null));
+    els.tableBody.appendChild(tr);
+  }
+  drawPlot(peaks, null);
+}
+
+function drawPlot(peaks, highlightTwoTheta=null){
+  const canvas = els.plot;
+  const ctx = canvas.getContext("2d");
+  const W = canvas.width, H = canvas.height;
+
+  const xmin = parseFloat(els.xmin.value);
+  const xmax = parseFloat(els.xmax.value);
+  if (!(xmax > xmin)) return;
+
+  const sigma = FIXED_SIGMA_DEG;
+  const N = FIXED_POINTS;
+
+  const filtered = (peaks || [])
+    .map(p => ({ mu: Number(p.twoTheta) }))
+    .filter(p => Number.isFinite(p.mu) && p.mu >= xmin && p.mu <= xmax);
+
+  const xs = new Float64Array(N);
+  const ys = new Float64Array(N);
+
+  for (let i=0; i<N; i++){
+    const x = xmin + (xmax - xmin) * (i / (N - 1));
+    xs[i] = x;
+    let y = 0;
+    for (const pk of filtered){
+      const t = (x - pk.mu) / sigma;
+      y += Math.exp(-0.5 * t * t);
+    }
+    ys[i] = y;
+  }
+
+  let ymax = 0;
+  for (let i=0; i<N; i++) if (ys[i] > ymax) ymax = ys[i];
+  ymax = ymax || 1;
+
+  ctx.clearRect(0,0,W,H);
+
+  // tuned so labels don’t collide
+  const mL = 130, mR = 34, mT = 24, mB = 150;
+  const pW = W - mL - mR;
+  const pH = H - mT - mB;
+
+  const xToPx = x => mL + (x - xmin) / (xmax - xmin) * pW;
+  const yToPx = y => mT + (1 - (y / ymax)) * pH;
+
+  // grid
+  ctx.lineWidth = 1;
+  for (let i=0; i<=6; i++){
+    const y = mT + (pH * i / 6);
+    ctx.strokeStyle = "rgba(255,255,255,0.08)";
+    ctx.beginPath(); ctx.moveTo(mL, y); ctx.lineTo(mL + pW, y); ctx.stroke();
+  }
+
+  // axes
+  ctx.strokeStyle = "rgba(255,255,255,0.28)";
+  ctx.lineWidth = 1.6;
+  ctx.beginPath();
+  ctx.moveTo(mL, mT);
+  ctx.lineTo(mL, mT + pH);
+  ctx.lineTo(mL + pW, mT + pH);
+  ctx.stroke();
+
+  // ticks (bigger)
+  ctx.fillStyle = "rgba(255,255,255,0.92)";
+  ctx.font = "22px system-ui, Segoe UI, Arial";
+  const tickCount = 7;
+  for (let t=0; t<=tickCount; t++){
+    const x = xmin + (xmax - xmin) * (t / tickCount);
+    const px = xToPx(x);
+
+    ctx.strokeStyle = "rgba(255,255,255,0.11)";
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(px, mT); ctx.lineTo(px, mT + pH); ctx.stroke();
+
+    const txt = x.toFixed(0);
+    ctx.fillText(txt, px - (txt.length*7), mT + pH + 58);
+  }
+
+  // labels (bigger, well-spaced)
+  ctx.fillStyle = "rgba(255,255,255,0.95)";
+  ctx.font = "26px system-ui, Segoe UI, Arial";
+  ctx.fillText("2θ (degrees)", mL + pW/2 - 86, mT + pH + 118);
+
+  ctx.save();
+  ctx.translate(78, mT + pH/2 + 96);
+  ctx.rotate(-Math.PI/2);
+  ctx.fillText("Intensity (arb. units)", 0, 0);
+  ctx.restore();
+
+  // curve
+  ctx.strokeStyle = "rgba(96,165,250,0.95)";
+  ctx.lineWidth = 3.0;
+  ctx.beginPath();
+  for (let i=0; i<N; i++){
+    const px = xToPx(xs[i]);
+    const py = yToPx(ys[i]);
+    if (i === 0) ctx.moveTo(px, py);
+    else ctx.lineTo(px, py);
+  }
+  ctx.stroke();
+
+  // sticks
+  ctx.strokeStyle = "rgba(255,255,255,0.48)";
+  ctx.lineWidth = 1.6;
+  for (const pk of filtered){
+    const px = xToPx(pk.mu);
+    ctx.beginPath();
+    ctx.moveTo(px, mT + pH);
+    ctx.lineTo(px, mT + pH - 38);
+    ctx.stroke();
+  }
+
+  // highlight
+  if (highlightTwoTheta != null){
+    const px = xToPx(highlightTwoTheta);
+    ctx.strokeStyle = "rgba(245,158,11,0.95)";
+    ctx.lineWidth = 3.0;
+    ctx.beginPath();
+    ctx.moveTo(px, mT);
+    ctx.lineTo(px, mT + pH);
+    ctx.stroke();
+  }
+}
+
+async function fileExists(file){
+  try{
+    const head = await fetch(`./${file}`, { method:"HEAD", cache:"no-store" });
+    return head.ok;
+  } catch {
+    try{
+      const res = await fetch(`./${file}`, { method:"GET", cache:"no-store" });
+      return res.ok;
+    } catch { return false; }
+  }
+}
+
+async function populateDbDropdown(){
+  const checks = await Promise.all(DB_FILES_ALL.map(async d => ({...d, exists: await fileExists(d.file)})));
+  DB_FILES = checks.filter(d => d.exists);
+
+  if (!DB_FILES.length){
+    els.dbSel.innerHTML = "";
+    els.loadWarn.style.display = "";
+    els.loadWarn.textContent = `No Excel database found. Add "xrd_peaks_cu_ka.xlsx" next to this HTML.`;
+    return null;
+  }
+
+  els.dbSel.innerHTML = DB_FILES.map(d => `<option value="${d.id}">${d.label}</option>`).join("");
+  const def = DB_FILES.find(d => d.default) || DB_FILES[0];
+  els.dbSel.value = def.id;
+  return def;
 }
 
 async function loadExcel(file){
-const res=await fetch(file);
-const buf=await res.arrayBuffer();
-const wb=XLSX.read(buf,{type:"array"});
+  try{
+    els.loadWarn.style.display = "none";
+    els.loadWarn.textContent = "";
 
-const meta=XLSX.utils.sheet_to_json(wb.Sheets.meta)[0];
-STORE=meta;
+    const res = await fetch(`./${file}`, { cache:"no-store" });
+    if (!res.ok) throw new Error(`HTTP ${res.status} loading ${file}`);
 
-document.getElementById("updatePill").textContent=
-`Updated: ${meta.db_last_updated}`;
+    const buf = await res.arrayBuffer();
+    const wb = XLSX.read(buf, { type:"array" });
 
-updateBeamLabel(meta);
-drawPlot([]);
+    const metaRows = sheetToJson(wb, "meta");
+    const entryRows = sheetToJson(wb, "entries");
+
+    STORE = {
+      meta: readMeta(metaRows),
+      materials: normalizeEntries(entryRows)
+    };
+
+    rebuildMaterialDropdown();
+    const firstMat = els.materialSel.querySelector("option");
+    if (firstMat) els.materialSel.value = firstMat.value;
+
+    rebuildOrientationDropdown();
+    const firstOri = els.orientSel.querySelector("option");
+    if (firstOri) els.orientSel.value = firstOri.value;
+
+    paperIndex = 0;
+    rerenderAll();
+  } catch (e){
+    console.error(e);
+    els.loadWarn.style.display = "";
+    els.loadWarn.textContent =
+      `Failed to load "${file}". Put "xrd_peaks_cu_ka.xlsx" next to this HTML and open via GitHub Pages (not double-click).`;
+  }
 }
 
-loadExcel("xrd_peaks_cu_ka.xlsx");
+function rerenderAll(){
+  if (!STORE) return;
+  applyPageMeta();
+  setUpdatePill();
+  updateBeamTypeLabelWithLambda();
+  renderPager();
+  renderReferenceLink();
+  renderTableAndPlot();
+}
+
+function wireUI(){
+  els.dbSel.addEventListener("change", async () => {
+    const item = DB_FILES.find(d => d.id === els.dbSel.value) || DB_FILES[0];
+    if (item) await loadExcel(item.file);
+  });
+
+  els.materialSel.addEventListener("change", () => {
+    rebuildOrientationDropdown();
+    const first = els.orientSel.querySelector("option");
+    if (first) els.orientSel.value = first.value;
+    paperIndex = 0;
+    rerenderAll();
+  });
+
+  els.orientSel.addEventListener("change", () => {
+    paperIndex = 0;
+    rerenderAll();
+  });
+
+  els.prevPaper.addEventListener("click", () => {
+    paperIndex = Math.max(0, paperIndex - 1);
+    rerenderAll();
+  });
+
+  els.nextPaper.addEventListener("click", () => {
+    const papers = getPapersForSelection();
+    paperIndex = Math.min(papers.length - 1, paperIndex + 1);
+    rerenderAll();
+  });
+
+  els.xmin.addEventListener("input", () => rerenderAll());
+  els.xmax.addEventListener("input", () => rerenderAll());
+}
+
+async function init(){
+  wireUI();
+  const def = await populateDbDropdown();
+  if (def) await loadExcel(def.file);
+}
+init();
 </script>
 </body>
 </html>
