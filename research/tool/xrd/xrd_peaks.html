@@ -47,26 +47,17 @@
       backdrop-filter: blur(10px);
     }
 
-    .panel-title{
-      display:flex; align-items:center; justify-content:space-between;
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
       margin:0 0 10px;
-      gap:10px;
     }
-    .panel-title h2{
-      margin:0;
-      font-size:14px;
-      color:var(--muted);
-      font-weight:800;
-      letter-spacing:.5px;
-      text-transform:uppercase;
-    }
-
-    .pills{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
     .pill{
-      font-size:13px;              /* bigger */
-      color:rgba(232,238,252,.85); /* slightly brighter */
+      font-size:13px;
+      color:rgba(232,238,252,.85);
       border:1px solid rgba(255,255,255,.14);
-      padding:7px 12px;            /* bigger */
+      padding:7px 12px;
       border-radius:999px;
       background:rgba(0,0,0,.14);
       white-space:nowrap;
@@ -99,9 +90,7 @@
       background-size: auto, 18px 18px;
     }
     select option{ background:#0b1020; color:#e8eefc; }
-
     input[type="number"]{ padding-right:12px; }
-
     select:hover, input:hover{ border-color: rgba(96,165,250,.35); }
     select:focus, input:focus{
       border-color: rgba(96,165,250,.55);
@@ -134,7 +123,7 @@
     }
 
     .pager{
-      display:flex; gap:10px; align-items:center; /* a bit roomier */
+      display:flex; gap:10px; align-items:center;
       border:1px solid rgba(255,255,255,.12);
       border-radius:999px;
       padding:7px 12px;
@@ -186,20 +175,12 @@
     <div class="grid">
       <!-- LEFT COLUMN -->
       <div class="card">
-        <div class="panel-title">
-          <h2>X-RAY PROPERTIES</h2>
-          <div class="pills">
-            <span class="pill" id="xrayPill">λ: —</span>
-            <span class="pill" id="updatePill">Updated: —</span>
-          </div>
+        <div class="topbar">
+          <span class="pill" id="updatePill">Updated: —</span>
         </div>
 
         <label for="dbSel">Beam Type</label>
         <select id="dbSel"></select>
-
-        <div class="panel-title" style="margin-top:14px;">
-          <h2>MATERIALS</h2>
-        </div>
 
         <label for="materialSel">Material</label>
         <select id="materialSel"></select>
@@ -224,13 +205,12 @@
       <!-- RIGHT COLUMN -->
       <div class="card">
         <div class="canvas-wrap">
-          <canvas id="plot" width="1400" height="520"></canvas>
+          <canvas id="plot" width="1400" height="560"></canvas>
         </div>
 
         <div class="below-plot">
           <div class="refline" id="refWrap">—</div>
 
-          <!-- ALWAYS show pager (even for single paper) -->
           <div class="pager" id="paperPager">
             <button id="prevPaper" type="button">&lt;</button>
             <span class="idx" id="paperIdx">1 / 1</span>
@@ -255,7 +235,7 @@
 <script>
 /* ---------- fixed plot params ---------- */
 const FIXED_SIGMA_DEG = 0.15;
-const FIXED_POINTS    = 2200; // slightly smoother
+const FIXED_POINTS    = 2200;
 
 /* ---------- Excel files ---------- */
 const DB_FILES_ALL = [
@@ -271,7 +251,6 @@ const els = {
   pageIntro:   document.getElementById('pageIntro'),
 
   dbSel:       document.getElementById('dbSel'),
-  xrayPill:    document.getElementById('xrayPill'),
   updatePill:  document.getElementById('updatePill'),
   materialSel: document.getElementById('materialSel'),
   orientSel:   document.getElementById('orientSel'),
@@ -328,15 +307,26 @@ function applyPageMeta(){
   }
 }
 
-function setHeaderPills(){
+function setUpdatePill(){
   const meta = STORE?.meta || {};
-  const label = meta.xray_label;
-  const wl = meta.wavelength_angstrom;
   const upd = meta.db_last_updated;
-
-  els.xrayPill.textContent = (wl && label) ? `λ: ${wl} Å (${label})`
-    : (wl ? `λ: ${wl} Å` : `λ: —`);
   els.updatePill.textContent = `Updated: ${formatDatePretty(upd)}`;
+}
+
+function updateBeamTypeLabelWithLambda(){
+  // Put lambda inside dropdown label: "Cu Kα (λ 1.5406 Å)"
+  const meta = STORE?.meta || {};
+  const wl = meta.wavelength_angstrom;
+  const label = meta.xray_label; // e.g., "Cu Kα"
+  const opt = els.dbSel.querySelector(`option[value="${els.dbSel.value}"]`);
+  if (!opt) return;
+
+  const base = (label && String(label).trim()) ? String(label).trim() : opt.textContent.replace(/\s*\(λ.*\)\s*$/,'').trim();
+  if (wl && Number.isFinite(Number(wl))){
+    opt.textContent = `${base} (λ ${Number(wl).toFixed(4)} Å)`;
+  } else {
+    opt.textContent = base;
+  }
 }
 
 function getMaterials(){ return STORE?.materials || []; }
@@ -375,11 +365,9 @@ function renderPager(){
   const total = Math.max(1, papers.length);
   const shownIndex = Math.min(paperIndex + 1, total);
 
-  // Always visible and consistent
   els.paperPager.style.display = "";
   els.paperIdx.textContent = `${shownIndex} / ${total}`;
 
-  // Disable buttons when not usable
   els.prevPaper.disabled = (papers.length <= 1 || paperIndex === 0);
   els.nextPaper.disabled = (papers.length <= 1 || paperIndex === papers.length - 1);
 }
@@ -444,15 +432,15 @@ function drawPlot(peaks, highlightTwoTheta=null){
 
   ctx.clearRect(0,0,W,H);
 
-  // Bigger margins for bigger labels/ticks
-  const mL = 120, mR = 30, mT = 24, mB = 88;
+  // Layout tuned so labels don't collide
+  const mL = 120, mR = 30, mT = 24, mB = 140;
   const pW = W - mL - mR;
   const pH = H - mT - mB;
 
   const xToPx = x => mL + (x - xmin) / (xmax - xmin) * pW;
   const yToPx = y => mT + (1 - (y / ymax)) * pH;
 
-  // Grid (slightly stronger)
+  // Grid
   ctx.lineWidth = 1;
   for (let i=0; i<=6; i++){
     const y = mT + (pH * i / 6);
@@ -460,7 +448,7 @@ function drawPlot(peaks, highlightTwoTheta=null){
     ctx.beginPath(); ctx.moveTo(mL, y); ctx.lineTo(mL + pW, y); ctx.stroke();
   }
 
-  // Axes (thicker)
+  // Axes
   ctx.strokeStyle = "rgba(255,255,255,0.28)";
   ctx.lineWidth = 1.6;
   ctx.beginPath();
@@ -469,7 +457,7 @@ function drawPlot(peaks, highlightTwoTheta=null){
   ctx.lineTo(mL + pW, mT + pH);
   ctx.stroke();
 
-  // X ticks (bigger & heavier)
+  // X ticks
   ctx.fillStyle = "rgba(255,255,255,0.92)";
   ctx.font = "20px system-ui, Segoe UI, Arial";
   const tickCount = 7;
@@ -482,21 +470,22 @@ function drawPlot(peaks, highlightTwoTheta=null){
     ctx.beginPath(); ctx.moveTo(px, mT); ctx.lineTo(px, mT + pH); ctx.stroke();
 
     const txt = x.toFixed(0);
-    ctx.fillText(txt, px - (txt.length*6), mT + pH + 52);
+    ctx.fillText(txt, px - (txt.length*6), mT + pH + 54);
   }
 
-  // Axis labels (bigger, not skinny)
+  // Labels (positioned away from ticks/axis)
   ctx.fillStyle = "rgba(255,255,255,0.95)";
   ctx.font = "24px system-ui, Segoe UI, Arial";
-  ctx.fillText("2θ (degrees)", mL + pW/2 - 78, H - 26);
+  ctx.fillText("2θ (degrees)", mL + pW/2 - 78, mT + pH + 110);
 
   ctx.save();
-  ctx.translate(34, mT + pH/2 + 82);
+  // move y-label closer to plot (not far-left)
+  ctx.translate(70, mT + pH/2 + 90);
   ctx.rotate(-Math.PI/2);
   ctx.fillText("Intensity (arb. units)", 0, 0);
   ctx.restore();
 
-  // Curve (thicker)
+  // Curve
   ctx.strokeStyle = "rgba(96,165,250,0.95)";
   ctx.lineWidth = 3.0;
   ctx.beginPath();
@@ -508,7 +497,7 @@ function drawPlot(peaks, highlightTwoTheta=null){
   }
   ctx.stroke();
 
-  // Sticks (thicker)
+  // Sticks
   ctx.strokeStyle = "rgba(255,255,255,0.48)";
   ctx.lineWidth = 1.6;
   for (const pk of filtered){
@@ -534,7 +523,8 @@ function drawPlot(peaks, highlightTwoTheta=null){
 function rerenderAll(){
   if (!STORE) return;
   applyPageMeta();
-  setHeaderPills();
+  setUpdatePill();
+  updateBeamTypeLabelWithLambda();
   renderPager();
   renderReferenceLink();
   renderTableAndPlot();
