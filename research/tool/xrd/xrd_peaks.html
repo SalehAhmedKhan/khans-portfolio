@@ -15,7 +15,6 @@
     :root{
       --bg:#0b1020;
       --card:rgba(255,255,255,.06);
-      --card2:rgba(255,255,255,.04);
       --border:rgba(255,255,255,.14);
       --border2:rgba(255,255,255,.18);
       --text:#e8eefc;
@@ -40,7 +39,7 @@
     @media (min-width: 980px){ .grid{ grid-template-columns: 420px 1fr; } }
 
     .card{
-      background:var(--card);
+      background:rgba(255,255,255,.06);
       border:1px solid var(--border);
       border-radius:16px;
       box-shadow:0 18px 50px rgba(0,0,0,.35);
@@ -57,22 +56,24 @@
       margin:0;
       font-size:14px;
       color:var(--muted);
-      font-weight:750;
-      letter-spacing:.4px;
+      font-weight:800;
+      letter-spacing:.5px;
       text-transform:uppercase;
     }
+
     .pills{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
     .pill{
-      font-size:12px; color:var(--muted);
-      border:1px solid rgba(255,255,255,.12);
-      padding:6px 10px; border-radius:999px;
+      font-size:13px;              /* bigger */
+      color:rgba(232,238,252,.85); /* slightly brighter */
+      border:1px solid rgba(255,255,255,.14);
+      padding:7px 12px;            /* bigger */
+      border-radius:999px;
       background:rgba(0,0,0,.14);
       white-space:nowrap;
     }
 
     label{ display:block; font-size:13px; color:var(--muted); margin:10px 0 6px; }
 
-    /* Cleaner dropdowns */
     select, input{
       width:100%;
       padding:11px 40px 11px 12px;
@@ -97,11 +98,7 @@
       background-position: 0 0, right 12px center;
       background-size: auto, 18px 18px;
     }
-    /* Most browsers allow styling option colors */
-    select option{
-      background:#0b1020;
-      color:#e8eefc;
-    }
+    select option{ background:#0b1020; color:#e8eefc; }
 
     input[type="number"]{ padding-right:12px; }
 
@@ -137,10 +134,10 @@
     }
 
     .pager{
-      display:flex; gap:8px; align-items:center;
+      display:flex; gap:10px; align-items:center; /* a bit roomier */
       border:1px solid rgba(255,255,255,.12);
       border-radius:999px;
-      padding:6px 10px;
+      padding:7px 12px;
       background:rgba(0,0,0,.10);
     }
     .pager button{
@@ -149,27 +146,27 @@
       background:rgba(0,0,0,.18);
       color:var(--text);
       border-radius:10px;
-      padding:6px 10px;
+      padding:7px 11px;
       cursor:pointer;
-      font-size:13px; /* match ref text */
+      font-size:13px;
       line-height:1;
     }
     .pager button:hover{ border-color:rgba(96,165,250,.55); }
     .pager .idx{
-      color:var(--muted);
-      font-size:13px; /* match ref text */
-      padding:0 4px;
+      color:rgba(232,238,252,.80);
+      font-size:13px;
+      padding:0 2px;
     }
 
     .refline{
-      color:var(--muted);
-      font-size:13px; /* match pager */
+      color:rgba(232,238,252,.80);
+      font-size:13px;
     }
     .refline a{ font-size:13px; }
 
     table{ width:100%; border-collapse:collapse; margin-top:10px; font-size:13px; }
     th, td{ padding:10px 8px; border-bottom:1px solid rgba(255,255,255,.10); }
-    th{ text-align:left; color:var(--muted); font-weight:750; }
+    th{ text-align:left; color:var(--muted); font-weight:800; }
     tr:hover{ background:rgba(96,165,250,.08); }
 
     .warn{
@@ -190,7 +187,7 @@
       <!-- LEFT COLUMN -->
       <div class="card">
         <div class="panel-title">
-          <h2>X-RAY</h2>
+          <h2>X-RAY PROPERTIES</h2>
           <div class="pills">
             <span class="pill" id="xrayPill">λ: —</span>
             <span class="pill" id="updatePill">Updated: —</span>
@@ -201,7 +198,7 @@
         <select id="dbSel"></select>
 
         <div class="panel-title" style="margin-top:14px;">
-          <h2>Peak Lookup</h2>
+          <h2>MATERIALS</h2>
         </div>
 
         <label for="materialSel">Material</label>
@@ -227,14 +224,14 @@
       <!-- RIGHT COLUMN -->
       <div class="card">
         <div class="canvas-wrap">
-          <canvas id="plot" width="1400" height="460"></canvas>
+          <canvas id="plot" width="1400" height="520"></canvas>
         </div>
 
-        <!-- swapped order: Reference Link on the left, pager on the right -->
         <div class="below-plot">
           <div class="refline" id="refWrap">—</div>
 
-          <div class="pager" id="paperPager" style="display:none;">
+          <!-- ALWAYS show pager (even for single paper) -->
+          <div class="pager" id="paperPager">
             <button id="prevPaper" type="button">&lt;</button>
             <span class="idx" id="paperIdx">1 / 1</span>
             <button id="nextPaper" type="button">&gt;</button>
@@ -258,7 +255,7 @@
 <script>
 /* ---------- fixed plot params ---------- */
 const FIXED_SIGMA_DEG = 0.15;
-const FIXED_POINTS    = 2000;
+const FIXED_POINTS    = 2200; // slightly smoother
 
 /* ---------- Excel files ---------- */
 const DB_FILES_ALL = [
@@ -375,14 +372,16 @@ function getActivePaper(){
 
 function renderPager(){
   const papers = getPapersForSelection();
-  if (papers.length > 1){
-    els.paperPager.style.display = "";
-    els.paperIdx.textContent = `${paperIndex + 1} / ${papers.length}`;
-    els.prevPaper.disabled = (paperIndex === 0);
-    els.nextPaper.disabled = (paperIndex === papers.length - 1);
-  } else {
-    els.paperPager.style.display = "none";
-  }
+  const total = Math.max(1, papers.length);
+  const shownIndex = Math.min(paperIndex + 1, total);
+
+  // Always visible and consistent
+  els.paperPager.style.display = "";
+  els.paperIdx.textContent = `${shownIndex} / ${total}`;
+
+  // Disable buttons when not usable
+  els.prevPaper.disabled = (papers.length <= 1 || paperIndex === 0);
+  els.nextPaper.disabled = (papers.length <= 1 || paperIndex === papers.length - 1);
 }
 
 function renderReferenceLink(){
@@ -445,57 +444,61 @@ function drawPlot(peaks, highlightTwoTheta=null){
 
   ctx.clearRect(0,0,W,H);
 
-  const mL = 100, mR = 26, mT = 22, mB = 72;
+  // Bigger margins for bigger labels/ticks
+  const mL = 120, mR = 30, mT = 24, mB = 88;
   const pW = W - mL - mR;
   const pH = H - mT - mB;
 
   const xToPx = x => mL + (x - xmin) / (xmax - xmin) * pW;
   const yToPx = y => mT + (1 - (y / ymax)) * pH;
 
-  // grid
+  // Grid (slightly stronger)
   ctx.lineWidth = 1;
   for (let i=0; i<=6; i++){
     const y = mT + (pH * i / 6);
-    ctx.strokeStyle = "rgba(255,255,255,0.07)";
+    ctx.strokeStyle = "rgba(255,255,255,0.08)";
     ctx.beginPath(); ctx.moveTo(mL, y); ctx.lineTo(mL + pW, y); ctx.stroke();
   }
 
-  // axes
-  ctx.strokeStyle = "rgba(255,255,255,0.22)";
-  ctx.lineWidth = 1.2;
+  // Axes (thicker)
+  ctx.strokeStyle = "rgba(255,255,255,0.28)";
+  ctx.lineWidth = 1.6;
   ctx.beginPath();
   ctx.moveTo(mL, mT);
   ctx.lineTo(mL, mT + pH);
   ctx.lineTo(mL + pW, mT + pH);
   ctx.stroke();
 
-  // ticks
-  ctx.fillStyle = "rgba(255,255,255,0.85)";
-  ctx.font = "18px system-ui, Segoe UI, Arial";
+  // X ticks (bigger & heavier)
+  ctx.fillStyle = "rgba(255,255,255,0.92)";
+  ctx.font = "20px system-ui, Segoe UI, Arial";
   const tickCount = 7;
   for (let t=0; t<=tickCount; t++){
     const x = xmin + (xmax - xmin) * (t / tickCount);
     const px = xToPx(x);
-    ctx.strokeStyle = "rgba(255,255,255,0.10)";
+
+    ctx.strokeStyle = "rgba(255,255,255,0.11)";
+    ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(px, mT); ctx.lineTo(px, mT + pH); ctx.stroke();
+
     const txt = x.toFixed(0);
-    ctx.fillText(txt, px - (txt.length*5), mT + pH + 40);
+    ctx.fillText(txt, px - (txt.length*6), mT + pH + 52);
   }
 
-  // labels
-  ctx.fillStyle = "rgba(255,255,255,0.92)";
-  ctx.font = "20px system-ui, Segoe UI, Arial";
-  ctx.fillText("2θ (degrees)", mL + pW/2 - 62, H - 18);
+  // Axis labels (bigger, not skinny)
+  ctx.fillStyle = "rgba(255,255,255,0.95)";
+  ctx.font = "24px system-ui, Segoe UI, Arial";
+  ctx.fillText("2θ (degrees)", mL + pW/2 - 78, H - 26);
 
   ctx.save();
-  ctx.translate(28, mT + pH/2 + 62);
+  ctx.translate(34, mT + pH/2 + 82);
   ctx.rotate(-Math.PI/2);
   ctx.fillText("Intensity (arb. units)", 0, 0);
   ctx.restore();
 
-  // curve
+  // Curve (thicker)
   ctx.strokeStyle = "rgba(96,165,250,0.95)";
-  ctx.lineWidth = 2.4;
+  ctx.lineWidth = 3.0;
   ctx.beginPath();
   for (let i=0; i<N; i++){
     const px = xToPx(xs[i]);
@@ -505,22 +508,22 @@ function drawPlot(peaks, highlightTwoTheta=null){
   }
   ctx.stroke();
 
-  // sticks
-  ctx.strokeStyle = "rgba(255,255,255,0.42)";
-  ctx.lineWidth = 1.2;
+  // Sticks (thicker)
+  ctx.strokeStyle = "rgba(255,255,255,0.48)";
+  ctx.lineWidth = 1.6;
   for (const pk of filtered){
     const px = xToPx(pk.mu);
     ctx.beginPath();
     ctx.moveTo(px, mT + pH);
-    ctx.lineTo(px, mT + pH - 30);
+    ctx.lineTo(px, mT + pH - 38);
     ctx.stroke();
   }
 
-  // highlight
+  // Highlight
   if (highlightTwoTheta != null){
     const px = xToPx(highlightTwoTheta);
     ctx.strokeStyle = "rgba(245,158,11,0.95)";
-    ctx.lineWidth = 2.6;
+    ctx.lineWidth = 3.0;
     ctx.beginPath();
     ctx.moveTo(px, mT);
     ctx.lineTo(px, mT + pH);
@@ -572,8 +575,6 @@ function normalizeEntries(rows){
 
     if (!byMat.has(id)){
       byMat.set(id, { id, name: name || id, orientations: [] });
-    } else if (name && !byMat.get(id).name){
-      byMat.get(id).name = name;
     }
 
     const mat = byMat.get(id);
