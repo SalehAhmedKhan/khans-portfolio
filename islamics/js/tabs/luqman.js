@@ -1,18 +1,11 @@
 // js/tabs/luqman.js
-export const TAB_TITLE = "Lessons of Luqman (AS)";
+export const TAB_TITLE = "Lessons of Luqman";
 
 export const PANELS = [
-  { figure: "tab_images/luqman/01.jpg", header: "Begin with gratitude", text: "Reflect on blessings and practice consistent shukr in daily life." },
-  { figure: "tab_images/luqman/02.jpg", header: "Tawhid first", text: "Keep worship sincere and centered on Allah alone." },
-  { figure: "tab_images/luqman/03.jpg", header: "Kindness to parents", text: "Honor parents with respect, patience, and helpfulness." },
-  { figure: "tab_images/luqman/04.jpg", header: "Balance obedience", text: "Be gentle and respectful even when you cannot agree." },
-  { figure: "tab_images/luqman/05.jpg", header: "Establish prayer", text: "Build consistency and presence in salah throughout the day." },
-  { figure: "tab_images/luqman/06.jpg", header: "Encourage good", text: "Support what is right with wisdom and good character." },
-  { figure: "tab_images/luqman/07.jpg", header: "Avoid harmful wrong", text: "Stay away from what harms faith, people, or your heart." },
-  { figure: "tab_images/luqman/08.jpg", header: "Patience in trials", text: "When things are hard, respond with sabr and steady reliance." },
-  { figure: "tab_images/luqman/09.jpg", header: "Humility", text: "Avoid arrogance; carry yourself with calm dignity." },
-  { figure: "tab_images/luqman/10.jpg", header: "Gentle speech", text: "Speak kindly and avoid harshness; words shape hearts." },
-  { figure: "tab_images/luqman/11.jpg", header: "Moderate pace", text: "Move through life with balance — not rushing, not dragging." },
-  { figure: "tab_images/luqman/12.jpg", header: "Lower the voice", text: "Softness and restraint reflect good character and wisdom." },
-  { figure: "tab_images/luqman/13.jpg", header: "Live the lesson", text: "Turn knowledge into habit — small consistent actions matter." },
+  { figure: "tab_images/luqman/01.jpg", header: "Luqman the Wise", text: "Indeed, We blessed Luqmân with wisdom, ˹saying˺, “Be grateful to Allah, for whoever is grateful, it is only for their own good. And whoever is ungrateful, then surely Allah is Self-Sufficient, Praiseworthy.” (31:12)" },
+  { figure: "tab_images/luqman/02.jpg", header: "Establish Tawhid", text: "Luqmân said to his son, while advising him, “O my dear son! Never associate ˹anything˺ with Allah ˹in worship˺, for associating ˹others with Him˺ is truly the worst of all wrongs.” (31:13)" },
+  { figure: "tab_images/luqman/03.jpg", header: "Remember Accountibility", text: "O my dear son! ˹Even˺ if a deed were the weight of a mustard seed—be it ˹hidden˺ in a rock or in the heavens or the earth—Allah will bring it forth. Surely Allah is Most Subtle, All-Aware. (31:16)" },
+  { figure: "tab_images/luqman/04.jpg", header: "Fight the Good Fight", text: "O my dear son! Establish prayer, encourage what is good and forbid what is evil, and endure patiently whatever befalls you. Surely this is a resolve to aspire to. (31:17)" },
+  { figure: "tab_images/luqman/05.jpg", header: "Abandon Pride", text: "And do not turn your nose up to people, nor walk pridefully upon the earth. Surely Allah does not like whoever is arrogant, boastful. (31:18)" },
+  { figure: "tab_images/luqman/06.jpg", header: "Practice Modesty", text: "Be moderate in your pace. And lower your voice, for the ugliest of all voices is certainly the braying of donkeys. (31:19)" },
 ];
