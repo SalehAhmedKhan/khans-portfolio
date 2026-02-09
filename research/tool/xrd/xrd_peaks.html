@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>XRD Peak Quick Reference</title>
+  <title>XRD Peak Toolkit</title>
 
   <!-- favicon lives three directories up -->
   <link rel="icon" type="image/png" href="../../../favicon1.png">
@@ -15,14 +15,16 @@
     :root{
       --bg:#0b1020;
       --card:rgba(255,255,255,.06);
+      --card2:rgba(255,255,255,.04);
       --border:rgba(255,255,255,.14);
+      --border2:rgba(255,255,255,.18);
       --text:#e8eefc;
       --muted:rgba(232,238,252,.72);
       --accent:#60a5fa;
       --warn:#f59e0b;
     }
 
-    *{ box-sizing: border-box; } /* fixes the weird min/max boxes */
+    *{ box-sizing: border-box; }
 
     body{
       margin:0;
@@ -70,16 +72,17 @@
 
     label{ display:block; font-size:13px; color:var(--muted); margin:10px 0 6px; }
 
+    /* Cleaner dropdowns */
     select, input{
       width:100%;
       padding:11px 40px 11px 12px;
       border-radius:14px;
-      border:1px solid rgba(255,255,255,.14);
-      background:linear-gradient(180deg, rgba(0,0,0,.22), rgba(0,0,0,.14));
+      border:1px solid var(--border2);
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.12));
       color:var(--text);
       outline:none;
       box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
-      transition: border-color .15s ease;
+      transition: border-color .15s ease, background .15s ease;
       font-size:14px;
     }
     select{
@@ -88,13 +91,18 @@
       -moz-appearance:none;
       cursor:pointer;
       background-image:
-        linear-gradient(180deg, rgba(0,0,0,.22), rgba(0,0,0,.14)),
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath fill='rgba(232,238,252,0.75)' d='M5.3 7.7a1 1 0 0 1 1.4 0L10 11l3.3-3.3a1 1 0 1 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 0-1.4z'/%3E%3C/svg%3E");
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.12)),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath fill='rgba(232,238,252,0.80)' d='M5.3 7.7a1 1 0 0 1 1.4 0L10 11l3.3-3.3a1 1 0 1 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 0-1.4z'/%3E%3C/svg%3E");
       background-repeat:no-repeat;
       background-position: 0 0, right 12px center;
       background-size: auto, 18px 18px;
     }
-    /* number inputs don't need the right padding */
+    /* Most browsers allow styling option colors */
+    select option{
+      background:#0b1020;
+      color:#e8eefc;
+    }
+
     input[type="number"]{ padding-right:12px; }
 
     select:hover, input:hover{ border-color: rgba(96,165,250,.35); }
@@ -104,7 +112,7 @@
     }
 
     .row{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
-    .row > div{ min-width:0; } /* prevents overlap */
+    .row > div{ min-width:0; }
 
     a{ color:var(--accent); text-decoration:none; }
     a:hover{ text-decoration:underline; }
@@ -143,14 +151,21 @@
       border-radius:10px;
       padding:6px 10px;
       cursor:pointer;
+      font-size:13px; /* match ref text */
+      line-height:1;
     }
     .pager button:hover{ border-color:rgba(96,165,250,.55); }
-    .pager .idx{ color:var(--muted); font-size:12px; padding:0 4px; }
+    .pager .idx{
+      color:var(--muted);
+      font-size:13px; /* match ref text */
+      padding:0 4px;
+    }
 
     .refline{
       color:var(--muted);
-      font-size:13px;
+      font-size:13px; /* match pager */
     }
+    .refline a{ font-size:13px; }
 
     table{ width:100%; border-collapse:collapse; margin-top:10px; font-size:13px; }
     th, td{ padding:10px 8px; border-bottom:1px solid rgba(255,255,255,.10); }
@@ -168,25 +183,25 @@
 
 <body>
   <div class="wrap">
-    <h1>XRD 2θ–ω Peak Toolkit</h1>
-    <p class="sub">Interactive quick reference for XRD peaks (from Excel).</p>
+    <h1 id="pageTitle">XRD 2θ–ω Peak Toolkit</h1>
+    <p class="sub" id="pageIntro">Interactive quick reference for XRD peaks (from Excel).</p>
 
     <div class="grid">
       <!-- LEFT COLUMN -->
       <div class="card">
         <div class="panel-title">
-          <h2>Database</h2>
+          <h2>X-RAY</h2>
           <div class="pills">
             <span class="pill" id="xrayPill">λ: —</span>
             <span class="pill" id="updatePill">Updated: —</span>
           </div>
         </div>
 
-        <label for="dbSel">X-ray beam type</label>
+        <label for="dbSel">Beam Type</label>
         <select id="dbSel"></select>
 
         <div class="panel-title" style="margin-top:14px;">
-          <h2>Selection</h2>
+          <h2>Peak Lookup</h2>
         </div>
 
         <label for="materialSel">Material</label>
@@ -215,15 +230,15 @@
           <canvas id="plot" width="1400" height="460"></canvas>
         </div>
 
-        <!-- Paper pager + reference link (below plot) -->
+        <!-- swapped order: Reference Link on the left, pager on the right -->
         <div class="below-plot">
+          <div class="refline" id="refWrap">—</div>
+
           <div class="pager" id="paperPager" style="display:none;">
             <button id="prevPaper" type="button">&lt;</button>
             <span class="idx" id="paperIdx">1 / 1</span>
             <button id="nextPaper" type="button">&gt;</button>
           </div>
-
-          <div class="refline" id="refWrap">—</div>
         </div>
 
         <table id="peakTable">
@@ -246,7 +261,6 @@ const FIXED_SIGMA_DEG = 0.15;
 const FIXED_POINTS    = 2000;
 
 /* ---------- Excel files ---------- */
-/* Rename your file to: xrd_peaks_cu_ka.xlsx (same folder as this HTML) */
 const DB_FILES_ALL = [
   { id:"cu_ka", label:"Cu Kα", file:"xrd_peaks_cu_ka.xlsx", default:true }
 ];
@@ -256,6 +270,9 @@ let STORE = null; // { meta:{...}, materials:[{id,name, orientations:[{name, pap
 let paperIndex = 0;
 
 const els = {
+  pageTitle:   document.getElementById('pageTitle'),
+  pageIntro:   document.getElementById('pageIntro'),
+
   dbSel:       document.getElementById('dbSel'),
   xrayPill:    document.getElementById('xrayPill'),
   updatePill:  document.getElementById('updatePill'),
@@ -298,6 +315,20 @@ function formatDatePretty(iso){
   const y = Number(m[1]), mo = Number(m[2]) - 1, d = Number(m[3]);
   const dt = new Date(Date.UTC(y, mo, d));
   return dt.toLocaleDateString(undefined, { year:"numeric", month:"short", day:"2-digit", timeZone:"UTC" });
+}
+
+function applyPageMeta(){
+  const meta = STORE?.meta || {};
+  const t = String(meta.page_title || "").trim();
+  const intro = String(meta.intro_text || "").trim();
+
+  if (t){
+    els.pageTitle.textContent = t;
+    document.title = t;
+  }
+  if (intro){
+    els.pageIntro.textContent = intro;
+  }
 }
 
 function setHeaderPills(){
@@ -499,6 +530,7 @@ function drawPlot(peaks, highlightTwoTheta=null){
 
 function rerenderAll(){
   if (!STORE) return;
+  applyPageMeta();
   setHeaderPills();
   renderPager();
   renderReferenceLink();
@@ -593,7 +625,7 @@ async function loadExcel(file){
     console.error(e);
     els.loadWarn.style.display = "";
     els.loadWarn.textContent =
-      `Failed to load "${file}". Make sure it is in the same folder as this HTML, and open via GitHub Pages (not double-click).`;
+      `Failed to load "${file}". Put "xrd_peaks_cu_ka.xlsx" next to this HTML and open via GitHub Pages (not double-click).`;
   }
 }
 
@@ -620,7 +652,7 @@ async function populateDbDropdown(){
     els.dbSel.innerHTML = "";
     els.loadWarn.style.display = "";
     els.loadWarn.textContent =
-      `No Excel database file found. Put "xrd_peaks_cu_ka.xlsx" next to this HTML file.`;
+      `No Excel database found. Add "xrd_peaks_cu_ka.xlsx" next to this HTML.`;
     return null;
   }
 
