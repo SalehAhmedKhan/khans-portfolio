@@ -7,6 +7,10 @@
   <title>A.I. Art</title>
   <link rel="icon" type="image/png" href="../krafts-images/krafts.png">
 
+  <!-- Fonts: casual handwritten body + readable UI -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Kalam:wght@400;700&family=Patrick+Hand&display=swap" rel="stylesheet">
 
   <style>
     :root{
@@ -16,7 +20,7 @@
       --glass: rgba(15,23,42,0.70);
       --border: rgba(148,163,184,0.35);
       --text: #e5e7eb;
-      --muted: rgba(226,232,240,0.72);
+      --muted: rgba(226,232,240,0.78);
       --accent: #f59e0b;
       --shadow: 0 22px 55px rgba(0,0,0,0.55);
       --r: 18px;
@@ -27,7 +31,7 @@
 
     body{
       margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      font-family: "Atkinson Hyperlegible", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
       color: var(--text);
       background:
         radial-gradient(circle at 14% 22%, rgba(245,158,11,0.16), transparent 55%),
@@ -57,13 +61,18 @@
 
     .titleblock h1{
       margin:0;
-      font-size: clamp(1.35rem, 2.6vw, 1.9rem);
+      font-family: "Patrick Hand", "Kalam", cursive;
+      font-size: clamp(1.8rem, 3vw, 2.45rem);
+      line-height: 1;
+      letter-spacing: 0.02em;
     }
 
     .titleblock p{
       margin: 0.35rem 0 0;
       color: var(--muted);
       max-width: 70ch;
+      font-size: 1rem;
+      line-height: 1.55;
     }
 
     .back{
@@ -75,6 +84,7 @@
       text-decoration:none;
       width: fit-content;
       align-self: flex-start;
+      white-space: nowrap;
     }
 
     .grid{
@@ -126,11 +136,15 @@
       position:absolute;
       left: 0.95rem;
       bottom: 0.9rem;
-      font-size: 1.1rem;
-      font-weight: 650;
+      font-family: "Patrick Hand", "Kalam", cursive;
+      font-size: clamp(1.45rem, 2.2vw, 1.75rem);
+      line-height: 1;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.75);
     }
 
-    /* ===== Slide Panel ===== */
+    /* ===== Center Panel ===== */
     .scrim{
       position: fixed;
       inset: 0;
@@ -157,6 +171,8 @@
       transform: scale(0.96);
       transition: opacity 0.2s ease, transform 0.2s ease;
       z-index: 60;
+      touch-action: pan-y;
+      user-select: none;
     }
 
     .panel.open{
@@ -167,26 +183,52 @@
 
     .panel-header{
       display:flex;
+      align-items:center;
       justify-content: space-between;
+      gap: 1rem;
       padding: 1rem 1.2rem;
       border-bottom: 1px solid var(--border);
     }
 
     .panel-header h2{
       margin:0;
-      font-size: 1.25rem;
+      font-family: "Patrick Hand", "Kalam", cursive;
+      font-size: clamp(1.85rem, 3vw, 2.45rem);
+      line-height: 1;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+    }
+
+    .panel-actions{
+      display:flex;
+      align-items:center;
+      gap: 0.7rem;
+      flex: 0 0 auto;
+    }
+
+    .counter{
+      font-family: "Kalam", "Patrick Hand", cursive;
+      color: rgba(226,232,240,0.86);
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
     }
 
     .close{
-      background:none;
+      background: rgba(2,6,23,0.20);
       border: 1px solid var(--border);
       border-radius: 999px;
       color: var(--text);
       padding: 0.35rem 0.8rem;
       cursor:pointer;
+      font-family: "Kalam", "Atkinson Hyperlegible", sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
     }
 
     .panel-body{
+      position: relative;
       display:grid;
       grid-template-columns: 1.1fr 1fr;
       gap: 1rem;
@@ -200,46 +242,91 @@
       align-items:center;
       justify-content:center;
       overflow:hidden;
+      border-radius: 16px;
     }
 
-    /* ✅ FIXED IMAGE BEHAVIOR */
     .panel-media img{
       width:100%;
       height:auto;
       max-height:100%;
       object-fit: contain;
       display:block;
+      pointer-events: none;
     }
 
     .panel-text{
       overflow:auto;
       padding-right: 0.4rem;
+      user-select: text;
     }
 
     .date-made{
-      margin: 0 0 0.6rem;
-      font-size: 0.95rem;
-      font-weight: 650;
-      color: rgba(226,232,240,0.9);
+      margin: 0 0 0.75rem;
+      font-family: "Kalam", "Patrick Hand", cursive;
+      font-size: clamp(1.15rem, 1.5vw, 1.35rem);
+      font-weight: 700;
+      line-height: 1.35;
+      color: rgba(226,232,240,0.95);
     }
 
     .desc{
       margin:0;
       color: var(--muted);
-      line-height: 1.55;
+      font-family: "Kalam", "Patrick Hand", cursive;
+      font-size: clamp(1.22rem, 1.55vw, 1.48rem);
+      line-height: 1.72;
+      letter-spacing: 0.01em;
       white-space: pre-line;
     }
 
-    /* ===== MOBILE FIX (ONLY CHANGE) ===== */
+    .nav-arrow{
+      position:absolute;
+      top:50%;
+      transform: translateY(-50%);
+      z-index: 3;
+      width: 3.05rem;
+      height: 3.05rem;
+      border-radius: 999px;
+      border: 1px solid rgba(226,232,240,0.22);
+      background: rgba(2,6,23,0.16);
+      color: rgba(255,255,255,0.45);
+      font-size: 2rem;
+      line-height: 1;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transition: opacity 0.18s ease, background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+      opacity: 0.34;
+      backdrop-filter: blur(6px);
+    }
+
+    .nav-arrow:hover,
+    .nav-arrow:focus-visible{
+      opacity: 0.92;
+      background: rgba(2,6,23,0.58);
+      color: rgba(255,255,255,0.92);
+      border-color: rgba(226,232,240,0.55);
+      outline: none;
+    }
+
+    .nav-prev{ left: 0.75rem; }
+    .nav-next{ right: 0.75rem; }
+
     @media (max-width: 700px){
       .panel{
         inset: 4vh 4vw;
+      }
+
+      .panel-header{
+        padding: 0.85rem 0.95rem;
       }
 
       .panel-body{
         grid-template-columns: 1fr;
         grid-template-rows: auto 1fr;
         overflow: hidden;
+        padding: 0.8rem;
       }
 
       .panel-media{
@@ -258,6 +345,22 @@
         overflow: auto;
         padding-right: 0.4rem;
       }
+
+      .desc{
+        font-size: 1.18rem;
+        line-height: 1.62;
+      }
+
+      .nav-arrow{
+        width: 2.65rem;
+        height: 2.65rem;
+        font-size: 1.65rem;
+        opacity: 0.26;
+        background: rgba(2,6,23,0.10);
+      }
+
+      .nav-prev{ left: 0.35rem; }
+      .nav-next{ right: 0.35rem; }
     }
   </style>
 </head>
@@ -278,12 +381,16 @@
 
 <div class="scrim" id="scrim"></div>
 
-<aside class="panel" id="panel">
+<aside class="panel" id="panel" aria-hidden="true">
   <div class="panel-header">
     <h2 id="panelTitle"></h2>
-    <button class="close" id="closeBtn">Close</button>
+    <div class="panel-actions">
+      <div class="counter" id="panelCounter"></div>
+      <button class="close" id="closeBtn">Close</button>
+    </div>
   </div>
-  <div class="panel-body">
+  <div class="panel-body" id="panelBody">
+    <button class="nav-arrow nav-prev" id="prevBtn" aria-label="Previous item">‹</button>
     <div class="panel-media">
       <img id="panelImg" src="" alt="" />
     </div>
@@ -291,21 +398,36 @@
       <div class="date-made" id="panelDateMade"></div>
       <p class="desc" id="panelDesc"></p>
     </div>
+    <button class="nav-arrow nav-next" id="nextBtn" aria-label="Next item">›</button>
   </div>
 </aside>
 
 <script>
   const grid = document.getElementById("grid");
   const panel = document.getElementById("panel");
+  const panelBody = document.getElementById("panelBody");
   const scrim = document.getElementById("scrim");
   const closeBtn = document.getElementById("closeBtn");
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
 
   const panelTitle = document.getElementById("panelTitle");
   const panelImg = document.getElementById("panelImg");
   const panelDesc = document.getElementById("panelDesc");
   const panelDateMade = document.getElementById("panelDateMade");
+  const panelCounter = document.getElementById("panelCounter");
 
   let ITEMS = [];
+  let currentIndex = 0;
+  let dragStartX = 0;
+  let dragStartY = 0;
+  let dragging = false;
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, c => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",""":"&quot;","'":"&#39;"
+    }[c]));
+  }
 
   function formatDatePretty(iso){
     if(!iso) return "";
@@ -322,41 +444,98 @@
 
   function render(){
     grid.innerHTML = ITEMS.map((item,i)=>`
-      <div class="card ${item.orientation||"horizontal"}" data-i="${i}">
-        <div class="card-media" style="background-image:url('${item.image}')"></div>
+      <div class="card ${escapeHtml(item.orientation||"horizontal")}" data-i="${i}" tabindex="0">
+        <div class="card-media" style="background-image:url('${escapeHtml(item.image||"")}')"></div>
         <div class="card-overlay"></div>
-        <div class="card-title">${item.title}</div>
+        <div class="card-title">${escapeHtml(item.title||"")}</div>
       </div>
     `).join("");
   }
 
-  function openPanel(item){
+  function updatePanel(){
+    const item = ITEMS[currentIndex];
+    if(!item) return;
     panelTitle.textContent = item.title || "";
     panelImg.src = item.image || "";
+    panelImg.alt = item.title || "";
     panelDesc.textContent = Array.isArray(item.shortDescription)
-      ? item.shortDescription.join("\n\n")
+      ? item.shortDescription.join("
+
+")
       : item.shortDescription || "";
     panelDateMade.textContent = item.dateMade
       ? `Date Crafted: ${formatDatePretty(item.dateMade)}`
       : "";
+    panelCounter.textContent = `${currentIndex + 1} / ${ITEMS.length}`;
+  }
+
+  function openPanel(index){
+    currentIndex = Number(index) || 0;
+    updatePanel();
     panel.classList.add("open");
     scrim.classList.add("open");
+    panel.setAttribute("aria-hidden", "false");
     document.body.style.overflow="hidden";
   }
 
   function closePanel(){
     panel.classList.remove("open");
     scrim.classList.remove("open");
+    panel.setAttribute("aria-hidden", "true");
     document.body.style.overflow="";
+  }
+
+  function showRelative(direction){
+    if(!ITEMS.length) return;
+    currentIndex = (currentIndex + direction + ITEMS.length) % ITEMS.length;
+    updatePanel();
   }
 
   grid.addEventListener("click",e=>{
     const c=e.target.closest(".card");
-    if(c) openPanel(ITEMS[c.dataset.i]);
+    if(c) openPanel(c.dataset.i);
+  });
+
+  grid.addEventListener("keydown",e=>{
+    if(e.key !== "Enter" && e.key !== " ") return;
+    const c=e.target.closest(".card");
+    if(!c) return;
+    e.preventDefault();
+    openPanel(c.dataset.i);
   });
 
   closeBtn.addEventListener("click",closePanel);
   scrim.addEventListener("click",closePanel);
+  prevBtn.addEventListener("click",()=>showRelative(-1));
+  nextBtn.addEventListener("click",()=>showRelative(1));
+
+  function pointerStart(e){
+    if(!panel.classList.contains("open")) return;
+    dragging = true;
+    dragStartX = e.clientX;
+    dragStartY = e.clientY;
+  }
+
+  function pointerEnd(e){
+    if(!dragging) return;
+    dragging = false;
+    const dx = e.clientX - dragStartX;
+    const dy = e.clientY - dragStartY;
+    if(Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.2){
+      showRelative(dx < 0 ? 1 : -1);
+    }
+  }
+
+  panelBody.addEventListener("pointerdown", pointerStart);
+  panelBody.addEventListener("pointerup", pointerEnd);
+  panelBody.addEventListener("pointercancel", ()=>{ dragging = false; });
+
+  document.addEventListener("keydown",e=>{
+    if(!panel.classList.contains("open")) return;
+    if(e.key === "Escape") closePanel();
+    if(e.key === "ArrowLeft") showRelative(-1);
+    if(e.key === "ArrowRight") showRelative(1);
+  });
 
   loadItems();
 </script>
