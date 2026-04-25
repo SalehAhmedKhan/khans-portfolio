@@ -248,6 +248,62 @@
       white-space: pre-line;
     }
 
+
+
+    .panel-shell{
+      position: relative;
+      display:flex;
+      flex-direction: column;
+      height: 100%;
+      min-height: 0;
+      touch-action: pan-y;
+      cursor: grab;
+      user-select: none;
+    }
+
+    .panel-shell.dragging{ cursor: grabbing; }
+
+    .panel-body{ user-select: text; }
+
+    .nav-btn{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(2,6,23,0.72);
+      color: var(--text);
+      font-size: 1.65rem;
+      line-height: 1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      z-index: 2;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+      backdrop-filter: blur(10px);
+    }
+
+    .nav-btn:hover{ background: rgba(15,23,42,0.92); }
+    .nav-btn.prev{ left: 0.8rem; }
+    .nav-btn.next{ right: 0.8rem; }
+
+    .panel-count{
+      margin-left:auto;
+      color: var(--muted);
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+
+    .swipe-hint{
+      display:none;
+      margin-top: 0.55rem;
+      color: rgba(226,232,240,0.56);
+      font-size: 0.85rem;
+    }
+
     .error{
       margin-top: 1rem;
       padding: 0.9rem 1rem;
@@ -280,6 +336,20 @@
         object-fit: contain;
       }
 
+
+
+      .nav-btn{
+        width: 36px;
+        height: 36px;
+        font-size: 1.35rem;
+      }
+
+      .nav-btn.prev{ left: 0.45rem; }
+      .nav-btn.next{ right: 0.45rem; }
+
+      .panel-count{ font-size: 0.82rem; }
+      .swipe-hint{ display:block; }
+
       .panel-text{
         overflow: auto;
         padding-right: 0.4rem;
@@ -309,15 +379,21 @@
 <aside class="panel" id="panel" aria-hidden="true">
   <div class="panel-header">
     <h2 id="panelTitle"></h2>
+    <div class="panel-count" id="panelCount"></div>
     <button class="close" id="closeBtn">Close</button>
   </div>
-  <div class="panel-body">
-    <div class="panel-media">
-      <img id="panelImg" src="" alt="" />
-    </div>
-    <div class="panel-text">
-      <div class="date-made" id="panelDateMade"></div>
-      <p class="desc" id="panelDesc"></p>
+  <div class="panel-shell" id="panelShell">
+    <button class="nav-btn prev" id="prevBtn" aria-label="Previous card">&lsaquo;</button>
+    <button class="nav-btn next" id="nextBtn" aria-label="Next card">&rsaquo;</button>
+    <div class="panel-body">
+      <div class="panel-media">
+        <img id="panelImg" src="" alt="" />
+      </div>
+      <div class="panel-text">
+        <div class="date-made" id="panelDateMade"></div>
+        <p class="desc" id="panelDesc"></p>
+        <div class="swipe-hint">Swipe left/right to move between cards.</div>
+      </div>
     </div>
   </div>
 </aside>
@@ -327,6 +403,10 @@
   const panel = document.getElementById("panel");
   const scrim = document.getElementById("scrim");
   const closeBtn = document.getElementById("closeBtn");
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const panelShell = document.getElementById("panelShell");
+  const panelCount = document.getElementById("panelCount");
   const errBox = document.getElementById("error");
 
   const panelTitle = document.getElementById("panelTitle");
@@ -335,6 +415,11 @@
   const panelDateMade = document.getElementById("panelDateMade");
 
   let ITEMS = [];
+  let currentIndex = 0;
+  let dragStartX = 0;
+  let dragStartY = 0;
+  let dragging = false;
+  let pointerStartedOnControl = false;
 
   function escapeHtml(s){
     return String(s).replace(/[&<>"']/g, c => ({
@@ -377,7 +462,11 @@
     `).join("");
   }
 
-  function openPanel(item){
+  function showItem(index){
+    if(!Array.isArray(ITEMS) || ITEMS.length === 0) return;
+    currentIndex = (index + ITEMS.length) % ITEMS.length;
+    const item = ITEMS[currentIndex];
+
     panelTitle.textContent = item.title || "";
     panelImg.src = item.image || "";
     panelImg.alt = item.title || "";
@@ -387,11 +476,19 @@
     panelDateMade.textContent = item.dateMade
       ? `Date Crafted: ${formatDatePretty(item.dateMade)}`
       : "";
+    panelCount.textContent = `${currentIndex + 1} / ${ITEMS.length}`;
+  }
+
+  function openPanel(index){
+    showItem(Number(index) || 0);
     panel.classList.add("open");
     scrim.classList.add("open");
     panel.setAttribute("aria-hidden", "false");
     document.body.style.overflow="hidden";
   }
+
+  function goToNext(){ showItem(currentIndex + 1); }
+  function goToPrev(){ showItem(currentIndex - 1); }
 
   function closePanel(){
     panel.classList.remove("open");
@@ -402,7 +499,7 @@
 
   grid.addEventListener("click",e=>{
     const c=e.target.closest(".card");
-    if(c) openPanel(ITEMS[c.dataset.i]);
+    if(c) openPanel(c.dataset.i);
   });
 
   grid.addEventListener("keydown", e => {
@@ -410,13 +507,58 @@
     const c = e.target.closest(".card");
     if(!c) return;
     e.preventDefault();
-    openPanel(ITEMS[c.dataset.i]);
+    openPanel(c.dataset.i);
   });
 
   closeBtn.addEventListener("click",closePanel);
   scrim.addEventListener("click",closePanel);
   document.addEventListener("keydown", e => {
     if(e.key === "Escape") closePanel();
+  });
+
+  prevBtn.addEventListener("click", e => {
+    e.stopPropagation();
+    goToPrev();
+  });
+
+  nextBtn.addEventListener("click", e => {
+    e.stopPropagation();
+    goToNext();
+  });
+
+  panelShell.addEventListener("pointerdown", e => {
+    if(!panel.classList.contains("open")) return;
+    pointerStartedOnControl = !!e.target.closest("button, a");
+    if(pointerStartedOnControl) return;
+    dragging = true;
+    dragStartX = e.clientX;
+    dragStartY = e.clientY;
+    panelShell.classList.add("dragging");
+  });
+
+  panelShell.addEventListener("pointerup", e => {
+    if(!dragging || pointerStartedOnControl) return;
+    const dx = e.clientX - dragStartX;
+    const dy = e.clientY - dragStartY;
+    dragging = false;
+    pointerStartedOnControl = false;
+    panelShell.classList.remove("dragging");
+
+    if(Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.4){
+      dx < 0 ? goToNext() : goToPrev();
+    }
+  });
+
+  panelShell.addEventListener("pointercancel", () => {
+    dragging = false;
+    pointerStartedOnControl = false;
+    panelShell.classList.remove("dragging");
+  });
+
+  document.addEventListener("keydown", e => {
+    if(!panel.classList.contains("open")) return;
+    if(e.key === "ArrowRight") goToNext();
+    if(e.key === "ArrowLeft") goToPrev();
   });
 
   loadItems();
