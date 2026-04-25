@@ -77,9 +77,7 @@
       background: var(--glass-bg);
       border-radius: 18px;
       border: 1px solid var(--glass-border);
-      box-shadow:
-        0 24px 60px rgba(15,23,42,0.85),
-        0 0 0 1px rgba(15,23,42,0.4) inset;
+      
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
 
@@ -125,9 +123,10 @@
     .intro-panel h2 {
       margin:0;
       font-size: clamp(0.95rem, 1.2vw, 1.15rem);
-      line-height:1.2;
+      line-height:1.3;
       color:#bfdbfe;
-      border:none;
+      max-width: 38ch;
+      white-space: normal;
     }
 
     .intro-panel p {
