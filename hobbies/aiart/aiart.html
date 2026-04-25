@@ -50,7 +50,6 @@
     .topbar{
       display:flex;
       justify-content: space-between;
-      align-items: flex-start;
       gap: 1rem;
       padding: 1rem 1.1rem;
       background: var(--glass);
@@ -58,11 +57,6 @@
       border-radius: var(--r);
       box-shadow: var(--shadow);
       backdrop-filter: blur(16px);
-    }
-
-    .titleblock{
-      flex: 1 1 auto;
-      min-width: 0;
     }
 
     .titleblock h1{
@@ -94,8 +88,8 @@
       text-decoration:none;
       width: fit-content;
       height: fit-content;
-      align-self: flex-start;
       white-space: nowrap;
+      align-self: flex-start;
       font-family: 'Patrick Hand', 'Kalam', cursive;
       font-size: 1.28rem;
       line-height: 1;
@@ -186,6 +180,8 @@
       transform: scale(0.96);
       transition: opacity 0.2s ease, transform 0.2s ease;
       z-index: 60;
+      touch-action: pan-y;
+      user-select: none;
     }
 
     .panel.open{
@@ -242,6 +238,7 @@
     }
 
     .panel-body{
+      position: relative;
       display:grid;
       grid-template-columns: 1.1fr 1fr;
       gap: 1rem;
@@ -292,22 +289,6 @@
       white-space: pre-line;
     }
 
-
-    .panel-shell{
-      position: relative;
-      display:flex;
-      flex-direction: column;
-      height: 100%;
-      min-height: 0;
-      touch-action: pan-y;
-      cursor: grab;
-      user-select: none;
-    }
-
-    .panel-shell.dragging{ cursor: grabbing; }
-
-    .panel-body{ user-select: text; }
-
     .nav-btn{
       position:absolute;
       top:50%;
@@ -337,9 +318,7 @@
       background: rgba(15,23,42,0.62);
       color: rgba(229,231,235,0.9);
       border-color: rgba(148,163,184,0.45);
-      outline: none;
     }
-
     .nav-btn.prev{ left: 0.8rem; }
     .nav-btn.next{ right: 0.8rem; }
 
@@ -418,18 +397,16 @@
       <button class="close" id="closeBtn">Close</button>
     </div>
   </div>
-  <div class="panel-shell" id="panelShell">
-    <button class="nav-btn prev" id="prevBtn" aria-label="Previous item">‹</button>
-    <button class="nav-btn next" id="nextBtn" aria-label="Next item">›</button>
-    <div class="panel-body" id="panelBody">
-      <div class="panel-media">
-        <img id="panelImg" src="" alt="" />
-      </div>
-      <div class="panel-text">
-        <div class="date-made" id="panelDateMade"></div>
-        <p class="desc" id="panelDesc"></p>
-      </div>
+  <div class="panel-body" id="panelBody">
+    <button class="nav-btn prev" id="prevBtn" aria-label="Previous card">&lsaquo;</button>
+    <div class="panel-media">
+      <img id="panelImg" src="" alt="" />
     </div>
+    <div class="panel-text">
+      <div class="date-made" id="panelDateMade"></div>
+      <p class="desc" id="panelDesc"></p>
+    </div>
+    <button class="nav-btn next" id="nextBtn" aria-label="Next card">&rsaquo;</button>
   </div>
 </aside>
 
@@ -437,7 +414,6 @@
   const grid = document.getElementById("grid");
   const panel = document.getElementById("panel");
   const panelBody = document.getElementById("panelBody");
-  const panelShell = document.getElementById("panelShell");
   const scrim = document.getElementById("scrim");
   const closeBtn = document.getElementById("closeBtn");
   const prevBtn = document.getElementById("prevBtn");
@@ -454,7 +430,6 @@
   let dragStartX = 0;
   let dragStartY = 0;
   let dragging = false;
-  let pointerStartedOnControl = false;
 
   function escapeHtml(s){
     return String(s).replace(/[&<>"']/g, c => ({
@@ -544,34 +519,26 @@
   prevBtn.addEventListener("click",()=>showRelative(-1));
   nextBtn.addEventListener("click",()=>showRelative(1));
 
-  panelShell.addEventListener("pointerdown", e => {
+  function pointerStart(e){
     if(!panel.classList.contains("open")) return;
-    pointerStartedOnControl = !!e.target.closest("button, a");
-    if(pointerStartedOnControl) return;
     dragging = true;
     dragStartX = e.clientX;
     dragStartY = e.clientY;
-    panelShell.classList.add("dragging");
-  });
+  }
 
-  panelShell.addEventListener("pointerup", e => {
-    if(!dragging || pointerStartedOnControl) return;
+  function pointerEnd(e){
+    if(!dragging) return;
+    dragging = false;
     const dx = e.clientX - dragStartX;
     const dy = e.clientY - dragStartY;
-    dragging = false;
-    pointerStartedOnControl = false;
-    panelShell.classList.remove("dragging");
-
-    if(Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.4){
+    if(Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.2){
       showRelative(dx < 0 ? 1 : -1);
     }
-  });
+  }
 
-  panelShell.addEventListener("pointercancel", () => {
-    dragging = false;
-    pointerStartedOnControl = false;
-    panelShell.classList.remove("dragging");
-  });
+  panelBody.addEventListener("pointerdown", pointerStart);
+  panelBody.addEventListener("pointerup", pointerEnd);
+  panelBody.addEventListener("pointercancel", ()=>{ dragging = false; });
 
   document.addEventListener("keydown",e=>{
     if(!panel.classList.contains("open")) return;
