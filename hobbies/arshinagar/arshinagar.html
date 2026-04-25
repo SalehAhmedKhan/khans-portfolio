@@ -44,26 +44,22 @@
     /* ===== Casual handwritten / artistic typography ===== */
     .titleblock h1,
     .panel-header h2,
-    .card-title{
+    .card-title,
+    .back{
       font-family: 'Patrick Hand', 'Kalam', cursive;
-      letter-spacing: 0.4px;
       font-weight: 400;
+      letter-spacing: 0.02em;
     }
 
     .titleblock p,
-    .desc{
-      font-family: 'Kalam', cursive;
-      font-weight: 300;
-      letter-spacing: 0.15px;
-    }
-
-    .back,
+    .desc,
+    .date-made,
+    .counter,
+    .panel-count,
     .close,
     .nav-btn,
-    .counter,
-    .date-made,
     .error{
-      font-family: 'Kalam', system-ui, sans-serif;
+      font-family: 'Kalam', 'Patrick Hand', cursive;
     }
 
     .page{
@@ -92,15 +88,19 @@
 
     .titleblock h1{
       margin:0;
-      font-size: clamp(1.65rem, 3vw, 2.25rem);
+      font-size: clamp(1.8rem, 3vw, 2.45rem);
+      line-height: 1;
+      letter-spacing: 0.02em;
     }
 
     .titleblock p{
       margin: 0.35rem 0 0;
       color: var(--muted);
       max-width: none;
+      font-weight: 300;
       font-size: clamp(1.05rem, 1.25vw, 1.2rem);
       line-height: 1.65;
+      letter-spacing: 0.01em;
     }
 
     .back{
@@ -115,6 +115,10 @@
       height: fit-content;
       white-space: nowrap;
       align-self: flex-start;
+      font-family: 'Patrick Hand', 'Kalam', cursive;
+      font-size: 1.28rem;
+      line-height: 1;
+      letter-spacing: 0.02em;
     }
 
     .grid{
@@ -171,8 +175,12 @@
       position:absolute;
       left: 0.95rem;
       bottom: 0.9rem;
-      font-size: 1.35rem;
+      font-family: 'Patrick Hand', 'Kalam', cursive;
+      font-size: clamp(1.45rem, 2.2vw, 1.75rem);
+      line-height: 1;
       font-weight: 400;
+      letter-spacing: 0.02em;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.75);
     }
 
     /* ===== Center Open Panel ===== */
@@ -221,17 +229,24 @@
 
     .panel-header h2{
       margin:0;
-      font-size: clamp(1.45rem, 2.4vw, 2rem);
+      font-family: 'Patrick Hand', 'Kalam', cursive;
+      font-size: clamp(1.85rem, 3vw, 2.45rem);
+      line-height: 1;
       font-weight: 400;
+      letter-spacing: 0.02em;
     }
 
     .close{
-      background:none;
+      background: rgba(2,6,23,0.20);
       border: 1px solid var(--border);
       border-radius: 999px;
       color: var(--text);
       padding: 0.35rem 0.8rem;
       cursor:pointer;
+      font-family: 'Kalam', system-ui, sans-serif;
+      font-weight: 700;
+      font-size: 1.08rem;
+      letter-spacing: 0.01em;
     }
 
     .panel-body{
@@ -267,17 +282,21 @@
     }
 
     .date-made{
-      margin: 0 0 0.6rem;
+      margin: 0 0 0.75rem;
+      font-family: 'Kalam', 'Patrick Hand', cursive;
       font-size: clamp(1.05rem, 1.25vw, 1.22rem);
-      font-weight: 650;
-      color: rgba(226,232,240,0.9);
+      font-weight: 700;
+      line-height: 1.35;
+      color: rgba(226,232,240,0.95);
     }
 
     .desc{
       margin:0;
       color: var(--muted);
+      font-family: 'Kalam', 'Patrick Hand', cursive;
       font-size: clamp(1.18rem, 1.45vw, 1.48rem);
       line-height: 1.72;
+      letter-spacing: 0.01em;
       white-space: pre-line;
     }
 
@@ -333,8 +352,11 @@
 
     .panel-count{
       margin-left:auto;
-      color: var(--muted);
-      font-size: 0.9rem;
+      font-family: 'Kalam', 'Patrick Hand', cursive;
+      color: rgba(226,232,240,0.86);
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
       white-space: nowrap;
     }
 
