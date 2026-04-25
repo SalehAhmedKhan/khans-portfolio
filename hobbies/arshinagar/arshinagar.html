@@ -7,7 +7,6 @@
   <title>Project Arshinagar</title>
   <link rel="icon" type="image/png" href="../krafts-images/krafts.png">
 
-
   <style>
     :root{
       --bg1:#050712;
@@ -56,7 +55,6 @@
       backdrop-filter: blur(16px);
     }
 
-    /* ✅ Make the text block actually take the available width */
     .titleblock{
       flex: 1 1 auto;
       min-width: 0;
@@ -70,7 +68,8 @@
     .titleblock p{
       margin: 0.35rem 0 0;
       color: var(--muted);
-      max-width: none; /* ✅ remove the artificial 70ch limit */
+      max-width: none;
+      line-height: 1.5;
     }
 
     .back{
@@ -81,6 +80,7 @@
       background: rgba(2,6,23,0.35);
       color: #93c5fd;
       text-decoration:none;
+      width: fit-content;
       height: fit-content;
       white-space: nowrap;
       align-self: flex-start;
@@ -117,6 +117,10 @@
     .card.vertical{ aspect-ratio: 3 / 4; }
 
     .card:hover{ transform: translateY(-4px); }
+    .card:focus-visible{
+      outline: 2px solid rgba(147,197,253,0.85);
+      outline-offset: 3px;
+    }
 
     .card-media{
       position:absolute;
@@ -140,7 +144,7 @@
       font-weight: 650;
     }
 
-    /* ===== Slide Panel ===== */
+    /* ===== Center Open Panel ===== */
     .scrim{
       position: fixed;
       inset: 0;
@@ -155,32 +159,38 @@
 
     .panel{
       position: fixed;
-      top: 0;
-      right: 0;
-      height: 100%;
-      width: min(520px, 92vw);
-      background: rgba(2,6,23,0.75);
-      border-left: 1px solid var(--border);
-      box-shadow: -30px 0 80px rgba(0,0,0,0.6);
-      transform: translateX(100%);
-      transition: transform 0.22s ease;
-      z-index: 60;
+      inset: 6vh 6vw;
+      background: rgba(2,6,23,0.92);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
       display:flex;
       flex-direction: column;
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.96);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      z-index: 60;
     }
 
-    .panel.open{ transform: translateX(0); }
+    .panel.open{
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1);
+    }
 
     .panel-header{
       display:flex;
       justify-content: space-between;
-      padding: 0.9rem;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.2rem;
       border-bottom: 1px solid var(--border);
     }
 
     .panel-header h2{
       margin:0;
-      font-size: 1.1rem;
+      font-size: 1.25rem;
     }
 
     .close{
@@ -188,31 +198,44 @@
       border: 1px solid var(--border);
       border-radius: 999px;
       color: var(--text);
-      padding: 0.35rem 0.7rem;
+      padding: 0.35rem 0.8rem;
       cursor:pointer;
     }
 
     .panel-body{
-      padding: 0.9rem;
-      overflow:auto;
+      display:grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 1rem;
+      padding: 1rem;
+      height: 100%;
+      overflow: hidden;
     }
 
-    .hero{
-      aspect-ratio: 16 / 10;
-      border-radius: 14px;
+    .panel-media{
+      display:flex;
+      align-items:center;
+      justify-content:center;
       overflow:hidden;
-      border: 1px solid var(--border);
-      margin-bottom: 0.75rem;
+      border-radius: 14px;
+      border: 1px solid rgba(148,163,184,0.22);
+      background: rgba(2,6,23,0.35);
     }
 
-    .hero img{
+    .panel-media img{
       width:100%;
-      height:100%;
-      object-fit: cover;
+      height:auto;
+      max-height:100%;
+      object-fit: contain;
+      display:block;
+    }
+
+    .panel-text{
+      overflow:auto;
+      padding-right: 0.4rem;
     }
 
     .date-made{
-      margin: 0.25rem 0 0.4rem;
+      margin: 0 0 0.6rem;
       font-size: 0.95rem;
       font-weight: 650;
       color: rgba(226,232,240,0.9);
@@ -221,7 +244,7 @@
     .desc{
       margin:0;
       color: var(--muted);
-      line-height: 1.5;
+      line-height: 1.55;
       white-space: pre-line;
     }
 
@@ -232,6 +255,35 @@
       border: 1px solid rgba(248,113,113,0.35);
       background: rgba(248,113,113,0.10);
       color: rgba(254,226,226,0.92);
+    }
+
+    @media (max-width: 700px){
+      .panel{
+        inset: 4vh 4vw;
+      }
+
+      .panel-body{
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+        overflow: hidden;
+      }
+
+      .panel-media{
+        height: 42vh;
+        max-height: 42vh;
+      }
+
+      .panel-media img{
+        width: 100%;
+        height: 100%;
+        max-height: 42vh;
+        object-fit: contain;
+      }
+
+      .panel-text{
+        overflow: auto;
+        padding-right: 0.4rem;
+      }
     }
   </style>
 </head>
@@ -254,17 +306,19 @@
 
 <div class="scrim" id="scrim"></div>
 
-<aside class="panel" id="panel">
+<aside class="panel" id="panel" aria-hidden="true">
   <div class="panel-header">
     <h2 id="panelTitle"></h2>
     <button class="close" id="closeBtn">Close</button>
   </div>
   <div class="panel-body">
-    <div class="hero">
+    <div class="panel-media">
       <img id="panelImg" src="" alt="" />
     </div>
-    <h3 class="date-made" id="panelDateMade"></h3>
-    <p class="desc" id="panelDesc"></p>
+    <div class="panel-text">
+      <div class="date-made" id="panelDateMade"></div>
+      <p class="desc" id="panelDesc"></p>
+    </div>
   </div>
 </aside>
 
@@ -288,25 +342,22 @@
     }[c]));
   }
 
-  function formatDatePretty(isoDate){
-    if (!isoDate) return "";
-    const d = new Date(isoDate);
-    if (isNaN(d)) return isoDate;
-    return d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+  function formatDatePretty(iso){
+    if(!iso) return "";
+    const d = new Date(iso);
+    return isNaN(d) ? iso : d.toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"});
   }
 
   async function loadItems(){
     try{
-      const res = await fetch("items.json", { cache: "no-store" });
-      if (!res.ok) throw new Error(`HTTP ${res.status} loading items.json`);
+      const res = await fetch("items.json", { cache:"no-store" });
+      if(!res.ok) throw new Error(`HTTP ${res.status} loading items.json`);
       ITEMS = await res.json();
-
-      if (Array.isArray(ITEMS)) {
-        ITEMS.sort((a, b) => new Date(b.dateMade || 0) - new Date(a.dateMade || 0));
+      if(Array.isArray(ITEMS)){
+        ITEMS.sort((a,b)=>new Date(b.dateMade||0)-new Date(a.dateMade||0));
       }
-
       render();
-    } catch (e){
+    } catch(e){
       errBox.style.display = "block";
       errBox.textContent =
         "Could not load items.json. If you are opening this file directly (file://), fetch may be blocked. " +
@@ -315,9 +366,9 @@
   }
 
   function render(){
-    if (!Array.isArray(ITEMS)) return;
+    if(!Array.isArray(ITEMS)) return;
 
-    grid.innerHTML = ITEMS.map((item, i) => `
+    grid.innerHTML = ITEMS.map((item,i)=>`
       <div class="card ${escapeHtml(item.orientation || "horizontal")}" data-i="${i}" tabindex="0">
         <div class="card-media" style="background-image:url('${escapeHtml(item.image || "")}')"></div>
         <div class="card-overlay"></div>
@@ -329,37 +380,44 @@
   function openPanel(item){
     panelTitle.textContent = item.title || "";
     panelImg.src = item.image || "";
+    panelImg.alt = item.title || "";
     panelDesc.textContent = Array.isArray(item.shortDescription)
       ? item.shortDescription.join("\n\n")
       : item.shortDescription || "";
-    panelDateMade.textContent = item.dateMade ? `Date Crafted: ${formatDatePretty(item.dateMade)}` : "";
+    panelDateMade.textContent = item.dateMade
+      ? `Date Crafted: ${formatDatePretty(item.dateMade)}`
+      : "";
     panel.classList.add("open");
     scrim.classList.add("open");
-    document.body.style.overflow = "hidden";
+    panel.setAttribute("aria-hidden", "false");
+    document.body.style.overflow="hidden";
   }
 
   function closePanel(){
     panel.classList.remove("open");
     scrim.classList.remove("open");
-    document.body.style.overflow = "";
+    panel.setAttribute("aria-hidden", "true");
+    document.body.style.overflow="";
   }
 
-  grid.addEventListener("click", e => {
-    const c = e.target.closest(".card");
-    if (!c) return;
-    openPanel(ITEMS[c.dataset.i]);
+  grid.addEventListener("click",e=>{
+    const c=e.target.closest(".card");
+    if(c) openPanel(ITEMS[c.dataset.i]);
   });
 
   grid.addEventListener("keydown", e => {
-    if (e.key !== "Enter" && e.key !== " ") return;
+    if(e.key !== "Enter" && e.key !== " ") return;
     const c = e.target.closest(".card");
-    if (!c) return;
+    if(!c) return;
     e.preventDefault();
     openPanel(ITEMS[c.dataset.i]);
   });
 
-  closeBtn.addEventListener("click", closePanel);
-  scrim.addEventListener("click", closePanel);
+  closeBtn.addEventListener("click",closePanel);
+  scrim.addEventListener("click",closePanel);
+  document.addEventListener("keydown", e => {
+    if(e.key === "Escape") closePanel();
+  });
 
   loadItems();
 </script>
