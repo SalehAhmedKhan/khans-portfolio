@@ -297,6 +297,7 @@
       border: 1px solid rgba(148,163,184,0.18);
       background: rgba(2,6,23,0.18);
       color: rgba(229,231,235,0.50);
+      font-family: 'Kalam', 'Patrick Hand', cursive;
       font-size: 1.65rem;
       line-height: 1;
       display:flex;
@@ -308,18 +309,6 @@
       backdrop-filter: blur(6px);
       opacity: 0.45;
       transition: opacity 0.18s ease, background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
-    }
-
-    
-
-    .nav-btn.prev::before{
-      transform: rotate(-135deg);
-      margin-left: 4px;
-    }
-
-    .nav-btn.next::before{
-      transform: rotate(45deg);
-      margin-right: 4px;
     }
 
     .nav-btn:hover,
@@ -375,10 +364,9 @@
       .nav-btn{
         width: 36px;
         height: 36px;
+        font-size: 1.35rem;
         opacity: 0.35;
       }
-
-      
 
       .nav-btn.prev{ left: 0.45rem; }
       .nav-btn.next{ right: 0.45rem; }
