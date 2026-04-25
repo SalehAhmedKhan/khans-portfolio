@@ -79,7 +79,6 @@
     }
 
     .back{
-      flex: 0 0 auto;
       padding: 0.5rem 0.9rem;
       border-radius: 999px;
       border: 1px solid rgba(147,197,253,0.55);
@@ -87,9 +86,8 @@
       color: #93c5fd;
       text-decoration:none;
       width: fit-content;
-      height: fit-content;
-      white-space: nowrap;
       align-self: flex-start;
+      white-space: nowrap;
       font-family: 'Patrick Hand', 'Kalam', cursive;
       font-size: 1.28rem;
       line-height: 1;
@@ -305,7 +303,7 @@
       align-items:center;
       justify-content:center;
       cursor:pointer;
-      z-index: 2;
+      z-index: 3;
       box-shadow: 0 10px 24px rgba(0,0,0,0.18);
       backdrop-filter: blur(6px);
       opacity: 0.45;
@@ -318,7 +316,9 @@
       background: rgba(15,23,42,0.62);
       color: rgba(229,231,235,0.9);
       border-color: rgba(148,163,184,0.45);
+      outline: none;
     }
+
     .nav-btn.prev{ left: 0.8rem; }
     .nav-btn.next{ right: 0.8rem; }
 
@@ -398,7 +398,7 @@
     </div>
   </div>
   <div class="panel-body" id="panelBody">
-    <button class="nav-btn prev" id="prevBtn" aria-label="Previous card">&lsaquo;</button>
+    <button class="nav-btn prev" id="prevBtn" aria-label="Previous item">&lsaquo;</button>
     <div class="panel-media">
       <img id="panelImg" src="" alt="" />
     </div>
@@ -406,7 +406,7 @@
       <div class="date-made" id="panelDateMade"></div>
       <p class="desc" id="panelDesc"></p>
     </div>
-    <button class="nav-btn next" id="nextBtn" aria-label="Next card">&rsaquo;</button>
+    <button class="nav-btn next" id="nextBtn" aria-label="Next item">&rsaquo;</button>
   </div>
 </aside>
 
