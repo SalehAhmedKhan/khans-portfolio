@@ -297,7 +297,7 @@
       border: 1px solid rgba(148,163,184,0.18);
       background: rgba(2,6,23,0.18);
       color: rgba(229,231,235,0.50);
-      font-size: 1.65rem;
+      font-size: 0;
       line-height: 1;
       display:flex;
       align-items:center;
@@ -308,6 +308,25 @@
       backdrop-filter: blur(6px);
       opacity: 0.45;
       transition: opacity 0.18s ease, background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+    }
+
+    .nav-btn::before{
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-top: 3px solid currentColor;
+      border-right: 3px solid currentColor;
+      display:block;
+    }
+
+    .nav-btn.prev::before{
+      transform: rotate(-135deg);
+      margin-left: 4px;
+    }
+
+    .nav-btn.next::before{
+      transform: rotate(45deg);
+      margin-right: 4px;
     }
 
     .nav-btn:hover,
@@ -363,8 +382,14 @@
       .nav-btn{
         width: 36px;
         height: 36px;
-        font-size: 1.35rem;
         opacity: 0.35;
+      }
+
+      .nav-btn::before{
+        width: 8px;
+        height: 8px;
+        border-top-width: 2.5px;
+        border-right-width: 2.5px;
       }
 
       .nav-btn.prev{ left: 0.45rem; }
@@ -398,7 +423,7 @@
     </div>
   </div>
   <div class="panel-body" id="panelBody">
-    <button class="nav-btn prev" id="prevBtn" aria-label="Previous item">&lsaquo;</button>
+    <button class="nav-btn prev" id="prevBtn" aria-label="Previous item"></button>
     <div class="panel-media">
       <img id="panelImg" src="" alt="" />
     </div>
@@ -406,7 +431,7 @@
       <div class="date-made" id="panelDateMade"></div>
       <p class="desc" id="panelDesc"></p>
     </div>
-    <button class="nav-btn next" id="nextBtn" aria-label="Next item">&rsaquo;</button>
+    <button class="nav-btn next" id="nextBtn" aria-label="Next item"></button>
   </div>
 </aside>
 
