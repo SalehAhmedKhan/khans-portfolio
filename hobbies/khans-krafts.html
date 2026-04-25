@@ -121,13 +121,18 @@
     }
 
     .intro-panel h2 {
-      margin:0;
-      font-size: clamp(0.95rem, 1.2vw, 1.15rem);
-      line-height:1.3;
-      color:#bfdbfe;
-      max-width: 38ch;
-      white-space: normal;
-    }
+  margin:0;
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  line-height:1.35;
+  color:#bfdbfe;
+  border:none;
+  background:transparent;
+  box-shadow:none;
+  padding:0;
+  border-radius:0;
+  max-width:100%;
+  white-space:normal;
+}
 
     .intro-panel p {
       margin:0;
@@ -297,19 +302,25 @@
     }
 
     .project-title {
-      position:absolute;
-      left:0.9rem;
-      bottom:0.9rem;
-      right:0.9rem;
-      font-size: clamp(1.4rem, 2vw, 1.7rem);
-      font-weight:500;
-      color:#ffffff;
-      letter-spacing:0.3px;
-      line-height:1.2;
-      text-shadow:
-        0 2px 6px rgba(0,0,0,0.6),
-        0 0 10px rgba(0,0,0,0.35);
-    }
+  position: absolute;
+  left: 0.9rem;
+  bottom: 0.9rem;
+  right: 0.9rem;
+  font-family: 'Patrick Hand', 'Kalam', cursive;
+  font-size: clamp(1.4rem, 2vw, 1.7rem);
+  font-weight: 500;
+  color: #ffffff;
+  letter-spacing: 0.3px;
+  line-height: 1.2;
+  border:none;
+  background:transparent;
+  box-shadow:none;
+  padding:0;
+  border-radius:0;
+  text-shadow:
+    0 2px 6px rgba(0,0,0,0.6),
+    0 0 10px rgba(0,0,0,0.35);
+}
 
     /* ===== MOBILE: STACK (NOW WE ALLOW WRAP) ===== */
     @media (max-width: 980px) {
