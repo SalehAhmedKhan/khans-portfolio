@@ -99,7 +99,8 @@
       margin: 0.35rem 0 0;
       color: var(--muted);
       max-width: none;
-      line-height: 1.5;
+      font-size: clamp(1.05rem, 1.25vw, 1.18rem);
+      line-height: 1.65;
     }
 
     .back{
@@ -267,7 +268,7 @@
 
     .date-made{
       margin: 0 0 0.6rem;
-      font-size: 0.95rem;
+      font-size: clamp(1.05rem, 1.1vw, 1.18rem);
       font-weight: 650;
       color: rgba(226,232,240,0.9);
     }
@@ -275,8 +276,8 @@
     .desc{
       margin:0;
       color: var(--muted);
-      font-size: 1.08rem;
-      line-height: 1.7;
+      font-size: clamp(1.2rem, 1.35vw, 1.42rem);
+      line-height: 1.75;
       white-space: pre-line;
     }
 
@@ -304,9 +305,9 @@
       width: 42px;
       height: 42px;
       border-radius: 999px;
-      border: 1px solid var(--border);
-      background: rgba(2,6,23,0.72);
-      color: var(--text);
+      border: 1px solid rgba(148,163,184,0.18);
+      background: rgba(2,6,23,0.18);
+      color: rgba(229,231,235,0.50);
       font-size: 1.65rem;
       line-height: 1;
       display:flex;
@@ -314,11 +315,19 @@
       justify-content:center;
       cursor:pointer;
       z-index: 2;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.35);
-      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.18);
+      backdrop-filter: blur(6px);
+      opacity: 0.45;
+      transition: opacity 0.18s ease, background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
     }
 
-    .nav-btn:hover{ background: rgba(15,23,42,0.92); }
+    .nav-btn:hover,
+    .nav-btn:focus-visible{
+      opacity: 0.9;
+      background: rgba(15,23,42,0.62);
+      color: rgba(229,231,235,0.9);
+      border-color: rgba(148,163,184,0.45);
+    }
     .nav-btn.prev{ left: 0.8rem; }
     .nav-btn.next{ right: 0.8rem; }
 
@@ -374,6 +383,7 @@
         width: 36px;
         height: 36px;
         font-size: 1.35rem;
+        opacity: 0.35;
       }
 
       .nav-btn.prev{ left: 0.45rem; }
@@ -381,6 +391,10 @@
 
       .panel-count{ font-size: 0.82rem; }
       .swipe-hint{ display:block; }
+
+      .titleblock p{ font-size: 1rem; line-height: 1.55; }
+      .date-made{ font-size: 1rem; }
+      .desc{ font-size: 1.12rem; line-height: 1.65; }
 
       .panel-text{
         overflow: auto;
