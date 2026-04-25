@@ -1,15 +1,16 @@
+<!-- File: arshinagar.html -->
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Project Arshinagar</title>
   <link rel="icon" type="image/png" href="../krafts-images/krafts.png">
 
-  <!-- 🎨 FONTS -->
-
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@500;600;700&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Casual handwritten/artistic fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Patrick+Hand&display=swap" rel="stylesheet">
 
   <style>
     :root{
@@ -30,7 +31,7 @@
 
     body{
       margin:0;
-      font-family: 'Inter', system-ui, sans-serif;
+      font-family: 'Kalam', 'Patrick Hand', system-ui, -apple-system, Segoe UI, sans-serif;
       color: var(--text);
       background:
         radial-gradient(circle at 14% 22%, rgba(245,158,11,0.16), transparent 55%),
@@ -40,22 +41,29 @@
       background-attachment: fixed;
     }
 
-    /* ===== ARTISTIC TYPOGRAPHY ===== */
-    h1, h2, h3, .card-title {
-      font-family: 'Playfair Display', serif;
-      letter-spacing: 0.3px;
+    /* ===== Casual handwritten / artistic typography ===== */
+    .titleblock h1,
+    .panel-header h2,
+    .card-title{
+      font-family: 'Patrick Hand', 'Kalam', cursive;
+      letter-spacing: 0.4px;
+      font-weight: 400;
     }
 
-    .desc {
-      font-family: 'Caveat', cursive;
-      font-size: 1.15rem;
-      line-height: 1.7;
-      letter-spacing: 0.2px;
+    .titleblock p,
+    .desc{
+      font-family: 'Kalam', cursive;
+      font-weight: 300;
+      letter-spacing: 0.15px;
     }
 
-    .date-made {
-      font-family: 'Inter', sans-serif;
-      font-weight: 600;
+    .back,
+    .close,
+    .nav-btn,
+    .counter,
+    .date-made,
+    .error{
+      font-family: 'Kalam', system-ui, sans-serif;
     }
 
     .page{
@@ -84,23 +92,28 @@
 
     .titleblock h1{
       margin:0;
-      font-size: clamp(1.35rem, 2.6vw, 1.9rem);
+      font-size: clamp(1.65rem, 3vw, 2.25rem);
     }
 
     .titleblock p{
       margin: 0.35rem 0 0;
       color: var(--muted);
-      line-height: 1.6;
+      max-width: none;
+      line-height: 1.5;
     }
 
     .back{
+      flex: 0 0 auto;
       padding: 0.5rem 0.9rem;
       border-radius: 999px;
       border: 1px solid rgba(147,197,253,0.55);
       background: rgba(2,6,23,0.35);
       color: #93c5fd;
       text-decoration:none;
+      width: fit-content;
+      height: fit-content;
       white-space: nowrap;
+      align-self: flex-start;
     }
 
     .grid{
@@ -116,6 +129,7 @@
     @media (max-width: 640px){
       .topbar{ flex-direction: column; }
       .grid{ grid-template-columns: 1fr; }
+      .back{ align-self: flex-start; }
     }
 
     .card{
@@ -130,8 +144,13 @@
     }
 
     .card.horizontal{ aspect-ratio: 16 / 10; }
+    .card.vertical{ aspect-ratio: 3 / 4; }
 
     .card:hover{ transform: translateY(-4px); }
+    .card:focus-visible{
+      outline: 2px solid rgba(147,197,253,0.85);
+      outline-offset: 3px;
+    }
 
     .card-media{
       position:absolute;
@@ -151,11 +170,11 @@
       position:absolute;
       left: 0.95rem;
       bottom: 0.9rem;
-      font-size: 1.2rem;
-      font-weight: 600;
+      font-size: 1.35rem;
+      font-weight: 400;
     }
 
-    /* ===== PANEL ===== */
+    /* ===== Center Open Panel ===== */
     .scrim{
       position: fixed;
       inset: 0;
@@ -193,13 +212,25 @@
     .panel-header{
       display:flex;
       justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
       padding: 1rem 1.2rem;
       border-bottom: 1px solid var(--border);
     }
 
     .panel-header h2{
       margin:0;
-      font-size: 1.5rem;
+      font-size: clamp(1.45rem, 2.4vw, 2rem);
+      font-weight: 400;
+    }
+
+    .close{
+      background:none;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--text);
+      padding: 0.35rem 0.8rem;
+      cursor:pointer;
     }
 
     .panel-body{
@@ -215,6 +246,10 @@
       display:flex;
       align-items:center;
       justify-content:center;
+      overflow:hidden;
+      border-radius: 14px;
+      border: 1px solid rgba(148,163,184,0.22);
+      background: rgba(2,6,23,0.35);
     }
 
     .panel-media img{
@@ -222,6 +257,7 @@
       height:auto;
       max-height:100%;
       object-fit: contain;
+      display:block;
     }
 
     .panel-text{
@@ -229,17 +265,129 @@
       padding-right: 0.4rem;
     }
 
+    .date-made{
+      margin: 0 0 0.6rem;
+      font-size: 0.95rem;
+      font-weight: 650;
+      color: rgba(226,232,240,0.9);
+    }
+
+    .desc{
+      margin:0;
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.7;
+      white-space: pre-line;
+    }
+
+
+
+    .panel-shell{
+      position: relative;
+      display:flex;
+      flex-direction: column;
+      height: 100%;
+      min-height: 0;
+      touch-action: pan-y;
+      cursor: grab;
+      user-select: none;
+    }
+
+    .panel-shell.dragging{ cursor: grabbing; }
+
+    .panel-body{ user-select: text; }
+
+    .nav-btn{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(2,6,23,0.72);
+      color: var(--text);
+      font-size: 1.65rem;
+      line-height: 1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      z-index: 2;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+      backdrop-filter: blur(10px);
+    }
+
+    .nav-btn:hover{ background: rgba(15,23,42,0.92); }
+    .nav-btn.prev{ left: 0.8rem; }
+    .nav-btn.next{ right: 0.8rem; }
+
+    .panel-count{
+      margin-left:auto;
+      color: var(--muted);
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+
+    .swipe-hint{
+      display:none;
+      margin-top: 0.55rem;
+      color: rgba(226,232,240,0.56);
+      font-size: 0.85rem;
+    }
+
+    .error{
+      margin-top: 1rem;
+      padding: 0.9rem 1rem;
+      border-radius: 14px;
+      border: 1px solid rgba(248,113,113,0.35);
+      background: rgba(248,113,113,0.10);
+      color: rgba(254,226,226,0.92);
+    }
+
     @media (max-width: 700px){
+      .panel{
+        inset: 4vh 4vw;
+      }
+
       .panel-body{
         grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+        overflow: hidden;
       }
 
       .panel-media{
         height: 42vh;
+        max-height: 42vh;
+      }
+
+      .panel-media img{
+        width: 100%;
+        height: 100%;
+        max-height: 42vh;
+        object-fit: contain;
+      }
+
+
+
+      .nav-btn{
+        width: 36px;
+        height: 36px;
+        font-size: 1.35rem;
+      }
+
+      .nav-btn.prev{ left: 0.45rem; }
+      .nav-btn.next{ right: 0.45rem; }
+
+      .panel-count{ font-size: 0.82rem; }
+      .swipe-hint{ display:block; }
+
+      .panel-text{
+        overflow: auto;
+        padding-right: 0.4rem;
       }
     }
   </style>
-
 </head>
 
 <body>
@@ -248,93 +396,204 @@
   <div class="topbar">
     <div class="titleblock">
       <h1>Project Arshinagar</h1>
-      <p>A quiet crossing between memory and imagination.</p>
+      <p>You’ve arrived at Arshinagar—not quite a place, not quite a destination, but a quiet crossing between memory and imagination. What gathers here moves gently, carrying songs born of soil and devotion, boats carved by tide and hand, and traces of a world shaped by habit, faith, and listening. Some things are shown plainly; others are left unfinished on purpose, like stories meant to be completed by those who linger.</p>
+      <p>If something here feels familiar, or stirs a question you can’t quite name, I’d love to hear from you. Arshinagar grows through exchange, and conversations often reveal paths I haven’t walked yet. Feel free to reach out—let’s talk, and see where the river takes us next.</p>
     </div>
-    <a class="back" href="../khans-krafts.html">Back</a>
+    <a class="back" href="../khans-krafts.html">Back to Khan's Krafts</a>
   </div>
 
   <div class="grid" id="grid"></div>
+  <div class="error" id="error" style="display:none;"></div>
 </div>
 
 <div class="scrim" id="scrim"></div>
 
-<aside class="panel" id="panel">
+<aside class="panel" id="panel" aria-hidden="true">
   <div class="panel-header">
     <h2 id="panelTitle"></h2>
+    <div class="panel-count" id="panelCount"></div>
     <button class="close" id="closeBtn">Close</button>
   </div>
-  <div class="panel-body">
-    <div class="panel-media">
-      <img id="panelImg" src="" />
-    </div>
-    <div class="panel-text">
-      <div class="date-made" id="panelDateMade"></div>
-      <p class="desc" id="panelDesc"></p>
+  <div class="panel-shell" id="panelShell">
+    <button class="nav-btn prev" id="prevBtn" aria-label="Previous card">&lsaquo;</button>
+    <button class="nav-btn next" id="nextBtn" aria-label="Next card">&rsaquo;</button>
+    <div class="panel-body">
+      <div class="panel-media">
+        <img id="panelImg" src="" alt="" />
+      </div>
+      <div class="panel-text">
+        <div class="date-made" id="panelDateMade"></div>
+        <p class="desc" id="panelDesc"></p>
+        <div class="swipe-hint">Swipe left/right to move between cards.</div>
+      </div>
     </div>
   </div>
 </aside>
 
 <script>
-const grid = document.getElementById("grid");
-const panel = document.getElementById("panel");
-const scrim = document.getElementById("scrim");
-const closeBtn = document.getElementById("closeBtn");
+  const grid = document.getElementById("grid");
+  const panel = document.getElementById("panel");
+  const scrim = document.getElementById("scrim");
+  const closeBtn = document.getElementById("closeBtn");
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const panelShell = document.getElementById("panelShell");
+  const panelCount = document.getElementById("panelCount");
+  const errBox = document.getElementById("error");
 
-const panelTitle = document.getElementById("panelTitle");
-const panelImg = document.getElementById("panelImg");
-const panelDesc = document.getElementById("panelDesc");
-const panelDateMade = document.getElementById("panelDateMade");
+  const panelTitle = document.getElementById("panelTitle");
+  const panelImg = document.getElementById("panelImg");
+  const panelDesc = document.getElementById("panelDesc");
+  const panelDateMade = document.getElementById("panelDateMade");
 
-let ITEMS = [];
-let currentIndex = 0;
+  let ITEMS = [];
+  let currentIndex = 0;
+  let dragStartX = 0;
+  let dragStartY = 0;
+  let dragging = false;
+  let pointerStartedOnControl = false;
 
-function formatDatePretty(iso){
-  const d = new Date(iso);
-  return d.toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"});
-}
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, c => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"
+    }[c]));
+  }
 
-async function loadItems(){
-  const res = await fetch("items.json");
-  ITEMS = await res.json();
-  ITEMS.sort((a,b)=>new Date(b.dateMade)-new Date(a.dateMade));
-  render();
-}
+  function formatDatePretty(iso){
+    if(!iso) return "";
+    const d = new Date(iso);
+    return isNaN(d) ? iso : d.toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"});
+  }
 
-function render(){
-  grid.innerHTML = ITEMS.map((item,i)=>`
-    <div class="card horizontal" data-i="${i}">
-      <div class="card-media" style="background-image:url('${item.image}')"></div>
-      <div class="card-overlay"></div>
-      <div class="card-title">${item.title}</div>
-    </div>
-  `).join("");
-}
+  async function loadItems(){
+    try{
+      const res = await fetch("items.json", { cache:"no-store" });
+      if(!res.ok) throw new Error(`HTTP ${res.status} loading items.json`);
+      ITEMS = await res.json();
+      if(Array.isArray(ITEMS)){
+        ITEMS.sort((a,b)=>new Date(b.dateMade||0)-new Date(a.dateMade||0));
+      }
+      render();
+    } catch(e){
+      errBox.style.display = "block";
+      errBox.textContent =
+        "Could not load items.json. If you are opening this file directly (file://), fetch may be blocked. " +
+        "Run a local server or host it. Error: " + e.message;
+    }
+  }
 
-function openPanel(i){
-  currentIndex = i;
-  const item = ITEMS[i];
-  panelTitle.textContent = item.title;
-  panelImg.src = item.image;
-  panelDesc.textContent = item.shortDescription.join("\n\n");
-  panelDateMade.textContent = "Date Crafted: " + formatDatePretty(item.dateMade);
-  panel.classList.add("open");
-  scrim.classList.add("open");
-}
+  function render(){
+    if(!Array.isArray(ITEMS)) return;
 
-function closePanel(){
-  panel.classList.remove("open");
-  scrim.classList.remove("open");
-}
+    grid.innerHTML = ITEMS.map((item,i)=>`
+      <div class="card ${escapeHtml(item.orientation || "horizontal")}" data-i="${i}" tabindex="0">
+        <div class="card-media" style="background-image:url('${escapeHtml(item.image || "")}')"></div>
+        <div class="card-overlay"></div>
+        <div class="card-title">${escapeHtml(item.title || "")}</div>
+      </div>
+    `).join("");
+  }
 
-grid.addEventListener("click",e=>{
-  const c = e.target.closest(".card");
-  if(c) openPanel(Number(c.dataset.i));
-});
+  function showItem(index){
+    if(!Array.isArray(ITEMS) || ITEMS.length === 0) return;
+    currentIndex = (index + ITEMS.length) % ITEMS.length;
+    const item = ITEMS[currentIndex];
 
-closeBtn.onclick = closePanel;
-scrim.onclick = closePanel;
+    panelTitle.textContent = item.title || "";
+    panelImg.src = item.image || "";
+    panelImg.alt = item.title || "";
+    panelDesc.textContent = Array.isArray(item.shortDescription)
+      ? item.shortDescription.join("\n\n")
+      : item.shortDescription || "";
+    panelDateMade.textContent = item.dateMade
+      ? `Date Crafted: ${formatDatePretty(item.dateMade)}`
+      : "";
+    panelCount.textContent = `${currentIndex + 1} / ${ITEMS.length}`;
+  }
 
-loadItems();
+  function openPanel(index){
+    showItem(Number(index) || 0);
+    panel.classList.add("open");
+    scrim.classList.add("open");
+    panel.setAttribute("aria-hidden", "false");
+    document.body.style.overflow="hidden";
+  }
+
+  function goToNext(){ showItem(currentIndex + 1); }
+  function goToPrev(){ showItem(currentIndex - 1); }
+
+  function closePanel(){
+    panel.classList.remove("open");
+    scrim.classList.remove("open");
+    panel.setAttribute("aria-hidden", "true");
+    document.body.style.overflow="";
+  }
+
+  grid.addEventListener("click",e=>{
+    const c=e.target.closest(".card");
+    if(c) openPanel(c.dataset.i);
+  });
+
+  grid.addEventListener("keydown", e => {
+    if(e.key !== "Enter" && e.key !== " ") return;
+    const c = e.target.closest(".card");
+    if(!c) return;
+    e.preventDefault();
+    openPanel(c.dataset.i);
+  });
+
+  closeBtn.addEventListener("click",closePanel);
+  scrim.addEventListener("click",closePanel);
+  document.addEventListener("keydown", e => {
+    if(e.key === "Escape") closePanel();
+  });
+
+  prevBtn.addEventListener("click", e => {
+    e.stopPropagation();
+    goToPrev();
+  });
+
+  nextBtn.addEventListener("click", e => {
+    e.stopPropagation();
+    goToNext();
+  });
+
+  panelShell.addEventListener("pointerdown", e => {
+    if(!panel.classList.contains("open")) return;
+    pointerStartedOnControl = !!e.target.closest("button, a");
+    if(pointerStartedOnControl) return;
+    dragging = true;
+    dragStartX = e.clientX;
+    dragStartY = e.clientY;
+    panelShell.classList.add("dragging");
+  });
+
+  panelShell.addEventListener("pointerup", e => {
+    if(!dragging || pointerStartedOnControl) return;
+    const dx = e.clientX - dragStartX;
+    const dy = e.clientY - dragStartY;
+    dragging = false;
+    pointerStartedOnControl = false;
+    panelShell.classList.remove("dragging");
+
+    if(Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.4){
+      dx < 0 ? goToNext() : goToPrev();
+    }
+  });
+
+  panelShell.addEventListener("pointercancel", () => {
+    dragging = false;
+    pointerStartedOnControl = false;
+    panelShell.classList.remove("dragging");
+  });
+
+  document.addEventListener("keydown", e => {
+    if(!panel.classList.contains("open")) return;
+    if(e.key === "ArrowRight") goToNext();
+    if(e.key === "ArrowLeft") goToPrev();
+  });
+
+  loadItems();
 </script>
 
 </body>
