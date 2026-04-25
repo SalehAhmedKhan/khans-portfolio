@@ -425,7 +425,11 @@
 
   function escapeHtml(s){
     return String(s).replace(/[&<>"']/g, c => ({
-      "&":"&amp;","<":"&lt;",">":"&gt;",""":"&quot;","'":"&#39;"
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      "\"":"&quot;",
+      "'":"&#39;"
     }[c]));
   }
 
@@ -459,9 +463,7 @@
     panelImg.src = item.image || "";
     panelImg.alt = item.title || "";
     panelDesc.textContent = Array.isArray(item.shortDescription)
-      ? item.shortDescription.join("
-
-")
+      ? item.shortDescription.join("\n\n")
       : item.shortDescription || "";
     panelDateMade.textContent = item.dateMade
       ? `Date Crafted: ${formatDatePretty(item.dateMade)}`
