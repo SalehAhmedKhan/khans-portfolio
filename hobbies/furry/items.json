@@ -19,5 +19,16 @@
     ],
     "dateMade": "2026-01-31",
     "orientation": "vertical"
+  },
+  {
+    "title": "Blitzound",
+    "image": "blitzound.png",
+    "shortDescription": [
+      "Blitzounds are born of the Stream, where wind and gravity betray the ground. Lean and lightning-fast, they sprint across fractured rock before launching into the air, riding violent slipstreams like currents.",
+      "Their bodies blur behind them as they blitz through space, striking before prey can react. They are not fliers, but masters of momentum, reading the chaos of the Stream like a map. Travelers say you never see a Blitzound arrive—only the aftermath of its passage.",
+      "In the Stream, where nothing stands still, the Blitzound is perfectly at home."
+    ],
+    "dateMade": "2026-04-26",
+    "orientation": "horizontal"
   }
 ]
