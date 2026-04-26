@@ -8,7 +8,7 @@
   },
   {
     "title": "National Memorial",
-    "image": "natmonument.jpeg",
+    "image": "natmem.jpeg",
     "orientation": "horizontal",
     "dateMade": "2025-12-06",
     "shortDescription": "Decorative carved frame with a warm stain finish and sealed protective coat."
@@ -18,6 +18,13 @@
     "image": "palki.jpeg",
     "orientation": "horizontal",
     "dateMade": "2025-04-14",
+    "shortDescription": "A small set of hand-shaped clay ornaments painted for a clean matte handmade look."
+  },
+  {
+    "title": "Nagardola",
+    "image": "nagdola.jpeg",
+    "orientation": "vertical",
+    "dateMade": "2026-04-25",
     "shortDescription": "A small set of hand-shaped clay ornaments painted for a clean matte handmade look."
   }
 ]
