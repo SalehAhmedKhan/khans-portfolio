@@ -409,15 +409,42 @@
       border-radius: 999px;
       border: 1px solid rgba(16,185,129,0.25);
       background: rgba(2,6,23,0.55);
-      color: #d1fae5;
+      color: transparent;
       cursor: pointer;
-      font-size: 1.65rem;
+      font-size: 0;
       line-height: 1;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 0;
-      font-family: 'Aref Ruqaa', 'Scheherazade New', serif;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .panel-nav::before{
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -54%);
+      color: #d1fae5;
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 2.15rem;
+      font-weight: 400;
+      line-height: 1;
+      width: 1em;
+      height: 1em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .panel-prev::before{
+      content: "‹";
+    }
+
+    .panel-next::before{
+      content: "›";
     }
 
     .panel-nav:hover{
@@ -649,7 +676,6 @@
         }
       }
 
-      panelMain.style.touchAction = "pan-y";
       panelMain.addEventListener("pointerdown", startDrag);
       panelMain.addEventListener("pointerup", endDrag);
       panelMain.addEventListener("pointercancel", function(){
