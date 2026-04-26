@@ -411,7 +411,14 @@
       background: rgba(2,6,23,0.55);
       color: #d1fae5;
       cursor: pointer;
-      font-size: 1.05rem;
+      font-family: 'Aref Ruqaa', 'Scheherazade New', serif;
+      font-size: 1.35rem;
+      line-height: 1;
+      letter-spacing: 0;
+      -webkit-text-stroke: 0.25px rgba(209,250,229,0.45);
+      text-shadow:
+        0 1px 0 rgba(2,6,23,0.65),
+        0 0 12px rgba(16,185,129,0.24);
     }
 
     .panel-nav:hover{
@@ -424,6 +431,13 @@
       grid-template-columns: minmax(240px, 360px) 1fr;
       gap: 1rem;
       align-items: start;
+      touch-action: pan-y;
+      user-select: none;
+      cursor: grab;
+    }
+
+    .panel-main.dragging{
+      cursor: grabbing;
     }
 
     .panel-figure{
@@ -562,7 +576,7 @@
       </div>
 
       <div class="panel-content">
-        <button class="panel-nav panel-prev" id="panel-prev" type="button" aria-label="Previous panel">❮</button>
+        <button class="panel-nav panel-prev" id="panel-prev" type="button" aria-label="Previous panel">↢</button>
 
         <div class="panel-main">
           <div class="panel-figure">
@@ -574,12 +588,80 @@
           </div>
         </div>
 
-        <button class="panel-nav panel-next" id="panel-next" type="button" aria-label="Next panel">❯</button>
+        <button class="panel-nav panel-next" id="panel-next" type="button" aria-label="Next panel">↣</button>
       </div>
     </div>
   </div>
 
   <script type="module" src="js/panel_runtime.js"></script>
+
+  <script>
+    /* Swipe / click-drag navigation inside the opened content panel only. */
+    (() => {
+      const panelMain = document.querySelector('.panel-main');
+      const panelPrev = document.getElementById('panel-prev');
+      const panelNext = document.getElementById('panel-next');
+
+      if (!panelMain || !panelPrev || !panelNext) return;
+
+      let startX = 0;
+      let startY = 0;
+      let currentX = 0;
+      let isDragging = false;
+      let pointerStarted = false;
+
+      const resetDrag = () => {
+        isDragging = false;
+        pointerStarted = false;
+        panelMain.classList.remove('dragging');
+      };
+
+      panelMain.addEventListener('pointerdown', (event) => {
+        if (!document.getElementById('panel-overlay')?.classList.contains('open')) return;
+
+        pointerStarted = true;
+        startX = event.clientX;
+        startY = event.clientY;
+        currentX = event.clientX;
+        panelMain.setPointerCapture?.(event.pointerId);
+      });
+
+      panelMain.addEventListener('pointermove', (event) => {
+        if (!pointerStarted) return;
+
+        currentX = event.clientX;
+        const deltaX = currentX - startX;
+        const deltaY = event.clientY - startY;
+
+        if (Math.abs(deltaX) > 10 && Math.abs(deltaX) > Math.abs(deltaY)) {
+          isDragging = true;
+          panelMain.classList.add('dragging');
+          event.preventDefault();
+        }
+      });
+
+      panelMain.addEventListener('pointerup', () => {
+        if (!pointerStarted) return;
+
+        const deltaX = currentX - startX;
+        const swipeThreshold = 55;
+
+        if (isDragging && Math.abs(deltaX) >= swipeThreshold) {
+          if (deltaX < 0) {
+            panelNext.click();
+          } else {
+            panelPrev.click();
+          }
+        }
+
+        resetDrag();
+      });
+
+      panelMain.addEventListener('pointercancel', resetDrag);
+      panelMain.addEventListener('lostpointercapture', resetDrag);
+    })();
+  </script>
+
 
 </body>
 </html>
