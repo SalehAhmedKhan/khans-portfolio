@@ -308,8 +308,8 @@
 
     .card p{
       margin: 0;
-      font-size: 1rem;
-      line-height: 1.6;
+      font-size: 1.0rem;
+      line-height: 1.65;
       color: #cbd5f5;
     }
 
@@ -377,7 +377,7 @@
     }
 
     .panel-count{
-      font-size: 0.94rem;
+      font-size: 0.85rem;
       color: #cbd5f5;
       opacity: 0.9;
     }
@@ -411,14 +411,13 @@
       background: rgba(2,6,23,0.55);
       color: #d1fae5;
       cursor: pointer;
-      font-family: 'Aref Ruqaa', 'Scheherazade New', serif;
-      font-size: 1.35rem;
+      font-size: 1.65rem;
       line-height: 1;
-      letter-spacing: 0;
-      -webkit-text-stroke: 0.25px rgba(209,250,229,0.45);
-      text-shadow:
-        0 1px 0 rgba(2,6,23,0.65),
-        0 0 12px rgba(16,185,129,0.24);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      font-family: 'Aref Ruqaa', 'Scheherazade New', serif;
     }
 
     .panel-nav:hover{
@@ -431,13 +430,6 @@
       grid-template-columns: minmax(240px, 360px) 1fr;
       gap: 1rem;
       align-items: start;
-      touch-action: pan-y;
-      user-select: none;
-      cursor: grab;
-    }
-
-    .panel-main.dragging{
-      cursor: grabbing;
     }
 
     .panel-figure{
@@ -466,7 +458,7 @@
       margin-top: 0.55rem;
       font-size: 1.05rem;
       color: #cbd5f5;
-      line-height: 1.7;
+      line-height: 1.65;
     }
 
     .bottom-cta{
@@ -479,6 +471,16 @@
       font-size: 0.95rem;
       padding: 0.65rem 1.35rem;
       box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+
+
+    .panel-main{
+      touch-action: pan-y;
+      cursor: grab;
+    }
+
+    .panel-sheet.dragging-content .panel-main{
+      cursor: grabbing;
     }
 
     /* ===== Responsive ===== */
@@ -576,7 +578,7 @@
       </div>
 
       <div class="panel-content">
-        <button class="panel-nav panel-prev" id="panel-prev" type="button" aria-label="Previous panel">↢</button>
+        <button class="panel-nav panel-prev" id="panel-prev" type="button" aria-label="Previous panel">&lsaquo;</button>
 
         <div class="panel-main">
           <div class="panel-figure">
@@ -588,7 +590,7 @@
           </div>
         </div>
 
-        <button class="panel-nav panel-next" id="panel-next" type="button" aria-label="Next panel">↣</button>
+        <button class="panel-nav panel-next" id="panel-next" type="button" aria-label="Next panel">&rsaquo;</button>
       </div>
     </div>
   </div>
@@ -596,70 +598,66 @@
   <script type="module" src="js/panel_runtime.js"></script>
 
   <script>
-    /* Swipe / click-drag navigation inside the opened content panel only. */
-    (() => {
-      const panelMain = document.querySelector('.panel-main');
-      const panelPrev = document.getElementById('panel-prev');
-      const panelNext = document.getElementById('panel-next');
+    // Swipe / drag navigation for the open content panel only.
+    window.addEventListener("DOMContentLoaded", function(){
+      const panelOverlay = document.getElementById("panel-overlay");
+      const panelSheet = document.querySelector(".panel-sheet");
+      const panelMain = document.querySelector(".panel-main");
+      const prevBtn = document.getElementById("panel-prev");
+      const nextBtn = document.getElementById("panel-next");
 
-      if (!panelMain || !panelPrev || !panelNext) return;
+      if(!panelOverlay || !panelSheet || !panelMain || !prevBtn || !nextBtn) return;
 
       let startX = 0;
       let startY = 0;
-      let currentX = 0;
-      let isDragging = false;
-      let pointerStarted = false;
+      let dragging = false;
+      let startedOnControl = false;
 
-      const resetDrag = () => {
-        isDragging = false;
-        pointerStarted = false;
-        panelMain.classList.remove('dragging');
-      };
+      function isOpen(){
+        return panelOverlay.classList.contains("open");
+      }
 
-      panelMain.addEventListener('pointerdown', (event) => {
-        if (!document.getElementById('panel-overlay')?.classList.contains('open')) return;
+      function startDrag(e){
+        if(!isOpen()) return;
+        startedOnControl = !!e.target.closest("button, a");
+        if(startedOnControl) return;
 
-        pointerStarted = true;
-        startX = event.clientX;
-        startY = event.clientY;
-        currentX = event.clientX;
-        panelMain.setPointerCapture?.(event.pointerId);
-      });
+        dragging = true;
+        startX = e.clientX;
+        startY = e.clientY;
+        panelSheet.classList.add("dragging-content");
+      }
 
-      panelMain.addEventListener('pointermove', (event) => {
-        if (!pointerStarted) return;
-
-        currentX = event.clientX;
-        const deltaX = currentX - startX;
-        const deltaY = event.clientY - startY;
-
-        if (Math.abs(deltaX) > 10 && Math.abs(deltaX) > Math.abs(deltaY)) {
-          isDragging = true;
-          panelMain.classList.add('dragging');
-          event.preventDefault();
-        }
-      });
-
-      panelMain.addEventListener('pointerup', () => {
-        if (!pointerStarted) return;
-
-        const deltaX = currentX - startX;
-        const swipeThreshold = 55;
-
-        if (isDragging && Math.abs(deltaX) >= swipeThreshold) {
-          if (deltaX < 0) {
-            panelNext.click();
-          } else {
-            panelPrev.click();
-          }
+      function endDrag(e){
+        if(!dragging || startedOnControl){
+          dragging = false;
+          startedOnControl = false;
+          panelSheet.classList.remove("dragging-content");
+          return;
         }
 
-        resetDrag();
-      });
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
 
-      panelMain.addEventListener('pointercancel', resetDrag);
-      panelMain.addEventListener('lostpointercapture', resetDrag);
-    })();
+        dragging = false;
+        startedOnControl = false;
+        panelSheet.classList.remove("dragging-content");
+
+        if(Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.35){
+          if(dx < 0) nextBtn.click();
+          else prevBtn.click();
+        }
+      }
+
+      panelMain.style.touchAction = "pan-y";
+      panelMain.addEventListener("pointerdown", startDrag);
+      panelMain.addEventListener("pointerup", endDrag);
+      panelMain.addEventListener("pointercancel", function(){
+        dragging = false;
+        startedOnControl = false;
+        panelSheet.classList.remove("dragging-content");
+      });
+    });
   </script>
 
 
