@@ -321,10 +321,17 @@
 
         @keyframes sweepCenter { to { transform: translateY(0) scale(1); opacity: 1; } }
 
-        .topic-panel-close {
+        .topic-panel-actions {
             position: absolute;
             top: 1rem;
             right: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+            z-index: 2;
+        }
+
+        .topic-panel-close {
             width: 2.35rem;
             height: 2.35rem;
             border-radius: 999px;
@@ -333,6 +340,44 @@
             color: #fff;
             cursor: pointer;
             font-size: 1.25rem;
+            flex: 0 0 auto;
+        }
+
+        .panel-nav-mini {
+            appearance: none;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 999px;
+            min-height: 2.35rem;
+            padding: 0.35rem 0.75rem;
+            color: #eaf2ff;
+            background: rgba(255,255,255,0.09);
+            font: inherit;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            max-width: 13rem;
+            transition: transform 0.14s ease, background 0.14s ease, border-color 0.14s ease;
+        }
+
+        .panel-nav-mini:hover:not(:disabled) {
+            transform: translateY(-1px);
+            background: rgba(255,255,255,0.14);
+            border-color: rgba(159,201,255,0.28);
+        }
+
+        .panel-nav-mini:disabled {
+            opacity: 0.34;
+            cursor: default;
+        }
+
+        .panel-nav-mini .nav-topic {
+            display: inline-block;
+            max-width: 7.5rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-weight: 750;
         }
 
         .panel-kicker {
@@ -355,15 +400,31 @@
             opacity: 0.9;
         }
 
-        .tag-chip-row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .tag-chip-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.55rem;
+            margin: 0.25rem 0 0.4rem;
+        }
 
-        .tag-chip {
-            font-size: 0.78rem;
-            padding: 0.45rem 0.65rem;
+        .tag-flow-node {
+            font-size: 0.8rem;
+            padding: 0.5rem 0.72rem;
             border-radius: 999px;
             background: rgba(255,255,255,0.12);
             border: 1px solid rgba(255,255,255,0.14);
             color: #eaf2ff;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
+        }
+
+        .tag-flow-node.high { background: rgba(120, 160, 255, 0.18); }
+        .tag-flow-node.mid { background: rgba(0, 210, 190, 0.14); }
+        .tag-flow-node.low { background: rgba(255, 255, 255, 0.16); }
+
+        .tag-flow-arrow {
+            opacity: 0.58;
+            font-weight: 900;
         }
 
 
@@ -396,6 +457,38 @@
             border: 1px solid rgba(255,255,255,0.10);
             transition: transform 0.14s ease, background 0.14s ease, border-color 0.14s ease;
         }
+
+        .panel-paper-card-inner {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 1rem;
+            align-items: start;
+        }
+
+        .panel-paper-main { min-width: 0; }
+
+        .paper-side-tags {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.35rem;
+            max-width: 13rem;
+        }
+
+        .paper-side-tag {
+            font-size: 0.72rem;
+            line-height: 1.2;
+            padding: 0.36rem 0.52rem;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: rgba(234,242,255,0.92);
+            text-align: right;
+            max-width: 100%;
+        }
+
+        .paper-side-tag.high { background: rgba(120,160,255,0.16); }
+        .paper-side-tag.low { background: rgba(255,255,255,0.15); }
 
         .panel-paper-card:hover {
             transform: translateY(-1px);
@@ -432,10 +525,7 @@
         }
 
         .panel-nav {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.85rem;
-            margin-top: 1.55rem;
+            display: none;
         }
 
         .panel-nav-btn {
@@ -483,6 +573,10 @@
             .high-tab.active { transform: none; }
             .low-box { flex-basis: 82vw; }
             .topic-panel-sheet { width: 100%; max-height: 88vh; }
+            .topic-panel-actions { position: static; justify-content: flex-end; margin-bottom: 1rem; }
+            .panel-nav-mini .nav-topic { max-width: 4.8rem; }
+            .panel-paper-card-inner { grid-template-columns: 1fr; }
+            .paper-side-tags { align-items: flex-start; flex-direction: row; flex-wrap: wrap; max-width: none; }
             .panel-nav { grid-template-columns: 1fr; }
         }
 
@@ -521,7 +615,15 @@
 
 <div class="topic-panel-overlay" id="topic-panel-overlay" aria-hidden="true">
     <div class="topic-panel-sheet" role="dialog" aria-modal="true" aria-labelledby="topic-panel-title">
-        <button class="topic-panel-close" id="topic-panel-close" type="button" aria-label="Close topic panel">×</button>
+        <div class="topic-panel-actions" aria-label="Cycle through low-level topics">
+            <button class="panel-nav-mini prev" id="topic-panel-prev" type="button" title="Previous topic">
+                <span>←</span><span class="nav-topic">Low 1</span>
+            </button>
+            <button class="panel-nav-mini next" id="topic-panel-next" type="button" title="Next topic">
+                <span class="nav-topic">Low 3</span><span>→</span>
+            </button>
+            <button class="topic-panel-close" id="topic-panel-close" type="button" aria-label="Close topic panel">×</button>
+        </div>
         <p class="panel-kicker">Research Topic</p>
         <h3 id="topic-panel-title"></h3>
         <p id="topic-panel-desc"></p>
@@ -529,16 +631,6 @@
         <div class="panel-paper-section">
             <h4 class="panel-paper-heading">Matching papers</h4>
             <div class="panel-paper-list" id="topic-panel-papers"></div>
-        </div>
-        <div class="panel-nav" aria-label="Cycle through low-level topics">
-            <button class="panel-nav-btn prev" id="topic-panel-prev" type="button">
-                <span class="nav-direction">← Previous</span>
-                <span class="nav-topic">Low 1</span>
-            </button>
-            <button class="panel-nav-btn next" id="topic-panel-next" type="button">
-                <span class="nav-direction">Next →</span>
-                <span class="nav-topic">Low 3</span>
-            </button>
         </div>
     </div>
 </div>
@@ -712,12 +804,26 @@ function makePaperCard(paper) {
     const authors = formatAuthors(citation.authors || citation.author);
     const doi = citation.doi ? `DOI: ${citation.doi}` : "DOI unavailable";
 
-    card.appendChild(el("p", "panel-paper-title", title));
-    card.appendChild(el("p", "panel-paper-meta", `${authors} · ${journal} · ${year} · ${doi}`));
+    const inner = el("div", "panel-paper-card-inner");
+    const main = el("div", "panel-paper-main");
+    const sideTags = el("div", "paper-side-tags");
+
+    main.appendChild(el("p", "panel-paper-title", title));
+    main.appendChild(el("p", "panel-paper-meta", `${authors} · ${journal} · ${year} · ${doi}`));
 
     if (paper.summary) {
-        card.appendChild(el("p", "panel-paper-summary", paper.summary));
+        main.appendChild(el("p", "panel-paper-summary", paper.summary));
     }
+
+    const structuredTags = paper.topicTags || paper.tags || {};
+    if (structuredTags && typeof structuredTags === "object" && !Array.isArray(structuredTags)) {
+        (structuredTags.high || []).forEach(tag => sideTags.appendChild(el("span", "paper-side-tag high", tag)));
+        (structuredTags.low || []).forEach(tag => sideTags.appendChild(el("span", "paper-side-tag low", tag)));
+    }
+
+    inner.appendChild(main);
+    if (sideTags.childNodes.length) inner.appendChild(sideTags);
+    card.appendChild(inner);
 
     return card;
 }
@@ -797,7 +903,12 @@ function setTopicPanelContent(index) {
        the panel everywhere automatically.
     */
     const labelPath = lowTag.labelPath || [lowTag.label].filter(Boolean);
-    labelPath.forEach(tag => tags.appendChild(el("span", "tag-chip", tag)));
+    tags.innerHTML = "";
+    labelPath.forEach((tag, tagIndex) => {
+        const levelClass = tagIndex === 0 ? "high" : (tagIndex === 1 ? "mid" : "low");
+        tags.appendChild(el("span", `tag-flow-node ${levelClass}`, tag));
+        if (tagIndex < labelPath.length - 1) tags.appendChild(el("span", "tag-flow-arrow", "→"));
+    });
     renderMatchingPapers(labelPath);
 
     const prevTag = topicPanelState.lowTags[index - 1];
@@ -806,8 +917,10 @@ function setTopicPanelContent(index) {
     prev.disabled = !prevTag;
     next.disabled = !nextTag;
 
-    prev.querySelector(".nav-topic").textContent = prevTag ? (prevTag.label || "Previous topic") : "No previous topic";
-    next.querySelector(".nav-topic").textContent = nextTag ? (nextTag.label || "Next topic") : "No next topic";
+    prev.querySelector(".nav-topic").textContent = prevTag ? (prevTag.label || "Previous topic") : "None";
+    next.querySelector(".nav-topic").textContent = nextTag ? (nextTag.label || "Next topic") : "None";
+    prev.title = prevTag ? `Previous: ${prevTag.label || "Previous topic"}` : "No previous topic";
+    next.title = nextTag ? `Next: ${nextTag.label || "Next topic"}` : "No next topic";
 }
 
 function openTopicPanel(lowTags, index, buttons) {
