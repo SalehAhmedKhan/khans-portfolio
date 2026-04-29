@@ -530,7 +530,14 @@ function setTopicPanelContent(index) {
     desc.textContent = lowTag.desc || "No description added yet.";
     tags.innerHTML = "";
 
-    (lowTag.paperTags || []).forEach(tag => tags.appendChild(el("span", "tag-chip", tag)));
+    /*
+       Label-driven paper tags:
+       Do not hard-code paperTags in the JSON. The visible tags are generated
+       from the current high / mid / low labels, so renaming a label updates
+       the panel everywhere automatically.
+    */
+    const labelPath = lowTag.labelPath || [lowTag.label].filter(Boolean);
+    labelPath.forEach(tag => tags.appendChild(el("span", "tag-chip", tag)));
 
     const prevTag = topicPanelState.lowTags[index - 1];
     const nextTag = topicPanelState.lowTags[index + 1];
@@ -588,7 +595,20 @@ function renderTopicBoard(section, tagData) {
             midRow.appendChild(el("div", "mid-label", midTag.label || "Untitled row"));
 
             const lowRow = el("div", "low-box-row");
-            const lowTags = midTag.lowTags || [];
+
+            /*
+               Build low-topic objects with a labelPath used by the panel.
+               IDs remain generic and stable; labels are the only editable names.
+            */
+            const lowTags = (midTag.lowTags || []).map(lowTag => ({
+                ...lowTag,
+                labelPath: [
+                    highTag.label || "Untitled folder",
+                    midTag.label || "Untitled row",
+                    lowTag.label || "Untitled topic"
+                ]
+            }));
+
             const lowButtons = [];
             lowTags.forEach((lowTag, lowIndex) => {
                 const lowButton = makeLowBox(lowTag, lowTags, lowIndex, lowButtons);
