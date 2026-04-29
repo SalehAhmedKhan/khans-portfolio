@@ -618,6 +618,80 @@
             display: none;
         }
 
+
+        /* ===== Final paper-panel compacting tweaks ===== */
+        .panel-paper-heading:empty {
+            display: none;
+        }
+
+        .panel-paper-card {
+            padding: 0.95rem 1rem;
+        }
+
+        .panel-paper-card-inner {
+            gap: 0.9rem;
+            align-items: flex-start;
+        }
+
+        .panel-paper-title {
+            font-size: 1.08rem;
+            line-height: 1.35;
+            margin: 0 0 0.55rem;
+            font-weight: 800;
+        }
+
+        .panel-paper-authors {
+            margin: 0 0 0.38rem;
+            font-size: 0.94rem;
+            line-height: 1.35;
+            opacity: 0.92;
+            font-style: italic;
+            font-weight: 650;
+        }
+
+        .panel-paper-meta {
+            margin: 0 0 0.35rem;
+            font-size: 0.92rem;
+            line-height: 1.32;
+            opacity: 0.9;
+        }
+
+        .panel-paper-doi {
+            margin: 0 0 0.45rem;
+            font-size: 0.91rem;
+            line-height: 1.32;
+            opacity: 0.93;
+            font-weight: 800;
+        }
+
+        .panel-paper-summary {
+            margin-top: 0.55rem;
+            line-height: 1.42;
+        }
+
+        .paper-side-tags {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(72px, max-content));
+            gap: 0.35rem 0.45rem;
+            justify-content: end;
+            align-content: start;
+            max-width: 230px;
+        }
+
+        .paper-side-tag {
+            margin: 0;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .panel-nav-btn .nav-label {
+            font-weight: 800;
+        }
+
+        .panel-nav-btn .nav-topic {
+            font-weight: 900;
+        }
+
 </style>
 </head>
 <body>
@@ -721,7 +795,6 @@ function parseEndNoteCitation(raw) {
         authors: [],
         journal: "",
         year: "",
-        fullDate: "",
         doi: "",
         url: ""
     };
@@ -741,13 +814,23 @@ function parseEndNoteCitation(raw) {
             if (code === "A") parsed.authors.push(formatAuthorName(value));
             if (code === "J" || code === "B") parsed.journal = parsed.journal || value;
             if (code === "D") parsed.year = value;
-            if (code === "[") parsed.fullDate = value;
             if (code === "R") parsed.doi = value;
             if (code === "U") parsed.url = value;
         });
 
     if (!parsed.url && parsed.doi) parsed.url = `https://doi.org/${parsed.doi}`;
     return parsed;
+}
+
+function formatAuthorName(name) {
+    const clean = String(name || "").trim();
+    if (!clean.includes(",")) return clean;
+
+    const parts = clean.split(",");
+    const family = (parts[0] || "").trim();
+    const given = parts.slice(1).join(",").trim();
+
+    return [given, family].filter(Boolean).join(" ");
 }
 
 function formatAuthorName(name) {
@@ -835,7 +918,7 @@ function makePaperCard(paper) {
     }
 
     const title = citation.title || paper.title || "Untitled paper";
-    const dateText = citation.fullDate || citation.year || "Date unknown";
+    const dateText = citation.year || "Date unknown";
     const journal = citation.journal || citation["container-title"] || "Journal unknown";
     const authors = formatAuthors(citation.authors || citation.author);
     const doi = citation.doi ? `DOI: ${citation.doi}` : "DOI unavailable";
@@ -945,7 +1028,7 @@ function setTopicPanelContent(index) {
     labelPath.forEach((tag, tagIndex) => {
         const levelClass = tagIndex === 0 ? "high" : (tagIndex === 1 ? "mid" : "low");
         tags.appendChild(el("span", `tag-flow-node ${levelClass}`, tag));
-        if (tagIndex < labelPath.length - 1) tags.appendChild(el("span", "tag-flow-arrow", "→"));
+        if (tagIndex < labelPath.length - 1) tags.appendChild(el("span", "tag-flow-arrow", "›"));
     });
     renderMatchingPapers(labelPath);
 
