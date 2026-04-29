@@ -20,6 +20,9 @@
             --bgA: #0b0f1a;
             --bgB: #111827;
             --bgC: #0a0e17;
+            --glass: rgba(255, 255, 255, 0.12);
+            --glass-border: rgba(255,255,255,0.15);
+            --panel-bg: rgba(19, 26, 41, 0.96);
 
             background:
                 radial-gradient(circle at 20% 20%, var(--g1), transparent 40%),
@@ -39,14 +42,14 @@
         }
 
         .section {
-            background: rgba(255, 255, 255, 0.12);
-            border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 10px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
             padding: 1.5rem;
             margin-bottom: 1.5rem;
             backdrop-filter: blur(6px);
             color: #f5f5f5;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            box-shadow: 0 14px 40px rgba(0,0,0,0.22);
         }
 
         .section h2 { margin-top: 0; }
@@ -71,7 +74,8 @@
             padding-bottom: 0.5rem;
         }
 
-        .hub-card {
+        .hub-card,
+        .low-box {
             background: rgba(255, 255, 255, 0.15);
             border: 1px solid rgba(255,255,255,0.2);
             border-radius: 10px;
@@ -81,13 +85,15 @@
             box-sizing: border-box;
             display: block;
             text-decoration: none;
-            transition: transform 0.12s ease, border-color 0.12s ease, background 0.12s ease;
+            transition: transform 0.16s ease, border-color 0.16s ease, background 0.16s ease, box-shadow 0.16s ease;
         }
 
-        .hub-card:hover {
+        .hub-card:hover,
+        .low-box:hover {
             transform: translateY(-2px);
             border-color: rgba(159, 201, 255, 0.42);
             background: rgba(255, 255, 255, 0.18);
+            box-shadow: 0 10px 24px rgba(0,0,0,0.22);
         }
 
         .scroll-row .hub-card { min-width: 240px; }
@@ -103,48 +109,55 @@
         .topic-shell {
             position: relative;
             display: grid;
-            grid-template-columns: 4.75rem 1fr;
-            gap: 1rem;
+            grid-template-columns: 5.3rem 1fr;
+            gap: 0;
             margin-top: 1rem;
+            align-items: start;
         }
 
         .high-tag-rail {
+            position: relative;
+            z-index: 2;
             display: flex;
             flex-direction: column;
             gap: 0.65rem;
             align-items: flex-end;
-            padding-top: 0.3rem;
+            padding-top: 1.25rem;
         }
 
         .high-tab {
-            width: 4.9rem;
-            min-height: 3.2rem;
-            padding: 0.5rem 0.65rem;
-            border: 1px solid rgba(159, 201, 255, 0.25);
+            width: 5.75rem;
+            min-height: 3.35rem;
+            padding: 0.55rem 0.7rem;
+            border: 1px solid rgba(255,255,255,0.14);
             border-right: 0;
-            border-radius: 12px 0 0 12px;
-            background: rgba(159, 201, 255, 0.14);
+            border-radius: 14px 0 0 14px;
+            background: rgba(35, 45, 67, 0.84);
             color: #eaf2ff;
             cursor: pointer;
             text-align: left;
-            transform: translateX(0.45rem);
-            transition: transform 0.12s ease, background 0.12s ease, border-color 0.12s ease;
+            transform: translateX(0.62rem);
+            box-shadow: inset -14px 0 18px rgba(0,0,0,0.10), 0 10px 22px rgba(0,0,0,0.12);
+            transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease;
         }
 
         .high-tab:hover,
         .high-tab.active {
-            transform: translateX(0);
-            background: rgba(159, 201, 255, 0.24);
-            border-color: rgba(159, 201, 255, 0.46);
+            transform: translateX(1px);
+            background: var(--panel-bg);
+            border-color: rgba(255,255,255,0.18);
         }
 
         .topic-board {
-            min-height: 350px;
-            background: rgba(0,0,0,0.14);
+            min-height: 420px;
+            background:
+                radial-gradient(circle at 15% 0%, rgba(159,201,255,0.12), transparent 34%),
+                linear-gradient(135deg, rgba(255,255,255,0.09), rgba(255,255,255,0.045));
             border: 1px solid rgba(255,255,255,0.14);
-            border-radius: 14px;
-            padding: 1rem;
+            border-radius: 18px;
+            padding: 1.15rem 1.15rem 1.3rem;
             overflow: hidden;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 18px 36px rgba(0,0,0,0.18);
         }
 
         .topic-heading {
@@ -153,70 +166,136 @@
         }
 
         .topic-desc {
-            margin: 0 0 1rem;
+            margin: 0 0 1.25rem;
             font-size: 0.9rem;
             opacity: 0.82;
         }
 
         .mid-row {
-            margin: 0 0 1rem;
-            padding: 0.85rem;
-            border: 1px solid rgba(255,255,255,0.12);
-            border-radius: 12px;
-            background: rgba(255,255,255,0.08);
+            margin: 0 0 1.15rem;
+            padding: 0.95rem;
+            border: 0;
+            border-radius: 16px;
+            background: var(--mid-bg, rgba(255,255,255,0.08));
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 10px 24px rgba(0,0,0,0.10);
         }
 
+        .mid-row:nth-of-type(3n + 1) { --mid-bg: linear-gradient(135deg, rgba(75,108,183,0.28), rgba(24,40,72,0.22)); }
+        .mid-row:nth-of-type(3n + 2) { --mid-bg: linear-gradient(135deg, rgba(39,174,96,0.18), rgba(20,90,70,0.18)); }
+        .mid-row:nth-of-type(3n + 3) { --mid-bg: linear-gradient(135deg, rgba(155,89,182,0.20), rgba(75,44,108,0.18)); }
+
         .mid-label {
-            margin: 0 0 0.7rem;
+            margin: 0 0 0.8rem;
             font-size: 0.92rem;
             font-weight: 700;
             opacity: 0.95;
+            letter-spacing: 0.01em;
         }
 
         .low-box-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.65rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1rem;
         }
 
         .low-box {
             appearance: none;
-            border: 1px solid rgba(255,255,255,0.18);
-            border-radius: 10px;
-            background: rgba(255,255,255,0.12);
+            cursor: pointer;
+            min-height: 96px;
+            text-align: left;
+            font: inherit;
+        }
+
+        .low-box.active {
+            border-color: rgba(0, 220, 190, 0.55);
+            background: rgba(0, 220, 190, 0.14);
+        }
+
+        .low-title {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 0.35rem;
+        }
+
+        .low-desc {
+            display: block;
+            font-size: 0.82rem;
+            line-height: 1.35;
+            opacity: 0.82;
+        }
+
+        /* Full-screen sweeping topic panel */
+        .topic-panel-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            display: none;
+            background: rgba(3, 7, 18, 0.62);
+            backdrop-filter: blur(8px);
+        }
+
+        .topic-panel-overlay.open { display: block; }
+
+        .topic-panel-sheet {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: min(760px, 88vw);
+            height: 100%;
+            box-sizing: border-box;
+            padding: 2rem;
+            background:
+                radial-gradient(circle at 15% 18%, rgba(0,220,190,0.13), transparent 32%),
+                radial-gradient(circle at 86% 10%, rgba(159,201,255,0.14), transparent 34%),
+                linear-gradient(135deg, rgba(15,23,42,0.98), rgba(31,41,55,0.98));
+            border-left: 1px solid rgba(255,255,255,0.15);
+            box-shadow: -26px 0 60px rgba(0,0,0,0.38);
+            transform: translateX(100%);
+            animation: sweepIn 0.28s ease forwards;
+            overflow-y: auto;
+        }
+
+        @keyframes sweepIn { to { transform: translateX(0); } }
+
+        .topic-panel-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 2.35rem;
+            height: 2.35rem;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.10);
             color: #fff;
             cursor: pointer;
-            padding: 0.7rem 0.9rem;
-            min-width: 110px;
-            text-align: left;
-            transition: transform 0.12s ease, border-color 0.12s ease, background 0.12s ease;
+            font-size: 1.25rem;
         }
 
-        .low-box:hover,
-        .low-box.active {
-            transform: translateY(-2px);
-            border-color: rgba(0, 220, 190, 0.45);
-            background: rgba(0, 220, 190, 0.12);
+        .panel-kicker {
+            margin: 0 0 0.7rem;
+            font-size: 0.78rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            opacity: 0.72;
         }
 
-        .topic-panel {
-            display: none;
-            margin-top: 1rem;
-            padding: 1rem;
-            border: 1px solid rgba(0, 220, 190, 0.28);
-            border-radius: 12px;
-            background: rgba(0, 220, 190, 0.08);
+        .topic-panel-sheet h3 {
+            margin: 0 2.5rem 0.65rem 0;
+            font-size: clamp(1.7rem, 4vw, 2.6rem);
         }
 
-        .topic-panel.open { display: block; }
-        .topic-panel h3 { margin: 0 0 0.5rem; }
-        .topic-panel p { margin: 0 0 0.75rem; font-size: 0.9rem; opacity: 0.9; }
+        .topic-panel-sheet p {
+            margin: 0 0 1.1rem;
+            font-size: 1rem;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
 
-        .tag-chip-row { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+        .tag-chip-row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 
         .tag-chip {
-            font-size: 0.76rem;
-            padding: 0.35rem 0.5rem;
+            font-size: 0.78rem;
+            padding: 0.45rem 0.65rem;
             border-radius: 999px;
             background: rgba(255,255,255,0.12);
             border: 1px solid rgba(255,255,255,0.14);
@@ -225,16 +304,18 @@
 
         @media (max-width: 720px) {
             .topic-shell { grid-template-columns: 1fr; }
-            .high-tag-rail { flex-direction: row; overflow-x: auto; align-items: stretch; }
+            .high-tag-rail { flex-direction: row; overflow-x: auto; align-items: stretch; padding-top: 0; margin-bottom: 0.8rem; }
             .high-tab {
                 width: auto;
                 min-width: 90px;
-                border-right: 1px solid rgba(159, 201, 255, 0.25);
+                border-right: 1px solid rgba(255,255,255,0.14);
                 border-radius: 12px;
                 transform: none;
             }
             .high-tab:hover,
             .high-tab.active { transform: none; }
+            .low-box-row { grid-template-columns: 1fr; }
+            .topic-panel-sheet { width: 100vw; padding: 1.35rem; }
         }
 
         .back-wrap {
@@ -267,6 +348,16 @@
 <div class="container" id="content-root">
     <div class="back-wrap">
         <a class="back-btn" id="back-link" href="../../index.html">Back to my Portfolio</a>
+    </div>
+</div>
+
+<div class="topic-panel-overlay" id="topic-panel-overlay" aria-hidden="true">
+    <div class="topic-panel-sheet" role="dialog" aria-modal="true" aria-labelledby="topic-panel-title">
+        <button class="topic-panel-close" id="topic-panel-close" type="button" aria-label="Close topic panel">×</button>
+        <p class="panel-kicker">Research Topic</p>
+        <h3 id="topic-panel-title"></h3>
+        <p id="topic-panel-desc"></p>
+        <div class="tag-chip-row" id="topic-panel-tags"></div>
     </div>
 </div>
 
@@ -306,18 +397,54 @@ function makeCard(card, openNewTab) {
     return a;
 }
 
-function openTopicPanel(panel, lowTag, button) {
+function setupTopicOverlay() {
+    const overlay = document.getElementById("topic-panel-overlay");
+    const closeBtn = document.getElementById("topic-panel-close");
+
+    function closePanel() {
+        overlay.classList.remove("open");
+        overlay.setAttribute("aria-hidden", "true");
+        document.querySelectorAll(".low-box.active").forEach(btn => btn.classList.remove("active"));
+    }
+
+    closeBtn.addEventListener("click", closePanel);
+    overlay.addEventListener("click", event => {
+        if (event.target === overlay) closePanel();
+    });
+    document.addEventListener("keydown", event => {
+        if (event.key === "Escape" && overlay.classList.contains("open")) closePanel();
+    });
+}
+
+function openTopicPanel(lowTag, button) {
     document.querySelectorAll(".low-box.active").forEach(btn => btn.classList.remove("active"));
     button.classList.add("active");
 
-    panel.innerHTML = "";
-    panel.classList.add("open");
-    panel.appendChild(el("h3", "", lowTag.label || "Untitled topic"));
-    panel.appendChild(el("p", "", lowTag.desc || "No description added yet."));
+    const overlay = document.getElementById("topic-panel-overlay");
+    const title = document.getElementById("topic-panel-title");
+    const desc = document.getElementById("topic-panel-desc");
+    const tags = document.getElementById("topic-panel-tags");
 
-    const chipRow = el("div", "tag-chip-row");
-    (lowTag.paperTags || []).forEach(tag => chipRow.appendChild(el("span", "tag-chip", tag)));
-    panel.appendChild(chipRow);
+    title.textContent = lowTag.label || "Untitled topic";
+    desc.textContent = lowTag.desc || "No description added yet.";
+    tags.innerHTML = "";
+
+    (lowTag.paperTags || []).forEach(tag => tags.appendChild(el("span", "tag-chip", tag)));
+
+    overlay.classList.add("open");
+    overlay.setAttribute("aria-hidden", "false");
+}
+
+function makeLowBox(lowTag) {
+    const lowButton = document.createElement("button");
+    lowButton.className = "low-box";
+    lowButton.type = "button";
+
+    lowButton.appendChild(el("span", "low-title", lowTag.label || "Untitled box"));
+    lowButton.appendChild(el("span", "low-desc", lowTag.desc || "Open topic panel."));
+
+    lowButton.addEventListener("click", () => openTopicPanel(lowTag, lowButton));
+    return lowButton;
 }
 
 function renderTopicBoard(section, tagData) {
@@ -340,25 +467,16 @@ function renderTopicBoard(section, tagData) {
         board.appendChild(el("h3", "topic-heading", highTag.label || "Untitled folder"));
         board.appendChild(el("p", "topic-desc", highTag.desc || ""));
 
-        const panel = el("div", "topic-panel");
-
         (highTag.midTags || []).forEach(midTag => {
             const midRow = el("div", "mid-row");
             midRow.appendChild(el("div", "mid-label", midTag.label || "Untitled row"));
 
             const lowRow = el("div", "low-box-row");
-            (midTag.lowTags || []).forEach(lowTag => {
-                const lowButton = el("button", "low-box", lowTag.label || "Untitled box");
-                lowButton.type = "button";
-                lowButton.addEventListener("click", () => openTopicPanel(panel, lowTag, lowButton));
-                lowRow.appendChild(lowButton);
-            });
+            (midTag.lowTags || []).forEach(lowTag => lowRow.appendChild(makeLowBox(lowTag)));
 
             midRow.appendChild(lowRow);
             board.appendChild(midRow);
         });
-
-        board.appendChild(panel);
     }
 
     (tagData.highTags || []).forEach((highTag, index) => {
@@ -432,7 +550,10 @@ async function loadHubPage() {
     });
 }
 
-document.addEventListener("DOMContentLoaded", loadHubPage);
+document.addEventListener("DOMContentLoaded", () => {
+    setupTopicOverlay();
+    loadHubPage();
+});
 </script>
 
 </body>
