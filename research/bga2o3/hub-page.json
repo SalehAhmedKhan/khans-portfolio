@@ -4,29 +4,8 @@
   "sections": [
     {
       "title": "Research Topics",
-      "intro": "Focused pages with logs, paper lists, and detailed notes.",
-      "cards": [
-        {
-          "title": "Mobilities",
-          "desc": "Hall mobility, drift mobility, epitaxy dependence.",
-          "href": "mobility-si/journal.html"
-        },
-        {
-          "title": "Etching & Patterning",
-          "desc": "ICP-RIE chemistries, LPCVD etching, damage studies.",
-          "href": "#"
-        },
-        {
-          "title": "Breakdown Engineering",
-          "desc": "JTEs, field plates, BV scaling.",
-          "href": "#"
-        },
-        {
-          "title": "Defects & Irradiation",
-          "desc": "DLTS, Raman, neutron/gamma studies.",
-          "href": "#"
-        }
-      ]
+      "intro": "Tag-controlled research clusters. Select a folder marker, scan the middle-level rows, and open a low-level topic panel without leaving this page.",
+      "type": "tag-topics"
     },
     {
       "title": "Research Toolkit",
@@ -75,27 +54,6 @@
           "title": "Pearton Group",
           "affiliation": "University of Florida (UF)",
           "desc": "Defect spectroscopy, etching, and reliability studies in β-Ga₂O₃ and related UWBG materials.",
-          "href": "#"
-        }
-      ]
-    },
-    {
-      "title": "Other Research Hubs",
-      "intro": "Explore related semiconductor fields.",
-      "cards": [
-        {
-          "title": "GaN & AlGaN",
-          "desc": "Polarization engineering, HEMTs.",
-          "href": "#"
-        },
-        {
-          "title": "Power Devices",
-          "desc": "Vertical devices, drift engineering.",
-          "href": "#"
-        },
-        {
-          "title": "Growth Systems",
-          "desc": "MBE / MOCVD / LPCVD / HVPE.",
           "href": "#"
         }
       ]
