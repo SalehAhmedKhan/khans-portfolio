@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EndNote Citation Converter</title>
+
+<link rel="icon" type="image/png" href="../../favicon1.png">
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #f5f5f5;
+
+        --g1: rgba(80,120,255,0.12);
+        --g2: rgba(0,200,180,0.08);
+        --bgA: #0b0f1a;
+        --bgB: #111827;
+        --bgC: #0a0e17;
+
+        background:
+            radial-gradient(circle at 20% 20%, var(--g1), transparent 40%),
+            radial-gradient(circle at 80% 30%, var(--g2), transparent 45%),
+            linear-gradient(135deg, var(--bgA), var(--bgB) 60%, var(--bgC));
+        background-attachment: fixed;
+        min-height: 100vh;
+    }
+
+    header {
+        padding: 2rem 1.5rem 1rem;
+        text-align: center;
+    }
+
+    header h1 {
+        margin: 0 0 0.5rem;
+        font-size: 2rem;
+        font-weight: 650;
+        letter-spacing: 0.01em;
+    }
+
+    header p {
+        margin: 0 auto;
+        max-width: 760px;
+        opacity: 0.9;
+        line-height: 1.5;
+    }
+
+    .container {
+        max-width: 980px;
+        margin: 1.5rem auto;
+        padding: 0 1.5rem 2rem;
+    }
+
+    .panel {
+        background: rgba(255,255,255,0.12);
+        border: 1px solid rgba(255,255,255,0.15);
+        border-radius: 18px;
+        padding: 1.35rem;
+        backdrop-filter: blur(8px);
+        box-shadow: 0 18px 45px rgba(0,0,0,0.28);
+        margin-bottom: 1.25rem;
+    }
+
+    .panel h2 {
+        margin: 0 0 0.5rem;
+        font-size: 1.2rem;
+    }
+
+    .hint {
+        margin: 0 0 1rem;
+        opacity: 0.82;
+        font-size: 0.92rem;
+        line-height: 1.45;
+    }
+
+    .workspace {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    @media (min-width: 900px) {
+        .workspace {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    .box-label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 0.45rem;
+        font-size: 0.86rem;
+        opacity: 0.9;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+    }
+
+    textarea {
+        width: 100%;
+        min-height: 420px;
+        resize: vertical;
+        box-sizing: border-box;
+        border-radius: 14px;
+        border: 1px solid rgba(255,255,255,0.14);
+        background: rgba(5, 10, 22, 0.48);
+        color: #f7fbff;
+        padding: 1rem;
+        font-size: 0.92rem;
+        line-height: 1.45;
+        outline: none;
+        backdrop-filter: blur(6px);
+        box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
+        white-space: pre-wrap;
+    }
+
+    textarea:focus {
+        border-color: rgba(159,201,255,0.45);
+        box-shadow:
+            0 0 0 3px rgba(159,201,255,0.10),
+            inset 0 0 0 1px rgba(255,255,255,0.04);
+    }
+
+    .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 1rem;
+    }
+
+    button, .back-btn {
+        appearance: none;
+        border: 1px solid rgba(159,201,255,0.28);
+        background: rgba(159,201,255,0.16);
+        color: #eaf2ff;
+        padding: 0.78rem 1rem;
+        border-radius: 12px;
+        cursor: pointer;
+        font-weight: 800;
+        text-decoration: none;
+        backdrop-filter: blur(8px);
+        box-shadow: 0 10px 26px rgba(0,0,0,0.28);
+        transition: transform 0.13s ease, background 0.13s ease, border-color 0.13s ease;
+    }
+
+    button:hover, .back-btn:hover {
+        transform: translateY(-2px);
+        background: rgba(159,201,255,0.22);
+        border-color: rgba(159,201,255,0.45);
+    }
+
+    .secondary {
+        background: rgba(255,255,255,0.10);
+        border-color: rgba(255,255,255,0.16);
+    }
+
+    .status {
+        margin-top: 0.9rem;
+        min-height: 1.2rem;
+        font-size: 0.9rem;
+        opacity: 0.9;
+    }
+
+    .mini-grid {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        margin-top: 1rem;
+    }
+
+    .info-card {
+        background: rgba(255,255,255,0.10);
+        border: 1px solid rgba(255,255,255,0.13);
+        border-radius: 15px;
+        padding: 1rem;
+    }
+
+    .info-card h3 {
+        margin: 0 0 0.45rem;
+        font-size: 1rem;
+    }
+
+    .info-card p, .info-card code {
+        margin: 0;
+        opacity: 0.85;
+        font-size: 0.86rem;
+        line-height: 1.45;
+    }
+
+    code {
+        color: #dbeafe;
+    }
+
+    .back-wrap {
+        display: flex;
+        justify-content: center;
+        margin-top: 1.4rem;
+    }
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>EndNote Citation Converter</h1>
+    <p>Paste raw EndNote citation text, convert it into a JSON-safe single-line string, and drop it into your paper file as <code>citationRaw</code>.</p>
+</header>
+
+<main class="container">
+    <section class="panel">
+        <h2>Convert citationRaw</h2>
+        <p class="hint">
+            This keeps the EndNote fields intact, but replaces real line breaks with <code>\n</code> so the citation can safely live inside a JSON string.
+        </p>
+
+        <div class="workspace">
+            <div>
+                <div class="box-label">
+                    <span>Raw EndNote input</span>
+                    <span id="input-count">0 chars</span>
+                </div>
+                <textarea id="rawInput" placeholder="%0 Journal Article&#10;%A Khan, Saleh Ahmed&#10;%T Paper title..."></textarea>
+            </div>
+
+            <div>
+                <div class="box-label">
+                    <span>JSON-safe output</span>
+                    <span id="output-count">0 chars</span>
+                </div>
+                <textarea id="convertedOutput" readonly placeholder="Converted citationRaw will appear here..."></textarea>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button id="convertBtn">Convert</button>
+            <button id="copyBtn">Copy output</button>
+            <button id="wrapBtn">Copy as citationRaw field</button>
+            <button class="secondary" id="clearBtn">Clear</button>
+        </div>
+
+        <div class="status" id="status"></div>
+    </section>
+
+    <section class="panel">
+        <h2>How to paste into a paper JSON</h2>
+        <div class="mini-grid">
+            <div class="info-card">
+                <h3>Use this field</h3>
+                <p><code>"citationRaw": "PASTE_CONVERTED_TEXT_HERE"</code></p>
+            </div>
+            <div class="info-card">
+                <h3>Do not manually edit fields</h3>
+                <p>The hub parser can extract title, authors, journal, year, DOI, and URL from the EndNote tags.</p>
+            </div>
+            <div class="info-card">
+                <h3>Useful EndNote tags</h3>
+                <p><code>%T</code> title, <code>%A</code> author, <code>%J</code> journal, <code>%D</code> year, <code>%R</code> DOI, <code>%U</code> URL.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="back-wrap">
+        <a class="back-btn" href="../../index.html">Back to my Portfolio</a>
+    </div>
+</main>
+
+<script>
+const rawInput = document.getElementById("rawInput");
+const convertedOutput = document.getElementById("convertedOutput");
+const inputCount = document.getElementById("input-count");
+const outputCount = document.getElementById("output-count");
+const statusBox = document.getElementById("status");
+
+function setStatus(message) {
+    statusBox.textContent = message;
+}
+
+function updateCounts() {
+    inputCount.textContent = `${rawInput.value.length} chars`;
+    outputCount.textContent = `${convertedOutput.value.length} chars`;
+}
+
+function convertCitation(raw) {
+    return raw
+        .trim()
+        .replace(/\\/g, "\\\\")
+        .replace(/"/g, '\\"')
+        .replace(/\r?\n/g, "\\n");
+}
+
+function convertNow() {
+    const raw = rawInput.value;
+    if (!raw.trim()) {
+        convertedOutput.value = "";
+        updateCounts();
+        setStatus("Paste an EndNote citation first.");
+        return "";
+    }
+
+    const converted = convertCitation(raw);
+    convertedOutput.value = converted;
+    updateCounts();
+    setStatus("Converted successfully.");
+    return converted;
+}
+
+async function copyText(text, successMessage) {
+    if (!text) {
+        setStatus("Nothing to copy yet.");
+        return;
+    }
+
+    try {
+        await navigator.clipboard.writeText(text);
+        setStatus(successMessage);
+    } catch (err) {
+        convertedOutput.focus();
+        convertedOutput.select();
+        document.execCommand("copy");
+        setStatus(successMessage);
+    }
+}
+
+document.getElementById("convertBtn").addEventListener("click", convertNow);
+
+document.getElementById("copyBtn").addEventListener("click", () => {
+    const converted = convertedOutput.value || convertNow();
+    copyText(converted, "Output copied.");
+});
+
+document.getElementById("wrapBtn").addEventListener("click", () => {
+    const converted = convertedOutput.value || convertNow();
+    if (!converted) return;
+    copyText(`"citationRaw": "${converted}"`, "citationRaw field copied.");
+});
+
+document.getElementById("clearBtn").addEventListener("click", () => {
+    rawInput.value = "";
+    convertedOutput.value = "";
+    updateCounts();
+    setStatus("Cleared.");
+});
+
+rawInput.addEventListener("input", () => {
+    updateCounts();
+    if (convertedOutput.value) convertedOutput.value = "";
+});
+
+updateCounts();
+</script>
+
+</body>
+</html>
