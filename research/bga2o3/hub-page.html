@@ -645,8 +645,53 @@ function formatAuthors(authors) {
     }).join(", ");
 }
 
+function includesNormalized(list, value) {
+    if (!Array.isArray(list)) return false;
+    const target = normalizeTagText(value);
+    return list.some(item => normalizeTagText(item) === target);
+}
+
 function paperMatchesLabelPath(paper, labelPath) {
-    return (paper.topicTags || paper.tags || []).some(path => sameLabelPath(path, labelPath));
+    const path = splitTagPath(labelPath);
+    const [activeHigh, activeMid, activeLow] = path;
+
+    /*
+       New structured paper tag format:
+
+       "topicTags": {
+         "high": ["Epitaxial Growth", "Etching"],
+         "mid": ["Characterization", "Growth Methods"],
+         "low": ["SEM", "AFM", "LPCVD"]
+       }
+
+       A paper can have multiple high, mid, and low tags.
+       A low-topic panel matches only when all three active labels are present.
+    */
+    const structuredTags = paper.topicTags || paper.tags || {};
+
+    if (
+        structuredTags &&
+        typeof structuredTags === "object" &&
+        !Array.isArray(structuredTags) &&
+        ("high" in structuredTags || "mid" in structuredTags || "low" in structuredTags)
+    ) {
+        return (
+            includesNormalized(structuredTags.high, activeHigh) &&
+            includesNormalized(structuredTags.mid, activeMid) &&
+            includesNormalized(structuredTags.low, activeLow)
+        );
+    }
+
+    /*
+       Backward compatibility:
+       older paper files may still use:
+       "topicTags": ["Epitaxial Growth > Characterization > SEM"]
+    */
+    if (Array.isArray(structuredTags)) {
+        return structuredTags.some(pathValue => sameLabelPath(pathValue, labelPath));
+    }
+
+    return false;
 }
 
 function makePaperCard(paper) {
