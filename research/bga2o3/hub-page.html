@@ -502,6 +502,21 @@
             line-height: 1.35;
         }
 
+        
+        .panel-paper-authors {
+            margin: 0.65rem 0 0.15rem;
+            font-size: 0.95rem;
+            opacity: 0.92;
+            font-weight: 650;
+        }
+
+        .panel-paper-doi {
+            margin: 0.25rem 0 0;
+            font-size: 0.92rem;
+            opacity: 0.9;
+            font-weight: 750;
+        }
+
         .panel-paper-meta {
             margin: 0 0 0.45rem;
             font-size: 0.82rem;
@@ -598,7 +613,12 @@
             backdrop-filter: blur(8px);
             box-shadow: 0 10px 28px rgba(0,0,0,0.35);
         }
-    </style>
+    
+        .panel-paper-heading:empty {
+            display: none;
+        }
+
+</style>
 </head>
 <body>
 
@@ -701,28 +721,44 @@ function parseEndNoteCitation(raw) {
         authors: [],
         journal: "",
         year: "",
+        fullDate: "",
         doi: "",
         url: ""
     };
 
-    String(raw || "").split(/\r?\n/).forEach(line => {
-        const match = line.match(/^%([A-Z0-9@\[\]])\s+(.*)$/);
-        if (!match) return;
+    String(raw || "")
+        .replace(/\\n/g, "\n")
+        .split(/\r?\n/)
+        .forEach(line => {
+            const match = line.match(/^%([A-Z0-9@\[\]])\s+(.*)$/);
+            if (!match) return;
 
-        const code = match[1];
-        const value = match[2].trim();
+            const code = match[1];
+            const value = match[2].trim();
 
-        if (code === "0") parsed.type = value;
-        if (code === "T") parsed.title = value;
-        if (code === "A") parsed.authors.push(value);
-        if (code === "J" || code === "B") parsed.journal = parsed.journal || value;
-        if (code === "D") parsed.year = value;
-        if (code === "R") parsed.doi = value;
-        if (code === "U") parsed.url = value;
-    });
+            if (code === "0") parsed.type = value;
+            if (code === "T") parsed.title = value;
+            if (code === "A") parsed.authors.push(formatAuthorName(value));
+            if (code === "J" || code === "B") parsed.journal = parsed.journal || value;
+            if (code === "D") parsed.year = value;
+            if (code === "[") parsed.fullDate = value;
+            if (code === "R") parsed.doi = value;
+            if (code === "U") parsed.url = value;
+        });
 
     if (!parsed.url && parsed.doi) parsed.url = `https://doi.org/${parsed.doi}`;
     return parsed;
+}
+
+function formatAuthorName(name) {
+    const clean = String(name || "").trim();
+    if (!clean.includes(",")) return clean;
+
+    const parts = clean.split(",");
+    const family = (parts[0] || "").trim();
+    const given = parts.slice(1).join(",").trim();
+
+    return [given, family].filter(Boolean).join(" ");
 }
 
 function getPaperCitation(paper) {
@@ -799,7 +835,7 @@ function makePaperCard(paper) {
     }
 
     const title = citation.title || paper.title || "Untitled paper";
-    const year = citation.year || "Year unknown";
+    const dateText = citation.fullDate || citation.year || "Date unknown";
     const journal = citation.journal || citation["container-title"] || "Journal unknown";
     const authors = formatAuthors(citation.authors || citation.author);
     const doi = citation.doi ? `DOI: ${citation.doi}` : "DOI unavailable";
@@ -809,7 +845,9 @@ function makePaperCard(paper) {
     const sideTags = el("div", "paper-side-tags");
 
     main.appendChild(el("p", "panel-paper-title", title));
-    main.appendChild(el("p", "panel-paper-meta", `${authors} · ${journal} · ${year} · ${doi}`));
+    main.appendChild(el("p", "panel-paper-authors", authors));
+    main.appendChild(el("p", "panel-paper-meta", `${journal} · ${dateText}`));
+    main.appendChild(el("p", "panel-paper-doi", doi));
 
     if (paper.summary) {
         main.appendChild(el("p", "panel-paper-summary", paper.summary));
