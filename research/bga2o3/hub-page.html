@@ -318,11 +318,9 @@
             animation: sweepCenter 0.26s ease forwards;
             overflow-y: auto;
             touch-action: pan-y;
-            cursor: grab;
         }
 
         .topic-panel-sheet.dragging {
-            cursor: grabbing;
             user-select: none;
         }
 
@@ -1017,7 +1015,7 @@ function setupTopicOverlay() {
 
     sheet.addEventListener("pointerdown", event => {
         if (!overlay.classList.contains("open")) return;
-        if (event.button !== undefined && event.button !== 0) return;
+        if (event.pointerType !== "touch") return;
         dragStartX = event.clientX;
         dragStartY = event.clientY;
         dragPointerId = event.pointerId;
