@@ -10,7 +10,6 @@
     <link rel="icon" type="image/png" href="../../favicon1.png">
 
     <style>
-        /* ===== Dark Technical Gradient Background (VARIES BY JSON TITLE) ===== */
         body {
             margin: 0;
             font-family: Arial, Helvetica, sans-serif;
@@ -34,7 +33,7 @@
         header p { margin: 0; opacity: 0.9; }
 
         .container {
-            max-width: 900px;
+            max-width: 980px;
             margin: 2rem auto;
             padding: 0 1.5rem 2rem;
         }
@@ -49,6 +48,8 @@
             color: #f5f5f5;
             box-shadow: 0 4px 12px rgba(0,0,0,0.25);
         }
+
+        .section h2 { margin-top: 0; }
 
         .section-intro {
             margin: 0.35rem 0 0.9rem;
@@ -68,18 +69,6 @@
             overflow-x: auto;
             gap: 1rem;
             padding-bottom: 0.5rem;
-        }
-
-        .grid-row {
-            display: grid;
-            gap: 1rem;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        }
-
-        @media (min-width: 900px) {
-            .grid-row {
-                grid-template-columns: repeat(3, minmax(0, 1fr));
-            }
         }
 
         .hub-card {
@@ -109,6 +98,144 @@
         .group-card { min-width: 260px; }
         .group-affiliation { margin: 0 0 0.35rem; font-size: 0.8rem; opacity: 0.92; font-weight: 600; }
         .group-description { margin: 0; font-size: 0.85rem; opacity: 0.85; }
+
+        /* ===== Three-layer research topic system ===== */
+        .topic-shell {
+            position: relative;
+            display: grid;
+            grid-template-columns: 4.75rem 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .high-tag-rail {
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+            align-items: flex-end;
+            padding-top: 0.3rem;
+        }
+
+        .high-tab {
+            width: 4.9rem;
+            min-height: 3.2rem;
+            padding: 0.5rem 0.65rem;
+            border: 1px solid rgba(159, 201, 255, 0.25);
+            border-right: 0;
+            border-radius: 12px 0 0 12px;
+            background: rgba(159, 201, 255, 0.14);
+            color: #eaf2ff;
+            cursor: pointer;
+            text-align: left;
+            transform: translateX(0.45rem);
+            transition: transform 0.12s ease, background 0.12s ease, border-color 0.12s ease;
+        }
+
+        .high-tab:hover,
+        .high-tab.active {
+            transform: translateX(0);
+            background: rgba(159, 201, 255, 0.24);
+            border-color: rgba(159, 201, 255, 0.46);
+        }
+
+        .topic-board {
+            min-height: 350px;
+            background: rgba(0,0,0,0.14);
+            border: 1px solid rgba(255,255,255,0.14);
+            border-radius: 14px;
+            padding: 1rem;
+            overflow: hidden;
+        }
+
+        .topic-heading {
+            margin: 0 0 0.25rem;
+            font-size: 1.1rem;
+        }
+
+        .topic-desc {
+            margin: 0 0 1rem;
+            font-size: 0.9rem;
+            opacity: 0.82;
+        }
+
+        .mid-row {
+            margin: 0 0 1rem;
+            padding: 0.85rem;
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 12px;
+            background: rgba(255,255,255,0.08);
+        }
+
+        .mid-label {
+            margin: 0 0 0.7rem;
+            font-size: 0.92rem;
+            font-weight: 700;
+            opacity: 0.95;
+        }
+
+        .low-box-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.65rem;
+        }
+
+        .low-box {
+            appearance: none;
+            border: 1px solid rgba(255,255,255,0.18);
+            border-radius: 10px;
+            background: rgba(255,255,255,0.12);
+            color: #fff;
+            cursor: pointer;
+            padding: 0.7rem 0.9rem;
+            min-width: 110px;
+            text-align: left;
+            transition: transform 0.12s ease, border-color 0.12s ease, background 0.12s ease;
+        }
+
+        .low-box:hover,
+        .low-box.active {
+            transform: translateY(-2px);
+            border-color: rgba(0, 220, 190, 0.45);
+            background: rgba(0, 220, 190, 0.12);
+        }
+
+        .topic-panel {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            border: 1px solid rgba(0, 220, 190, 0.28);
+            border-radius: 12px;
+            background: rgba(0, 220, 190, 0.08);
+        }
+
+        .topic-panel.open { display: block; }
+        .topic-panel h3 { margin: 0 0 0.5rem; }
+        .topic-panel p { margin: 0 0 0.75rem; font-size: 0.9rem; opacity: 0.9; }
+
+        .tag-chip-row { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+
+        .tag-chip {
+            font-size: 0.76rem;
+            padding: 0.35rem 0.5rem;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.14);
+            color: #eaf2ff;
+        }
+
+        @media (max-width: 720px) {
+            .topic-shell { grid-template-columns: 1fr; }
+            .high-tag-rail { flex-direction: row; overflow-x: auto; align-items: stretch; }
+            .high-tab {
+                width: auto;
+                min-width: 90px;
+                border-right: 1px solid rgba(159, 201, 255, 0.25);
+                border-radius: 12px;
+                transform: none;
+            }
+            .high-tab:hover,
+            .high-tab.active { transform: none; }
+        }
 
         .back-wrap {
             display: flex;
@@ -154,7 +281,6 @@ function el(tag, className, text) {
     return node;
 }
 
-/* UPDATED: allow new-tab control */
 function makeCard(card, openNewTab) {
     const isGroup = !!card.affiliation;
     const href = card.href || "#";
@@ -180,12 +306,81 @@ function makeCard(card, openNewTab) {
     return a;
 }
 
-function renderSection(section, index) {
+function openTopicPanel(panel, lowTag, button) {
+    document.querySelectorAll(".low-box.active").forEach(btn => btn.classList.remove("active"));
+    button.classList.add("active");
+
+    panel.innerHTML = "";
+    panel.classList.add("open");
+    panel.appendChild(el("h3", "", lowTag.label || "Untitled topic"));
+    panel.appendChild(el("p", "", lowTag.desc || "No description added yet."));
+
+    const chipRow = el("div", "tag-chip-row");
+    (lowTag.paperTags || []).forEach(tag => chipRow.appendChild(el("span", "tag-chip", tag)));
+    panel.appendChild(chipRow);
+}
+
+function renderTopicBoard(section, tagData) {
+    const wrap = el("div", "section");
+    if (section.title) wrap.appendChild(el("h2", "", section.title));
+    if (section.intro) wrap.appendChild(el("p", "section-intro", section.intro));
+
+    const shell = el("div", "topic-shell");
+    const rail = el("div", "high-tag-rail");
+    const board = el("div", "topic-board");
+    shell.appendChild(rail);
+    shell.appendChild(board);
+    wrap.appendChild(shell);
+
+    function renderHighTag(highTag, selectedButton) {
+        rail.querySelectorAll(".high-tab").forEach(btn => btn.classList.remove("active"));
+        selectedButton.classList.add("active");
+
+        board.innerHTML = "";
+        board.appendChild(el("h3", "topic-heading", highTag.label || "Untitled folder"));
+        board.appendChild(el("p", "topic-desc", highTag.desc || ""));
+
+        const panel = el("div", "topic-panel");
+
+        (highTag.midTags || []).forEach(midTag => {
+            const midRow = el("div", "mid-row");
+            midRow.appendChild(el("div", "mid-label", midTag.label || "Untitled row"));
+
+            const lowRow = el("div", "low-box-row");
+            (midTag.lowTags || []).forEach(lowTag => {
+                const lowButton = el("button", "low-box", lowTag.label || "Untitled box");
+                lowButton.type = "button";
+                lowButton.addEventListener("click", () => openTopicPanel(panel, lowTag, lowButton));
+                lowRow.appendChild(lowButton);
+            });
+
+            midRow.appendChild(lowRow);
+            board.appendChild(midRow);
+        });
+
+        board.appendChild(panel);
+    }
+
+    (tagData.highTags || []).forEach((highTag, index) => {
+        const tab = el("button", "high-tab", highTag.label || `High ${index + 1}`);
+        tab.type = "button";
+        tab.addEventListener("click", () => renderHighTag(highTag, tab));
+        rail.appendChild(tab);
+
+        if (index === 0) renderHighTag(highTag, tab);
+    });
+
+    return wrap;
+}
+
+function renderSection(section, index, tagData) {
+    if (section.type === "tag-topics") return renderTopicBoard(section, tagData);
+
     const wrap = el("div", "section");
 
     if (section.title) wrap.appendChild(el("h2", "", section.title));
 
-    if (index === 2) {
+    if (section.title === "Know Your Peers") {
         const q = el("p", "section-quote");
         q.textContent = `${STATIC_QUOTE_TEXT} — `;
         const span = document.createElement("span");
@@ -198,14 +393,12 @@ function renderSection(section, index) {
 
     if (section.intro) wrap.appendChild(el("p", "section-intro", section.intro));
 
-    const row = el("div", index === 0 ? "grid-row" : "scroll-row");
+    const row = el("div", "scroll-row");
 
-    /* UPDATED: sections 1 and 2 open in new tab */
-    const openNewTab = (index === 1 || index === 2);
+    /* Research Toolkit and Know Your Peers open in a new tab */
+    const openNewTab = (section.title === "Research Toolkit" || section.title === "Know Your Peers");
 
-    (section.cards || []).forEach(card =>
-        row.appendChild(makeCard(card, openNewTab))
-    );
+    (section.cards || []).forEach(card => row.appendChild(makeCard(card, openNewTab)));
 
     wrap.appendChild(row);
     return wrap;
@@ -217,8 +410,13 @@ async function loadHubPage() {
     const subtitle = document.getElementById("page-subtitle");
     const backLink = document.getElementById("back-link");
 
-    const res = await fetch("hub-page.json", { cache: "no-store" });
-    const data = await res.json();
+    const [pageRes, tagRes] = await Promise.all([
+        fetch("hub-page.json", { cache: "no-store" }),
+        fetch("topic-tags.json", { cache: "no-store" })
+    ]);
+
+    const data = await pageRes.json();
+    const tagData = await tagRes.json();
 
     document.title = data.title || "Research Hub";
     h1.textContent = data.title || "Research Hub";
@@ -229,7 +427,7 @@ async function loadHubPage() {
     root.appendChild(backWrap);
 
     (data.sections || []).forEach((section, i) => {
-        const node = renderSection(section, i);
+        const node = renderSection(section, i, tagData);
         root.insertBefore(node, backWrap);
     });
 }
