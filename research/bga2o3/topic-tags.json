@@ -1,37 +1,76 @@
 {
-  "schema": "three-layer-topic-tags-v1",
-  "description": "Temporary placeholder tag map for the Research Topics panel. Replace labels, ids, descriptions, and linked paper tags as the literature database grows.",
+  "schema": "three-layer-topic-tags-label-driven-v1",
+  "description": "Consistent three-layer topic tag map. Edit labels and descriptions only. IDs are stable internal anchors. The HTML should generate display tags from labels, not from manual paperTags.",
   "highTags": [
     {
       "id": "high-1",
-      "label": "High 1",
-      "desc": "Highest-level topic family placeholder.",
+      "label": "Epitaxial Growth",
+      "desc": "Creating a high-quality epitaxial layer.",
       "midTags": [
         {
-          "id": "high-1:mid-1",
-          "label": "Mid 1",
+          "id": "high-1-mid-1",
+          "label": "Growth Systems",
+          "desc": "Growth methods and reactor platforms.",
           "lowTags": [
-            { "id": "high-1:mid-1:low-1", "label": "Low 1", "desc": "Low-level topic placeholder panel.", "paperTags": ["high:1", "mid:1", "low:1"] },
-            { "id": "high-1:mid-1:low-2", "label": "Low 2", "desc": "Low-level topic placeholder panel.", "paperTags": ["high:1", "mid:1", "low:2"] },
-            { "id": "high-1:mid-1:low-3", "label": "Low 3", "desc": "Low-level topic placeholder panel.", "paperTags": ["high:1", "mid:1", "low:3"] }
+            {
+              "id": "high-1-mid-1-low-1",
+              "label": "LPCVD",
+              "desc": "Low-pressure chemical vapor deposition studies."
+            },
+            {
+              "id": "high-1-mid-1-low-2",
+              "label": "HVPE",
+              "desc": "Hydride vapor phase epitaxy studies."
+            },
+            {
+              "id": "high-1-mid-1-low-3",
+              "label": "MOCVD",
+              "desc": "Metal-organic chemical vapor deposition studies."
+            }
           ]
         },
         {
-          "id": "high-1:mid-2",
-          "label": "Mid 2",
+          "id": "high-1-mid-2",
+          "label": "n-type Doping",
+          "desc": "Donor doping pathways and electrical activation.",
           "lowTags": [
-            { "id": "high-1:mid-2:low-1", "label": "Low 1", "desc": "Low-level topic placeholder panel.", "paperTags": ["high:1", "mid:2", "low:1"] },
-            { "id": "high-1:mid-2:low-2", "label": "Low 2", "desc": "Low-level topic placeholder panel.", "paperTags": ["high:1", "mid:2", "low:2"] },
-            { "id": "high-1:mid-2:low-3", "label": "Low 3", "desc": "Low-level topic placeholder panel.", "paperTags": ["high:1", "mid:2", "low:3"] }
+            {
+              "id": "high-1-mid-2-low-1",
+              "label": "Silicon",
+              "desc": "Silicon-doped β-Ga₂O₃ literature."
+            },
+            {
+              "id": "high-1-mid-2-low-2",
+              "label": "Germanium",
+              "desc": "Germanium-doped β-Ga₂O₃ literature."
+            },
+            {
+              "id": "high-1-mid-2-low-3",
+              "label": "Tin",
+              "desc": "Tin-doped β-Ga₂O₃ literature."
+            }
           ]
         },
         {
-          "id": "high-1:mid-3",
-          "label": "Mid 3",
+          "id": "high-1-mid-3",
+          "label": "Characterization",
+          "desc": "Structural, surface, and chemical characterization methods.",
           "lowTags": [
-            { "id": "high-1:mid-3:low-1", "label": "Low 1", "desc": "Low-level topic placeholder panel.", "paperTags": ["high:1", "mid:3", "low:1"] },
-            { "id": "high-1:mid-3:low-2", "label": "Low 2", "desc": "Low-level topic placeholder panel.", "paperTags": ["high:1", "mid:3", "low:2"] },
-            { "id": "high-1:mid-3:low-3", "label": "Low 3", "desc": "Low-level topic placeholder panel.", "paperTags": ["high:1", "mid:3", "low:3"] }
+            {
+              "id": "high-1-mid-3-low-1",
+              "label": "SEM",
+              "desc": "Scanning electron microscopy studies."
+            },
+            {
+              "id": "high-1-mid-3-low-2",
+              "label": "AFM",
+              "desc": "Atomic force microscopy studies."
+            },
+            {
+              "id": "high-1-mid-3-low-3",
+              "label": "XRD",
+              "desc": "X-ray diffraction studies."
+            }
           ]
         }
       ]
@@ -41,21 +80,72 @@
       "label": "High 2",
       "desc": "Highest-level topic family placeholder.",
       "midTags": [
-        { "id": "high-2:mid-1", "label": "Mid 1", "lowTags": [
-          { "id": "high-2:mid-1:low-1", "label": "Low 1", "desc": "Low-level topic placeholder panel.", "paperTags": ["high:2", "mid:1", "low:1"] },
-          { "id": "high-2:mid-1:low-2", "label": "Low 2", "desc": "Low-level topic placeholder panel.", "paperTags": ["high:2", "mid:1", "low:2"] },
-          { "id": "high-2:mid-1:low-3", "label": "Low 3", "desc": "Low-level topic placeholder panel.", "paperTags": ["high:2", "mid:1", "low:3"] }
-        ]},
-        { "id": "high-2:mid-2", "label": "Mid 2", "lowTags": [
-          { "id": "high-2:mid-2:low-1", "label": "Low 1", "desc": "Low-level topic placeholder panel.", "paperTags": ["high:2", "mid:2", "low:1"] },
-          { "id": "high-2:mid-2:low-2", "label": "Low 2", "desc": "Low-level topic placeholder panel.", "paperTags": ["high:2", "mid:2", "low:2"] },
-          { "id": "high-2:mid-2:low-3", "label": "Low 3", "desc": "Low-level topic placeholder panel.", "paperTags": ["high:2", "mid:2", "low:3"] }
-        ]},
-        { "id": "high-2:mid-3", "label": "Mid 3", "lowTags": [
-          { "id": "high-2:mid-3:low-1", "label": "Low 1", "desc": "Low-level topic placeholder panel.", "paperTags": ["high:2", "mid:3", "low:1"] },
-          { "id": "high-2:mid-3:low-2", "label": "Low 2", "desc": "Low-level topic placeholder panel.", "paperTags": ["high:2", "mid:3", "low:2"] },
-          { "id": "high-2:mid-3:low-3", "label": "Low 3", "desc": "Low-level topic placeholder panel.", "paperTags": ["high:2", "mid:3", "low:3"] }
-        ]}
+        {
+          "id": "high-2-mid-1",
+          "label": "Mid 1",
+          "desc": "Mid-level topic placeholder.",
+          "lowTags": [
+            {
+              "id": "high-2-mid-1-low-1",
+              "label": "Low 1",
+              "desc": "Low-level topic placeholder panel."
+            },
+            {
+              "id": "high-2-mid-1-low-2",
+              "label": "Low 2",
+              "desc": "Low-level topic placeholder panel."
+            },
+            {
+              "id": "high-2-mid-1-low-3",
+              "label": "Low 3",
+              "desc": "Low-level topic placeholder panel."
+            }
+          ]
+        },
+        {
+          "id": "high-2-mid-2",
+          "label": "Mid 2",
+          "desc": "Mid-level topic placeholder.",
+          "lowTags": [
+            {
+              "id": "high-2-mid-2-low-1",
+              "label": "Low 1",
+              "desc": "Low-level topic placeholder panel."
+            },
+            {
+              "id": "high-2-mid-2-low-2",
+              "label": "Low 2",
+              "desc": "Low-level topic placeholder panel."
+            },
+            {
+              "id": "high-2-mid-2-low-3",
+              "label": "Low 3",
+              "desc": "Low-level topic placeholder panel."
+            }
+          ]
+        },
+        {
+          "id": "high-2-mid-3",
+          "label": "Mid 3",
+          "desc": "Mid-level topic placeholder.",
+          "lowTags": [
+            {
+              "id": "high-2-mid-3-low-1",
+              "label": "Low 1",
+              "desc": "Low-level topic placeholder panel."
+            },
+            {
+              "id": "high-2-mid-3-low-2",
+              "label": "Low 2",
+              "desc": "Low-level topic placeholder panel."
+            },
+            {
+              "id": "high-2-mid-3-low-3",
+              "label": "Low 3",
+              "desc": "Low-level topic placeholder panel."
+            }
+          ]
+        }
       ]
     },
     {
@@ -63,21 +153,72 @@
       "label": "High 3",
       "desc": "Highest-level topic family placeholder.",
       "midTags": [
-        { "id": "high-3:mid-1", "label": "Mid 1", "lowTags": [
-          { "id": "high-3:mid-1:low-1", "label": "Low 1", "desc": "Low-level topic placeholder panel.", "paperTags": ["high:3", "mid:1", "low:1"] },
-          { "id": "high-3:mid-1:low-2", "label": "Low 2", "desc": "Low-level topic placeholder panel.", "paperTags": ["high:3", "mid:1", "low:2"] },
-          { "id": "high-3:mid-1:low-3", "label": "Low 3", "desc": "Low-level topic placeholder panel.", "paperTags": ["high:3", "mid:1", "low:3"] }
-        ]},
-        { "id": "high-3:mid-2", "label": "Mid 2", "lowTags": [
-          { "id": "high-3:mid-2:low-1", "label": "Low 1", "desc": "Low-level topic placeholder panel.", "paperTags": ["high:3", "mid:2", "low:1"] },
-          { "id": "high-3:mid-2:low-2", "label": "Low 2", "desc": "Low-level topic placeholder panel.", "paperTags": ["high:3", "mid:2", "low:2"] },
-          { "id": "high-3:mid-2:low-3", "label": "Low 3", "desc": "Low-level topic placeholder panel.", "paperTags": ["high:3", "mid:2", "low:3"] }
-        ]},
-        { "id": "high-3:mid-3", "label": "Mid 3", "lowTags": [
-          { "id": "high-3:mid-3:low-1", "label": "Low 1", "desc": "Low-level topic placeholder panel.", "paperTags": ["high:3", "mid:3", "low:1"] },
-          { "id": "high-3:mid-3:low-2", "label": "Low 2", "desc": "Low-level topic placeholder panel.", "paperTags": ["high:3", "mid:3", "low:2"] },
-          { "id": "high-3:mid-3:low-3", "label": "Low 3", "desc": "Low-level topic placeholder panel.", "paperTags": ["high:3", "mid:3", "low:3"] }
-        ]}
+        {
+          "id": "high-3-mid-1",
+          "label": "Mid 1",
+          "desc": "Mid-level topic placeholder.",
+          "lowTags": [
+            {
+              "id": "high-3-mid-1-low-1",
+              "label": "Low 1",
+              "desc": "Low-level topic placeholder panel."
+            },
+            {
+              "id": "high-3-mid-1-low-2",
+              "label": "Low 2",
+              "desc": "Low-level topic placeholder panel."
+            },
+            {
+              "id": "high-3-mid-1-low-3",
+              "label": "Low 3",
+              "desc": "Low-level topic placeholder panel."
+            }
+          ]
+        },
+        {
+          "id": "high-3-mid-2",
+          "label": "Mid 2",
+          "desc": "Mid-level topic placeholder.",
+          "lowTags": [
+            {
+              "id": "high-3-mid-2-low-1",
+              "label": "Low 1",
+              "desc": "Low-level topic placeholder panel."
+            },
+            {
+              "id": "high-3-mid-2-low-2",
+              "label": "Low 2",
+              "desc": "Low-level topic placeholder panel."
+            },
+            {
+              "id": "high-3-mid-2-low-3",
+              "label": "Low 3",
+              "desc": "Low-level topic placeholder panel."
+            }
+          ]
+        },
+        {
+          "id": "high-3-mid-3",
+          "label": "Mid 3",
+          "desc": "Mid-level topic placeholder.",
+          "lowTags": [
+            {
+              "id": "high-3-mid-3-low-1",
+              "label": "Low 1",
+              "desc": "Low-level topic placeholder panel."
+            },
+            {
+              "id": "high-3-mid-3-low-2",
+              "label": "Low 2",
+              "desc": "Low-level topic placeholder panel."
+            },
+            {
+              "id": "high-3-mid-3-low-3",
+              "label": "Low 3",
+              "desc": "Low-level topic placeholder panel."
+            }
+          ]
+        }
       ]
     }
   ]
