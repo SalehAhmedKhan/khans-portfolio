@@ -117,7 +117,6 @@
 
         .high-tag-rail {
             position: relative;
-            z-index: 3;
             display: flex;
             flex-direction: column;
             gap: 0.45rem;
@@ -126,27 +125,35 @@
         }
 
         .high-tab {
+            position: relative;
+            z-index: 1;
             width: 6.45rem;
             min-height: 3.45rem;
             padding: 0.6rem 0.85rem;
-            border: 1px solid rgba(255,255,255,0.16);
+            border: 1px solid rgba(255,255,255,0.13);
             border-right: 0;
             border-radius: 16px 0 0 16px;
             background:
-                linear-gradient(135deg, rgba(255,255,255,0.16), rgba(255,255,255,0.07)),
-                rgba(42, 52, 78, 0.94);
+                linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.045)),
+                rgba(42, 52, 78, 0.86);
             color: #eaf2ff;
             cursor: pointer;
             text-align: left;
-            transform: translateX(1.35rem);
-            box-shadow: inset -18px 0 18px rgba(0,0,0,0.08), 0 10px 22px rgba(0,0,0,0.12);
-            transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease, opacity 0.16s ease;
+            transform: translateX(2.25rem) scale(0.96);
+            opacity: 0.62;
+            box-shadow: inset -24px 0 22px rgba(0,0,0,0.16), 0 8px 18px rgba(0,0,0,0.10);
+            transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease, opacity 0.16s ease, box-shadow 0.16s ease;
         }
 
-        .high-tab:hover { transform: translateX(0.9rem); }
+        .high-tab:hover {
+            transform: translateX(1.9rem) scale(0.98);
+            opacity: 0.78;
+        }
 
         .high-tab.active {
-            transform: translateX(0.18rem);
+            z-index: 4;
+            transform: translateX(0.18rem) scale(1);
+            opacity: 1;
             background:
                 radial-gradient(circle at 20% 20%, rgba(159,201,255,0.15), transparent 42%),
                 linear-gradient(135deg, rgba(255,255,255,0.115), rgba(255,255,255,0.055)),
