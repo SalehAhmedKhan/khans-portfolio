@@ -2,9 +2,9 @@
   "id": "paper-001",
   "topicTags": {
     "high": ["Epitaxial Growth"],
-    "mid": ["Characterization"],
-    "low": ["XRD", "SEM"]
+    "mid": ["Growth Systems","Characterization"],
+    "low": ["HVPE", "XRD", "SEM", "AFM"]
   },
-  "summary": "Radiation resilience study of β-Ga2O3 Schottky barrier diodes under high-dose gamma irradiation.",
+  "summary": "",
   "citationRaw": "%0 Journal Article\n%A Khan, Saleh Ahmed\n%A Saha, Sudipto\n%A Singisetti, Uttam\n%A Bhuiyan, A. F. M. Anhar Uddin\n%T Radiation resilience of β-Ga2O3 Schottky barrier diodes under high dose gamma radiation\n%B Journal of Applied Physics\n%D 2024\n%R 10.1063/5.0233995\n%J Journal of Applied Physics\n%V 136\n%N 22\n%X A systematic investigation of β-Ga2O3 SBDs under high-dose gamma radiation showing degradation and partial recovery effects.\n%U https://doi.org/10.1063/5.0233995"
 }
