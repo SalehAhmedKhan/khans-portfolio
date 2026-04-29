@@ -229,11 +229,19 @@
         }
 
         .mid-label {
-            margin: 0 0 0.8rem;
+            margin: 0 0 0.25rem;
             font-size: 0.92rem;
             font-weight: 700;
             opacity: 0.95;
             letter-spacing: 0.01em;
+        }
+
+        .mid-desc {
+            margin: 0 0 0.85rem;
+            max-width: 760px;
+            font-size: 0.82rem;
+            line-height: 1.45;
+            color: rgba(255,255,255,0.78);
         }
 
         .low-box-row {
@@ -620,6 +628,10 @@ function renderTopicBoard(section, tagData) {
         (highTag.midTags || []).forEach(midTag => {
             const midRow = el("div", "mid-row");
             midRow.appendChild(el("div", "mid-label", midTag.label || "Untitled row"));
+
+            if (midTag.desc) {
+                midRow.appendChild(el("p", "mid-desc", midTag.desc));
+            }
 
             const lowRow = el("div", "low-box-row");
 
