@@ -293,6 +293,79 @@
           ]
         }
       ]
+    },
+    {
+      "id": "high-5",
+      "label": "Simuilations",
+      "desc": "Highest-level topic family placeholder.",
+      "midTags": [
+        {
+          "id": "high-5-mid-1",
+          "label": "Schottky",
+          "desc": "Mid-level topic placeholder.",
+          "lowTags": [
+            {
+              "id": "high-5-mid-1-low-1",
+              "label": "Low 1",
+              "desc": "Low-level topic placeholder panel."
+            },
+            {
+              "id": "high-5-mid-1-low-2",
+              "label": "Low 2",
+              "desc": "Low-level topic placeholder panel."
+            },
+            {
+              "id": "high-5-mid-1-low-3",
+              "label": "Low 3",
+              "desc": "Low-level topic placeholder panel."
+            }
+          ]
+        },
+        {
+          "id": "high-5-mid-2",
+          "label": "Heterojunction",
+          "desc": "Mid-level topic placeholder.",
+          "lowTags": [
+            {
+              "id": "high-5-mid-2-low-1",
+              "label": "Low 1",
+              "desc": "Low-level topic placeholder panel."
+            },
+            {
+              "id": "high-5-mid-2-low-2",
+              "label": "Low 2",
+              "desc": "Low-level topic placeholder panel."
+            },
+            {
+              "id": "high-5-mid-2-low-3",
+              "label": "Low 3",
+              "desc": "Low-level topic placeholder panel."
+            }
+          ]
+        },
+        {
+          "id": "high-5-mid-3",
+          "label": "Characterizations",
+          "desc": "Mid-level topic placeholder.",
+          "lowTags": [
+            {
+              "id": "high-5-mid-3-low-1",
+              "label": "Low 1",
+              "desc": "Low-level topic placeholder panel."
+            },
+            {
+              "id": "high-5-mid-3-low-2",
+              "label": "Low 2",
+              "desc": "Low-level topic placeholder panel."
+            },
+            {
+              "id": "high-5-mid-3-low-3",
+              "label": "Low 3",
+              "desc": "Low-level topic placeholder panel."
+            }
+          ]
+        }
+      ]
     }
   ]
 }
