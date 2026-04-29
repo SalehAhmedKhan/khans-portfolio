@@ -25,6 +25,11 @@
           "title": "Equation Reference",
           "desc": "A compact library of key equations used across your notes.",
           "href": "#"
+        },
+        {
+          "title": "EndNote Citation Converter",
+          "desc": "Convert raw EndNote citation blocks into JSON-safe citationRaw strings.",
+          "href": "../tool/endnote-citation-converter.html"
         }
       ]
     },
