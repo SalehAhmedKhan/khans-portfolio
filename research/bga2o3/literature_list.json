@@ -1,0 +1,178 @@
+{
+  "schema": "master-paper-library-v1",
+  "description": "Master paper database for the research hub. Each paper uses a placeholder citation structure plus label-based topic tags. A single paper can belong to multiple high/mid/low tag paths.",
+  "notes": [
+    "Citation format is temporary and can be replaced later with CSL-JSON, BibTeX-derived JSON, DOI metadata, or any citation format you choose.",
+    "topicTags are label-driven so the panel can show readable tags instead of generic IDs.",
+    "A paper may include multiple tag paths if it belongs to multiple topic areas."
+  ],
+  "papers": [
+    {
+      "id": "paper-001",
+      "citation": {
+        "type": "journal-article",
+        "title": "Placeholder Paper on LPCVD Growth of β-Ga₂O₃",
+        "authors": [
+          {
+            "family": "Author",
+            "given": "A."
+          },
+          {
+            "family": "Researcher",
+            "given": "B."
+          }
+        ],
+        "year": 2026,
+        "journal": "Placeholder Journal",
+        "volume": "1",
+        "issue": "1",
+        "pages": "1-10",
+        "doi": "10.xxxx/placeholder001",
+        "url": "https://doi.org/10.xxxx/placeholder001"
+      },
+      "summary": "Placeholder summary for a paper focused on LPCVD growth behavior and epitaxial film quality.",
+      "topicTags": [
+        [
+          "Epitaxial Growth",
+          "Growth Systems",
+          "LPCVD"
+        ],
+        [
+          "Epitaxial Growth",
+          "Characterization",
+          "XRD"
+        ],
+        [
+          "Epitaxial Growth",
+          "Characterization",
+          "AFM"
+        ]
+      ],
+      "flatTags": "Epitaxial Growth > Growth Systems > LPCVD; Epitaxial Growth > Characterization > XRD; Epitaxial Growth > Characterization > AFM"
+    },
+    {
+      "id": "paper-002",
+      "citation": {
+        "type": "journal-article",
+        "title": "Placeholder Paper on Sn Doping in β-Ga₂O₃",
+        "authors": [
+          {
+            "family": "Scientist",
+            "given": "C."
+          },
+          {
+            "family": "Engineer",
+            "given": "D."
+          }
+        ],
+        "year": 2025,
+        "journal": "Placeholder Materials Letters",
+        "volume": "12",
+        "issue": "3",
+        "pages": "45-57",
+        "doi": "10.xxxx/placeholder002",
+        "url": "https://doi.org/10.xxxx/placeholder002"
+      },
+      "summary": "Placeholder summary for a paper focused on tin doping and electrical behavior in β-Ga₂O₃ films.",
+      "topicTags": [
+        [
+          "Epitaxial Growth",
+          "n-type Doping",
+          "Tin"
+        ],
+        [
+          "Epitaxial Growth",
+          "Characterization",
+          "SEM"
+        ],
+        [
+          "Epitaxial Growth",
+          "Characterization",
+          "XRD"
+        ]
+      ],
+      "flatTags": "Epitaxial Growth > n-type Doping > Tin; Epitaxial Growth > Characterization > SEM; Epitaxial Growth > Characterization > XRD"
+    },
+    {
+      "id": "paper-003",
+      "citation": {
+        "type": "journal-article",
+        "title": "Placeholder Paper on Surface Morphology and AFM Analysis",
+        "authors": [
+          {
+            "family": "Doe",
+            "given": "E."
+          },
+          {
+            "family": "Lee",
+            "given": "F."
+          }
+        ],
+        "year": 2024,
+        "journal": "Placeholder Surface Science",
+        "volume": "8",
+        "issue": "2",
+        "pages": "100-116",
+        "doi": "10.xxxx/placeholder003",
+        "url": "https://doi.org/10.xxxx/placeholder003"
+      },
+      "summary": "Placeholder summary for a paper centered on surface roughness, morphology, and AFM-based quality assessment.",
+      "topicTags": [
+        [
+          "Epitaxial Growth",
+          "Characterization",
+          "AFM"
+        ],
+        [
+          "Epitaxial Growth",
+          "Growth Systems",
+          "MOCVD"
+        ]
+      ],
+      "flatTags": "Epitaxial Growth > Characterization > AFM; Epitaxial Growth > Growth Systems > MOCVD"
+    },
+    {
+      "id": "paper-004",
+      "citation": {
+        "type": "journal-article",
+        "title": "Placeholder Paper on HVPE β-Ga₂O₃ Growth and Structural Quality",
+        "authors": [
+          {
+            "family": "Patel",
+            "given": "G."
+          },
+          {
+            "family": "Kim",
+            "given": "H."
+          }
+        ],
+        "year": 2023,
+        "journal": "Placeholder Crystal Growth Journal",
+        "volume": "15",
+        "issue": "4",
+        "pages": "200-215",
+        "doi": "10.xxxx/placeholder004",
+        "url": "https://doi.org/10.xxxx/placeholder004"
+      },
+      "summary": "Placeholder summary for a paper focused on HVPE growth, film structure, and related characterization.",
+      "topicTags": [
+        [
+          "Epitaxial Growth",
+          "Growth Systems",
+          "HVPE"
+        ],
+        [
+          "Epitaxial Growth",
+          "Characterization",
+          "XRD"
+        ],
+        [
+          "Epitaxial Growth",
+          "Characterization",
+          "SEM"
+        ]
+      ],
+      "flatTags": "Epitaxial Growth > Growth Systems > HVPE; Epitaxial Growth > Characterization > XRD; Epitaxial Growth > Characterization > SEM"
+    }
+  ]
+}
