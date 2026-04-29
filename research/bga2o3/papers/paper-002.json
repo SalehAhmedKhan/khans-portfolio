@@ -1,0 +1,11 @@
+{
+  "id": "paper-002",
+  "topicTags": [
+    "Epitaxial Growth > Growth Systems > LPCVD",
+    "Epitaxial Growth > n-type Doping > Tin",
+    "Epitaxial Growth > Characterization > AFM",
+    "Epitaxial Growth > Characterization > XRD"
+  ],
+  "summary": "Placeholder entry for testing one paper across multiple high/mid/low tag paths. Replace the raw EndNote data with the real exported citation when ready.",
+  "citationRaw": "%0 Journal Article\n%A Rahman, A.\n%A Example, B.\n%A Bhuiyan, A. F. M. Anhar Uddin\n%T Placeholder study of Sn-doped β-Ga2O3 epitaxial layers grown by LPCVD\n%B Placeholder Journal of Ultra-Wide Bandgap Materials\n%D 2026\n%R 10.xxxx/placeholder002\n%J Placeholder Journal of Ultra-Wide Bandgap Materials\n%V 1\n%N 1\n%X Placeholder abstract text for an LPCVD and tin-doping paper.\n%U https://doi.org/10.xxxx/placeholder002"
+}

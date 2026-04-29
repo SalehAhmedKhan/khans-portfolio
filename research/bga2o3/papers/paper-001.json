@@ -1,0 +1,9 @@
+{
+  "id": "paper-001",
+  "topicTags": [
+    "Epitaxial Growth > Characterization > XRD",
+    "Epitaxial Growth > Characterization > SEM"
+  ],
+  "summary": "Placeholder entry using the supplied EndNote-style citation. This should appear under matching low-topic panels such as XRD or SEM if those labels match your topic-tags JSON.",
+  "citationRaw": "%0 Journal Article\n%A Khan, Saleh Ahmed\n%A Saha, Sudipto\n%A Singisetti, Uttam\n%A Bhuiyan, A. F. M. Anhar Uddin\n%T Radiation resilience of β-Ga2O3 Schottky barrier diodes under high dose gamma radiation\n%B Journal of Applied Physics\n%D 2024\n%R 10.1063/5.0233995\n%1 225701\n%J Journal of Applied Physics\n%V 136\n%N 22\n%@ 0021-8979\n%X A systematic investigation of the electrical characteristics of β-Ga2O3 Schottky barrier diodes has been conducted under high-dose gamma radiation.\n%U https://doi.org/10.1063/5.0233995"
+}
