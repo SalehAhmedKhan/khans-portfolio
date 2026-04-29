@@ -366,6 +366,71 @@
             color: #eaf2ff;
         }
 
+
+        .panel-paper-section {
+            margin-top: 1.25rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.12);
+        }
+
+        .panel-paper-heading {
+            margin: 0 0 0.75rem;
+            font-size: 0.82rem;
+            letter-spacing: 0.11em;
+            text-transform: uppercase;
+            opacity: 0.76;
+        }
+
+        .panel-paper-list {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .panel-paper-card {
+            display: block;
+            text-decoration: none;
+            color: #f5f5f5;
+            padding: 0.95rem;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.09);
+            border: 1px solid rgba(255,255,255,0.10);
+            transition: transform 0.14s ease, background 0.14s ease, border-color 0.14s ease;
+        }
+
+        .panel-paper-card:hover {
+            transform: translateY(-1px);
+            background: rgba(255,255,255,0.13);
+            border-color: rgba(159,201,255,0.24);
+        }
+
+        .panel-paper-title {
+            margin: 0 0 0.4rem;
+            font-weight: 700;
+            line-height: 1.35;
+        }
+
+        .panel-paper-meta {
+            margin: 0 0 0.45rem;
+            font-size: 0.82rem;
+            opacity: 0.78;
+        }
+
+        .panel-paper-summary {
+            margin: 0;
+            font-size: 0.86rem;
+            line-height: 1.45;
+            opacity: 0.84;
+        }
+
+        .panel-empty-note {
+            margin: 0;
+            padding: 0.9rem;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.07);
+            border: 1px dashed rgba(255,255,255,0.14);
+            color: rgba(255,255,255,0.78);
+        }
+
         .panel-nav {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -461,6 +526,10 @@
         <h3 id="topic-panel-title"></h3>
         <p id="topic-panel-desc"></p>
         <div class="tag-chip-row" id="topic-panel-tags"></div>
+        <div class="panel-paper-section">
+            <h4 class="panel-paper-heading">Matching papers</h4>
+            <div class="panel-paper-list" id="topic-panel-papers"></div>
+        </div>
         <div class="panel-nav" aria-label="Cycle through low-level topics">
             <button class="panel-nav-btn prev" id="topic-panel-prev" type="button">
                 <span class="nav-direction">← Previous</span>
@@ -478,6 +547,7 @@
 const STATIC_QUOTE_TEXT = "“If I am walking with two other men, each of them will serve as my teacher.”";
 const STATIC_QUOTE_AUTHOR = "Confucius";
 let topicPanelState = { lowTags: [], index: 0, buttons: [] };
+let masterPaperLibrary = { papers: [] };
 
 function el(tag, className, text) {
     const node = document.createElement(tag);
@@ -509,6 +579,69 @@ function makeCard(card, openNewTab) {
     }
 
     return a;
+}
+
+
+function normalizeTagText(value) {
+    return String(value || "").trim().toLowerCase();
+}
+
+function sameLabelPath(a, b) {
+    if (!Array.isArray(a) || !Array.isArray(b) || a.length !== b.length) return false;
+    return a.every((value, index) => normalizeTagText(value) === normalizeTagText(b[index]));
+}
+
+function formatAuthors(authors) {
+    if (!Array.isArray(authors) || authors.length === 0) return "Unknown authors";
+    return authors.map(author => {
+        if (typeof author === "string") return author;
+        return [author.given, author.family].filter(Boolean).join(" ").trim() || "Unknown author";
+    }).join(", ");
+}
+
+function paperMatchesLabelPath(paper, labelPath) {
+    return (paper.topicTags || []).some(path => sameLabelPath(path, labelPath));
+}
+
+function makePaperCard(paper) {
+    const citation = paper.citation || {};
+    const href = citation.url || (citation.doi ? `https://doi.org/${citation.doi}` : "#");
+    const card = document.createElement(href === "#" ? "div" : "a");
+    card.className = "panel-paper-card";
+
+    if (href !== "#") {
+        card.href = href;
+        card.target = "_blank";
+        card.rel = "noopener";
+    }
+
+    const title = citation.title || paper.title || "Untitled paper";
+    const year = citation.year || "Year unknown";
+    const journal = citation.journal || citation["container-title"] || "Journal unknown";
+    const authors = formatAuthors(citation.authors || citation.author);
+
+    card.appendChild(el("p", "panel-paper-title", title));
+    card.appendChild(el("p", "panel-paper-meta", `${authors} · ${journal} · ${year}`));
+
+    if (paper.summary) {
+        card.appendChild(el("p", "panel-paper-summary", paper.summary));
+    }
+
+    return card;
+}
+
+function renderMatchingPapers(labelPath) {
+    const paperList = document.getElementById("topic-panel-papers");
+    paperList.innerHTML = "";
+
+    const matches = (masterPaperLibrary.papers || []).filter(paper => paperMatchesLabelPath(paper, labelPath));
+
+    if (!matches.length) {
+        paperList.appendChild(el("p", "panel-empty-note", "No papers tagged to this topic yet."));
+        return;
+    }
+
+    matches.forEach(paper => paperList.appendChild(makePaperCard(paper)));
 }
 
 function setupTopicOverlay() {
@@ -573,6 +706,7 @@ function setTopicPanelContent(index) {
     */
     const labelPath = lowTag.labelPath || [lowTag.label].filter(Boolean);
     labelPath.forEach(tag => tags.appendChild(el("span", "tag-chip", tag)));
+    renderMatchingPapers(labelPath);
 
     const prevTag = topicPanelState.lowTags[index - 1];
     const nextTag = topicPanelState.lowTags[index + 1];
@@ -709,13 +843,15 @@ async function loadHubPage() {
     const subtitle = document.getElementById("page-subtitle");
     const backLink = document.getElementById("back-link");
 
-    const [pageRes, tagRes] = await Promise.all([
+    const [pageRes, tagRes, paperRes] = await Promise.all([
         fetch("hub-page.json", { cache: "no-store" }),
-        fetch("topic-tags.json", { cache: "no-store" })
+        fetch("topic-tags.json", { cache: "no-store" }),
+        fetch("master-papers.json", { cache: "no-store" }).catch(() => null)
     ]);
 
     const data = await pageRes.json();
     const tagData = await tagRes.json();
+    masterPaperLibrary = paperRes && paperRes.ok ? await paperRes.json() : { papers: [] };
 
     document.title = data.title || "Research Hub";
     h1.textContent = data.title || "Research Hub";
