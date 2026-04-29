@@ -846,7 +846,7 @@ async function loadHubPage() {
     const [pageRes, tagRes, paperRes] = await Promise.all([
         fetch("hub-page.json", { cache: "no-store" }),
         fetch("topic-tags.json", { cache: "no-store" }),
-        fetch("master-papers.json", { cache: "no-store" }).catch(() => null)
+        fetch("literature_list.json", { cache: "no-store" }).catch(() => null)
     ]);
 
     const data = await pageRes.json();
