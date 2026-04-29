@@ -692,6 +692,26 @@
             font-weight: 900;
         }
 
+
+        /* ===== Final requested cleanup ===== */
+        .panel-paper-heading,
+        .panel-paper-heading:empty {
+            display: none !important;
+        }
+
+        .panel-paper-doi {
+            margin: 0 0 0.35rem !important;
+            font-size: 0.92rem !important;
+            line-height: 1.32 !important;
+            opacity: 0.95 !important;
+            font-weight: 500 !important;
+            color: #7db3ff !important;
+        }
+
+        .panel-nav-btn .nav-label {
+            font-weight: 800;
+        }
+
 </style>
 </head>
 <body>
@@ -711,10 +731,10 @@
     <div class="topic-panel-sheet" role="dialog" aria-modal="true" aria-labelledby="topic-panel-title">
         <div class="topic-panel-actions" aria-label="Cycle through low-level topics">
             <button class="panel-nav-mini prev" id="topic-panel-prev" type="button" title="Previous topic">
-                <span>←</span><span class="nav-topic">Low 1</span>
+                <span></span><span class="nav-topic">Low 1</span>
             </button>
             <button class="panel-nav-mini next" id="topic-panel-next" type="button" title="Next topic">
-                <span class="nav-topic">Low 3</span><span>→</span>
+                <span class="nav-topic">Low 3</span><span></span>
             </button>
             <button class="topic-panel-close" id="topic-panel-close" type="button" aria-label="Close topic panel">×</button>
         </div>
@@ -1038,6 +1058,8 @@ function setTopicPanelContent(index) {
     prev.disabled = !prevTag;
     next.disabled = !nextTag;
 
+    prev.querySelector(".nav-label").textContent = "Previous";
+    next.querySelector(".nav-label").textContent = "Next";
     prev.querySelector(".nav-topic").textContent = prevTag ? (prevTag.label || "Previous topic") : "None";
     next.querySelector(".nav-topic").textContent = nextTag ? (nextTag.label || "Next topic") : "None";
     prev.title = prevTag ? `Previous: ${prevTag.label || "Previous topic"}` : "No previous topic";
