@@ -77,71 +77,71 @@
     },
     {
       "id": "high-2",
-      "label": "High 2",
-      "desc": "Highest-level topic family placeholder.",
+      "label": "Etching Methods",
+      "desc": "Etching b-Ga2O3 for FinFET and Mesa Structures",
       "midTags": [
         {
           "id": "high-2-mid-1",
-          "label": "Mid 1",
+          "label": "Equipment Systems",
           "desc": "Mid-level topic placeholder.",
           "lowTags": [
             {
               "id": "high-2-mid-1-low-1",
-              "label": "Low 1",
+              "label": "ICP-RIE",
               "desc": "Low-level topic placeholder panel."
             },
             {
               "id": "high-2-mid-1-low-2",
-              "label": "Low 2",
+              "label": "LPCVD",
               "desc": "Low-level topic placeholder panel."
             },
             {
               "id": "high-2-mid-1-low-3",
-              "label": "Low 3",
+              "label": "MBE",
               "desc": "Low-level topic placeholder panel."
             }
           ]
         },
         {
           "id": "high-2-mid-2",
-          "label": "Mid 2",
+          "label": "Wet Etching",
           "desc": "Mid-level topic placeholder.",
           "lowTags": [
             {
               "id": "high-2-mid-2-low-1",
-              "label": "Low 1",
+              "label": "H3PO4",
               "desc": "Low-level topic placeholder panel."
             },
             {
               "id": "high-2-mid-2-low-2",
-              "label": "Low 2",
+              "label": "HF",
               "desc": "Low-level topic placeholder panel."
             },
             {
               "id": "high-2-mid-2-low-3",
-              "label": "Low 3",
+              "label": "MacEtch",
               "desc": "Low-level topic placeholder panel."
             }
           ]
         },
         {
           "id": "high-2-mid-3",
-          "label": "Mid 3",
+          "label": "Characterization",
           "desc": "Mid-level topic placeholder.",
           "lowTags": [
             {
               "id": "high-2-mid-3-low-1",
-              "label": "Low 1",
+              "label": "SEM",
               "desc": "Low-level topic placeholder panel."
             },
             {
               "id": "high-2-mid-3-low-2",
-              "label": "Low 2",
+              "label": "AFM",
               "desc": "Low-level topic placeholder panel."
             },
             {
               "id": "high-2-mid-3-low-3",
-              "label": "Low 3",
+              "label": "Radial Plots",
               "desc": "Low-level topic placeholder panel."
             }
           ]
@@ -150,12 +150,12 @@
     },
     {
       "id": "high-3",
-      "label": "High 3",
+      "label": "Devices",
       "desc": "Highest-level topic family placeholder.",
       "midTags": [
         {
           "id": "high-3-mid-1",
-          "label": "Mid 1",
+          "label": "Schottky",
           "desc": "Mid-level topic placeholder.",
           "lowTags": [
             {
@@ -177,7 +177,7 @@
         },
         {
           "id": "high-3-mid-2",
-          "label": "Mid 2",
+          "label": "Heterojunction",
           "desc": "Mid-level topic placeholder.",
           "lowTags": [
             {
@@ -199,7 +199,7 @@
         },
         {
           "id": "high-3-mid-3",
-          "label": "Mid 3",
+          "label": "Characterizations",
           "desc": "Mid-level topic placeholder.",
           "lowTags": [
             {
