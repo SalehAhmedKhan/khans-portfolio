@@ -109,7 +109,7 @@
         .topic-shell {
             position: relative;
             display: grid;
-            grid-template-columns: 5.3rem 1fr;
+            grid-template-columns: 6rem 1fr;
             gap: 0;
             margin-top: 1rem;
             align-items: start;
@@ -117,47 +117,67 @@
 
         .high-tag-rail {
             position: relative;
-            z-index: 2;
+            z-index: 3;
             display: flex;
             flex-direction: column;
-            gap: 0.65rem;
+            gap: 0.45rem;
             align-items: flex-end;
-            padding-top: 1.25rem;
+            padding-top: 1.15rem;
         }
 
         .high-tab {
-            width: 5.75rem;
-            min-height: 3.35rem;
-            padding: 0.55rem 0.7rem;
-            border: 1px solid rgba(255,255,255,0.14);
+            width: 6.45rem;
+            min-height: 3.45rem;
+            padding: 0.6rem 0.85rem;
+            border: 1px solid rgba(255,255,255,0.16);
             border-right: 0;
-            border-radius: 14px 0 0 14px;
-            background: rgba(35, 45, 67, 0.84);
+            border-radius: 16px 0 0 16px;
+            background:
+                linear-gradient(135deg, rgba(255,255,255,0.16), rgba(255,255,255,0.07)),
+                rgba(42, 52, 78, 0.94);
             color: #eaf2ff;
             cursor: pointer;
             text-align: left;
-            transform: translateX(0.62rem);
-            box-shadow: inset -14px 0 18px rgba(0,0,0,0.10), 0 10px 22px rgba(0,0,0,0.12);
-            transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease;
+            transform: translateX(1.35rem);
+            box-shadow: inset -18px 0 18px rgba(0,0,0,0.08), 0 10px 22px rgba(0,0,0,0.12);
+            transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease, opacity 0.16s ease;
         }
 
-        .high-tab:hover,
+        .high-tab:hover { transform: translateX(0.9rem); }
+
         .high-tab.active {
-            transform: translateX(1px);
-            background: var(--panel-bg);
-            border-color: rgba(255,255,255,0.18);
+            transform: translateX(0.18rem);
+            background:
+                radial-gradient(circle at 20% 20%, rgba(159,201,255,0.15), transparent 42%),
+                linear-gradient(135deg, rgba(255,255,255,0.115), rgba(255,255,255,0.055)),
+                rgba(35, 45, 67, 0.98);
+            border-color: rgba(255,255,255,0.19);
+            box-shadow: inset -8px 0 10px rgba(255,255,255,0.025), 0 14px 26px rgba(0,0,0,0.16);
         }
 
         .topic-board {
+            position: relative;
+            z-index: 2;
             min-height: 420px;
             background:
                 radial-gradient(circle at 15% 0%, rgba(159,201,255,0.12), transparent 34%),
                 linear-gradient(135deg, rgba(255,255,255,0.09), rgba(255,255,255,0.045));
             border: 1px solid rgba(255,255,255,0.14);
             border-radius: 18px;
-            padding: 1.15rem 1.15rem 1.3rem;
+            padding: 1.25rem 1.25rem 1.35rem;
             overflow: hidden;
             box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 18px 36px rgba(0,0,0,0.18);
+        }
+
+        .topic-board::before {
+            content: "";
+            position: absolute;
+            left: -1px;
+            top: 0;
+            bottom: 0;
+            width: 1.25rem;
+            background: linear-gradient(90deg, rgba(35,45,67,0.72), rgba(35,45,67,0));
+            pointer-events: none;
         }
 
         .topic-heading {
@@ -175,14 +195,14 @@
             margin: 0 0 1.15rem;
             padding: 0.95rem;
             border: 0;
-            border-radius: 16px;
+            border-radius: 18px;
             background: var(--mid-bg, rgba(255,255,255,0.08));
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 10px 24px rgba(0,0,0,0.10);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 10px 22px rgba(0,0,0,0.08);
         }
 
-        .mid-row:nth-of-type(3n + 1) { --mid-bg: linear-gradient(135deg, rgba(75,108,183,0.28), rgba(24,40,72,0.22)); }
-        .mid-row:nth-of-type(3n + 2) { --mid-bg: linear-gradient(135deg, rgba(39,174,96,0.18), rgba(20,90,70,0.18)); }
-        .mid-row:nth-of-type(3n + 3) { --mid-bg: linear-gradient(135deg, rgba(155,89,182,0.20), rgba(75,44,108,0.18)); }
+        .mid-row:nth-of-type(3n + 1) { --mid-bg: linear-gradient(135deg, rgba(75,108,183,0.24), rgba(24,40,72,0.12)); }
+        .mid-row:nth-of-type(3n + 2) { --mid-bg: linear-gradient(135deg, rgba(39,174,96,0.14), rgba(20,90,70,0.10)); }
+        .mid-row:nth-of-type(3n + 3) { --mid-bg: linear-gradient(135deg, rgba(155,89,182,0.16), rgba(75,44,108,0.10)); }
 
         .mid-label {
             margin: 0 0 0.8rem;
@@ -201,7 +221,7 @@
         .low-box {
             appearance: none;
             cursor: pointer;
-            min-height: 96px;
+            min-height: 104px;
             text-align: left;
             font: inherit;
         }
@@ -224,38 +244,40 @@
             opacity: 0.82;
         }
 
-        /* Full-screen sweeping topic panel */
+        /* Centered sweeping topic panel */
         .topic-panel-overlay {
             position: fixed;
             inset: 0;
             z-index: 999;
             display: none;
-            background: rgba(3, 7, 18, 0.62);
-            backdrop-filter: blur(8px);
+            place-items: center;
+            padding: clamp(1rem, 4vw, 3rem);
+            background: rgba(3, 7, 18, 0.68);
+            backdrop-filter: blur(9px);
         }
 
-        .topic-panel-overlay.open { display: block; }
+        .topic-panel-overlay.open { display: grid; }
 
         .topic-panel-sheet {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: min(760px, 88vw);
-            height: 100%;
+            position: relative;
+            width: min(860px, 92vw);
+            max-height: min(720px, 88vh);
             box-sizing: border-box;
-            padding: 2rem;
+            padding: clamp(1.35rem, 3vw, 2.25rem);
             background:
                 radial-gradient(circle at 15% 18%, rgba(0,220,190,0.13), transparent 32%),
                 radial-gradient(circle at 86% 10%, rgba(159,201,255,0.14), transparent 34%),
                 linear-gradient(135deg, rgba(15,23,42,0.98), rgba(31,41,55,0.98));
-            border-left: 1px solid rgba(255,255,255,0.15);
-            box-shadow: -26px 0 60px rgba(0,0,0,0.38);
-            transform: translateX(100%);
-            animation: sweepIn 0.28s ease forwards;
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 24px;
+            box-shadow: 0 30px 90px rgba(0,0,0,0.48);
+            transform: translateY(32px) scale(0.96);
+            opacity: 0;
+            animation: sweepCenter 0.26s ease forwards;
             overflow-y: auto;
         }
 
-        @keyframes sweepIn { to { transform: translateX(0); } }
+        @keyframes sweepCenter { to { transform: translateY(0) scale(1); opacity: 1; } }
 
         .topic-panel-close {
             position: absolute;
@@ -302,6 +324,44 @@
             color: #eaf2ff;
         }
 
+        .panel-nav {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.85rem;
+            margin-top: 1.55rem;
+        }
+
+        .panel-nav-btn {
+            appearance: none;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.14);
+            border-radius: 16px;
+            min-height: 4.25rem;
+            padding: 0.75rem 0.9rem;
+            color: #eaf2ff;
+            background: rgba(255,255,255,0.09);
+            font: inherit;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 0.2rem;
+        }
+
+        .panel-nav-btn:hover:not(:disabled) {
+            background: rgba(255,255,255,0.14);
+            border-color: rgba(159,201,255,0.28);
+        }
+
+        .panel-nav-btn:disabled {
+            opacity: 0.35;
+            cursor: default;
+        }
+
+        .panel-nav-btn.prev { text-align: left; align-items: flex-start; }
+        .panel-nav-btn.next { text-align: right; align-items: flex-end; }
+        .nav-direction { font-size: 0.78rem; opacity: 0.72; }
+        .nav-topic { font-weight: 700; }
+
         @media (max-width: 720px) {
             .topic-shell { grid-template-columns: 1fr; }
             .high-tag-rail { flex-direction: row; overflow-x: auto; align-items: stretch; padding-top: 0; margin-bottom: 0.8rem; }
@@ -315,7 +375,8 @@
             .high-tab:hover,
             .high-tab.active { transform: none; }
             .low-box-row { grid-template-columns: 1fr; }
-            .topic-panel-sheet { width: 100vw; padding: 1.35rem; }
+            .topic-panel-sheet { width: 100%; max-height: 88vh; }
+            .panel-nav { grid-template-columns: 1fr; }
         }
 
         .back-wrap {
@@ -358,12 +419,23 @@
         <h3 id="topic-panel-title"></h3>
         <p id="topic-panel-desc"></p>
         <div class="tag-chip-row" id="topic-panel-tags"></div>
+        <div class="panel-nav" aria-label="Cycle through low-level topics">
+            <button class="panel-nav-btn prev" id="topic-panel-prev" type="button">
+                <span class="nav-direction">← Previous</span>
+                <span class="nav-topic">Low 1</span>
+            </button>
+            <button class="panel-nav-btn next" id="topic-panel-next" type="button">
+                <span class="nav-direction">Next →</span>
+                <span class="nav-topic">Low 3</span>
+            </button>
+        </div>
     </div>
 </div>
 
 <script>
 const STATIC_QUOTE_TEXT = "“If I am walking with two other men, each of them will serve as my teacher.”";
 const STATIC_QUOTE_AUTHOR = "Confucius";
+let topicPanelState = { lowTags: [], index: 0, buttons: [] };
 
 function el(tag, className, text) {
     const node = document.createElement(tag);
@@ -408,22 +480,44 @@ function setupTopicOverlay() {
     }
 
     closeBtn.addEventListener("click", closePanel);
+
+    document.getElementById("topic-panel-prev").addEventListener("click", () => {
+        if (topicPanelState.index > 0) setTopicPanelContent(topicPanelState.index - 1);
+    });
+
+    document.getElementById("topic-panel-next").addEventListener("click", () => {
+        if (topicPanelState.index < topicPanelState.lowTags.length - 1) setTopicPanelContent(topicPanelState.index + 1);
+    });
+
     overlay.addEventListener("click", event => {
         if (event.target === overlay) closePanel();
     });
     document.addEventListener("keydown", event => {
         if (event.key === "Escape" && overlay.classList.contains("open")) closePanel();
+        if (event.key === "ArrowLeft" && overlay.classList.contains("open") && topicPanelState.index > 0) {
+            setTopicPanelContent(topicPanelState.index - 1);
+        }
+        if (event.key === "ArrowRight" && overlay.classList.contains("open") && topicPanelState.index < topicPanelState.lowTags.length - 1) {
+            setTopicPanelContent(topicPanelState.index + 1);
+        }
     });
 }
 
-function openTopicPanel(lowTag, button) {
-    document.querySelectorAll(".low-box.active").forEach(btn => btn.classList.remove("active"));
-    button.classList.add("active");
+function setTopicPanelContent(index) {
+    const lowTag = topicPanelState.lowTags[index];
+    if (!lowTag) return;
 
-    const overlay = document.getElementById("topic-panel-overlay");
+    topicPanelState.index = index;
+
+    document.querySelectorAll(".low-box.active").forEach(btn => btn.classList.remove("active"));
+    const activeButton = topicPanelState.buttons[index];
+    if (activeButton) activeButton.classList.add("active");
+
     const title = document.getElementById("topic-panel-title");
     const desc = document.getElementById("topic-panel-desc");
     const tags = document.getElementById("topic-panel-tags");
+    const prev = document.getElementById("topic-panel-prev");
+    const next = document.getElementById("topic-panel-next");
 
     title.textContent = lowTag.label || "Untitled topic";
     desc.textContent = lowTag.desc || "No description added yet.";
@@ -431,19 +525,34 @@ function openTopicPanel(lowTag, button) {
 
     (lowTag.paperTags || []).forEach(tag => tags.appendChild(el("span", "tag-chip", tag)));
 
+    const prevTag = topicPanelState.lowTags[index - 1];
+    const nextTag = topicPanelState.lowTags[index + 1];
+
+    prev.disabled = !prevTag;
+    next.disabled = !nextTag;
+
+    prev.querySelector(".nav-topic").textContent = prevTag ? (prevTag.label || "Previous topic") : "No previous topic";
+    next.querySelector(".nav-topic").textContent = nextTag ? (nextTag.label || "Next topic") : "No next topic";
+}
+
+function openTopicPanel(lowTags, index, buttons) {
+    topicPanelState = { lowTags, index, buttons };
+    setTopicPanelContent(index);
+
+    const overlay = document.getElementById("topic-panel-overlay");
     overlay.classList.add("open");
     overlay.setAttribute("aria-hidden", "false");
 }
 
-function makeLowBox(lowTag) {
+function makeLowBox(lowTag, lowTags, index, buttons) {
     const lowButton = document.createElement("button");
-    lowButton.className = "low-box";
+    lowButton.className = "low-box hub-card";
     lowButton.type = "button";
 
     lowButton.appendChild(el("span", "low-title", lowTag.label || "Untitled box"));
     lowButton.appendChild(el("span", "low-desc", lowTag.desc || "Open topic panel."));
 
-    lowButton.addEventListener("click", () => openTopicPanel(lowTag, lowButton));
+    lowButton.addEventListener("click", () => openTopicPanel(lowTags, index, buttons));
     return lowButton;
 }
 
@@ -472,7 +581,13 @@ function renderTopicBoard(section, tagData) {
             midRow.appendChild(el("div", "mid-label", midTag.label || "Untitled row"));
 
             const lowRow = el("div", "low-box-row");
-            (midTag.lowTags || []).forEach(lowTag => lowRow.appendChild(makeLowBox(lowTag)));
+            const lowTags = midTag.lowTags || [];
+            const lowButtons = [];
+            lowTags.forEach((lowTag, lowIndex) => {
+                const lowButton = makeLowBox(lowTag, lowTags, lowIndex, lowButtons);
+                lowButtons.push(lowButton);
+                lowRow.appendChild(lowButton);
+            });
 
             midRow.appendChild(lowRow);
             board.appendChild(midRow);
