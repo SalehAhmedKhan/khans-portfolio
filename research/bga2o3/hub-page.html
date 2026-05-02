@@ -1643,7 +1643,13 @@ function renderMatchingPapers(labelPath) {
         return;
     }
 
-    matches.forEach(paper => paperList.appendChild(makePaperCard(paper)));
+    matches
+        .sort((a, b) => {
+            const yearA = parseInt((getPaperCitation(a).year || "").match(/\d{4}/)?.[0] || "0", 10);
+            const yearB = parseInt((getPaperCitation(b).year || "").match(/\d{4}/)?.[0] || "0", 10);
+            return yearB - yearA;
+        })
+        .forEach(paper => paperList.appendChild(makePaperCard(paper)));
 }
 
 function setupTopicOverlay() {
