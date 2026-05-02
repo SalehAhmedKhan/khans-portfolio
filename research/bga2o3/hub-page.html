@@ -594,6 +594,78 @@
         .nav-direction { font-size: 0.78rem; opacity: 0.72; }
         .nav-topic { font-weight: 700; }
 
+
+
+        /* ===== Cleaner centered topic buttons on all screen sizes ===== */
+        .topic-shell {
+            grid-template-columns: 1fr;
+        }
+
+        .high-tag-rail {
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+            overflow-x: visible;
+            gap: 0.55rem;
+            align-items: stretch;
+            padding-top: 0;
+            margin-bottom: 0.95rem;
+        }
+
+        .high-tab {
+            width: auto;
+            min-width: unset;
+            flex: 0 0 auto;
+            border-right: 1px solid rgba(255,255,255,0.14);
+            border-radius: 12px;
+            transform: none;
+            white-space: nowrap;
+            text-align: center;
+            min-height: 3rem;
+            padding: 0.65rem 1rem;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+        }
+
+        .high-tab:hover,
+        .high-tab.active {
+            transform: none;
+        }
+
+        .topic-board::before {
+            display: none;
+        }
+
+        .peer-row {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 18px;
+            border: 1px solid rgba(255,255,255,0.14);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 14px 32px rgba(0,0,0,0.14);
+        }
+
+        .peer-row-title {
+            margin: 0 0 0.75rem;
+            font-size: 1rem;
+            font-weight: 800;
+            letter-spacing: 0.01em;
+        }
+
+        .peer-row .scroll-row {
+            padding-bottom: 0.2rem;
+        }
+
+        .peer-row.gallium-oxide {
+            background:
+                radial-gradient(circle at 12% 0%, rgba(120, 190, 255, 0.42), transparent 36%),
+                linear-gradient(135deg, rgba(0, 102, 255, 0.38), rgba(0, 215, 255, 0.16));
+        }
+
+        .peer-row.diamond-growth {
+            background:
+                radial-gradient(circle at 14% 0%, rgba(224, 205, 255, 0.42), transparent 38%),
+                linear-gradient(135deg, rgba(190, 160, 255, 0.34), rgba(143, 104, 210, 0.18));
+        }
+
         @media (max-width: 720px) {
             .topic-shell { grid-template-columns: 1fr; }
 
@@ -1241,11 +1313,23 @@ function renderSection(section, index, tagData) {
 
     if (section.intro) wrap.appendChild(el("p", "section-intro", section.intro));
 
-    const row = el("div", "scroll-row");
-
     /* Research Toolkit and Know Your Peers open in a new tab */
     const openNewTab = (section.title === "Research Toolkit" || section.title === "Know Your Peers");
 
+    if (Array.isArray(section.peerRows) && section.peerRows.length) {
+        section.peerRows.forEach(peerRow => {
+            const rowWrap = el("div", `peer-row ${peerRow.className || ""}`.trim());
+            if (peerRow.title) rowWrap.appendChild(el("h3", "peer-row-title", peerRow.title));
+
+            const row = el("div", "scroll-row");
+            (peerRow.cards || []).forEach(card => row.appendChild(makeCard(card, openNewTab)));
+            rowWrap.appendChild(row);
+            wrap.appendChild(rowWrap);
+        });
+        return wrap;
+    }
+
+    const row = el("div", "scroll-row");
     (section.cards || []).forEach(card => row.appendChild(makeCard(card, openNewTab)));
 
     wrap.appendChild(row);
