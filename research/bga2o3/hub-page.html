@@ -1312,6 +1312,41 @@ h3 { font-size: 1.15rem; }
             color: rgba(120, 180, 255, 0.70);
         }
 
+
+        /* ===== Subtle banner drop-in animation ===== */
+        .stat-banner {
+            opacity: 0;
+            transform: translateY(-18px);
+            animation: statBannerDrop 0.62s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+
+        .stat-banner:nth-child(2) {
+            animation-delay: 0.12s;
+        }
+
+        @keyframes statBannerDrop {
+            0% {
+                opacity: 0;
+                transform: translateY(-18px);
+            }
+            70% {
+                opacity: 1;
+                transform: translateY(3px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .stat-banner {
+                animation: none;
+                opacity: 1;
+                transform: none;
+            }
+        }
+
 </style>
 </head>
 <body>
