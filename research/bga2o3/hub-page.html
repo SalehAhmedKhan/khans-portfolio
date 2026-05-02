@@ -1228,6 +1228,26 @@ h3 { font-size: 1.15rem; }
             }
         }
 
+
+/* ===== Topic count badge + larger breadcrumb arrows ===== */
+.topic-title-wrap {
+  display:flex; align-items:center; gap:0.6rem;
+}
+.topic-count-badge {
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.15rem 0.45rem;
+  border-radius: 999px;
+  background: rgba(120,160,255,0.22);
+  border: 1px solid rgba(150,190,255,0.35);
+  color: #eaf2ff;
+}
+.breadcrumb .crumb-sep {
+  font-size: 1.2rem; /* bigger arrows */
+  line-height: 1;
+  opacity: 0.9;
+}
+
 </style>
 </head>
 <body>
@@ -1886,6 +1906,36 @@ document.addEventListener("DOMContentLoaded", () => {
         requestAnimationFrame(() => setupSmartScrollFades());
     });
 });
+
+function updateTopicCountBadge(){
+  const badge = document.getElementById('topic-count-badge');
+  if(!badge) return;
+  // try count rendered list items
+  const list = document.querySelector('#topic-paper-list, .topic-paper-list');
+  let count = 0;
+  if(list){
+    count = list.querySelectorAll('li, .paper-card, .paper-item').length;
+  }
+  // fallback: if master library & currentTopicKey exist
+  if(!count && window.masterPaperLibrary && window.currentTopicKey){
+    const papers = (masterPaperLibrary.papers || []);
+    count = papers.filter(p => (p.tags||[]).includes(currentTopicKey)).length;
+  }
+  badge.textContent = String(count || 0);
+}
+
+// hook after panel render
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(updateTopicCountBadge, 0);
+});
+
+// also try after any topic open/navigation
+document.addEventListener('click', (e)=>{
+  if(e.target.closest('.low-box, .low-card, .topic-open')){
+    setTimeout(updateTopicCountBadge, 50);
+  }
+});
+
 </script>
 
 </body>
