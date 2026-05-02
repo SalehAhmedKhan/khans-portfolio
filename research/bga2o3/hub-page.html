@@ -905,9 +905,17 @@
             font-weight: 600;
         }
 
-        /* Side fade for every horizontally scrolling row */
+        /* Smart side fade for horizontally scrolling rows.
+           JS adds fade-left / fade-right only when hidden content exists there,
+           so the first/last visible cards do not fade at the scroll extremes. */
         .scroll-row,
         .low-box-row {
+            -webkit-mask-image: none;
+            mask-image: none;
+        }
+
+        .scroll-row.fade-left.fade-right,
+        .low-box-row.fade-left.fade-right {
             -webkit-mask-image: linear-gradient(
                 90deg,
                 transparent 0%,
@@ -919,6 +927,38 @@
                 90deg,
                 transparent 0%,
                 black 8%,
+                black 92%,
+                transparent 100%
+            );
+        }
+
+        .scroll-row.fade-left:not(.fade-right),
+        .low-box-row.fade-left:not(.fade-right) {
+            -webkit-mask-image: linear-gradient(
+                90deg,
+                transparent 0%,
+                black 8%,
+                black 100%
+            );
+            mask-image: linear-gradient(
+                90deg,
+                transparent 0%,
+                black 8%,
+                black 100%
+            );
+        }
+
+        .scroll-row.fade-right:not(.fade-left),
+        .low-box-row.fade-right:not(.fade-left) {
+            -webkit-mask-image: linear-gradient(
+                90deg,
+                black 0%,
+                black 92%,
+                transparent 100%
+            );
+            mask-image: linear-gradient(
+                90deg,
+                black 0%,
                 black 92%,
                 transparent 100%
             );
@@ -1418,6 +1458,7 @@ function renderTopicBoard(section, tagData) {
 
             midRow.appendChild(lowRow);
             board.appendChild(midRow);
+            requestAnimationFrame(() => updateScrollFade(lowRow));
         });
     }
 
@@ -1529,9 +1570,37 @@ async function loadHubPage() {
     });
 }
 
+function updateScrollFade(row) {
+    if (!row) return;
+
+    const maxScroll = row.scrollWidth - row.clientWidth;
+    const threshold = 2;
+
+    row.classList.toggle("fade-left", row.scrollLeft > threshold);
+    row.classList.toggle("fade-right", row.scrollLeft < maxScroll - threshold);
+}
+
+function setupSmartScrollFades(scope = document) {
+    const rows = scope.querySelectorAll(".scroll-row, .low-box-row");
+
+    rows.forEach(row => {
+        updateScrollFade(row);
+
+        if (row.dataset.smartFadeReady === "true") return;
+        row.dataset.smartFadeReady = "true";
+
+        row.addEventListener("scroll", () => updateScrollFade(row), { passive: true });
+    });
+}
+
+window.addEventListener("resize", () => setupSmartScrollFades());
+
 document.addEventListener("DOMContentLoaded", () => {
     setupTopicOverlay();
-    loadHubPage();
+    loadHubPage().then(() => {
+        setupSmartScrollFades();
+        requestAnimationFrame(() => setupSmartScrollFades());
+    });
 });
 </script>
 
