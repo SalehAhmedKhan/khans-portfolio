@@ -35,31 +35,61 @@
     },
     {
       "title": "Know Your Peers",
-      "intro": "Leading β-Ga₂O₃ materials and device research teams across the globe, whose work shapes our understanding of ultrawide-bandgap electronics.",
-      "cards": [
+      "intro": "Research groups organized by material system, so the hub can grow cleanly across β-Ga₂O₃ and diamond growth work.",
+      "peerRows": [
         {
-          "title": "Bhuiyan Group",
-          "affiliation": "University of Massachusetts Lowell",
-          "desc": "LPCVD-grown β-Ga₂O₃, device-oriented etching strategies, and high-mobility vertical SBDs.",
-          "href": "#"
+          "title": "β-Ga₂O₃ Research Groups",
+          "className": "gallium-oxide",
+          "cards": [
+            {
+              "title": "Bhuiyan Group",
+              "affiliation": "University of Massachusetts Lowell",
+              "desc": "LPCVD-grown β-Ga₂O₃, device-oriented etching strategies, and high-mobility vertical SBDs.",
+              "href": "#"
+            },
+            {
+              "title": "Zhao Labs",
+              "affiliation": "The Ohio State University",
+              "desc": "MOCVD β-Ga₂O₃ epitaxy, defect engineering, and mobility optimization in thin films.",
+              "href": "#"
+            },
+            {
+              "title": "Krishnamoorthy Group",
+              "affiliation": "University of California, Santa Barbara (UCSB)",
+              "desc": "β-Ga₂O₃ device physics, breakdown engineering, and field-management strategies for power devices.",
+              "href": "#"
+            },
+            {
+              "title": "Pearton Group",
+              "affiliation": "University of Florida (UF)",
+              "desc": "Defect spectroscopy, etching, and reliability studies in β-Ga₂O₃ and related UWBG materials.",
+              "href": "#"
+            }
+          ]
         },
         {
-          "title": "Zhao Labs",
-          "affiliation": "The Ohio State University",
-          "desc": "MOCVD β-Ga₂O₃ epitaxy, defect engineering, and mobility optimization in thin films.",
-          "href": "#"
-        },
-        {
-          "title": "Krishnamoorthy Group",
-          "affiliation": "University of California, Santa Barbara (UCSB)",
-          "desc": "β-Ga₂O₃ device physics, breakdown engineering, and field-management strategies for power devices.",
-          "href": "#"
-        },
-        {
-          "title": "Pearton Group",
-          "affiliation": "University of Florida (UF)",
-          "desc": "Defect spectroscopy, etching, and reliability studies in β-Ga₂O₃ and related UWBG materials.",
-          "href": "#"
+          "title": "Diamond Growth Research Groups",
+          "className": "diamond-growth",
+          "cards": [
+            {
+              "title": "Srabanti Chowdhury Group",
+              "affiliation": "Stanford University",
+              "desc": "Diamond growth, wide-bandgap materials, and device-oriented epitaxy research.",
+              "href": "#"
+            },
+            {
+              "title": "Ariful Haque Group",
+              "affiliation": "Research group profile to be linked",
+              "desc": "Diamond growth and plasma-assisted materials research cluster placeholder.",
+              "href": "#"
+            },
+            {
+              "title": "Samuel Graham Group",
+              "affiliation": "Georgia Institute of Technology",
+              "desc": "Thermal transport, wide-bandgap materials, diamond-related heat spreading, and device integration research.",
+              "href": "#"
+            }
+          ]
         }
       ]
     }
