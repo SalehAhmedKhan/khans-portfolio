@@ -1088,13 +1088,168 @@ h3 { font-size: 1.15rem; }
     font-size: 0.9rem;
 }
 
+
+        /* ===== Hero header with hanging stat banners ===== */
+        .hero-header {
+            padding: 2.15rem 1.5rem 2.35rem;
+            text-align: left;
+        }
+
+        .hero-inner {
+            max-width: 980px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: start;
+            gap: 2rem;
+        }
+
+        .hero-copy {
+            padding-left: clamp(0rem, 2vw, 1.2rem);
+            transform: translateX(-0.45rem);
+        }
+
+        .hero-copy h1 {
+            margin: 0 0 0.55rem 0;
+            font-size: 2.1rem;
+            font-weight: 600;
+            letter-spacing: 0;
+        }
+
+        .hero-copy p {
+            margin: 0;
+            max-width: 620px;
+            font-size: 1.02rem;
+            line-height: 1.45;
+            opacity: 0.88;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 0.85rem;
+            align-items: flex-start;
+            padding-top: 0.1rem;
+        }
+
+        .stat-banner {
+            position: relative;
+            width: 6.8rem;
+            min-height: 7.2rem;
+            box-sizing: border-box;
+            padding: 1rem 0.75rem 1.25rem;
+            text-align: center;
+            color: #f7fbff;
+            background:
+                radial-gradient(circle at 30% 12%, rgba(120, 174, 255, 0.28), transparent 45%),
+                linear-gradient(180deg, rgba(45, 74, 123, 0.98), rgba(20, 36, 68, 0.96));
+            border: 1px solid rgba(152, 190, 255, 0.30);
+            border-top: 0;
+            border-radius: 0 0 14px 14px;
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,0.10),
+                inset 0 -18px 28px rgba(0,0,0,0.16),
+                0 0 18px rgba(80, 140, 255, 0.16),
+                0 14px 28px rgba(0,0,0,0.24);
+        }
+
+        .stat-banner::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: -0.65rem;
+            width: 72%;
+            height: 0.65rem;
+            transform: translateX(-50%);
+            background:
+                linear-gradient(90deg, transparent, rgba(150,190,255,0.30), transparent),
+                rgba(255,255,255,0.08);
+            border-radius: 999px 999px 0 0;
+            border: 1px solid rgba(152, 190, 255, 0.20);
+            border-bottom: 0;
+        }
+
+        .stat-banner::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -0.95rem;
+            height: 1rem;
+            background: inherit;
+            clip-path: polygon(0 0, 50% 100%, 100% 0);
+            border-radius: 0 0 8px 8px;
+            filter: brightness(0.88);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 650;
+            line-height: 1;
+            letter-spacing: 0.01em;
+            margin-bottom: 0.45rem;
+        }
+
+        .stat-label {
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            line-height: 1.2;
+            opacity: 0.82;
+        }
+
+        @media (max-width: 720px) {
+            .hero-header {
+                padding: 1.8rem 1.2rem 2rem;
+                text-align: center;
+            }
+
+            .hero-inner {
+                grid-template-columns: 1fr;
+                gap: 1.2rem;
+            }
+
+            .hero-copy {
+                transform: none;
+                padding-left: 0;
+            }
+
+            .hero-copy p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero-stats {
+                justify-content: center;
+            }
+
+            .stat-banner {
+                width: 6.2rem;
+                min-height: 6.7rem;
+            }
+        }
+
 </style>
 </head>
 <body>
 
-<header>
-    <h1 id="page-title">Loading…</h1>
-    <p id="page-subtitle">Loading…</p>
+<header class="hero-header">
+    <div class="hero-inner">
+        <div class="hero-copy">
+            <h1 id="page-title">Loading…</h1>
+            <p id="page-subtitle">Loading…</p>
+        </div>
+
+        <div class="hero-stats" aria-label="Research hub statistics">
+            <div class="stat-banner">
+                <div class="stat-number" id="paper-count-stat">XX</div>
+                <div class="stat-label">PAPERS</div>
+            </div>
+            <div class="stat-banner">
+                <div class="stat-number" id="group-count-stat">XX</div>
+                <div class="stat-label">RESEARCH GROUPS</div>
+            </div>
+        </div>
+    </div>
 </header>
 
 <div class="container" id="content-root">
@@ -1663,6 +1818,27 @@ async function loadHubPage() {
     const data = await pageRes.json();
     const tagData = await tagRes.json();
     masterPaperLibrary = await loadPaperLibraryFromManifest();
+
+    const paperCountNode = document.getElementById("paper-count-stat");
+    const groupCountNode = document.getElementById("group-count-stat");
+
+    if (paperCountNode) {
+        paperCountNode.textContent = String((masterPaperLibrary.papers || []).length || "XX");
+    }
+
+    if (groupCountNode) {
+        const groupCount = (data.sections || []).reduce((total, section) => {
+            if (Array.isArray(section.peerRows)) {
+                return total + section.peerRows.reduce((rowTotal, peerRow) => rowTotal + ((peerRow.cards || []).length), 0);
+            }
+            if (section.title === "Know Your Peers" && Array.isArray(section.cards)) {
+                return total + section.cards.length;
+            }
+            return total;
+        }, 0);
+
+        groupCountNode.textContent = String(groupCount || "XX");
+    }
 
     document.title = data.title || "Research Hub";
     h1.textContent = data.title || "Research Hub";
