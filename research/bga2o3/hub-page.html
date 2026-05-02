@@ -10,9 +10,12 @@
     <link rel="icon" type="image/png" href="favicon_res.png">
 
     <style>
+
         body {
             margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+            color: #f5f5f5;
+
             color: #f5f5f5;
 
             --g1: rgba(80,120,255,0.12);
@@ -978,6 +981,69 @@
                 linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%);
             -webkit-mask-composite: source-in;
             mask-composite: intersect;
+        }
+
+
+        /* ===== Typography System (Formal + Consistent) ===== */
+        h1, h2, h3 {
+            font-family: "Inter", "Segoe UI", sans-serif;
+            letter-spacing: -0.01em;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        h2 {
+            font-size: 1.35rem;
+            font-weight: 650;
+        }
+
+        h3 {
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+
+        p {
+            font-size: 0.92rem;
+            line-height: 1.5;
+            font-weight: 400;
+        }
+
+        .hub-card-title,
+        .low-title {
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: -0.005em;
+        }
+
+        .hub-card-desc,
+        .low-desc,
+        .group-description {
+            font-size: 0.85rem;
+            line-height: 1.45;
+            opacity: 0.85;
+        }
+
+        .group-affiliation {
+            font-size: 0.82rem;
+            font-weight: 500;
+            opacity: 0.75;
+        }
+
+        .mid-label {
+            font-size: 0.95rem;
+            font-weight: 650;
+        }
+
+        .mid-desc {
+            font-size: 0.85rem;
+        }
+
+        .peer-row-title {
+            font-size: 1rem;
+            font-weight: 650;
         }
 
 </style>
