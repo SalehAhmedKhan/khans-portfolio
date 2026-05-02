@@ -1988,7 +1988,7 @@ async function loadHubPage() {
         }
         const contactLink = document.createElement("a");
         contactLink.href = `mailto:${data.contactEmail}`;
-        contactLink.textContent = data.contactLabel || "Contact Me";
+        contactLink.textContent = data.contactLabel || "Contact Me!";
         contactLink.style.color = "#9ecbff";
         contactLink.style.textDecoration = "underline";
         subtitle.appendChild(contactLink);
