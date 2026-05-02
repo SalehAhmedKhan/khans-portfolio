@@ -1,6 +1,6 @@
 {
-  "title": "β-Ga₂O₃ Research Hub",
-  "subtitle": "Central index for β-Ga₂O₃ device, material, and physics research.",
+  "title": "β-Ga₂O₃ & Diamond Research Hub",
+  "subtitle": "Central index for gallium oxide and diamond research. Papers are regularly updated and organized.",
   "sections": [
     {
       "title": "Research Topics",
@@ -93,5 +93,8 @@
         }
       ]
     }
-  ]
+  ],
+  "contactText": "Suggestions and corrections are appreciated",
+  "contactEmail": "salehahmedkhan1998@gmail.com",
+  "contactLabel": "Contact Me!"
 }
