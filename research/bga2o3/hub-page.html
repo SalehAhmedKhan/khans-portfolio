@@ -892,7 +892,7 @@
         }
 
 
-        /* ===== Edge blur/vignette polish + consistent high-tag typography ===== */
+        /* ===== Rectangular fades + consistent high-tag typography ===== */
         .high-tab {
             font: inherit;
             font-size: 0.92rem;
@@ -905,32 +905,39 @@
             font-weight: 600;
         }
 
+        /* Side fade for every horizontally scrolling row */
+        .scroll-row,
+        .low-box-row {
+            -webkit-mask-image: linear-gradient(
+                90deg,
+                transparent 0%,
+                black 8%,
+                black 92%,
+                transparent 100%
+            );
+            mask-image: linear-gradient(
+                90deg,
+                transparent 0%,
+                black 8%,
+                black 92%,
+                transparent 100%
+            );
+        }
+
+        /* Uniform rectangular fade for mid-level topic boxes and peer group category boxes */
         .mid-row,
         .peer-row {
             position: relative;
             overflow: hidden;
             isolation: isolate;
-        }
-
-        .mid-row::after,
-        .peer-row::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            border-radius: inherit;
-            pointer-events: none;
-            z-index: 0;
-            background:
-                linear-gradient(90deg, rgba(8,13,25,0.16), transparent 11%, transparent 89%, rgba(8,13,25,0.18)),
-                linear-gradient(180deg, rgba(255,255,255,0.10), transparent 18%, transparent 82%, rgba(8,13,25,0.12));
-            backdrop-filter: blur(0.45px);
-            box-shadow: inset 0 0 28px rgba(255,255,255,0.04), inset 0 0 46px rgba(0,0,0,0.16);
-        }
-
-        .mid-row > *,
-        .peer-row > * {
-            position: relative;
-            z-index: 1;
+            -webkit-mask-image:
+                linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%),
+                linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+            mask-image:
+                linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%),
+                linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+            -webkit-mask-composite: source-in;
+            mask-composite: intersect;
         }
 
 </style>
