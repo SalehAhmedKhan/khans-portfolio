@@ -1279,6 +1279,21 @@ h3 { font-size: 1.15rem; }
             line-height: 1.38;
         }
 
+
+        /* Discreet developer-only source hint for paper JSON files */
+        .panel-paper-json-note {
+            margin: 0.55rem 0 0;
+            font-size: 0.68rem;
+            line-height: 1.2;
+            font-family: ui-monospace, "SFMono-Regular", Consolas, monospace !important;
+            color: rgba(234, 242, 255, 0.24);
+            letter-spacing: 0;
+        }
+
+        .panel-paper-card:hover .panel-paper-json-note {
+            color: rgba(120, 180, 255, 0.52);
+        }
+
 </style>
 </head>
 <body>
@@ -1541,6 +1556,10 @@ function makePaperCard(paper) {
         main.appendChild(el("p", "panel-paper-summary", paper.summary));
     }
 
+    if (paper.__sourceFile) {
+        main.appendChild(el("p", "panel-paper-json-note", `JSON: ${paper.__sourceFile}`));
+    }
+
     const structuredTags = paper.topicTags || paper.tags || {};
     if (structuredTags && typeof structuredTags === "object" && !Array.isArray(structuredTags)) {
         (structuredTags.high || []).forEach(tag => sideTags.appendChild(el("span", "paper-side-tag high", tag)));
@@ -1563,7 +1582,7 @@ function renderMatchingPapers(labelPath) {
 
     if (countBadge) {
         const count = matches.length;
-        countBadge.textContent = `${count} ${count === 1 ? "paper" : "papers"}`;
+        countBadge.textContent = `${count} ${count === 1 ? "entry" : "entries"}`;
     }
 
     if (!matches.length) {
@@ -1854,7 +1873,9 @@ async function loadPaperLibraryFromManifest() {
             if (!path) return null;
             const paperRes = await fetch(`papers/${path}`, { cache: "no-store" });
             if (!paperRes.ok) return null;
-            return await paperRes.json();
+            const paper = await paperRes.json();
+            paper.__sourceFile = path;
+            return paper;
         }));
 
         return { papers: papers.filter(Boolean) };
