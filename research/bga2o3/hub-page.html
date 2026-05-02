@@ -1279,19 +1279,37 @@ h3 { font-size: 1.15rem; }
             line-height: 1.38;
         }
 
+        /* Developer source filename: hidden in DOI row, revealed only when hovering the filename area */
+        .panel-paper-doi {
+            display: inline-block;
+            margin-right: 1rem;
+        }
 
-        /* Discreet developer-only source hint for paper JSON files */
         .panel-paper-json-note {
-            margin: 0.55rem 0 0;
-            font-size: 0.68rem;
+            float: right;
+            margin: 0.08rem 0 0 1rem;
+            max-width: 14rem;
+            text-align: right;
+            font-size: 0.66rem;
             line-height: 1.2;
             font-family: ui-monospace, "SFMono-Regular", Consolas, monospace !important;
-            color: rgba(234, 242, 255, 0.24);
+            color: rgba(234, 242, 255, 0.035);
             letter-spacing: 0;
+            user-select: text;
+            cursor: default;
+            transition: color 0.16s ease, opacity 0.16s ease;
+        }
+
+        .panel-paper-json-note:hover {
+            color: rgba(120, 180, 255, 0.62);
         }
 
         .panel-paper-card:hover .panel-paper-json-note {
-            color: rgba(120, 180, 255, 0.52);
+            color: rgba(234, 242, 255, 0.055);
+        }
+
+        .panel-paper-card:hover .panel-paper-json-note:hover {
+            color: rgba(120, 180, 255, 0.70);
         }
 
 </style>
@@ -1557,7 +1575,7 @@ function makePaperCard(paper) {
     }
 
     if (paper.__sourceFile) {
-        main.appendChild(el("p", "panel-paper-json-note", `JSON: ${paper.__sourceFile}`));
+        main.appendChild(el("p", "panel-paper-json-note", paper.__sourceFile));
     }
 
     const structuredTags = paper.topicTags || paper.tags || {};
