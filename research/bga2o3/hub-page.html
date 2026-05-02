@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Loading…</title>
@@ -13,23 +14,8 @@
 
         body {
             margin: 0;
-            font-family: "Source Sans 3", "Segoe UI", Arial, sans-serif;
+            font-family: "Source Sans 3", "Segoe UI", Arial, sans-serif !important;
             color: #f5f5f5;
-
-            --g1: rgba(80,120,255,0.12);
-            --g2: rgba(0,200,180,0.08);
-            --bgA: #0b0f1a;
-            --bgB: #111827;
-            --bgC: #0a0e17;
-            --glass: rgba(255, 255, 255, 0.12);
-            --glass-border: rgba(255,255,255,0.15);
-            --panel-bg: rgba(19, 26, 41, 0.96);
-
-            background:
-                radial-gradient(circle at 20% 20%, var(--g1), transparent 40%),
-                radial-gradient(circle at 80% 30%, var(--g2), transparent 45%),
-                linear-gradient(135deg, var(--bgA), var(--bgB) 60%, var(--bgC));
-            background-attachment: fixed;
         }
 
         header { padding: 2rem 1.5rem; text-align: center; }
@@ -1033,6 +1019,24 @@
             -webkit-mask-composite: source-in;
             mask-composite: intersect;
         }
+
+/* ===== GLOBAL FONT FIX (NO MORE FALLBACK GARBAGE) ===== */
+.high-tab,
+.topic-heading,
+.topic-desc,
+.low-box,
+.peer-row,
+button,
+div,
+span,
+p,
+h1,
+h2,
+h3 {
+    font-family: "Source Sans 3", "Segoe UI", Arial, sans-serif !important;
+    letter-spacing: 0 !important;
+}
+
 </style>
 </head>
 <body>
