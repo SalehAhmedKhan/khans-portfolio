@@ -1229,24 +1229,55 @@ h3 { font-size: 1.15rem; }
         }
 
 
-/* ===== Topic count badge + larger breadcrumb arrows ===== */
-.topic-title-wrap {
-  display:flex; align-items:center; gap:0.6rem;
-}
-.topic-count-badge {
-  font-size: 0.8rem;
-  font-weight: 600;
-  padding: 0.15rem 0.45rem;
-  border-radius: 999px;
-  background: rgba(120,160,255,0.22);
-  border: 1px solid rgba(150,190,255,0.35);
-  color: #eaf2ff;
-}
-.breadcrumb .crumb-sep {
-  font-size: 1.2rem; /* bigger arrows */
-  line-height: 1;
-  opacity: 0.9;
-}
+        /* ===== Overlay panel final tweaks: count badge, larger breadcrumb arrows, paper-title hierarchy ===== */
+        .topic-title-line {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin: 0 2.5rem 0.65rem 0;
+        }
+
+        .topic-title-line h3 {
+            margin: 0;
+        }
+
+        .topic-count-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 2.1rem;
+            min-height: 1.65rem;
+            padding: 0.18rem 0.58rem;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            line-height: 1;
+            color: #eaf2ff;
+            background: rgba(80, 140, 255, 0.20);
+            border: 1px solid rgba(130, 185, 255, 0.38);
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,0.08),
+                0 0 12px rgba(80, 140, 255, 0.14);
+        }
+
+        .tag-flow-arrow {
+            font-size: 1.18rem;
+            line-height: 1;
+            margin: 0 0.1rem;
+            opacity: 0.82;
+        }
+
+        .panel-paper-title {
+            font-size: 1.16rem !important;
+            line-height: 1.38;
+            font-weight: 650;
+        }
+
+        .panel-paper-authors {
+            font-size: 0.98rem !important;
+            line-height: 1.38;
+        }
 
 </style>
 </head>
@@ -1290,7 +1321,10 @@ h3 { font-size: 1.15rem; }
             <button class="topic-panel-close" id="topic-panel-close" type="button" aria-label="Close topic panel">×</button>
         </div>
         <p class="panel-kicker">Research Topic</p>
-        <h3 id="topic-panel-title"></h3>
+        <div class="topic-title-line">
+            <h3 id="topic-panel-title"></h3>
+            <span class="topic-count-badge" id="topic-panel-count">0 papers</span>
+        </div>
         <p id="topic-panel-desc"></p>
         <div class="tag-chip-row" id="topic-panel-tags"></div>
         <div class="panel-paper-section">
@@ -1522,9 +1556,15 @@ function makePaperCard(paper) {
 
 function renderMatchingPapers(labelPath) {
     const paperList = document.getElementById("topic-panel-papers");
+    const countBadge = document.getElementById("topic-panel-count");
     paperList.innerHTML = "";
 
     const matches = (masterPaperLibrary.papers || []).filter(paper => paperMatchesLabelPath(paper, labelPath));
+
+    if (countBadge) {
+        const count = matches.length;
+        countBadge.textContent = `${count} ${count === 1 ? "paper" : "papers"}`;
+    }
 
     if (!matches.length) {
         paperList.appendChild(el("p", "panel-empty-note", "No papers tagged to this topic yet."));
@@ -1906,36 +1946,6 @@ document.addEventListener("DOMContentLoaded", () => {
         requestAnimationFrame(() => setupSmartScrollFades());
     });
 });
-
-function updateTopicCountBadge(){
-  const badge = document.getElementById('topic-count-badge');
-  if(!badge) return;
-  // try count rendered list items
-  const list = document.querySelector('#topic-paper-list, .topic-paper-list');
-  let count = 0;
-  if(list){
-    count = list.querySelectorAll('li, .paper-card, .paper-item').length;
-  }
-  // fallback: if master library & currentTopicKey exist
-  if(!count && window.masterPaperLibrary && window.currentTopicKey){
-    const papers = (masterPaperLibrary.papers || []);
-    count = papers.filter(p => (p.tags||[]).includes(currentTopicKey)).length;
-  }
-  badge.textContent = String(count || 0);
-}
-
-// hook after panel render
-document.addEventListener('DOMContentLoaded', () => {
-  setTimeout(updateTopicCountBadge, 0);
-});
-
-// also try after any topic open/navigation
-document.addEventListener('click', (e)=>{
-  if(e.target.closest('.low-box, .low-card, .topic-open')){
-    setTimeout(updateTopicCountBadge, 50);
-  }
-});
-
 </script>
 
 </body>
