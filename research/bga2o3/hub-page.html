@@ -800,6 +800,86 @@
             font-weight: 900;
         }
 
+
+        /* ===== Follow-up polish: flatten topic board + softer peer typography ===== */
+        .topic-board {
+            min-height: auto;
+            background: transparent;
+            border: 0;
+            border-radius: 0;
+            padding: 0;
+            overflow: visible;
+            box-shadow: none;
+        }
+
+        .topic-board::before {
+            display: none;
+        }
+
+        .topic-heading,
+        .topic-desc {
+            display: none;
+        }
+
+        .topic-shell {
+            display: block;
+            margin-top: 1rem;
+        }
+
+        .high-tag-rail {
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+            overflow-x: visible;
+            gap: 0.55rem;
+            align-items: stretch;
+            padding-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        .high-tab {
+            width: auto;
+            min-width: unset;
+            flex: 0 0 auto;
+            border-right: 1px solid rgba(255,255,255,0.14);
+            border-radius: 12px;
+            transform: none;
+            white-space: nowrap;
+            text-align: center;
+            min-height: 3rem;
+            padding: 0.65rem 1rem;
+        }
+
+        .high-tab:hover,
+        .high-tab.active {
+            transform: none;
+        }
+
+        .peer-row-title {
+            font-size: 0.96rem;
+            font-weight: 700;
+            letter-spacing: 0;
+        }
+
+        .peer-row .hub-card-title {
+            font-size: 0.98rem;
+            font-weight: 650;
+            line-height: 1.28;
+        }
+
+        .peer-row .group-affiliation {
+            font-size: 0.82rem;
+            font-weight: 500;
+            opacity: 0.86;
+        }
+
+        .peer-row .group-description {
+            font-size: 0.84rem;
+            font-weight: 400;
+            line-height: 1.42;
+            opacity: 0.82;
+        }
+
 </style>
 </head>
 <body>
