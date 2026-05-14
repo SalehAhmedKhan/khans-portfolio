@@ -1,0 +1,61 @@
+{
+  "title": "Welcome to Khan's Portfolio",
+  "subtitle": "Hi, I’m Saleh Ahmed Khan.",
+  "affiliation": [
+    "Graduate Research Assistant",
+    "Department of Electrical and Computer Engineering",
+    "University of Massachusetts Lowell"
+  ],
+  "taglines": [
+    "Researcher in ultrawide-bandgap semiconductors and power device engineering.",
+    "Exploring material growth, breakdown physics, and next-generation electronics."
+  ],
+  "emails": [
+    {
+      "label": "Personal email",
+      "address": "salehahmedkhan1998@gmail.com"
+    },
+    {
+      "label": "Academic email",
+      "address": "salehahmed_khan@uml.edu"
+    }
+  ],
+  "socials_label": "Socials",
+  "socials": [
+    {
+      "label": "LinkedIn",
+      "url": "https://www.linkedin.com/in/saleh-ahmed-khan-7219a5216"
+    },
+    {
+      "label": "ResearchGate",
+      "url": "https://www.researchgate.net/profile/Saleh-Ahmed-Khan"
+    },
+    {
+      "label": "YouTube",
+      "url": "https://www.youtube.com/@vault119"
+    }
+  ],
+  "actions_intro": "Explore my professional resume and academic profiles",
+  "buttons": [
+    {
+      "label": "View Resume",
+      "url": "CV.pdf",
+      "class": "btn"
+    },
+    {
+      "label": "Google Scholar",
+      "url": "https://scholar.google.com/citations?user=Jh4FxU4AAAAJ&hl=en",
+      "class": "btn btn-muted"
+    },
+    {
+      "label": "GitHub",
+      "url": "https://github.com/SalehAhmedKhan?tab=repositories",
+      "class": "btn btn-muted"
+    }
+  ],
+  "last_updated_label": "Last Updated",
+  "image": {
+    "url": "362913277_1456595465179872_8041301197273694670_n%20(1)%20-%20Copy.jpg",
+    "alt": "Profile photo"
+  }
+}
