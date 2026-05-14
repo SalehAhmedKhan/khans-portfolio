@@ -1,8 +1,0 @@
-{
-  "id": "paper-004",
-  "type": "conference presentations",
-  "class": "conference-presentation",
-  "published_date": "2023-12-13",
-  "tags": ["Internet of Things", "Embedded Systems", "Calendar Systems", "Bangla Calendar", "Clock", "Microcontroller"],
-  "citationRaw": "%0 Conference Paper\n%A Saleh Ahmed Khan, Tiasa Mondal, Sadat Tahmeed Azad, Abdullah Jubair Bin Iqbal, Sajid Muhaimin Chowdhury\n%T Internet of Things (IoT) Based Bangla Calendar Clock\n%B 2023 International Conference on Computer and Information Technology (ICCIT), 2023\n%D 2023\n%R 10.1109/ICCIT60459.2023.10441436\n%U https://doi.org/10.1109/ICCIT60459.2023.10441436\n%X Presents an IoT-based system for a Bangla calendar clock concept, \nintegrating embedded sensing and connected time/calendar display logic."
-}
