@@ -259,10 +259,7 @@
         }
         .pub-authors{ margin: 0 0 0.18rem; color: #cbd5f5; font-size: 0.83rem; line-height: 1.4; font-weight: 600; font-style: italic; }
         .pub-meta-row{
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            gap: 1rem;
+            display: block;
             margin: 0 0 0.28rem;
             max-width: 100%;
             min-width: 0;
@@ -283,37 +280,14 @@
             color: #dbeafe;
             font-size: 0.82rem;
             font-weight: 600;
-            white-space: nowrap;
-            text-align: right;
-            flex: 0 0 auto;
+            margin-top: 0.08rem;
+            white-space: normal;
+            text-align: left;
         }
         .pub-doi{ margin: 0.25rem 0 0.45rem; }
         .pub-doi a{ color: #93c5fd; text-decoration: none; font-size: 0.83rem; font-weight: 700; }
         .pub-doi a:hover{ text-decoration: underline; }
         .pub-tags{ display: flex; flex-wrap: wrap; justify-content: center; gap: 0.35rem; max-width: 100%; margin: 0.2rem auto 0; }
-
-        .pub-main-row{
-            display:flex;
-            align-items:flex-start;
-            justify-content:space-between;
-            gap:1.25rem;
-            width:100%;
-            min-width:0;
-        }
-
-        .pub-main-content{
-            flex:1 1 auto;
-            min-width:0;
-            max-width:calc(100% - 13rem);
-        }
-
-        .pub-side-date{
-            flex:0 0 11rem;
-            width:11rem;
-            text-align:right;
-            white-space:nowrap;
-            align-self:flex-start;
-        }
 
         .pub-tag{ padding: 0.22rem 0.65rem; border-radius: 999px; border: 1px solid rgba(148,163,184,0.45); background: rgba(148,163,184,0.18); color: #dbeafe; font-size: 0.72rem; font-weight: 700; line-height: 1.2; }
         .pub-divider{ border: none; border-top: 1px solid rgba(148,163,184,0.35); margin: 0.9rem 0; width: 100%; display: block; }
@@ -552,22 +526,6 @@
                 width:8rem;
                 min-width:8rem;
                 max-width:8rem;
-            }
-
-            .pub-main-row{
-                flex-direction:column;
-                gap:0.45rem;
-            }
-
-            .pub-main-content{
-                max-width:100%;
-                width:100%;
-            }
-
-            .pub-side-date{
-                width:100%;
-                text-align:left;
-                white-space:normal;
             }
         }
 
@@ -908,17 +866,13 @@
 
             return `
                 <div class="pub-entry">
-                    <div class="pub-main-row">
-                        <div class="pub-main-content">
-                            <div class="pub-title">${pubTitle}</div>
-                            <div class="pub-authors">${authors}</div>
-                            <div class="pub-venue">${venue}</div>
-                            <div class="pub-doi">${doiUrl ? `<a href="${doiUrl}" target="_blank" rel="noopener">${doiLabel}</a>` : ""}</div>
-                        </div>
-
-                        ${publishedDate ? `<div class="pub-side-date pub-date">${publishedDate}</div>` : ""}
+                    <div class="pub-title">${pubTitle}</div>
+                    <div class="pub-authors">${authors}</div>
+                    <div class="pub-meta-row">
+                        <div class="pub-venue">${venue}</div>
+                        ${publishedDate ? `<div class="pub-date">Date Published: ${publishedDate}</div>` : ""}
                     </div>
-
+                    <div class="pub-doi">${doiUrl ? `<a href="${doiUrl}" target="_blank" rel="noopener">${doiLabel}</a>` : ""}</div>
                     ${tagsHTML ? `<div class="pub-tags">${tagsHTML}</div>` : ""}
                 </div>
                 <hr class="pub-divider">
