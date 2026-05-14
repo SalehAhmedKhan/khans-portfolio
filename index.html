@@ -618,6 +618,37 @@
         const panelEl = document.getElementById(targetPanelId);
         if (!panelEl) return;
 
+        const normalizeTypeLabel = (type) => {
+            const labels = {
+                "journal": "Journal Articles",
+                "preprints": "Preprints",
+                "book chapter": "Book Chapters",
+                "patents": "Patents",
+                "conference presentations": "Conference Presentations"
+            };
+            return labels[type] || String(type || "Other Publications");
+        };
+
+        const renderPublicationEntry = (e) => {
+            const pubTitle = htmlWithBreaks(e.title || "");
+            const authors = htmlWithBreaks(e.authors || "");
+            const venue = htmlWithBreaks(e.venue || "");
+            const desc = htmlWithBreaks(e.description || e.summary || "");
+            const doiText = htmlWithBreaks(e.doi_text || e.doiText || "DOI");
+            const doiUrl = escapeHTML((e.doi_url || e.doiUrl || "#").trim());
+
+            return `
+                <div class="pub-entry ${escapeHTML(e.class || "")}">
+                    <div class="pub-title">${pubTitle}</div>
+                    <div class="pub-authors">${authors}</div>
+                    <div class="pub-venue">${venue}</div>
+                    <div class="pub-desc">${desc}</div>
+                    ${doiUrl && doiUrl !== "#" ? `<div class="pub-doi"><a href="${doiUrl}" target="_blank" rel="noopener">${doiText}</a></div>` : ""}
+                </div>
+                <hr class="pub-divider">
+            `;
+        };
+
         try {
             const res = await fetch(jsonUrl, { cache: "no-store" });
             if (!res.ok) return;
@@ -626,32 +657,51 @@
             const title = `<h3>${htmlWithBreaks(data.h3 || "Publications")}</h3>`;
             const intro = data.intro ? `<p class="pub-intro">${htmlWithBreaks(data.intro)}</p>` : "";
 
+            // NEW FORMAT: publications/manifest.json + separate paper JSON files
+            const manifestFiles = Array.isArray(data.paper_jsons)
+                ? data.paper_jsons
+                : (Array.isArray(data.papers) ? data.papers : null);
+
+            if (manifestFiles) {
+                const basePath = jsonUrl.includes("/") ? jsonUrl.slice(0, jsonUrl.lastIndexOf("/") + 1) : "";
+                const typeOrder = Array.isArray(data.publication_types)
+                    ? data.publication_types
+                    : ["journal", "preprints", "book chapter", "patents", "conference presentations"];
+
+                const papers = (await Promise.all(manifestFiles.map(async (fileName) => {
+                    try {
+                        const paperRes = await fetch(basePath + fileName, { cache: "no-store" });
+                        if (!paperRes.ok) return null;
+                        return await paperRes.json();
+                    } catch (e) {
+                        return null;
+                    }
+                }))).filter(Boolean);
+
+                const sectionsHTML = typeOrder.map((type) => {
+                    const entries = papers.filter(p => String(p.type || "").toLowerCase() === String(type).toLowerCase());
+                    const entriesHTML = entries.map(renderPublicationEntry).join("");
+
+                    return `
+                        <div class="pub-section">
+                            <div class="pub-section-title">${htmlWithBreaks(normalizeTypeLabel(type))}</div>
+                            ${entriesHTML || `<p class="pub-intro">No entries yet.</p>`}
+                        </div>
+                    `;
+                }).join("");
+
+                panelEl.innerHTML = title + intro + sectionsHTML;
+                return;
+            }
+
+            // OLD FORMAT fallback: original tab-publications.json sections schema
             const sections = Array.isArray(data.sections) ? data.sections : [];
             const sectionsHTML = sections
                 .filter(sec => sec && sec.enabled !== false)
                 .map(sec => {
                     const secTitle = htmlWithBreaks(sec.title || "");
                     const entries = Array.isArray(sec.entries) ? sec.entries : [];
-
-                    const entriesHTML = entries.map((e) => {
-                        const pubTitle = htmlWithBreaks(e.title || "");
-                        const authors = htmlWithBreaks(e.authors || "");
-                        const venue = htmlWithBreaks(e.venue || "");
-                        const desc = htmlWithBreaks(e.description || "");
-                        const doiText = htmlWithBreaks(e.doi_text || "DOI");
-                        const doiUrl = escapeHTML((e.doi_url || "#").trim());
-
-                        return `
-                            <div class="pub-entry">
-                                <div class="pub-title">${pubTitle}</div>
-                                <div class="pub-authors">${authors}</div>
-                                <div class="pub-venue">${venue}</div>
-                                <div class="pub-desc">${desc}</div>
-                                <div class="pub-doi"><a href="${doiUrl}" target="_blank" rel="noopener">${doiText}</a></div>
-                            </div>
-                            <hr class="pub-divider">
-                        `;
-                    }).join("");
+                    const entriesHTML = entries.map(renderPublicationEntry).join("");
 
                     if (!secTitle && !entriesHTML) return "";
 
@@ -953,9 +1003,9 @@
         } catch (e) {}
     }
 
-    updateLastUpdatedFromFile("tab-publications.json", "last-updated");
+    updateLastUpdatedFromFile("publications/manifest.json", "last-updated");
 
-    renderPublicationsFromFile("tab-publications.json", "content-pubs");
+    renderPublicationsFromFile("publications/manifest.json", "content-pubs");
     renderEducationFromFile("tab-education.json", "content-edu");
     renderExperiencesFromFile("tab-experiences.json", "content-prof");
     renderAwardsFromFile("tab-awards.json", "content-awards");
