@@ -3,6 +3,20 @@
   "intro": "A selection of academic awards and scholarship recognitions earned throughout my academic journey.",
   "sections": [
     {
+      "title": "Peer Reviwer",
+      "enabled": true,
+      "entries": [
+        {
+          "title": "Applied Physics Letters",
+          "description": "AIP Publishing"
+        }
+        {
+          "title": "Journal of Vacuum Science and Technology A",
+          "description": "AIP Publishing"
+        }
+      ]
+    },
+    {
       "title": "Scholarships and Grants",
       "enabled": true,
       "entries": [
