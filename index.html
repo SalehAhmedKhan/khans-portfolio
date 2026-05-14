@@ -217,7 +217,12 @@
 
         /* Publications */
         .pub-intro{ margin: 0 0 0.6rem; color: #d1d5db; }
-        .pub-section{ margin-top: 0.9rem; }
+        .pub-section{
+            margin-top: 0.9rem;
+            width: 100%;
+            min-width: 0;
+            overflow-x: hidden;
+        }
         .pub-section::before{
             content: "";
             display: block;
@@ -229,12 +234,59 @@
             box-shadow: 0 0 12px rgba(96,165,250,0.35);
         }
         .pub-section-title{ margin: 0 0 0.55rem; font-size: 0.95rem; font-weight: 700; color: #93c5fd; }
-        .pub-entry{ margin: 0; padding: 0; background: transparent; border: none; box-shadow: none; }
-        .pub-title{ font-weight: 700; color: #e5e7eb; margin: 0 0 0.22rem; font-size: 0.92rem; line-height: 1.4; }
+        .pub-entry{
+            margin: 0;
+            padding: 0;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            max-width: 100%;
+            min-width: 0;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+        .pub-title{
+            font-weight: 700;
+            color: #e5e7eb;
+            margin: 0 0 0.22rem;
+            font-size: 0.92rem;
+            line-height: 1.4;
+            max-width: 100%;
+            white-space: normal;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+            min-width: 0;
+        }
         .pub-authors{ margin: 0 0 0.18rem; color: #cbd5f5; font-size: 0.83rem; line-height: 1.4; font-weight: 600; font-style: italic; }
-        .pub-meta-row{ display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin: 0 0 0.28rem; }
-        .pub-venue{ color: #dbeafe; font-size: 0.82rem; font-weight: 600; line-height: 1.4; }
-        .pub-date{ color: #dbeafe; font-size: 0.82rem; font-weight: 600; white-space: nowrap; text-align: right; }
+        .pub-meta-row{
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 1rem;
+            margin: 0 0 0.28rem;
+            max-width: 100%;
+            min-width: 0;
+        }
+        .pub-venue{
+            color: #dbeafe;
+            font-size: 0.82rem;
+            font-weight: 600;
+            line-height: 1.4;
+            min-width: 0;
+            max-width: 100%;
+            white-space: normal;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+            flex: 1 1 auto;
+        }
+        .pub-date{
+            color: #dbeafe;
+            font-size: 0.82rem;
+            font-weight: 600;
+            white-space: nowrap;
+            text-align: right;
+            flex: 0 0 auto;
+        }
         .pub-doi{ margin: 0.25rem 0 0.45rem; }
         .pub-doi a{ color: #93c5fd; text-decoration: none; font-size: 0.83rem; font-weight: 700; }
         .pub-doi a:hover{ text-decoration: underline; }
