@@ -663,6 +663,14 @@
     const htmlWithBreaks = (str) =>
         escapeHTML(collapseNewlines(str)).replace(/\n/g, "<br>");
 
+    // Use this for publication citationRaw fields where you want manual <br> breaks.
+    // Example inside JSON citationRaw:
+    // %T Long title first part<br>second part
+    // It keeps the page safe by escaping everything first, then allowing only <br>.
+    const htmlWithCitationBreaks = (str) =>
+        htmlWithBreaks(str)
+            .replace(/&lt;br\s*\/??\s*&gt;/gi, "<br>");
+
     async function renderHeroFromFile(jsonUrl) {
         try {
             const res = await fetch(jsonUrl, { cache: "no-store" });
@@ -848,9 +856,9 @@
             const citation = parseEndNoteCitation(paper.citationRaw || "");
             const typeValue = paper.type || "";
 
-            const pubTitle = htmlWithBreaks(citation.title || "Untitled publication");
-            const authors = htmlWithBreaks(citation.authors.map(formatAuthorName).join(", "));
-            const venue = htmlWithBreaks(cleanJournalName(citation, typeValue));
+            const pubTitle = htmlWithCitationBreaks(citation.title || "Untitled publication");
+            const authors = htmlWithCitationBreaks(citation.authors.map(formatAuthorName).join(", "));
+            const venue = htmlWithCitationBreaks(cleanJournalName(citation, typeValue));
             const publishedDate = htmlWithBreaks(formatPublishedDate(paper.published_date || citation.year || ""));
             const doiUrlRaw = citation.url || (citation.doi ? `https://doi.org/${citation.doi}` : "");
             const doiUrl = escapeHTML(doiUrlRaw.trim());
