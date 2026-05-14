@@ -124,6 +124,23 @@
             inset 0 0 0 1px rgba(255,255,255,0.04);
     }
 
+    select {
+        appearance: none;
+        border: 1px solid rgba(255,255,255,0.14);
+        background: rgba(5, 10, 22, 0.58);
+        color: #f7fbff;
+        padding: 0.72rem 1rem;
+        border-radius: 12px;
+        outline: none;
+        font-weight: 800;
+        backdrop-filter: blur(6px);
+    }
+
+    select:focus {
+        border-color: rgba(159,201,255,0.45);
+        box-shadow: 0 0 0 3px rgba(159,201,255,0.10);
+    }
+
     .controls {
         display: flex;
         flex-wrap: wrap;
@@ -206,7 +223,7 @@
 
 <header>
     <h1>EndNote Citation Converter</h1>
-    <p>Paste raw EndNote citation text, convert it into a JSON-safe single-line string, and drop it into your paper file as <code>citationRaw</code>.</p>
+    <p>Paste raw EndNote citation text, convert it into a JSON-safe single-line string, or convert BibTeX/RIS records into EndNote tagged format for <code>citationRaw</code>.</p>
 </header>
 
 <main class="container">
@@ -244,6 +261,51 @@
         <div class="status" id="status"></div>
     </section>
 
+
+    <section class="panel">
+        <h2>Convert BibTeX or RIS to EndNote</h2>
+        <p class="hint">
+            Paste a BibTeX or RIS citation record below and convert it into EndNote tagged format. Then use the main converter above if you need a JSON-safe <code>citationRaw</code> string.
+        </p>
+
+        <div class="controls" style="margin-top: 0; margin-bottom: 1rem;">
+            <select id="sourceFormat" aria-label="Source citation format">
+                <option value="auto">Auto-detect format</option>
+                <option value="bibtex">BibTeX</option>
+                <option value="ris">RIS</option>
+            </select>
+            <button id="sampleBibBtn" class="secondary">Load BibTeX sample</button>
+            <button id="sampleRisBtn" class="secondary">Load RIS sample</button>
+        </div>
+
+        <div class="workspace">
+            <div>
+                <div class="box-label">
+                    <span>BibTeX / RIS input</span>
+                    <span id="format-input-count">0 chars</span>
+                </div>
+                <textarea id="formatInput" placeholder="@article{key,&#10;  title={Paper title},&#10;  author={Khan, Saleh Ahmed and Doe, Jane},&#10;  journal={Applied Physics Letters},&#10;  year={2025},&#10;  doi={10.xxxx/example}&#10;}&#10;&#10;Or paste RIS:&#10;TY  - JOUR&#10;AU  - Khan, Saleh Ahmed&#10;TI  - Paper title&#10;JO  - Applied Physics Letters&#10;PY  - 2025&#10;DO  - 10.xxxx/example&#10;ER  -"></textarea>
+            </div>
+
+            <div>
+                <div class="box-label">
+                    <span>EndNote tagged output</span>
+                    <span id="format-output-count">0 chars</span>
+                </div>
+                <textarea id="endnoteOutput" readonly placeholder="Converted EndNote citation will appear here..."></textarea>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button id="formatConvertBtn">Convert to EndNote</button>
+            <button id="copyEndnoteBtn">Copy EndNote output</button>
+            <button id="sendToRawBtn">Send to raw converter</button>
+            <button class="secondary" id="clearFormatBtn">Clear</button>
+        </div>
+
+        <div class="status" id="formatStatus"></div>
+    </section>
+
     <section class="panel">
         <h2>How to paste into a paper JSON</h2>
         <div class="mini-grid">
@@ -274,13 +336,29 @@ const inputCount = document.getElementById("input-count");
 const outputCount = document.getElementById("output-count");
 const statusBox = document.getElementById("status");
 
+const formatInput = document.getElementById("formatInput");
+const endnoteOutput = document.getElementById("endnoteOutput");
+const sourceFormat = document.getElementById("sourceFormat");
+const formatInputCount = document.getElementById("format-input-count");
+const formatOutputCount = document.getElementById("format-output-count");
+const formatStatus = document.getElementById("formatStatus");
+
 function setStatus(message) {
     statusBox.textContent = message;
+}
+
+function setFormatStatus(message) {
+    formatStatus.textContent = message;
 }
 
 function updateCounts() {
     inputCount.textContent = `${rawInput.value.length} chars`;
     outputCount.textContent = `${convertedOutput.value.length} chars`;
+}
+
+function updateFormatCounts() {
+    formatInputCount.textContent = `${formatInput.value.length} chars`;
+    formatOutputCount.textContent = `${endnoteOutput.value.length} chars`;
 }
 
 function convertCitation(raw) {
@@ -307,6 +385,189 @@ function convertNow() {
     return converted;
 }
 
+function stripOuterBraces(value) {
+    return value
+        .trim()
+        .replace(/^\{/, "")
+        .replace(/\}$/, "")
+        .replace(/^"/, "")
+        .replace(/"$/, "")
+        .trim();
+}
+
+function normalizeWhitespace(value) {
+    return value.replace(/\s+/g, " ").trim();
+}
+
+function splitBibtexAuthors(authorField) {
+    return authorField
+        .split(/\s+and\s+/i)
+        .map(author => normalizeWhitespace(stripOuterBraces(author)))
+        .filter(Boolean);
+}
+
+function parseBibtex(raw) {
+    const typeMatch = raw.match(/^\s*@([a-zA-Z]+)\s*\{/);
+    const type = typeMatch ? typeMatch[1].toLowerCase() : "article";
+    const bodyStart = raw.indexOf("{");
+    const body = bodyStart >= 0 ? raw.slice(bodyStart + 1, raw.lastIndexOf("}")) : raw;
+    const fields = {};
+    const fieldRegex = /([a-zA-Z][\w-]*)\s*=\s*(\{(?:[^{}]|\{[^{}]*\})*\}|"[^"]*"|[^,\n]+)\s*,?/g;
+    let match;
+
+    while ((match = fieldRegex.exec(body)) !== null) {
+        const key = match[1].toLowerCase();
+        fields[key] = normalizeWhitespace(stripOuterBraces(match[2]));
+    }
+
+    const typeMap = {
+        article: "Journal Article",
+        book: "Book",
+        inbook: "Book Section",
+        incollection: "Book Section",
+        inproceedings: "Conference Paper",
+        conference: "Conference Paper",
+        proceedings: "Conference Proceedings",
+        thesis: "Thesis",
+        phdthesis: "Thesis",
+        mastersthesis: "Thesis",
+        techreport: "Report",
+        report: "Report",
+        misc: "Generic"
+    };
+
+    const lines = [`%0 ${typeMap[type] || "Generic"}`];
+
+    if (fields.author) splitBibtexAuthors(fields.author).forEach(author => lines.push(`%A ${author}`));
+    if (fields.editor) splitBibtexAuthors(fields.editor).forEach(editor => lines.push(`%E ${editor}`));
+    if (fields.title) lines.push(`%T ${fields.title}`);
+    if (fields.journal || fields.journaltitle) lines.push(`%J ${fields.journal || fields.journaltitle}`);
+    if (fields.booktitle) lines.push(`%B ${fields.booktitle}`);
+    if (fields.publisher) lines.push(`%I ${fields.publisher}`);
+    if (fields.year) lines.push(`%D ${fields.year}`);
+    if (fields.volume) lines.push(`%V ${fields.volume}`);
+    if (fields.number || fields.issue) lines.push(`%N ${fields.number || fields.issue}`);
+    if (fields.pages) lines.push(`%P ${fields.pages.replace(/--/g, "-")}`);
+    if (fields.doi) lines.push(`%R ${fields.doi}`);
+    if (fields.url) lines.push(`%U ${fields.url}`);
+    if (fields.abstract) lines.push(`%X ${fields.abstract}`);
+    if (fields.keywords) lines.push(`%K ${fields.keywords}`);
+
+    return lines.join("\n");
+}
+
+function parseRis(raw) {
+    const endnoteTypeMap = {
+        JOUR: "Journal Article",
+        JFULL: "Journal Article",
+        BOOK: "Book",
+        CHAP: "Book Section",
+        CONF: "Conference Paper",
+        CPAPER: "Conference Paper",
+        RPRT: "Report",
+        THES: "Thesis",
+        ELEC: "Electronic Article",
+        WEB: "Web Page",
+        GEN: "Generic"
+    };
+
+    const tagMap = {
+        AU: "%A",
+        A1: "%A",
+        A2: "%E",
+        ED: "%E",
+        TI: "%T",
+        T1: "%T",
+        JO: "%J",
+        JF: "%J",
+        JA: "%J",
+        T2: "%J",
+        BT: "%B",
+        T3: "%B",
+        PB: "%I",
+        PY: "%D",
+        Y1: "%D",
+        VL: "%V",
+        IS: "%N",
+        SP: "%P",
+        EP: "%P_END",
+        DO: "%R",
+        UR: "%U",
+        AB: "%X",
+        KW: "%K",
+        SN: "%@"
+    };
+
+    const parsed = [];
+    let type = "Generic";
+    let startPage = "";
+    let endPage = "";
+
+    raw.split(/\r?\n/).forEach(line => {
+        const match = line.match(/^([A-Z0-9]{2})\s*-\s*(.*)$/);
+        if (!match) return;
+
+        const tag = match[1];
+        const value = match[2].trim();
+        if (!value || tag === "ER") return;
+
+        if (tag === "TY") {
+            type = endnoteTypeMap[value] || "Generic";
+            return;
+        }
+
+        const endnoteTag = tagMap[tag];
+        if (!endnoteTag) return;
+
+        if (endnoteTag === "%P") {
+            startPage = value;
+        } else if (endnoteTag === "%P_END") {
+            endPage = value;
+        } else {
+            parsed.push(`${endnoteTag} ${value}`);
+        }
+    });
+
+    const lines = [`%0 ${type}`];
+    parsed.forEach(item => lines.push(item));
+    if (startPage && endPage) lines.push(`%P ${startPage}-${endPage}`);
+    else if (startPage) lines.push(`%P ${startPage}`);
+
+    return lines.join("\n");
+}
+
+function detectFormat(raw) {
+    const trimmed = raw.trim();
+    if (/^@[a-zA-Z]+\s*\{/.test(trimmed)) return "bibtex";
+    if (/^TY\s*-\s*/m.test(trimmed) || /^AU\s*-\s*/m.test(trimmed)) return "ris";
+    return "unknown";
+}
+
+function convertFormatNow() {
+    const raw = formatInput.value;
+    if (!raw.trim()) {
+        endnoteOutput.value = "";
+        updateFormatCounts();
+        setFormatStatus("Paste a BibTeX or RIS citation first.");
+        return "";
+    }
+
+    const chosenFormat = sourceFormat.value === "auto" ? detectFormat(raw) : sourceFormat.value;
+
+    if (chosenFormat === "unknown") {
+        endnoteOutput.value = "";
+        updateFormatCounts();
+        setFormatStatus("Could not detect the format. Choose BibTeX or RIS manually, then convert again.");
+        return "";
+    }
+
+    const converted = chosenFormat === "bibtex" ? parseBibtex(raw) : parseRis(raw);
+    endnoteOutput.value = converted;
+    updateFormatCounts();
+    setFormatStatus(`Converted ${chosenFormat.toUpperCase()} to EndNote tagged format.`);
+    return converted;
+}
+
 async function copyText(text, successMessage) {
     if (!text) {
         setStatus("Nothing to copy yet.");
@@ -321,6 +582,23 @@ async function copyText(text, successMessage) {
         convertedOutput.select();
         document.execCommand("copy");
         setStatus(successMessage);
+    }
+}
+
+async function copyFormatText(text, successMessage) {
+    if (!text) {
+        setFormatStatus("Nothing to copy yet.");
+        return;
+    }
+
+    try {
+        await navigator.clipboard.writeText(text);
+        setFormatStatus(successMessage);
+    } catch (err) {
+        endnoteOutput.focus();
+        endnoteOutput.select();
+        document.execCommand("copy");
+        setFormatStatus(successMessage);
     }
 }
 
@@ -344,12 +622,58 @@ document.getElementById("clearBtn").addEventListener("click", () => {
     setStatus("Cleared.");
 });
 
+document.getElementById("formatConvertBtn").addEventListener("click", convertFormatNow);
+
+document.getElementById("copyEndnoteBtn").addEventListener("click", () => {
+    const converted = endnoteOutput.value || convertFormatNow();
+    copyFormatText(converted, "EndNote output copied.");
+});
+
+document.getElementById("sendToRawBtn").addEventListener("click", () => {
+    const converted = endnoteOutput.value || convertFormatNow();
+    if (!converted) return;
+    rawInput.value = converted;
+    convertedOutput.value = "";
+    updateCounts();
+    setFormatStatus("Sent to the raw converter above.");
+    rawInput.scrollIntoView({ behavior: "smooth", block: "center" });
+});
+
+document.getElementById("clearFormatBtn").addEventListener("click", () => {
+    formatInput.value = "";
+    endnoteOutput.value = "";
+    updateFormatCounts();
+    setFormatStatus("Cleared.");
+});
+
+document.getElementById("sampleBibBtn").addEventListener("click", () => {
+    sourceFormat.value = "bibtex";
+    formatInput.value = `@article{khan2025example,\n  title={Example paper title},\n  author={Khan, Saleh Ahmed and Doe, Jane},\n  journal={Applied Physics Letters},\n  year={2025},\n  volume={126},\n  number={4},\n  pages={101-110},\n  doi={10.0000/example},\n  url={https://example.com/paper}\n}`;
+    endnoteOutput.value = "";
+    updateFormatCounts();
+    setFormatStatus("BibTeX sample loaded.");
+});
+
+document.getElementById("sampleRisBtn").addEventListener("click", () => {
+    sourceFormat.value = "ris";
+    formatInput.value = `TY  - JOUR\nAU  - Khan, Saleh Ahmed\nAU  - Doe, Jane\nTI  - Example paper title\nJO  - Applied Physics Letters\nPY  - 2025\nVL  - 126\nIS  - 4\nSP  - 101\nEP  - 110\nDO  - 10.0000/example\nUR  - https://example.com/paper\nER  -`;
+    endnoteOutput.value = "";
+    updateFormatCounts();
+    setFormatStatus("RIS sample loaded.");
+});
+
 rawInput.addEventListener("input", () => {
     updateCounts();
     if (convertedOutput.value) convertedOutput.value = "";
 });
 
+formatInput.addEventListener("input", () => {
+    updateFormatCounts();
+    if (endnoteOutput.value) endnoteOutput.value = "";
+});
+
 updateCounts();
+updateFormatCounts();
 </script>
 
 </body>
