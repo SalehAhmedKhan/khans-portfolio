@@ -1,0 +1,18 @@
+{
+  "id": "paper-003",
+  "type": "book chapter",
+  "class": "book-chapter",
+  "published_date": "",
+  "topicTags": {
+    "high": [],
+    "mid": [],
+    "low": []
+  },
+  "title": "Placeholder Book Chapter Title",
+  "authors": "Author A., Author B.",
+  "venue": "Book Title, Publisher, Year",
+  "description": "Short description placeholder for a future book chapter entry.",
+  "doi_text": "DOI (placeholder)",
+  "doi_url": "https://doi.org/10.XXXX/XXXX",
+  "citationRaw": "%0 Book Section\n%A Author A., Author B.\n%T Placeholder Book Chapter Title\n%B Book Title, Publisher, Year\n%X Short description placeholder for a future book chapter entry."
+}
