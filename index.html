@@ -632,6 +632,7 @@
                 "journal": "Journal Articles",
                 "preprints": "Preprints",
                 "book chapter": "Book Chapters",
+                "review articles": "Review Articles",
                 "patents": "Patents",
                 "conference presentations": "Conference Presentations"
             };
@@ -692,7 +693,7 @@
 
         const renderPublicationEntry = (paper) => {
             const citation = parseEndNoteCitation(paper.citationRaw || "");
-            const typeValue = paper.publication_type || paper.type;
+            const typeValue = paper.type;
 
             const pubTitle = htmlWithBreaks(citation.title || "Untitled publication");
             const authors = htmlWithBreaks(citation.authors.map(formatAuthorName).join(", "));
@@ -705,7 +706,7 @@
             const tagsHTML = tags.map(tag => `<span class="pub-tag">${htmlWithBreaks(tag)}</span>`).join("");
 
             return `
-                <div class="pub-entry ${escapeHTML(paper.class || "")}">
+                <div class="pub-entry">
                     <div class="pub-title">${pubTitle}</div>
                     <div class="pub-authors">${authors}</div>
                     <div class="pub-meta-row">
@@ -728,9 +729,7 @@
             const intro = data.intro ? `<p class="pub-intro">${htmlWithBreaks(data.intro)}</p>` : "";
             const manifestFiles = Array.isArray(data.paper_jsons) ? data.paper_jsons : [];
             const basePath = jsonUrl.includes("/") ? jsonUrl.slice(0, jsonUrl.lastIndexOf("/") + 1) : "";
-            const typeOrder = Array.isArray(data.publication_types)
-                ? data.publication_types
-                : ["journal", "preprints", "book chapter", "patents", "conference presentations"];
+            const typeOrder = Array.isArray(data.publication_types) ? data.publication_types : [];
 
             const papers = (await Promise.all(manifestFiles.map(async (fileName) => {
                 try {
@@ -743,7 +742,7 @@
             }))).filter(Boolean);
 
             const sectionsHTML = typeOrder.map((type) => {
-                const entries = papers.filter(p => String(p.publication_type || p.type || "").toLowerCase() === String(type).toLowerCase());
+                const entries = papers.filter(p => String(p.type || "").toLowerCase() === String(type).toLowerCase());
                 if (!entries.length) return "";
 
                 return `
@@ -1043,9 +1042,9 @@
         } catch (e) {}
     }
 
-    updateLastUpdatedFromFile("publications/manifest.json", "last-updated");
+    updateLastUpdatedFromFile("my_my_publications/manifest.json", "last-updated");
 
-    renderPublicationsFromFile("publications/manifest.json", "content-pubs");
+    renderPublicationsFromFile("my_my_publications/manifest.json", "content-pubs");
     renderEducationFromFile("tab-education.json", "content-edu");
     renderExperiencesFromFile("tab-experiences.json", "content-prof");
     renderAwardsFromFile("tab-awards.json", "content-awards");
