@@ -1,7 +1,7 @@
 {
   "id": "paper-005",
-  "type": "preprints",
+  "type": "conference presentations",
   "published_date": "",
-  "tags": [],
-  "citationRaw": "%0 Preprint\n%A Author A., Author B.\n%T Placeholder Manuscript Title (Under Review)\n%B Target Journal (Under Review), Year\n%X Short description placeholder for an under-review manuscript."
+  "tags": ["DFT", "GaN", "Optical", "Functionalization"],
+  "citationRaw": "%0 Conference Paper\n%T Optical Properties of Chemically Functionalized Two-Dimensional Bilayer Hexagonal Gallium Nitride from First Principles Calculations\n%J 2023 IEEE International Conference on Telecommunications and Photonics (ICTP)\n%A S. A. Khan\n%A Q. D. M. Khosru\n%D 2023\n%R 10.1109/ICTP60248.2023.10491080\n%J 2023 IEEE International Conference on Telecommunications and Photonics (ICTP)\n%@ 2836-2985\n%J 2023 IEEE International Conference on Telecommunications and Photonics (ICTP)\n%D 21-23 Dec. 2023\n%P 1-4"
 }
