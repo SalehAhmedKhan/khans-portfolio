@@ -1,0 +1,14 @@
+{
+  "id": "paper-001",
+  "type": "journal",
+  "published_date": "2026-04-21",
+  "tags": [
+    "Epitaxial Growth",
+    "LPCVD",
+    "Sn Doping",
+    "SEM",
+    "AFM",
+    "Temp Dep Hall"
+  ],
+  "citationRaw": "%0 Journal Article\n%A Khan, Saleh Ahmed\n%A Ibreljic, Ahmed\n%A Bhuiyan, Anhar\n%T Vertical β-Ga2O3 Schottky diodes with LPCVD-grown Sn-doped drift layer\n%B APL Electronic Devices\n%D 2026\n%R 10.1063/5.0319027\n%1 026112\n%J APL Electronic Devices\n%V 2\n%N 2\n%@ 2995-8423\n%X High-quality Sn-doped (010) β-Ga2O3 homoepitaxial drift layers were grown by using the low-pressure chemical vapor deposition (LPCVD) method using solid elemental Sn as the n-type dopant source and integrated into vertical Ni/β-Ga2O3 Schottky barrier diodes to evaluate their device-level performance. β-Ga2O3 films with net carrier concentrations spanning from 2.0 × 1016 to 3.2 × 1017 cm−3 were achieved in thick epilayers exhibiting smooth surface morphology and high crystalline quality, as evidenced by surface rms roughness as low as 2.17 nm and an x-ray diffraction rocking-curve full width at half maximum as low as 38.9 arcsec. The fabricated diodes exhibited clear rectification and near-ideal thermionic-emission behavior, yielding ideality factors of 1.16–1.18 and Schottky barrier heights of 1.08–1.19 eV. The differential specific on-resistance (Ron,sp) decreased with increasing carrier concentration, with measured values ranging from 38.07 to 27.31 mΩ cm2. Temperature-dependent current–voltage measurements ranging from 25 to 250 °C showed stable thermionic-emission-dominated transport, with a gradual reduction in Schottky barrier height and an increase in on-resistance due to phonon-limited mobility. Capacitance–voltage (C–V) analysis confirmed uniform and controllable doping profiles and yielded barrier heights between 1.12 and 1.29 eV, depending on carrier concentration. Temperature-dependent C–V measurements revealed a systematic reduction in built-in potential and barrier height with increasing temperature. Reverse-bias measurements demonstrated a breakdown voltage of 225 V for a diode with a drift-layer carrier concentration of 2.0 × 1016 cm−3 in the absence of any field-management structures, with two-dimensional Silvaco technology computer-aided design (TCAD) electrostatic simulations revealing peak electric fields localized at the Schottky anode edge, indicating edge-field-limited breakdown. These results demonstrate LPCVD as a viable approach for the growth of Sn-doped β-Ga2O3 drift layers that support high-quality Schottky interfaces with stable operation over a wide temperature range, providing a foundation for continued development of β-Ga2O3 high power devices.\n%[ 5/14/2026\n%U https://doi.org/10.1063/5.0319027"
+}
