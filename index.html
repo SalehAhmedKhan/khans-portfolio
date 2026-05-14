@@ -212,31 +212,22 @@
         .pub-intro{ margin: 0 0 0.6rem; color: #d1d5db; }
         .pub-section{ margin-top: 0.9rem; }
         .pub-section-title{ margin: 0 0 0.55rem; font-size: 0.95rem; font-weight: 700; color: #93c5fd; }
-        .pub-entry{
-            margin: 0 0 0.85rem;
-            padding: 1rem 1.05rem;
-            border-radius: 16px;
-            border: 1px solid rgba(148,163,184,0.35);
-            background: rgba(30,41,59,0.72);
-            box-shadow: 0 10px 24px rgba(15,23,42,0.35);
-        }
-        .pub-title{ font-weight: 700; color: #e5e7eb; margin: 0 0 0.55rem; font-size: 0.98rem; line-height: 1.45; }
-        .pub-authors{ margin: 0 0 0.75rem; color: #d1d5db; font-size: 0.83rem; line-height: 1.45; font-weight: 600; font-style: italic; }
-        .pub-meta-row{ display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin: 0 0 0.75rem; }
-        .pub-venue{ color: #dbeafe; font-size: 0.84rem; font-weight: 700; line-height: 1.4; }
-        .pub-date{ color: #cbd5f5; font-size: 0.8rem; font-weight: 700; white-space: nowrap; text-align: right; }
-        .pub-desc{ margin: 0 0 0.75rem; color: #d1d5db; font-size: 0.83rem; line-height: 1.45; white-space: normal; }
-        .pub-bottom-row{ display: flex; justify-content: space-between; align-items: flex-end; gap: 1rem; margin-top: 0.6rem; }
-        .pub-doi a{ color: #60a5fa; text-decoration: none; font-size: 0.83rem; font-weight: 700; }
+        .pub-entry{ margin: 0; padding: 0; background: transparent; border: none; box-shadow: none; }
+        .pub-title{ font-weight: 700; color: #e5e7eb; margin: 0 0 0.22rem; font-size: 0.92rem; line-height: 1.4; }
+        .pub-authors{ margin: 0 0 0.18rem; color: #cbd5f5; font-size: 0.83rem; line-height: 1.4; font-weight: 600; font-style: italic; }
+        .pub-meta-row{ display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin: 0 0 0.28rem; }
+        .pub-venue{ color: #dbeafe; font-size: 0.82rem; font-weight: 600; line-height: 1.4; }
+        .pub-date{ color: #dbeafe; font-size: 0.82rem; font-weight: 600; white-space: nowrap; text-align: right; }
+        .pub-doi{ margin: 0.25rem 0 0.45rem; }
+        .pub-doi a{ color: #93c5fd; text-decoration: none; font-size: 0.83rem; font-weight: 700; }
         .pub-doi a:hover{ text-decoration: underline; }
-        .pub-tags{ display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0.35rem; max-width: 58%; margin-left: auto; }
-        .pub-tag{ padding: 0.22rem 0.65rem; border-radius: 999px; border: 1px solid rgba(148,163,184,0.4); background: rgba(148,163,184,0.18); color: #dbeafe; font-size: 0.72rem; font-weight: 700; line-height: 1.2; }
-        .pub-divider{ display: none; }
+        .pub-tags{ display: flex; flex-wrap: wrap; justify-content: center; gap: 0.35rem; max-width: 100%; margin: 0.2rem auto 0; }
+        .pub-tag{ padding: 0.22rem 0.65rem; border-radius: 999px; border: 1px solid rgba(148,163,184,0.45); background: rgba(148,163,184,0.18); color: #dbeafe; font-size: 0.72rem; font-weight: 700; line-height: 1.2; }
+        .pub-divider{ border: none; border-top: 1px solid rgba(148,163,184,0.35); margin: 0.9rem 0; width: 100%; display: block; }
 
         @media (max-width: 640px){
-            .pub-meta-row, .pub-bottom-row{ flex-direction: column; align-items: flex-start; gap: 0.4rem; }
+            .pub-meta-row{ flex-direction: column; align-items: flex-start; gap: 0.15rem; }
             .pub-date{ text-align: left; white-space: normal; }
-            .pub-tags{ justify-content: flex-start; max-width: 100%; margin-left: 0; }
         }
 
         /* Education */
@@ -648,13 +639,10 @@
         };
 
         const parseEndNoteCitation = (raw) => {
-            const parsed = { authors: [], abstractLines: [] };
+            const parsed = { authors: [] };
             normalizeText(raw).split("\n").forEach((line) => {
                 const trimmed = line.trim();
-                if (!trimmed.startsWith("%") || trimmed.length < 3) {
-                    if (parsed._lastCode === "X" && trimmed) parsed.abstractLines.push(trimmed);
-                    return;
-                }
+                if (!trimmed.startsWith("%") || trimmed.length < 3) return;
 
                 const code = trimmed.slice(1, 2);
                 const value = trimmed.slice(3).trim();
@@ -670,12 +658,18 @@
                 if (code === "1") parsed.pagesOrArticle = value;
                 if (code === "R") parsed.doi = value;
                 if (code === "U") parsed.url = value;
-                if (code === "X") parsed.abstractLines.push(value);
             });
-            parsed.abstract = parsed.abstractLines.join("\n");
             delete parsed._lastCode;
-            delete parsed.abstractLines;
             return parsed;
+        };
+
+        const formatAuthorName = (name) => {
+            const raw = String(name || "").trim();
+            if (!raw.includes(",")) return raw;
+            const parts = raw.split(",").map(p => p.trim()).filter(Boolean);
+            if (parts.length < 2) return raw;
+            const last = parts.shift();
+            return `${parts.join(" ")} ${last}`.replace(/\s+/g, " ").trim();
         };
 
         const cleanJournalName = (citation, fallbackType) => {
@@ -701,10 +695,9 @@
             const typeValue = paper.publication_type || paper.type;
 
             const pubTitle = htmlWithBreaks(citation.title || "Untitled publication");
-            const authors = htmlWithBreaks(citation.authors.join(", "));
+            const authors = htmlWithBreaks(citation.authors.map(formatAuthorName).join(", "));
             const venue = htmlWithBreaks(cleanJournalName(citation, typeValue));
             const publishedDate = htmlWithBreaks(formatPublishedDate(paper.published_date || citation.year || ""));
-            const desc = htmlWithBreaks(citation.abstract || "");
             const doiUrlRaw = citation.url || (citation.doi ? `https://doi.org/${citation.doi}` : "");
             const doiUrl = escapeHTML(doiUrlRaw.trim());
             const doiLabel = citation.doi ? `DOI: ${htmlWithBreaks(citation.doi)}` : "DOI";
@@ -719,12 +712,10 @@
                         <div class="pub-venue">${venue}</div>
                         ${publishedDate ? `<div class="pub-date">${publishedDate}</div>` : ""}
                     </div>
-                    ${desc ? `<div class="pub-desc">${desc}</div>` : ""}
-                    <div class="pub-bottom-row">
-                        <div class="pub-doi">${doiUrl ? `<a href="${doiUrl}" target="_blank" rel="noopener">${doiLabel}</a>` : ""}</div>
-                        ${tagsHTML ? `<div class="pub-tags">${tagsHTML}</div>` : ""}
-                    </div>
+                    <div class="pub-doi">${doiUrl ? `<a href="${doiUrl}" target="_blank" rel="noopener">${doiLabel}</a>` : ""}</div>
+                    ${tagsHTML ? `<div class="pub-tags">${tagsHTML}</div>` : ""}
                 </div>
+                <hr class="pub-divider">
             `;
         };
 
