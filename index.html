@@ -628,6 +628,7 @@
         if (!panelEl) return;
 
         const normalizeTypeLabel = (type) => {
+            const key = String(type || "").toLowerCase().trim();
             const labels = {
                 "journal": "Journal Articles",
                 "preprints": "Preprints",
@@ -636,7 +637,7 @@
                 "patents": "Patents",
                 "conference presentations": "Conference Presentations"
             };
-            return labels[String(type || "").toLowerCase()] || String(type || "Other Publications");
+            return labels[key] || String(type || "Other Publications");
         };
 
         const parseEndNoteCitation = (raw) => {
@@ -647,9 +648,15 @@
 
                 const code = trimmed.slice(1, 2);
                 const value = trimmed.slice(3).trim();
-                parsed._lastCode = code;
 
-                if (code === "A") parsed.authors.push(value);
+                if (code === "A") {
+                    // Handles both repeated %A lines and one comma-separated %A line.
+                    if (value.includes(";")) {
+                        value.split(";").map(a => a.trim()).filter(Boolean).forEach(a => parsed.authors.push(a));
+                    } else {
+                        parsed.authors.push(value);
+                    }
+                }
                 if (code === "T") parsed.title = value;
                 if (code === "J") parsed.journal = value;
                 if (code === "B") parsed.bookOrConference = value;
@@ -660,7 +667,6 @@
                 if (code === "R") parsed.doi = value;
                 if (code === "U") parsed.url = value;
             });
-            delete parsed._lastCode;
             return parsed;
         };
 
@@ -668,9 +674,8 @@
             const raw = String(name || "").trim();
             if (!raw.includes(",")) return raw;
             const parts = raw.split(",").map(p => p.trim()).filter(Boolean);
-            if (parts.length < 2) return raw;
-            const last = parts.shift();
-            return `${parts.join(" ")} ${last}`.replace(/\s+/g, " ").trim();
+            if (parts.length === 2) return `${parts[1]} ${parts[0]}`.replace(/\s+/g, " ").trim();
+            return raw;
         };
 
         const cleanJournalName = (citation, fallbackType) => {
@@ -693,7 +698,7 @@
 
         const renderPublicationEntry = (paper) => {
             const citation = parseEndNoteCitation(paper.citationRaw || "");
-            const typeValue = paper.type;
+            const typeValue = paper.type || "";
 
             const pubTitle = htmlWithBreaks(citation.title || "Untitled publication");
             const authors = htmlWithBreaks(citation.authors.map(formatAuthorName).join(", "));
@@ -702,7 +707,9 @@
             const doiUrlRaw = citation.url || (citation.doi ? `https://doi.org/${citation.doi}` : "");
             const doiUrl = escapeHTML(doiUrlRaw.trim());
             const doiLabel = citation.doi ? `DOI: ${htmlWithBreaks(citation.doi)}` : "DOI";
-            const tags = Array.isArray(paper.tags) ? paper.tags : String(paper.tags || "").split(",").map(t => t.trim()).filter(Boolean);
+            const tags = Array.isArray(paper.tags)
+                ? paper.tags
+                : String(paper.tags || "").split(",").map(t => t.trim()).filter(Boolean);
             const tagsHTML = tags.map(tag => `<span class="pub-tag">${htmlWithBreaks(tag)}</span>`).join("");
 
             return `
@@ -722,14 +729,24 @@
 
         try {
             const res = await fetch(jsonUrl, { cache: "no-store" });
-            if (!res.ok) return;
+            if (!res.ok) throw new Error("Manifest fetch failed");
             const data = await res.json();
 
             const title = `<h3>${htmlWithBreaks(data.h3 || "Publications")}</h3>`;
             const intro = data.intro ? `<p class="pub-intro">${htmlWithBreaks(data.intro)}</p>` : "";
-            const manifestFiles = Array.isArray(data.paper_jsons) ? data.paper_jsons : [];
+
+            const manifestFiles =
+                Array.isArray(data.paper_jsons) ? data.paper_jsons :
+                Array.isArray(data.papers) ? data.papers :
+                Array.isArray(data.files) ? data.files :
+                [];
+
+            const typeOrder =
+                Array.isArray(data.publication_types) ? data.publication_types :
+                Array.isArray(data.types) ? data.types :
+                [];
+
             const basePath = jsonUrl.includes("/") ? jsonUrl.slice(0, jsonUrl.lastIndexOf("/") + 1) : "";
-            const typeOrder = Array.isArray(data.publication_types) ? data.publication_types : [];
 
             const papers = (await Promise.all(manifestFiles.map(async (fileName) => {
                 try {
@@ -741,8 +758,12 @@
                 }
             }))).filter(Boolean);
 
-            const sectionsHTML = typeOrder.map((type) => {
-                const entries = papers.filter(p => String(p.type || "").toLowerCase() === String(type).toLowerCase());
+            const sectionTypes = typeOrder.length
+                ? typeOrder
+                : [...new Set(papers.map(p => p.type).filter(Boolean))];
+
+            const sectionsHTML = sectionTypes.map((type) => {
+                const entries = papers.filter(p => String(p.type || "").toLowerCase().trim() === String(type).toLowerCase().trim());
                 if (!entries.length) return "";
 
                 return `
@@ -754,7 +775,9 @@
             }).join("");
 
             panelEl.innerHTML = title + intro + sectionsHTML;
-        } catch (e) {}
+        } catch (e) {
+            panelEl.innerHTML = `<h3>Publications</h3><p class="pub-intro">Publication data could not be loaded. Check that my_publications/manifest.json and the paper JSON files are uploaded in the correct folder.</p>`;
+        }
     }
 
     async function renderEducationFromFile(jsonUrl, targetPanelId) {
