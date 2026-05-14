@@ -193,6 +193,7 @@
             width: 100%;
             box-sizing: border-box;
             min-width: 0;
+            width: min(100%, 42rem);
             max-width: 100%;
         }
 
@@ -204,10 +205,9 @@
         #content-pubs, #content-edu, #content-prof, #content-awards, #content-tools,
         #content-pubs *, #content-edu *, #content-prof *, #content-awards *, #content-tools *{
             max-width: 100%;
-            overflow-wrap: anywhere;
-            word-break: break-word;
-            hyphens: auto;
-            max-inline-size: 58ch;
+            overflow-wrap: break-word;
+            word-break: normal;
+            white-space: normal;
             min-width: 0;
         }
         .tab-contents, .tab-contents *{
@@ -304,9 +304,9 @@
         }
 
         .pub-main-content{
-            flex: 1 1 auto;
-            min-width: 0;
-            max-width: calc(100% - 15rem);
+            flex:1 1 auto;
+            min-width:0;
+            max-width:calc(100% - 13rem);
         }
 
         .pub-side-date{
