@@ -17,7 +17,7 @@
         }
 
         body {
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: Charter, Georgia, Cambria, "Times New Roman", Times, serif;
             color: #e5e7eb;
 
             background:
@@ -124,7 +124,6 @@
         .hero-image {
             width: 240px;
             height: 360px;
-            background-image: url("362913277_1456595465179872_8041301197273694670_n%20(1)%20-%20Copy.jpg");
             background-size: cover;
             background-position: center;
             background-color: #020617;
@@ -435,53 +434,30 @@
 
         <section class="glass hero-card">
             <div class="hero-text">
-                <h1 class="hero-title">Welcome to Khan's Portfolio</h1>
-                <p class="hero-subtitle">Hi, I’m Saleh Ahmed Khan.</p>
+                <h1 class="hero-title" id="hero-title"></h1>
+                <p class="hero-subtitle" id="hero-subtitle"></p>
 
-                <p class="hero-affiliation">
-                    Graduate Research Assistant<br>
-                    Department of Electrical and Computer Engineering<br>
-                    University of Massachusetts Lowell
-                </p>
+                <p class="hero-affiliation" id="hero-affiliation"></p>
 
-                <p class="hero-tagline">
-                    Researcher in ultrawide-bandgap semiconductors and power device engineering.
-                </p>
-                <p class="hero-tagline">
-                    Exploring material growth, breakdown physics, and next-generation electronics.
-                </p>
+                <div id="hero-taglines"></div>
 
-                <p class="hero-contact">
-                    Personal email:
-                    <a href="mailto:salehahmedkhan1998@gmail.com">salehahmedkhan1998@gmail.com</a><br>
-                    Academic email:
-                    <a href="mailto:salehahmed_khan@uml.edu">salehahmed_khan@uml.edu</a>
-                </p>
+                <p class="hero-contact" id="hero-contact"></p>
 
-                <p class="hero-socials">
-                    Socials:
-                    <a href="https://www.linkedin.com/in/saleh-ahmed-khan-7219a5216" target="_blank">LinkedIn</a> ·
-                    <a href="https://www.researchgate.net/profile/Saleh-Ahmed-Khan" target="_blank">ResearchGate</a> ·
-                    <a href="https://www.youtube.com/@vault119" target="_blank">YouTube</a>
-                </p>
+                <p class="hero-socials" id="hero-socials"></p>
 
                 <div class="hero-actions">
-                    <p>Explore my professional resume and academic profiles</p>
+                    <p id="hero-actions-intro"></p>
 
-                    <div class="btn-row">
-                        <a class="btn" href="CV.pdf" target="_blank" rel="noopener">View Resume</a>
-                        <a class="btn btn-muted" href="https://scholar.google.com/citations?user=Jh4FxU4AAAAJ&hl=en" target="_blank" rel="noopener">Google Scholar</a>
-                        <a class="btn btn-muted" href="https://github.com/SalehAhmedKhan?tab=repositories" target="_blank" rel="noopener">GitHub</a>
-                    </div>
+                    <div class="btn-row" id="hero-buttons"></div>
 
                     <p style="margin: 0.35rem 0 0; font-size: 0.82rem; color: #cbd5f5;">
-                        Last Updated: <span id="last-updated">—</span>
+                        <span id="last-updated-label"></span>: <span id="last-updated">—</span>
                     </p>
                 </div>
             </div>
 
             <div class="hero-image-wrapper">
-                <div class="hero-image"></div>
+                <div class="hero-image" id="hero-image"></div>
             </div>
         </section>
 
@@ -585,6 +561,77 @@
 
     const htmlWithBreaks = (str) =>
         escapeHTML(collapseNewlines(str)).replace(/\n/g, "<br>");
+
+    async function renderHeroFromFile(jsonUrl) {
+        try {
+            const res = await fetch(jsonUrl, { cache: "no-store" });
+            if (!res.ok) throw new Error("Hero JSON fetch failed");
+            const data = await res.json();
+
+            const setHTML = (id, value) => {
+                const el = document.getElementById(id);
+                if (el) el.innerHTML = htmlWithBreaks(value || "");
+            };
+
+            setHTML("hero-title", data.title);
+            setHTML("hero-subtitle", data.subtitle);
+
+            const affiliationEl = document.getElementById("hero-affiliation");
+            if (affiliationEl) {
+                const affiliation = Array.isArray(data.affiliation) ? data.affiliation : [];
+                affiliationEl.innerHTML = affiliation.map(line => htmlWithBreaks(line)).join("<br>");
+            }
+
+            const taglinesEl = document.getElementById("hero-taglines");
+            if (taglinesEl) {
+                const taglines = Array.isArray(data.taglines) ? data.taglines : [];
+                taglinesEl.innerHTML = taglines.map(line => `<p class="hero-tagline">${htmlWithBreaks(line)}</p>`).join("");
+            }
+
+            const contactEl = document.getElementById("hero-contact");
+            if (contactEl) {
+                const emails = Array.isArray(data.emails) ? data.emails : [];
+                contactEl.innerHTML = emails.map((item) => {
+                    const label = htmlWithBreaks(item.label || "Email");
+                    const address = escapeHTML(item.address || "");
+                    return `${label}: <a href="mailto:${address}">${address}</a>`;
+                }).join("<br>");
+            }
+
+            const socialsEl = document.getElementById("hero-socials");
+            if (socialsEl) {
+                const socials = Array.isArray(data.socials) ? data.socials : [];
+                const links = socials.map((item) => {
+                    const label = htmlWithBreaks(item.label || "");
+                    const url = escapeHTML(item.url || "#");
+                    return `<a href="${url}" target="_blank" rel="noopener">${label}</a>`;
+                }).join(" · ");
+                socialsEl.innerHTML = `${htmlWithBreaks(data.socials_label || "Socials")}: ${links}`;
+            }
+
+            setHTML("hero-actions-intro", data.actions_intro);
+            setHTML("last-updated-label", data.last_updated_label || "Last Updated");
+
+            const buttonsEl = document.getElementById("hero-buttons");
+            if (buttonsEl) {
+                const buttons = Array.isArray(data.buttons) ? data.buttons : [];
+                buttonsEl.innerHTML = buttons.map((item) => {
+                    const cls = escapeHTML(item.class || "btn");
+                    const url = escapeHTML(item.url || "#");
+                    const label = htmlWithBreaks(item.label || "");
+                    return `<a class="${cls}" href="${url}" target="_blank" rel="noopener">${label}</a>`;
+                }).join("");
+            }
+
+            const imageEl = document.getElementById("hero-image");
+            if (imageEl && data.image && data.image.url) {
+                imageEl.style.backgroundImage = `url("${escapeHTML(data.image.url)}")`;
+                if (data.image.alt) imageEl.setAttribute("aria-label", data.image.alt);
+                imageEl.setAttribute("role", "img");
+            }
+        } catch (e) {}
+    }
+
 
     async function updateLastUpdatedFromFile(jsonUrl, targetSpanId) {
         const el = document.getElementById(targetSpanId);
@@ -1065,6 +1112,7 @@
         } catch (e) {}
     }
 
+    renderHeroFromFile("hero.json");
     updateLastUpdatedFromFile("my_publications/manifest.json", "last-updated");
 
     renderPublicationsFromFile("my_publications/manifest.json", "content-pubs");
