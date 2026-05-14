@@ -206,6 +206,8 @@
             max-width: 100%;
             overflow-wrap: anywhere;
             word-break: break-word;
+            hyphens: auto;
+            max-inline-size: 58ch;
             min-width: 0;
         }
         .tab-contents, .tab-contents *{
@@ -302,9 +304,9 @@
         }
 
         .pub-main-content{
-            flex:1 1 auto;
-            min-width:0;
-            max-width:calc(100% - 13rem);
+            flex: 1 1 auto;
+            min-width: 0;
+            max-width: calc(100% - 15rem);
         }
 
         .pub-side-date{
