@@ -629,21 +629,62 @@
             return labels[type] || String(type || "Other Publications");
         };
 
-        const renderPublicationEntry = (e) => {
-            const pubTitle = htmlWithBreaks(e.title || "");
-            const authors = htmlWithBreaks(e.authors || "");
-            const venue = htmlWithBreaks(e.venue || "");
-            const desc = htmlWithBreaks(e.description || e.summary || "");
-            const doiText = htmlWithBreaks(e.doi_text || e.doiText || "DOI");
-            const doiUrl = escapeHTML((e.doi_url || e.doiUrl || "#").trim());
+        const parseEndNoteCitation = (raw) => {
+            const parsed = { authors: [] };
+            normalizeText(raw).split("\n").forEach((line) => {
+                const trimmed = line.trim();
+                if (!trimmed.startsWith("%") || trimmed.length < 3) return;
+
+                const code = trimmed.slice(1, 2);
+                const value = trimmed.slice(3).trim();
+
+                if (code === "A") parsed.authors.push(value);
+                if (code === "T") parsed.title = value;
+                if (code === "J") parsed.journal = value;
+                if (code === "B") parsed.bookOrConference = value;
+                if (code === "D") parsed.year = value;
+                if (code === "V") parsed.volume = value;
+                if (code === "N") parsed.issue = value;
+                if (code === "1") parsed.pagesOrArticle = value;
+                if (code === "R") parsed.doi = value;
+                if (code === "U") parsed.url = value;
+                if (code === "X") parsed.abstract = value;
+            });
+            return parsed;
+        };
+
+        const buildVenue = (citation, fallbackType) => {
+            const source = citation.journal || citation.bookOrConference || "";
+            const volumeIssue = citation.volume
+                ? `${citation.volume}${citation.issue ? `(${citation.issue})` : ""}`
+                : "";
+            const pieces = [source, volumeIssue, citation.pagesOrArticle, citation.year].filter(Boolean);
+            return pieces.join(", ") || normalizeTypeLabel(fallbackType);
+        };
+
+        const renderPublicationEntry = (paper) => {
+            const citation = parseEndNoteCitation(paper.citationRaw || "");
+
+            // Display fields below are pulled from citationRaw; paper JSON only stores metadata.
+            const pubTitle = htmlWithBreaks(citation.title || "Untitled publication");
+            const authors = htmlWithBreaks(citation.authors.join(", "));
+            const venue = htmlWithBreaks(buildVenue(citation, paper.publication_type || paper.type));
+            const desc = htmlWithBreaks(citation.abstract || "");
+            const doiUrlRaw = citation.url || (citation.doi ? `https://doi.org/${citation.doi}` : "");
+            const doiUrl = escapeHTML(doiUrlRaw.trim());
+            const dateLine = paper.published_date ? `<div class="pub-venue">Published: ${htmlWithBreaks(paper.published_date)}</div>` : "";
+            const tags = Array.isArray(paper.tags) ? paper.tags : [];
+            const tagLine = tags.length ? `<div class="pub-desc">Tags: ${htmlWithBreaks(tags.join(", "))}</div>` : "";
 
             return `
-                <div class="pub-entry ${escapeHTML(e.class || "")}">
+                <div class="pub-entry ${escapeHTML(paper.class || "")}">
                     <div class="pub-title">${pubTitle}</div>
                     <div class="pub-authors">${authors}</div>
                     <div class="pub-venue">${venue}</div>
+                    ${dateLine}
                     <div class="pub-desc">${desc}</div>
-                    ${doiUrl && doiUrl !== "#" ? `<div class="pub-doi"><a href="${doiUrl}" target="_blank" rel="noopener">${doiText}</a></div>` : ""}
+                    ${tagLine}
+                    ${doiUrl ? `<div class="pub-doi"><a href="${doiUrl}" target="_blank" rel="noopener">DOI</a></div>` : ""}
                 </div>
                 <hr class="pub-divider">
             `;
@@ -657,7 +698,6 @@
             const title = `<h3>${htmlWithBreaks(data.h3 || "Publications")}</h3>`;
             const intro = data.intro ? `<p class="pub-intro">${htmlWithBreaks(data.intro)}</p>` : "";
 
-            // NEW FORMAT: publications/manifest.json + separate paper JSON files
             const manifestFiles = Array.isArray(data.paper_jsons)
                 ? data.paper_jsons
                 : (Array.isArray(data.papers) ? data.papers : null);
@@ -679,7 +719,7 @@
                 }))).filter(Boolean);
 
                 const sectionsHTML = typeOrder.map((type) => {
-                    const entries = papers.filter(p => String(p.type || "").toLowerCase() === String(type).toLowerCase());
+                    const entries = papers.filter(p => String(p.publication_type || p.type || "").toLowerCase() === String(type).toLowerCase());
                     const entriesHTML = entries.map(renderPublicationEntry).join("");
 
                     return `
@@ -701,7 +741,16 @@
                 .map(sec => {
                     const secTitle = htmlWithBreaks(sec.title || "");
                     const entries = Array.isArray(sec.entries) ? sec.entries : [];
-                    const entriesHTML = entries.map(renderPublicationEntry).join("");
+                    const entriesHTML = entries.map((e) => {
+                        const oldCitationRaw = e.citationRaw || [
+                            e.authors ? `%A ${e.authors}` : "",
+                            e.title ? `%T ${e.title}` : "",
+                            e.venue ? `%J ${e.venue}` : "",
+                            e.description ? `%X ${e.description}` : "",
+                            e.doi_url ? `%U ${e.doi_url}` : ""
+                        ].filter(Boolean).join("\n");
+                        return renderPublicationEntry({ ...e, citationRaw: oldCitationRaw, publication_type: sec.id || "journal" });
+                    }).join("");
 
                     if (!secTitle && !entriesHTML) return "";
 
