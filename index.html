@@ -137,29 +137,32 @@
 
         .tab-labels {
             display: grid;
-            grid-template-columns: repeat(7, minmax(0, 1fr));
-            gap: 0.6rem;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.45rem;
             margin-bottom: 0.7rem;
             width: 100%;
+            align-items: stretch;
         }
 
         .tab-label {
             width: 100%;
+            max-width: 100%;
             min-width: 0;
             box-sizing: border-box;
             text-align: center;
             white-space: normal;
-            overflow-wrap: anywhere;
-            line-height: 1.15;
-            min-height: 2.15rem;
+            overflow-wrap: break-word;
+            word-break: normal;
+            line-height: 1.1;
+            min-height: 2.25rem;
             display: flex;
             align-items: center;
             justify-content: center;
 
-            padding: 0.35rem 0.55rem;
+            padding: 0.34rem 0.3rem;
             border-radius: 999px;
             border: 1px solid rgba(148,163,184,0.5);
-            font-size: 0.84rem;
+            font-size: 0.78rem;
             cursor: pointer;
             background: rgba(15,23,42,0.9);
             color: #e5e7eb;
@@ -217,12 +220,12 @@
         /* Publications */
         .pub-intro{ margin: 0 0 0.6rem; color: #d1d5db; }
         .pub-section{ margin-top: 0.9rem; }
-        .pub-section:not(:last-child)::after{
+        .pub-section::before{
             content: "";
             display: block;
             width: 100%;
             height: 2px;
-            margin: 1.05rem 0 0.95rem;
+            margin: 0.75rem 0 0.95rem;
             border-radius: 999px;
             background: linear-gradient(90deg, transparent, rgba(96,165,250,0.95), transparent);
             box-shadow: 0 0 12px rgba(96,165,250,0.35);
@@ -426,12 +429,12 @@
                 background-position: center 18%;
             }
 
-            .tab-labels { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+            .tab-labels { grid-template-columns: repeat(4, 1fr); }
         }
 
         @media (max-width: 640px) {
             .tab-labels {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
+                grid-template-columns: repeat(2, 1fr);
                 gap: 0.35rem;
             }
             .tab-label {
@@ -496,7 +499,7 @@
                 <input type="radio" name="tabs" id="tab-hobbies">
 
                 <div class="tab-labels">
-                    <label class="tab-label" for="tab-pubs">Publications</label>
+                    <label class="tab-label" for="tab-pubs">Public<br>ations</label>
                     <label class="tab-label" for="tab-edu">Academics</label>
                     <label class="tab-label" for="tab-prof">Experiences</label>
                     <label class="tab-label" for="tab-awards">Awards</label>
