@@ -5,10 +5,10 @@
   "publication_types": [
     "journal",
     "preprints",
+    "conference presentations",
     "book chapter",
     "review articles",
-    "patents",
-    "conference presentations"
+    "patents"
   ],
   "paper_jsons": [
     "paper-001.json",
