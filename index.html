@@ -193,7 +193,6 @@
             width: 100%;
             box-sizing: border-box;
             min-width: 0;
-            width: min(100%, 42rem);
             max-width: 100%;
         }
 
@@ -254,32 +253,34 @@
             font-size: 0.92rem;
             line-height: 1.4;
             max-width: 100%;
+            min-width: 0;
             white-space: normal;
             overflow-wrap: anywhere;
-            word-break: break-word;
-            min-width: 0;
+            word-break: normal;
         }
-        .pub-authors{ margin: 0 0 0.18rem; color: #cbd5f5; font-size: 0.83rem; line-height: 1.4; font-weight: 600; font-style: italic; }
-        .pub-meta-row{
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            gap: 1rem;
-            margin: 0 0 0.28rem;
+        .pub-authors{
+            color: #e2e8f0;
+            font-style: italic;
+            font-weight: 600;
+            margin: 0 0 0.32rem;
+            font-size: 0.84rem;
+            line-height: 1.45;
             max-width: 100%;
             min-width: 0;
+            white-space: normal;
+            overflow-wrap: anywhere;
+            word-break: normal;
         }
         .pub-venue{
             color: #dbeafe;
             font-size: 0.82rem;
             font-weight: 600;
             line-height: 1.4;
-            min-width: 0;
             max-width: 100%;
+            min-width: 0;
             white-space: normal;
             overflow-wrap: anywhere;
-            word-break: break-word;
-            flex: 1 1 auto;
+            word-break: normal;
         }
         .pub-date{
             color: #dbeafe;
@@ -292,29 +293,25 @@
         .pub-doi{ margin: 0.25rem 0 0.45rem; }
         .pub-doi a{ color: #93c5fd; text-decoration: none; font-size: 0.83rem; font-weight: 700; }
         .pub-doi a:hover{ text-decoration: underline; }
-        .pub-tags{ display: flex; flex-wrap: wrap; justify-content: center; gap: 0.35rem; max-width: 100%; margin: 0.2rem auto 0; }
-
-        .pub-main-row{
-            display:flex;
-            align-items:flex-start;
-            justify-content:space-between;
-            gap:1.25rem;
-            width:100%;
-            min-width:0;
+        .pub-tags{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.35rem;
+            max-width: 100%;
+            min-width: 0;
+            margin: 0.2rem auto 0;
         }
 
         .pub-main-content{
-            flex:1 1 auto;
-            min-width:0;
-            max-width:calc(100% - 13rem);
+            min-width: 0;
+            max-width: 100%;
         }
 
         .pub-side-date{
-            flex:0 0 11rem;
-            width:11rem;
-            text-align:right;
-            white-space:nowrap;
-            align-self:flex-start;
+            text-align: right;
+            white-space: nowrap;
+            align-self: start;
         }
 
         .pub-tag{ padding: 0.22rem 0.65rem; border-radius: 999px; border: 1px solid rgba(148,163,184,0.45); background: rgba(148,163,184,0.18); color: #dbeafe; font-size: 0.72rem; font-weight: 700; line-height: 1.2; }
@@ -557,19 +554,19 @@
             }
 
             .pub-main-row{
-                flex-direction:column;
-                gap:0.45rem;
+                grid-template-columns: 1fr;
+                row-gap: 0.45rem;
             }
 
             .pub-main-content{
-                max-width:100%;
-                width:100%;
+                max-width: 100%;
+                width: 100%;
             }
 
             .pub-side-date{
-                width:100%;
-                text-align:left;
-                white-space:normal;
+                width: 100%;
+                text-align: left;
+                white-space: normal;
             }
         }
 
