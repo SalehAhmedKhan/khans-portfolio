@@ -458,13 +458,23 @@
             to   { opacity: 1; transform: translateX(0); }
         }
 
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
         #tab-pubs:checked      ~ .tab-contents #content-pubs,
         #tab-edu:checked       ~ .tab-contents #content-edu,
-        #tab-prof:checked      ~ .tab-contents #content-prof,
-        #tab-awards:checked    ~ .tab-contents #content-awards {
+        #tab-prof:checked      ~ .tab-contents #content-prof {
             display: block;
             opacity: 1;
             animation: fadeSlideLeft 0.25s ease forwards;
+        }
+
+        #tab-awards:checked    ~ .tab-contents #content-awards {
+            display: block;
+            opacity: 1;
+            animation: fadeSlideUp 0.25s ease forwards;
         }
 
         #tab-tools:checked     ~ .tab-contents #content-tools,
@@ -607,7 +617,7 @@
                     <label class="tab-label" for="tab-pubs">Publications</label>
                     <label class="tab-label" for="tab-edu">Academics</label>
                     <label class="tab-label" for="tab-prof">Experiences</label>
-                    <label class="tab-label" for="tab-awards">Awards</label>
+                    <label class="tab-label" for="tab-awards">Recognitions</label>
                     <label class="tab-label" for="tab-tools">References</label>
                     <label class="tab-label" for="tab-research">Research</label>
                     <label class="tab-label" for="tab-hobbies">Interests</label>
@@ -1155,7 +1165,7 @@
             if (!res.ok) return;
             const data = await res.json();
 
-            const title = `<h3>${htmlWithBreaks(data.h3 || "Awards")}</h3>`;
+            const title = `<h3>${htmlWithBreaks(data.h3 || "Recognitions")}</h3>`;
             const intro = data.intro ? `<p class="awd-intro">${htmlWithBreaks(data.intro)}</p>` : "";
 
             const sections = Array.isArray(data.sections) ? data.sections : [];
