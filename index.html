@@ -897,7 +897,6 @@
             const authors = htmlWithCitationBreaks(citation.authors.map(formatAuthorName).join(", "));
             const venue = htmlWithCitationBreaks(cleanJournalName(citation, typeValue));
             const publishedDate = htmlWithBreaks(formatPublishedDate(paper.published_date || citation.year || ""));
-            const venueLine = publishedDate ? `${venue}, Published on: ${publishedDate}` : venue;
             const doiUrlRaw = citation.url || (citation.doi ? `https://doi.org/${citation.doi}` : "");
             const doiUrl = escapeHTML(doiUrlRaw.trim());
             const doiLabel = citation.doi ? `DOI: ${htmlWithBreaks(citation.doi)}` : "DOI";
@@ -911,7 +910,8 @@
                     <div class="pub-title">${pubTitle}</div>
                     <div class="pub-authors">${authors}</div>
                     <div class="pub-meta-row">
-                        <div class="pub-venue">${venueLine}</div>
+                        <div class="pub-venue">${venue}</div>
+                        ${publishedDate ? `<div class="pub-date">Published on: ${publishedDate}</div>` : ""}
                     </div>
                     <div class="pub-doi">${doiUrl ? `<a href="${doiUrl}" target="_blank" rel="noopener">${doiLabel}</a>` : ""}</div>
                     ${tagsHTML ? `<div class="pub-tags">${tagsHTML}</div>` : ""}
