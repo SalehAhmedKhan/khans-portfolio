@@ -1324,6 +1324,10 @@ h3 { font-size: 1.15rem; }
             animation-delay: 0.12s;
         }
 
+        .stat-banner:nth-child(3) {
+            animation-delay: 0.24s;
+        }
+
         @keyframes statBannerDrop {
             0% {
                 opacity: 0;
@@ -1364,6 +1368,10 @@ h3 { font-size: 1.15rem; }
                 <div class="stat-label">PAPERS</div>
             </div>
             <div class="stat-banner">
+                <div class="stat-number" id="topic-count-stat">XX</div>
+                <div class="stat-label">TOPICS</div>
+            </div>
+            <div class="stat-banner">
                 <div class="stat-number" id="group-count-stat">XX</div>
                 <div class="stat-label">RESEARCH GROUPS</div>
             </div>
@@ -1373,7 +1381,7 @@ h3 { font-size: 1.15rem; }
 
 <div class="container" id="content-root">
     <div class="back-wrap">
-        <a class="back-btn" id="back-link" href="../../index.html">Back to my Portfolio</a>
+        <a class="back-btn" id="back-link" href="../../index.html">Check out my Professional Portfolio</a>
     </div>
 </div>
 
@@ -1960,10 +1968,21 @@ async function loadHubPage() {
     masterPaperLibrary = await loadPaperLibraryFromManifest();
 
     const paperCountNode = document.getElementById("paper-count-stat");
+    const topicCountNode = document.getElementById("topic-count-stat");
     const groupCountNode = document.getElementById("group-count-stat");
 
     if (paperCountNode) {
         paperCountNode.textContent = String((masterPaperLibrary.papers || []).length || "XX");
+    }
+
+    if (topicCountNode) {
+        const topicCount = (tagData.highTags || []).reduce((total, highTag) => {
+            return total + (highTag.midTags || []).reduce((midTotal, midTag) => {
+                return midTotal + 1 + ((midTag.lowTags || []).length);
+            }, 0);
+        }, 0);
+
+        topicCountNode.textContent = String(topicCount || "XX");
     }
 
     if (groupCountNode) {
