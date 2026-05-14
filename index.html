@@ -65,14 +65,14 @@
         .hero-text { flex: 1.6; }
 
         .hero-title {
-            font-size: 2.15rem;
+            font-size: 2.3rem;
             font-weight: 700;
             letter-spacing: -0.3px;
             margin: 0 0 0.35rem;
         }
 
         .hero-subtitle {
-            font-size: 1.25rem;
+            font-size: 1.34rem;
             font-weight: 600;
             margin: 0 0 0.6rem;
             color: #f1f5f9;
@@ -80,7 +80,7 @@
 
         .hero-affiliation {
             margin: 0 0 0.85rem;
-            font-size: 0.92rem;
+            font-size: 0.98rem;
             font-weight: 400;
             line-height: 1.35;
             color: #dbeafe;
@@ -88,7 +88,7 @@
 
         .hero-tagline {
             margin: 0.25rem 0;
-            font-size: 0.92rem;
+            font-size: 0.98rem;
             font-weight: 400;
             line-height: 1.45;
             color: #cbd5f5;
@@ -96,7 +96,7 @@
 
         .hero-contact {
             margin: 0.75rem 0 0;
-            font-size: 0.88rem;
+            font-size: 0.94rem;
             font-weight: 400;
             line-height: 1.45;
             color: #cbd5f5;
@@ -107,7 +107,7 @@
 
         .hero-socials {
             margin: 0.55rem 0 0;
-            font-size: 0.88rem;
+            font-size: 0.94rem;
             font-weight: 400;
             color: #cbd5f5;
         }
@@ -159,11 +159,15 @@
 
             padding: 0.35rem 0.65rem;
             border-radius: 999px;
-            border: 1px solid rgba(148,163,184,0.5);
-            font-size: 0.86rem;
+            border: 1px solid rgba(96,165,250,0.7);
+            box-shadow:
+                0 0 10px rgba(96,165,250,0.22),
+                inset 0 0 8px rgba(96,165,250,0.08);
+            font-size: 0.92rem;
             cursor: pointer;
             background: rgba(15,23,42,0.9);
             color: #e5e7eb;
+            transition: all 0.18s ease;
         }
 
         .tab-label:hover { background: rgba(37,99,235,0.4); }
@@ -174,7 +178,7 @@
             border: 1px solid rgba(148,163,184,0.35);
             padding: 0.9rem 1rem;
             box-shadow: 0 10px 25px rgba(15,23,42,0.6);
-            font-size: 0.84rem;
+            font-size: 0.9rem;
             position: relative;
             min-height: 145px;
 
@@ -187,7 +191,7 @@
             display: none;
             opacity: 0;
             font-family: inherit;
-            font-size: 0.84rem;
+            font-size: 0.9rem;
             line-height: 1.4;
 
             width: 100%;
@@ -196,9 +200,9 @@
             max-width: 100%;
         }
 
-        .tab-panel h3 { margin: 0 0 0.3rem; font-size: 1rem; }
+        .tab-panel h3 { margin: 0 0 0.3rem; font-size: 1.08rem; }
         .tab-panel p { margin: 0 0 0.4rem; color: #d1d5db; }
-        .tab-panel ul { margin: 0.2rem 0 0; padding-left: 1.1rem; color: #cbd5f5; font-size: 0.82rem; }
+        .tab-panel ul { margin: 0.2rem 0 0; padding-left: 1.1rem; color: #cbd5f5; font-size: 0.88rem; }
 
         /* wrap fix stays */
         #content-pubs, #content-edu, #content-prof, #content-awards, #content-tools,
@@ -233,7 +237,7 @@
             background: linear-gradient(90deg, transparent, rgba(96,165,250,0.95), transparent);
             box-shadow: 0 0 12px rgba(96,165,250,0.35);
         }
-        .pub-section-title{ margin: 0 0 0.55rem; font-size: 0.95rem; font-weight: 700; color: #93c5fd; }
+        .pub-section-title{ margin: 0 0 0.55rem; font-size: 1.02rem; font-weight: 700; color: #93c5fd; }
         .pub-entry{
             margin: 0;
             padding: 0;
@@ -249,7 +253,7 @@
             font-weight: 700;
             color: #e5e7eb;
             margin: 0 0 0.22rem;
-            font-size: 0.92rem;
+            font-size: 0.98rem;
             line-height: 1.4;
             max-width: 100%;
             white-space: normal;
@@ -257,7 +261,7 @@
             word-break: break-word;
             min-width: 0;
         }
-        .pub-authors{ margin: 0 0 0.18rem; color: #cbd5f5; font-size: 0.83rem; line-height: 1.4; font-weight: 600; font-style: italic; }
+        .pub-authors{ margin: 0 0 0.18rem; color: #cbd5f5; font-size: 0.9rem; line-height: 1.4; font-weight: 600; font-style: italic; }
         .pub-meta-row{
             display: block;
             margin: 0 0 0.28rem;
@@ -266,7 +270,7 @@
         }
         .pub-venue{
             color: #dbeafe;
-            font-size: 0.82rem;
+            font-size: 0.88rem;
             font-weight: 600;
             line-height: 1.4;
             min-width: 0;
@@ -278,18 +282,18 @@
         }
         .pub-date{
             color: #dbeafe;
-            font-size: 0.82rem;
+            font-size: 0.88rem;
             font-weight: 600;
             margin-top: 0.08rem;
             white-space: normal;
             text-align: left;
         }
         .pub-doi{ margin: 0.25rem 0 0.45rem; }
-        .pub-doi a{ color: #93c5fd; text-decoration: none; font-size: 0.83rem; font-weight: 700; }
+        .pub-doi a{ color: #93c5fd; text-decoration: none; font-size: 0.9rem; font-weight: 700; }
         .pub-doi a:hover{ text-decoration: underline; }
         .pub-tags{ display: flex; flex-wrap: wrap; justify-content: center; gap: 0.35rem; max-width: 100%; margin: 0.2rem auto 0; }
 
-        .pub-tag{ padding: 0.22rem 0.65rem; border-radius: 999px; border: 1px solid rgba(148,163,184,0.45); background: rgba(148,163,184,0.18); color: #dbeafe; font-size: 0.72rem; font-weight: 700; line-height: 1.2; }
+        .pub-tag{ padding: 0.22rem 0.65rem; border-radius: 999px; border: 1px solid rgba(148,163,184,0.45); background: rgba(148,163,184,0.18); color: #dbeafe; font-size: 0.76rem; font-weight: 700; line-height: 1.2; }
         .pub-divider{ border: none; border-top: 1px solid rgba(148,163,184,0.35); margin: 0.9rem 0; width: 100%; display: block; }
 
         @media (max-width: 640px){
@@ -314,21 +318,21 @@
 
         /* Education */
         .edu-section{ margin-top: 0.9rem; }
-        .edu-section-title{ margin: 0 0 0.55rem; font-size: 0.95rem; font-weight: 700; color: #93c5fd; }
+        .edu-section-title{ margin: 0 0 0.55rem; font-size: 1.02rem; font-weight: 700; color: #93c5fd; }
 
         .edu-entry{ display: flex; justify-content: space-between; gap: 1rem; align-items: flex-start; }
         .edu-left{ flex: 1; min-width: 0; }
         .edu-title{ font-weight: 700; color: #e5e7eb; margin: 0 0 0.18rem; }
-        .edu-lines{ color: #cbd5f5; line-height: 1.4; font-size: 0.83rem; }
+        .edu-lines{ color: #cbd5f5; line-height: 1.4; font-size: 0.9rem; }
         .edu-right{ flex: 0 0 auto; text-align: right; max-width: 46%; min-width: 0; }
-        .edu-dates{ font-size: 0.82rem; color: #dbeafe; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .edu-dates{ font-size: 0.88rem; color: #dbeafe; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .edu-divider{ border: none; border-top: 1px solid rgba(148,163,184,0.35); margin: 0.9rem 0; width: 100%; }
 
         .edu-list{
             margin: 0.2rem 0 0;
             padding-left: 1.1rem;
             color: #cbd5f5;
-            font-size: 0.82rem;
+            font-size: 0.88rem;
             line-height: 1.45;
         }
 
@@ -340,18 +344,18 @@
 
         /* Experiences */
         .exp-section{ margin-top: 0.9rem; }
-        .exp-section-title{ margin: 0 0 0.55rem; font-size: 0.95rem; font-weight: 700; color: #93c5fd; }
-        .exp-subtitle{ margin: 0.55rem 0 0.2rem; font-size: 0.86rem; font-weight: 700; color: #93c5fd; }
+        .exp-section-title{ margin: 0 0 0.55rem; font-size: 1.02rem; font-weight: 700; color: #93c5fd; }
+        .exp-subtitle{ margin: 0.55rem 0 0.2rem; font-size: 0.92rem; font-weight: 700; color: #93c5fd; }
 
         .exp-entry{ display: flex; justify-content: space-between; gap: 1rem; align-items: flex-start; }
         .exp-left{ flex: 1; min-width: 0; }
         .exp-role{ font-weight: 700; color: #e5e7eb; margin: 0 0 0.18rem; }
-        .exp-org{ color: #93c5fd; font-size: 0.83rem; margin: 0 0 0.25rem; }
-        .exp-desc{ color: #cbd5f5; font-size: 0.83rem; line-height: 1.4; }
+        .exp-org{ color: #93c5fd; font-size: 0.9rem; margin: 0 0 0.25rem; }
+        .exp-desc{ color: #cbd5f5; font-size: 0.9rem; line-height: 1.4; }
         .exp-right{ flex: 0 0 auto; text-align: right; max-width: 46%; min-width: 0; }
-        .exp-dates{ font-size: 0.82rem; color: #dbeafe; font-weight: 600; white-space: nowrap; }
+        .exp-dates{ font-size: 0.88rem; color: #dbeafe; font-weight: 600; white-space: nowrap; }
 
-        .exp-tools{ margin: 0.2rem 0 0.35rem; padding-left: 1.1rem; color: #cbd5f5; font-size: 0.82rem; }
+        .exp-tools{ margin: 0.2rem 0 0.35rem; padding-left: 1.1rem; color: #cbd5f5; font-size: 0.88rem; }
         .exp-divider{ border: none; border-top: 1px solid rgba(148,163,184,0.35); margin: 0.9rem 0; width: 100%; }
 
         @media (max-width: 640px){
@@ -363,26 +367,26 @@
         /* Awards */
         .awd-intro{ margin: 0 0 0.6rem; color: #d1d5db; }
         .awd-section{ margin-top: 0.9rem; }
-        .awd-section-title{ margin: 0 0 0.55rem; font-size: 0.95rem; font-weight: 700; color: #93c5fd; }
+        .awd-section-title{ margin: 0 0 0.55rem; font-size: 1.02rem; font-weight: 700; color: #93c5fd; }
         .awd-entry{ margin: 0; }
         .awd-title{ font-weight: 700; color: #e5e7eb; margin: 0 0 0.22rem; }
-        .awd-desc{ margin: 0 0 0.3rem; color: #cbd5f5; font-size: 0.83rem; line-height: 1.45; }
+        .awd-desc{ margin: 0 0 0.3rem; color: #cbd5f5; font-size: 0.9rem; line-height: 1.45; }
         .awd-divider{ border: none; border-top: 1px solid rgba(148,163,184,0.35); margin: 0.9rem 0; width: 100%; }
 
         /* References */
         .ref-intro{ margin: 0 0 0.7rem; color: #d1d5db; }
         .ref-section{ margin-top: 0.9rem; }
-        .ref-section-title{ margin: 0 0 0.55rem; font-size: 0.95rem; font-weight: 700; color: #93c5fd; }
+        .ref-section-title{ margin: 0 0 0.55rem; font-size: 1.02rem; font-weight: 700; color: #93c5fd; }
 
         .ref-entry{ display: flex; justify-content: space-between; gap: 1rem; align-items: flex-start; }
         .ref-left{ flex: 1; min-width: 0; }
         .ref-name{ font-weight: 700; color: #e5e7eb; margin: 0 0 0.25rem; }
-        .ref-lines{ color: #cbd5f5; line-height: 1.4; font-size: 0.83rem; }
+        .ref-lines{ color: #cbd5f5; line-height: 1.4; font-size: 0.9rem; }
         .ref-lines a{ color: #93c5fd; text-decoration: none; }
         .ref-lines a:hover{ text-decoration: underline; }
 
         .ref-right{ flex: 0 0 auto; text-align: right; max-width: 44%; min-width: 0; }
-        .ref-relation{ font-size: 0.82rem; color: #dbeafe; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .ref-relation{ font-size: 0.88rem; color: #dbeafe; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
         .ref-divider{ border: none; border-top: 1px solid rgba(148,163,184,0.35); margin: 0.9rem 0; width: 100%; }
 
@@ -459,7 +463,10 @@
         #tab-research:checked  ~ .tab-labels label[for="tab-research"],
         #tab-hobbies:checked   ~ .tab-labels label[for="tab-hobbies"] {
             background: #2563eb;
-            border-color: #60a5fa;
+            border-color: #93c5fd;
+            box-shadow:
+                0 0 16px rgba(96,165,250,0.5),
+                0 0 28px rgba(59,130,246,0.22);
         }
 
         .page-credit {
@@ -501,7 +508,7 @@
                 gap: 0.3rem;
             }
             .tab-label {
-                font-size: 0.82rem;
+                font-size: 0.88rem;
                 padding: 0.32rem 0.55rem;
             }
             .tab-contents {
@@ -555,7 +562,7 @@
 
                     <div class="btn-row" id="hero-buttons"></div>
 
-                    <p style="margin: 0.35rem 0 0; font-size: 0.82rem; color: #cbd5f5;">
+                    <p style="margin: 0.35rem 0 0; font-size: 0.88rem; color: #cbd5f5;">
                         <span id="last-updated-label"></span>: <span id="last-updated">—</span>
                     </p>
                 </div>
