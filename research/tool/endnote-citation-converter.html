@@ -268,24 +268,46 @@
     .tag-item.low { border-color: rgba(255,255,255,0.14); }
 
     .mid-indicator {
-        display: flex;
+        display: inline-flex;
         align-items: center;
-        gap: 0.45rem;
-        margin: 0.65rem 0 0.4rem;
+        gap: 0.5rem;
+        margin: 0.65rem 0 0.42rem;
+        padding: 0.44rem 0.68rem;
+        border-radius: 999px;
+        border: 1px solid rgba(0,200,180,0.22);
+        background: rgba(0,200,180,0.08);
         font-size: 0.88rem;
-        opacity: 0.92;
-        font-weight: 800;
+        opacity: 0.9;
+        font-weight: 850;
+        user-select: none;
     }
 
-    .mid-arrow {
-        opacity: 0.42;
-        transform: translateY(-1px);
-        transition: opacity 0.13s ease, color 0.13s ease;
+    .mid-check {
+        width: 1.05rem;
+        height: 1.05rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        border: 1px solid rgba(255,255,255,0.22);
+        background: rgba(255,255,255,0.08);
+        color: transparent;
+        font-size: 0.72rem;
+        line-height: 1;
+        transition: background 0.13s ease, border-color 0.13s ease, color 0.13s ease, box-shadow 0.13s ease;
     }
 
-    .mid-arrow.active {
+    .mid-indicator.active {
+        border-color: rgba(159,201,255,0.50);
+        background: rgba(159,201,255,0.16);
         opacity: 1;
-        color: #9fc9ff;
+    }
+
+    .mid-indicator.active .mid-check {
+        background: rgba(159,201,255,0.34);
+        border-color: rgba(159,201,255,0.78);
+        color: #f7fbff;
+        box-shadow: 0 0 0 3px rgba(159,201,255,0.09);
     }
 
     .mini-grid {
@@ -321,7 +343,7 @@
     <section class="panel">
         <h2>Generate paper JSON</h2>
         <p class="hint">
-            Paste or upload an EndNote/BibTeX/RIS files.
+            Paste or upload an EndNote, BibTeX, or RIS file.
         </p>
 
         <div class="form-row">
@@ -658,7 +680,7 @@ function renderTags(topicData) {
         (high.midTags || []).forEach(mid => {
             const midIndicator = document.createElement("div");
             midIndicator.className = "mid-indicator";
-            midIndicator.innerHTML = `<span class="mid-arrow">↳</span><span>${mid.label || mid.id || "Untitled mid tag"}</span>`;
+            midIndicator.innerHTML = `<span class="mid-check">✓</span><span>${mid.label || mid.id || "Untitled mid tag"}</span>`;
             midIndicator.dataset.level = "mid";
             midIndicator.dataset.label = mid.label || mid.id || "";
             midIndicator.dataset.id = mid.id || "";
@@ -720,8 +742,8 @@ function updateMidIndicators() {
         const hasSelectedLow = Array.from(document.querySelectorAll("#tagContainer input[data-level='low']:checked"))
             .some(box => box.dataset.parentMid === midLabel);
 
-        const arrow = indicator.querySelector(".mid-arrow");
-        if (arrow) arrow.classList.toggle("active", hasSelectedLow);
+        indicator.classList.toggle("active", hasSelectedLow);
+        indicator.setAttribute("aria-selected", hasSelectedLow ? "true" : "false");
     });
 }
 
