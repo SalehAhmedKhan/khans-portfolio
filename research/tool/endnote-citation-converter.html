@@ -236,11 +236,29 @@
         width: 310px;
         min-width: 310px;
         max-width: 310px;
+        transition: border-color 0.13s ease, box-shadow 0.13s ease, background 0.13s ease;
+    }
+
+    .tag-group.high-selected {
+        border-color: rgba(159,201,255,0.45);
+        background: rgba(159,201,255,0.075);
+        box-shadow: inset 0 0 0 1px rgba(159,201,255,0.08), 0 0 18px rgba(159,201,255,0.08);
     }
 
     .tag-group h3 {
-        margin: 0 0 0.45rem;
+        margin: 0 0 0.7rem;
         font-size: 0.98rem;
+    }
+
+    .high-heading-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        user-select: none;
+    }
+
+    .high-heading-label input {
+        accent-color: #9fc9ff;
     }
 
     .tag-group h4 {
@@ -672,10 +690,23 @@ function renderTags(topicData) {
         group.className = "tag-group";
 
         const heading = document.createElement("h3");
-        heading.textContent = high.label || high.id || "Untitled high tag";
-        group.appendChild(heading);
+        const headingLabel = document.createElement("label");
+        headingLabel.className = "high-heading-label";
 
-        group.appendChild(makeTagCheckbox("high", high.label, high.id, "", ""));
+        const highInput = document.createElement("input");
+        highInput.type = "checkbox";
+        highInput.dataset.level = "high";
+        highInput.dataset.label = high.label || high.id || "";
+        highInput.dataset.id = high.id || "";
+        highInput.addEventListener("change", updateSelectedTagCount);
+
+        const highText = document.createElement("span");
+        highText.textContent = high.label || high.id || "Untitled high tag";
+
+        headingLabel.appendChild(highInput);
+        headingLabel.appendChild(highText);
+        heading.appendChild(headingLabel);
+        group.appendChild(heading);
 
         (high.midTags || []).forEach(mid => {
             const midIndicator = document.createElement("div");
@@ -751,6 +782,13 @@ function updateMidIndicators() {
 
 function updateSelectedTagCount() {
     updateMidIndicators();
+
+    document.querySelectorAll(".tag-group").forEach(group => {
+        const highChecked = group.querySelector('input[data-level="high"]:checked');
+        const lowChecked = group.querySelector('input[data-level="low"]:checked');
+        group.classList.toggle("high-selected", Boolean(highChecked || lowChecked));
+    });
+
     const selected = getSelectedTags();
     const total = selected.high.length + selected.mid.length + selected.low.length;
     tagCount.textContent = `${total} selected`;
