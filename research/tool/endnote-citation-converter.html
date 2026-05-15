@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paper JSON + EndNote Citation Converter</title>
+<title>Citation Converter Utility Tool</title>
 
 <link rel="icon" type="image/png" href="../bga2o3/favicon_res.png">
 
@@ -264,7 +264,34 @@
 
     .tag-item input { accent-color: #9fc9ff; }
     .tag-item.high { border-color: rgba(159,201,255,0.35); }
-    .tag-item.mid { border-color: rgba(0,200,180,0.25); }
+    .mid-row {
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+        margin: 0.65rem 0 0.4rem;
+    }
+
+    .mid-arrow {
+        width: 1.05rem;
+        height: 1.05rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        border: 1px solid rgba(255,255,255,0.16);
+        background: rgba(255,255,255,0.06);
+        font-size: 0.72rem;
+        color: rgba(245,245,245,0.48);
+        flex: 0 0 auto;
+    }
+
+    .mid-arrow.selected {
+        color: #dbeafe;
+        border-color: rgba(0,200,180,0.35);
+        background: rgba(0,200,180,0.14);
+    }
+
+    .tag-item.mid { display: none; }
     .tag-item.low { border-color: rgba(255,255,255,0.14); }
 
     .mini-grid {
@@ -292,8 +319,8 @@
 <body>
 
 <header>
-    <h1>Paper JSON + EndNote Citation Converter</h1>
-    <p>Generate paper JSON files from EndNote, BibTeX, or RIS input, select tags from your three-layer topic map, and keep the BibTeX/RIS to EndNote converter available below.</p>
+    <h1>Citation Converter Utility Tool</h1>
+    <p>Generate compatible JSON files from EndNote, BibTeX, or RIS citations, select relevant research tags, or simply convert between citation types.</p>
 </header>
 
 <main class="container">
@@ -319,6 +346,20 @@
             </div>
         </div>
 
+        <div style="margin-top: 1rem; margin-bottom: 1rem;">
+            <div class="box-label">
+                <span>Topic tags</span>
+                <span id="tag-count">0 selected</span>
+            </div>
+            <div id="tagShell" class="tag-shell">
+                <div class="tag-toolbar">
+                    <button id="selectAllTagsBtn" type="button" class="secondary">Select all</button>
+                    <button id="clearTagsBtn" type="button" class="secondary">Clear tags</button>
+                </div>
+                <div id="tagContainer" class="hint">Topic tags are loading...</div>
+            </div>
+        </div>
+
         <div class="workspace two-col">
             <div>
                 <div class="box-label">
@@ -334,20 +375,6 @@
                     <span id="paper-output-count">0 chars</span>
                 </div>
                 <textarea id="paperOutput" readonly placeholder="Generated paper JSON will appear here..."></textarea>
-            </div>
-        </div>
-
-        <div style="margin-top: 1rem;">
-            <div class="box-label">
-                <span>Selectable topic tags</span>
-                <span id="tag-count">0 selected</span>
-            </div>
-            <div id="tagShell" class="tag-shell">
-                <div class="tag-toolbar">
-                    <button id="selectAllTagsBtn" type="button" class="secondary">Select all</button>
-                    <button id="clearTagsBtn" type="button" class="secondary">Clear tags</button>
-                </div>
-                <div id="tagContainer" class="hint">Topic tags are loading...</div>
             </div>
         </div>
 
@@ -634,14 +661,24 @@ function renderTags(topicData) {
         group.appendChild(makeTagCheckbox("high", high.label, high.id));
 
         (high.midTags || []).forEach(mid => {
+            const midRow = document.createElement("div");
+            midRow.className = "mid-row";
+
+            const midArrow = document.createElement("span");
+            midArrow.className = "mid-arrow";
+            midArrow.textContent = "›";
+            midArrow.dataset.midId = mid.id || "";
+            midArrow.title = "Auto-selected when any low tag under this mid tag is selected";
+
             const midHeading = document.createElement("h4");
             midHeading.textContent = mid.label || mid.id || "Untitled mid tag";
-            group.appendChild(midHeading);
 
-            group.appendChild(makeTagCheckbox("mid", mid.label, mid.id));
+            midRow.appendChild(midArrow);
+            midRow.appendChild(midHeading);
+            group.appendChild(midRow);
 
             (mid.lowTags || []).forEach(low => {
-                group.appendChild(makeTagCheckbox("low", low.label, low.id));
+                group.appendChild(makeTagCheckbox("low", low.label, low.id, high.label, mid.label, mid.id));
             });
         });
 
@@ -651,7 +688,7 @@ function renderTags(topicData) {
     updateSelectedTagCount();
 }
 
-function makeTagCheckbox(level, label, id) {
+function makeTagCheckbox(level, label, id, parentHighLabel = "", parentMidLabel = "", parentMidId = "") {
     const wrap = document.createElement("label");
     wrap.className = `tag-item ${level}`;
     const input = document.createElement("input");
@@ -659,6 +696,9 @@ function makeTagCheckbox(level, label, id) {
     input.dataset.level = level;
     input.dataset.label = label || id || "";
     input.dataset.id = id || "";
+    input.dataset.parentHighLabel = parentHighLabel || "";
+    input.dataset.parentMidLabel = parentMidLabel || "";
+    input.dataset.parentMidId = parentMidId || "";
     input.addEventListener("change", updateSelectedTagCount);
     const span = document.createElement("span");
     span.textContent = label || id || "Untitled";
@@ -669,14 +709,33 @@ function makeTagCheckbox(level, label, id) {
 
 function getSelectedTags() {
     const selected = { high: [], mid: [], low: [] };
+
     document.querySelectorAll("#tagContainer input[type='checkbox']:checked").forEach(box => {
         const level = box.dataset.level;
-        if (selected[level]) uniquePush(selected[level], box.dataset.label);
+
+        if (level === "low") {
+            uniquePush(selected.low, box.dataset.label);
+            uniquePush(selected.mid, box.dataset.parentMidLabel);
+            uniquePush(selected.high, box.dataset.parentHighLabel);
+        } else if (level === "high") {
+            uniquePush(selected.high, box.dataset.label);
+        }
     });
+
     return selected;
 }
 
+function updateMidArrows() {
+    document.querySelectorAll(".mid-arrow").forEach(arrow => {
+        const midId = arrow.dataset.midId || "";
+        const hasSelectedLow = !!document.querySelector(`#tagContainer input[data-level='low'][data-parent-mid-id='${CSS.escape(midId)}']:checked`);
+        arrow.classList.toggle("selected", hasSelectedLow);
+        arrow.textContent = hasSelectedLow ? "✓" : "›";
+    });
+}
+
 function updateSelectedTagCount() {
+    updateMidArrows();
     const selected = getSelectedTags();
     const total = selected.high.length + selected.mid.length + selected.low.length;
     tagCount.textContent = `${total} selected`;
@@ -693,7 +752,7 @@ async function loadTopicTags() {
         }
         topicTagsData = await response.json();
         renderTags(topicTagsData);
-        setPaperStatus(`Topic tags loaded from ${TOPIC_TAGS_PATH}.`);
+        setPaperStatus("");
     } catch (err) {
         console.error(err);
         tagContainer.innerHTML = `
