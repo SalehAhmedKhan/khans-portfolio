@@ -249,6 +249,26 @@
         opacity: 0.9;
     }
 
+    .mid-indicator{
+        margin:0.7rem 0 0.4rem;
+        font-size:0.88rem;
+        opacity:0.92;
+        font-weight:700;
+        display:flex;
+        align-items:center;
+        gap:0.45rem;
+    }
+
+    .mid-arrow{
+        opacity:0.45;
+        transition:0.15s ease;
+    }
+
+    .mid-arrow.active{
+        opacity:1;
+        color:#9fc9ff;
+    }
+
     .tag-item {
         display: inline-flex;
         align-items: center;
@@ -264,34 +284,7 @@
 
     .tag-item input { accent-color: #9fc9ff; }
     .tag-item.high { border-color: rgba(159,201,255,0.35); }
-    .mid-row {
-        display: flex;
-        align-items: center;
-        gap: 0.45rem;
-        margin: 0.65rem 0 0.4rem;
-    }
-
-    .mid-arrow {
-        width: 1.05rem;
-        height: 1.05rem;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 999px;
-        border: 1px solid rgba(255,255,255,0.16);
-        background: rgba(255,255,255,0.06);
-        font-size: 0.72rem;
-        color: rgba(245,245,245,0.48);
-        flex: 0 0 auto;
-    }
-
-    .mid-arrow.selected {
-        color: #dbeafe;
-        border-color: rgba(0,200,180,0.35);
-        background: rgba(0,200,180,0.14);
-    }
-
-    .tag-item.mid { display: none; }
+    .tag-item.mid { border-color: rgba(0,200,180,0.25); }
     .tag-item.low { border-color: rgba(255,255,255,0.14); }
 
     .mini-grid {
@@ -327,7 +320,7 @@
     <section class="panel">
         <h2>Generate paper JSON</h2>
         <p class="hint">
-            Paste EndNote tagged text, paste BibTeX/RIS, or upload an EndNote/BibTeX/RIS file. Tags are automatically loaded from <code>../bga2o3/topic-tags.json</code> and can be selected individually before generating the paper JSON.
+            Paste EndNote, paste BibTeX/RIS, or upload an EndNote/BibTeX/RIS file. 
         </p>
 
         <div class="form-row">
@@ -335,7 +328,7 @@
                 <label class="field-title" for="paperFormat">Input format</label>
                 <select id="paperFormat" aria-label="Paper citation format">
                     <option value="auto">Auto-detect</option>
-                    <option value="endnote">EndNote tagged text</option>
+                    <option value="endnote">EndNote</option>
                     <option value="bibtex">BibTeX</option>
                     <option value="ris">RIS</option>
                 </select>
@@ -346,7 +339,7 @@
             </div>
         </div>
 
-        <div style="margin-top: 1rem; margin-bottom: 1rem;">
+        <div style="margin-top: 1rem;">
             <div class="box-label">
                 <span>Topic tags</span>
                 <span id="tag-count">0 selected</span>
@@ -357,24 +350,6 @@
                     <button id="clearTagsBtn" type="button" class="secondary">Clear tags</button>
                 </div>
                 <div id="tagContainer" class="hint">Topic tags are loading...</div>
-            </div>
-        </div>
-
-        <div class="workspace two-col">
-            <div>
-                <div class="box-label">
-                    <span>Citation input</span>
-                    <span id="paper-input-count">0 chars</span>
-                </div>
-                <textarea id="paperInput" placeholder="Paste EndNote tagged text, BibTeX, or RIS here...&#10;&#10;%0 Journal Article&#10;%A Khan, Saleh Ahmed&#10;%T Paper title...&#10;&#10;or&#10;&#10;@article{key, title={...}}&#10;&#10;or&#10;&#10;TY  - JOUR&#10;AU  - Khan, Saleh Ahmed&#10;TI  - Paper title&#10;ER  -"></textarea>
-            </div>
-
-            <div>
-                <div class="box-label">
-                    <span>Generated JSON</span>
-                    <span id="paper-output-count">0 chars</span>
-                </div>
-                <textarea id="paperOutput" readonly placeholder="Generated paper JSON will appear here..."></textarea>
             </div>
         </div>
 
@@ -394,12 +369,32 @@
         </div>
 
         <div class="status" id="paperStatus"></div>
+
+<div class="workspace two-col">
+            <div>
+                <div class="box-label">
+                    <span>Citation input</span>
+                    <span id="paper-input-count">0 chars</span>
+                </div>
+                <textarea id="paperInput" placeholder="Paste EndNote, BibTeX, or RIS here...&#10;&#10;%0 Journal Article&#10;%A Khan, Saleh Ahmed&#10;%T Paper title...&#10;&#10;or&#10;&#10;@article{key, title={...}}&#10;&#10;or&#10;&#10;TY  - JOUR&#10;AU  - Khan, Saleh Ahmed&#10;TI  - Paper title&#10;ER  -"></textarea>
+            </div>
+
+            <div>
+                <div class="box-label">
+                    <span>Generated JSON</span>
+                    <span id="paper-output-count">0 chars</span>
+                </div>
+                <textarea id="paperOutput" readonly placeholder="Generated paper JSON will appear here..."></textarea>
+            </div>
+        </div>
+
+        
     </section>
 
     <section class="panel">
         <h2>Convert BibTeX or RIS to EndNote</h2>
         <p class="hint">
-            Paste a BibTeX or RIS citation record below and convert it into EndNote tagged format. You can then send it into the JSON generator above.
+            Paste a BibTeX or RIS citation record below and convert it into EndNote format. You can then send it into the JSON generator above.
         </p>
 
         <div class="controls" style="margin-top: 0; margin-bottom: 1rem;">
@@ -423,7 +418,7 @@
 
             <div>
                 <div class="box-label">
-                    <span>EndNote tagged output</span>
+                    <span>EndNote output</span>
                     <span id="format-output-count">0 chars</span>
                 </div>
                 <textarea id="endnoteOutput" readonly placeholder="Converted EndNote citation will appear here..."></textarea>
@@ -646,7 +641,7 @@ function renderTags(topicData) {
     const highTags = Array.isArray(topicData.highTags) ? topicData.highTags : [];
     if (!highTags.length) {
         tagContainer.innerHTML = '<p class="hint">No highTags found in this topic-tags JSON.</p>';
-        updateSelectedTagCount();
+        updateSelectedTagCount(); updateMidIndicators();
         return;
     }
 
@@ -661,34 +656,27 @@ function renderTags(topicData) {
         group.appendChild(makeTagCheckbox("high", high.label, high.id));
 
         (high.midTags || []).forEach(mid => {
-            const midRow = document.createElement("div");
-            midRow.className = "mid-row";
-
-            const midArrow = document.createElement("span");
-            midArrow.className = "mid-arrow";
-            midArrow.textContent = "›";
-            midArrow.dataset.midId = mid.id || "";
-            midArrow.title = "Auto-selected when any low tag under this mid tag is selected";
-
             const midHeading = document.createElement("h4");
             midHeading.textContent = mid.label || mid.id || "Untitled mid tag";
+            group.appendChild(midHeading);
 
-            midRow.appendChild(midArrow);
-            midRow.appendChild(midHeading);
-            group.appendChild(midRow);
+            const midIndicator = document.createElement("div");
+            midIndicator.className = "mid-indicator";
+            midIndicator.innerHTML = `<span class="mid-arrow" data-mid="${mid.id}">↳</span> ${mid.label || mid.id || "Untitled mid tag"}`;
+            group.appendChild(midIndicator);
 
             (mid.lowTags || []).forEach(low => {
-                group.appendChild(makeTagCheckbox("low", low.label, low.id, high.label, mid.label, mid.id));
+                group.appendChild(makeTagCheckbox("low", low.label, low.id));
             });
         });
 
         tagContainer.appendChild(group);
     });
 
-    updateSelectedTagCount();
+    updateSelectedTagCount(); updateMidIndicators();
 }
 
-function makeTagCheckbox(level, label, id, parentHighLabel = "", parentMidLabel = "", parentMidId = "") {
+function makeTagCheckbox(level, label, id) {
     const wrap = document.createElement("label");
     wrap.className = `tag-item ${level}`;
     const input = document.createElement("input");
@@ -696,9 +684,6 @@ function makeTagCheckbox(level, label, id, parentHighLabel = "", parentMidLabel 
     input.dataset.level = level;
     input.dataset.label = label || id || "";
     input.dataset.id = id || "";
-    input.dataset.parentHighLabel = parentHighLabel || "";
-    input.dataset.parentMidLabel = parentMidLabel || "";
-    input.dataset.parentMidId = parentMidId || "";
     input.addEventListener("change", updateSelectedTagCount);
     const span = document.createElement("span");
     span.textContent = label || id || "Untitled";
@@ -709,41 +694,38 @@ function makeTagCheckbox(level, label, id, parentHighLabel = "", parentMidLabel 
 
 function getSelectedTags() {
     const selected = { high: [], mid: [], low: [] };
-
     document.querySelectorAll("#tagContainer input[type='checkbox']:checked").forEach(box => {
         const level = box.dataset.level;
-
-        if (level === "low") {
-            uniquePush(selected.low, box.dataset.label);
-            uniquePush(selected.mid, box.dataset.parentMidLabel);
-            uniquePush(selected.high, box.dataset.parentHighLabel);
-        } else if (level === "high") {
-            uniquePush(selected.high, box.dataset.label);
-        }
+        if (selected[level]) uniquePush(selected[level], box.dataset.label);
     });
-
     return selected;
 }
 
-function updateMidArrows() {
-    document.querySelectorAll(".mid-arrow").forEach(arrow => {
-        const midId = arrow.dataset.midId || "";
-        const hasSelectedLow = !!document.querySelector(`#tagContainer input[data-level='low'][data-parent-mid-id='${CSS.escape(midId)}']:checked`);
-        arrow.classList.toggle("selected", hasSelectedLow);
-        arrow.textContent = hasSelectedLow ? "✓" : "›";
-    });
-}
-
 function updateSelectedTagCount() {
-    updateMidArrows();
     const selected = getSelectedTags();
     const total = selected.high.length + selected.mid.length + selected.low.length;
-    tagCount.textContent = `${total} selected`;
+    tagCount.textContent = `${total}
+
+function updateMidIndicators() {
+    document.querySelectorAll(".mid-arrow").forEach(el => {
+        el.classList.remove("active");
+    });
+
+    document.querySelectorAll(".tag-group").forEach(group => {
+        const lowChecked = group.querySelectorAll('.low input:checked').length;
+
+        if(lowChecked > 0){
+            const arrow = group.querySelector(".mid-arrow");
+            if(arrow) arrow.classList.add("active");
+        }
+    });
+}
+ selected`;
 }
 
 async function loadTopicTags() {
     tagContainer.innerHTML = '<p class="hint">Loading topic tags from <code>../bga2o3/topic-tags.json</code>...</p>';
-    updateSelectedTagCount();
+    updateSelectedTagCount(); updateMidIndicators();
 
     try {
         const response = await fetch(TOPIC_TAGS_PATH, { cache: "no-store" });
@@ -752,13 +734,13 @@ async function loadTopicTags() {
         }
         topicTagsData = await response.json();
         renderTags(topicTagsData);
-        setPaperStatus("");
+        setPaperStatus(`Topic tags loaded from ${TOPIC_TAGS_PATH}.`);
     } catch (err) {
         console.error(err);
         tagContainer.innerHTML = `
             <p class="hint">Could not load topic tags from <code>${TOPIC_TAGS_PATH}</code>. Check that the JSON file exists at that path and that the page is running through a local/server URL, not blocked by browser file restrictions.</p>
         `;
-        updateSelectedTagCount();
+        updateSelectedTagCount(); updateMidIndicators();
         setPaperStatus("Topic tags failed to load. Check the JSON path.");
     }
 }
@@ -896,11 +878,11 @@ document.getElementById("clearPaperBtn").addEventListener("click", () => {
 });
 document.getElementById("selectAllTagsBtn").addEventListener("click", () => {
     document.querySelectorAll("#tagContainer input[type='checkbox']").forEach(box => box.checked = true);
-    updateSelectedTagCount();
+    updateSelectedTagCount(); updateMidIndicators();
 });
 document.getElementById("clearTagsBtn").addEventListener("click", () => {
     document.querySelectorAll("#tagContainer input[type='checkbox']").forEach(box => box.checked = false);
-    updateSelectedTagCount();
+    updateSelectedTagCount(); updateMidIndicators();
 });
 
 document.getElementById("formatConvertBtn").addEventListener("click", convertFormatNow);
@@ -938,7 +920,7 @@ document.getElementById("sampleRisBtn").addEventListener("click", () => {
 
 updatePaperCounts();
 updateFormatCounts();
-updateSelectedTagCount();
+updateSelectedTagCount(); updateMidIndicators();
 loadTopicTags();
 </script>
 
