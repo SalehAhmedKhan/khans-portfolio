@@ -3,22 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EndNote Citation Converter</title>
+<title>Paper JSON + EndNote Citation Converter</title>
 
 <link rel="icon" type="image/png" href="../bga2o3/favicon_res.png">
 
 <style>
-    body {
-        margin: 0;
-        font-family: Arial, Helvetica, sans-serif;
-        color: #f5f5f5;
-
+    :root {
         --g1: rgba(80,120,255,0.12);
         --g2: rgba(0,200,180,0.08);
         --bgA: #0b0f1a;
         --bgB: #111827;
         --bgC: #0a0e17;
+        --line: rgba(255,255,255,0.15);
+        --panel: rgba(255,255,255,0.12);
+        --panel2: rgba(255,255,255,0.10);
+        --text: #f5f5f5;
+        --muted: rgba(245,245,245,0.78);
+        --accent: rgba(159,201,255,0.22);
+        --accentLine: rgba(159,201,255,0.45);
+    }
 
+    * { box-sizing: border-box; }
+
+    body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        color: var(--text);
         background:
             radial-gradient(circle at 20% 20%, var(--g1), transparent 40%),
             radial-gradient(circle at 80% 30%, var(--g2), transparent 45%),
@@ -34,27 +44,27 @@
 
     header h1 {
         margin: 0 0 0.5rem;
-        font-size: 2rem;
-        font-weight: 650;
+        font-size: clamp(1.65rem, 4vw, 2.3rem);
+        font-weight: 700;
         letter-spacing: 0.01em;
     }
 
     header p {
         margin: 0 auto;
-        max-width: 760px;
+        max-width: 860px;
         opacity: 0.9;
         line-height: 1.5;
     }
 
     .container {
-        max-width: 980px;
+        max-width: 1120px;
         margin: 1.5rem auto;
         padding: 0 1.5rem 2rem;
     }
 
     .panel {
-        background: rgba(255,255,255,0.12);
-        border: 1px solid rgba(255,255,255,0.15);
+        background: var(--panel);
+        border: 1px solid var(--line);
         border-radius: 18px;
         padding: 1.35rem;
         backdrop-filter: blur(8px);
@@ -80,10 +90,9 @@
         gap: 1rem;
     }
 
-    @media (min-width: 900px) {
-        .workspace {
-            grid-template-columns: 1fr 1fr;
-        }
+    @media (min-width: 920px) {
+        .workspace.two-col { grid-template-columns: 1fr 1fr; }
+        .workspace.three-col { grid-template-columns: 1.1fr 0.9fr 1.1fr; }
     }
 
     .box-label {
@@ -92,60 +101,73 @@
         align-items: center;
         gap: 0.75rem;
         margin-bottom: 0.45rem;
-        font-size: 0.86rem;
+        font-size: 0.82rem;
         opacity: 0.9;
-        font-weight: 700;
-        letter-spacing: 0.02em;
+        font-weight: 800;
+        letter-spacing: 0.04em;
         text-transform: uppercase;
     }
 
-    textarea {
+    textarea, input[type="text"], select {
         width: 100%;
-        min-height: 420px;
-        resize: vertical;
-        box-sizing: border-box;
-        border-radius: 14px;
         border: 1px solid rgba(255,255,255,0.14);
-        background: rgba(5, 10, 22, 0.48);
+        background: rgba(5, 10, 22, 0.52);
         color: #f7fbff;
-        padding: 1rem;
-        font-size: 0.92rem;
-        line-height: 1.45;
         outline: none;
         backdrop-filter: blur(6px);
         box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
+    }
+
+    textarea {
+        min-height: 390px;
+        resize: vertical;
+        border-radius: 14px;
+        padding: 1rem;
+        font-size: 0.92rem;
+        line-height: 1.45;
         white-space: pre-wrap;
     }
 
-    textarea:focus {
-        border-color: rgba(159,201,255,0.45);
-        box-shadow:
-            0 0 0 3px rgba(159,201,255,0.10),
-            inset 0 0 0 1px rgba(255,255,255,0.04);
-    }
-
-    select {
-        appearance: none;
-        border: 1px solid rgba(255,255,255,0.14);
-        background: rgba(5, 10, 22, 0.58);
-        color: #f7fbff;
-        padding: 0.72rem 1rem;
+    input[type="text"], select {
+        min-height: 42px;
         border-radius: 12px;
-        outline: none;
-        font-weight: 800;
-        backdrop-filter: blur(6px);
+        padding: 0.72rem 0.85rem;
+        font-weight: 700;
     }
 
-    select:focus {
-        border-color: rgba(159,201,255,0.45);
-        box-shadow: 0 0 0 3px rgba(159,201,255,0.10);
+    textarea:focus, input[type="text"]:focus, select:focus {
+        border-color: var(--accentLine);
+        box-shadow: 0 0 0 3px rgba(159,201,255,0.10), inset 0 0 0 1px rgba(255,255,255,0.04);
     }
 
-    .controls {
+    input[type="file"] {
+        width: 100%;
+        padding: 0.7rem;
+        border: 1px dashed rgba(255,255,255,0.24);
+        border-radius: 12px;
+        background: rgba(5,10,22,0.34);
+        color: var(--muted);
+    }
+
+    .controls, .form-row {
         display: flex;
         flex-wrap: wrap;
         gap: 0.75rem;
         margin-top: 1rem;
+    }
+
+    .form-row { margin: 0 0 1rem; align-items: end; }
+    .form-field { flex: 1 1 220px; }
+    .form-field.small { flex: 0 1 190px; }
+
+    .field-title {
+        display: block;
+        margin-bottom: 0.35rem;
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        opacity: 0.82;
+        font-weight: 800;
     }
 
     button, .back-btn {
@@ -154,9 +176,9 @@
         background: rgba(159,201,255,0.16);
         color: #eaf2ff;
         padding: 0.78rem 1rem;
-        border-radius: 12px;
+        border-radius: 8px;
         cursor: pointer;
-        font-weight: 800;
+        font-weight: 850;
         text-decoration: none;
         backdrop-filter: blur(8px);
         box-shadow: 0 10px 26px rgba(0,0,0,0.28);
@@ -165,14 +187,12 @@
 
     button:hover, .back-btn:hover {
         transform: translateY(-2px);
-        background: rgba(159,201,255,0.22);
-        border-color: rgba(159,201,255,0.45);
+        background: var(--accent);
+        border-color: var(--accentLine);
     }
 
-    .secondary {
-        background: rgba(255,255,255,0.10);
-        border-color: rgba(255,255,255,0.16);
-    }
+    .secondary { background: rgba(255,255,255,0.10); border-color: rgba(255,255,255,0.16); }
+    .danger { background: rgba(255,110,110,0.12); border-color: rgba(255,110,110,0.28); }
 
     .status {
         margin-top: 0.9rem;
@@ -180,6 +200,68 @@
         font-size: 0.9rem;
         opacity: 0.9;
     }
+
+    .tag-shell {
+        min-height: 220px;
+        max-height: 420px;
+        overflow: auto;
+        border: 1px solid rgba(255,255,255,0.14);
+        background: rgba(5, 10, 22, 0.36);
+        border-radius: 14px;
+        padding: 0.8rem;
+    }
+
+    .tag-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 0.8rem;
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: rgba(9, 15, 28, 0.94);
+        border-bottom: 1px solid rgba(255,255,255,0.10);
+        padding-bottom: 0.7rem;
+    }
+
+    .tag-toolbar button { padding: 0.55rem 0.7rem; font-size: 0.82rem; box-shadow: none; }
+
+    .tag-group {
+        border: 1px solid rgba(255,255,255,0.12);
+        background: rgba(255,255,255,0.06);
+        border-radius: 14px;
+        padding: 0.75rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .tag-group h3 {
+        margin: 0 0 0.45rem;
+        font-size: 0.98rem;
+    }
+
+    .tag-group h4 {
+        margin: 0.65rem 0 0.4rem;
+        font-size: 0.88rem;
+        opacity: 0.9;
+    }
+
+    .tag-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        margin: 0.18rem 0.28rem 0.18rem 0;
+        padding: 0.38rem 0.55rem;
+        border: 1px solid rgba(255,255,255,0.14);
+        border-radius: 999px;
+        background: rgba(255,255,255,0.07);
+        font-size: 0.82rem;
+        user-select: none;
+    }
+
+    .tag-item input { accent-color: #9fc9ff; }
+    .tag-item.high { border-color: rgba(159,201,255,0.35); }
+    .tag-item.mid { border-color: rgba(0,200,180,0.25); }
+    .tag-item.low { border-color: rgba(255,255,255,0.14); }
 
     .mini-grid {
         display: grid;
@@ -189,83 +271,111 @@
     }
 
     .info-card {
-        background: rgba(255,255,255,0.10);
+        background: var(--panel2);
         border: 1px solid rgba(255,255,255,0.13);
         border-radius: 15px;
         padding: 1rem;
     }
 
-    .info-card h3 {
-        margin: 0 0 0.45rem;
-        font-size: 1rem;
-    }
+    .info-card h3 { margin: 0 0 0.45rem; font-size: 1rem; }
+    .info-card p, .info-card code { margin: 0; opacity: 0.85; font-size: 0.86rem; line-height: 1.45; }
+    code { color: #dbeafe; }
 
-    .info-card p, .info-card code {
-        margin: 0;
-        opacity: 0.85;
-        font-size: 0.86rem;
-        line-height: 1.45;
-    }
-
-    code {
-        color: #dbeafe;
-    }
-
-    .back-wrap {
-        display: flex;
-        justify-content: center;
-        margin-top: 1.4rem;
-    }
+    .back-wrap { display: flex; justify-content: center; margin-top: 1.4rem; }
 </style>
 </head>
 
 <body>
 
 <header>
-    <h1>EndNote Citation Converter</h1>
-    <p>Paste raw EndNote citation text, convert it into a JSON-safe single-line string, or convert BibTeX/RIS records into EndNote tagged format for <code>citationRaw</code>.</p>
+    <h1>Paper JSON + EndNote Citation Converter</h1>
+    <p>Generate paper JSON files from EndNote, BibTeX, or RIS input, select tags from your three-layer topic map, and keep the BibTeX/RIS to EndNote converter available below.</p>
 </header>
 
 <main class="container">
     <section class="panel">
-        <h2>Convert citationRaw</h2>
+        <h2>Generate paper JSON</h2>
         <p class="hint">
-            This keeps the EndNote fields intact, but replaces real line breaks with <code>\n</code> so the citation can safely live inside a JSON string.
+            Paste EndNote tagged text, paste BibTeX/RIS, or upload an EndNote/BibTeX/RIS file. Tags are automatically loaded from <code>../bga2o3/topic-tags.json</code> and can be selected individually before generating the paper JSON.
         </p>
 
-        <div class="workspace">
+        <div class="form-row">
+            <div class="form-field small">
+                <label class="field-title" for="fileNameInput">Output filename</label>
+                <input id="fileNameInput" type="text" value="paper-001.json" placeholder="paper-001.json">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-field small">
+                <label class="field-title" for="paperFormat">Input format</label>
+                <select id="paperFormat" aria-label="Paper citation format">
+                    <option value="auto">Auto-detect</option>
+                    <option value="endnote">EndNote tagged text</option>
+                    <option value="bibtex">BibTeX</option>
+                    <option value="ris">RIS</option>
+                </select>
+            </div>
+            <div class="form-field">
+                <label class="field-title" for="citationFileInput">Optional citation file</label>
+                <input id="citationFileInput" type="file" accept=".enw,.txt,.bib,.ris,.ciw,.xml,.json,text/plain,application/x-bibtex,application/json">
+            </div>
+        </div>
+
+        <div class="workspace two-col">
             <div>
                 <div class="box-label">
-                    <span>Raw EndNote input</span>
-                    <span id="input-count">0 chars</span>
+                    <span>Citation input</span>
+                    <span id="paper-input-count">0 chars</span>
                 </div>
-                <textarea id="rawInput" placeholder="%0 Journal Article&#10;%A Khan, Saleh Ahmed&#10;%T Paper title..."></textarea>
+                <textarea id="paperInput" placeholder="Paste EndNote tagged text, BibTeX, or RIS here...&#10;&#10;%0 Journal Article&#10;%A Khan, Saleh Ahmed&#10;%T Paper title...&#10;&#10;or&#10;&#10;@article{key, title={...}}&#10;&#10;or&#10;&#10;TY  - JOUR&#10;AU  - Khan, Saleh Ahmed&#10;TI  - Paper title&#10;ER  -"></textarea>
             </div>
 
             <div>
                 <div class="box-label">
-                    <span>JSON-safe output</span>
-                    <span id="output-count">0 chars</span>
+                    <span>Generated JSON</span>
+                    <span id="paper-output-count">0 chars</span>
                 </div>
-                <textarea id="convertedOutput" readonly placeholder="Converted citationRaw will appear here..."></textarea>
+                <textarea id="paperOutput" readonly placeholder="Generated paper JSON will appear here..."></textarea>
+            </div>
+        </div>
+
+        <div style="margin-top: 1rem;">
+            <div class="box-label">
+                <span>Selectable topic tags</span>
+                <span id="tag-count">0 selected</span>
+            </div>
+            <div id="tagShell" class="tag-shell">
+                <div class="tag-toolbar">
+                    <button id="selectAllTagsBtn" type="button" class="secondary">Select all</button>
+                    <button id="clearTagsBtn" type="button" class="secondary">Clear tags</button>
+                </div>
+                <div id="tagContainer" class="hint">Topic tags are loading...</div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-field">
+                <label class="field-title" for="summaryInput">Optional summary</label>
+                <textarea id="summaryInput" style="min-height: 100px;" placeholder="Optional short summary. Leave empty if you want summary to stay blank."></textarea>
             </div>
         </div>
 
         <div class="controls">
-            <button id="convertBtn">Convert</button>
-            <button id="copyBtn">Copy output</button>
-            <button id="wrapBtn">Copy as citationRaw field</button>
-            <button class="secondary" id="clearBtn">Clear</button>
+            <button id="generateJsonBtn">Generate JSON</button>
+            <button id="copyJsonBtn">Copy JSON</button>
+            <button id="downloadJsonBtn">Download JSON</button>
+            <button id="copyCitationRawBtn" class="secondary">Copy citationRaw only</button>
+            <button id="clearPaperBtn" class="secondary">Clear</button>
         </div>
 
-        <div class="status" id="status"></div>
+        <div class="status" id="paperStatus"></div>
     </section>
-
 
     <section class="panel">
         <h2>Convert BibTeX or RIS to EndNote</h2>
         <p class="hint">
-            Paste a BibTeX or RIS citation record below and convert it into EndNote tagged format. Then use the main converter above if you need a JSON-safe <code>citationRaw</code> string.
+            Paste a BibTeX or RIS citation record below and convert it into EndNote tagged format. You can then send it into the JSON generator above.
         </p>
 
         <div class="controls" style="margin-top: 0; margin-bottom: 1rem;">
@@ -278,7 +388,7 @@
             <button id="sampleRisBtn" class="secondary">Load RIS sample</button>
         </div>
 
-        <div class="workspace">
+        <div class="workspace two-col">
             <div>
                 <div class="box-label">
                     <span>BibTeX / RIS input</span>
@@ -299,14 +409,12 @@
         <div class="controls">
             <button id="formatConvertBtn">Convert to EndNote</button>
             <button id="copyEndnoteBtn">Copy EndNote output</button>
-            <button id="sendToRawBtn">Send to raw converter</button>
+            <button id="sendToRawBtn">Send to JSON generator</button>
             <button class="secondary" id="clearFormatBtn">Clear</button>
         </div>
 
         <div class="status" id="formatStatus"></div>
     </section>
-
-    
 
     <div class="back-wrap">
         <a class="back-btn" href="../bga2o3/hub_page.html">Back to Research Hub</a>
@@ -314,11 +422,17 @@
 </main>
 
 <script>
-const rawInput = document.getElementById("rawInput");
-const convertedOutput = document.getElementById("convertedOutput");
-const inputCount = document.getElementById("input-count");
-const outputCount = document.getElementById("output-count");
-const statusBox = document.getElementById("status");
+const paperInput = document.getElementById("paperInput");
+const paperOutput = document.getElementById("paperOutput");
+const paperFormat = document.getElementById("paperFormat");
+const paperInputCount = document.getElementById("paper-input-count");
+const paperOutputCount = document.getElementById("paper-output-count");
+const paperStatus = document.getElementById("paperStatus");
+const fileNameInput = document.getElementById("fileNameInput");
+const citationFileInput = document.getElementById("citationFileInput");
+const tagContainer = document.getElementById("tagContainer");
+const tagCount = document.getElementById("tag-count");
+const summaryInput = document.getElementById("summaryInput");
 
 const formatInput = document.getElementById("formatInput");
 const endnoteOutput = document.getElementById("endnoteOutput");
@@ -327,17 +441,16 @@ const formatInputCount = document.getElementById("format-input-count");
 const formatOutputCount = document.getElementById("format-output-count");
 const formatStatus = document.getElementById("formatStatus");
 
-function setStatus(message) {
-    statusBox.textContent = message;
-}
+let lastGeneratedJson = "";
+const TOPIC_TAGS_PATH = "../bga2o3/topic_tags.json";
+let topicTagsData = null;
 
-function setFormatStatus(message) {
-    formatStatus.textContent = message;
-}
+function setPaperStatus(message) { paperStatus.textContent = message; }
+function setFormatStatus(message) { formatStatus.textContent = message; }
 
-function updateCounts() {
-    inputCount.textContent = `${rawInput.value.length} chars`;
-    outputCount.textContent = `${convertedOutput.value.length} chars`;
+function updatePaperCounts() {
+    paperInputCount.textContent = `${paperInput.value.length} chars`;
+    paperOutputCount.textContent = `${paperOutput.value.length} chars`;
 }
 
 function updateFormatCounts() {
@@ -345,32 +458,10 @@ function updateFormatCounts() {
     formatOutputCount.textContent = `${endnoteOutput.value.length} chars`;
 }
 
-function convertCitation(raw) {
-    return raw
-        .trim()
-        .replace(/\\/g, "\\\\")
-        .replace(/"/g, '\\"')
-        .replace(/\r?\n/g, "\\n");
-}
-
-function convertNow() {
-    const raw = rawInput.value;
-    if (!raw.trim()) {
-        convertedOutput.value = "";
-        updateCounts();
-        setStatus("Paste an EndNote citation first.");
-        return "";
-    }
-
-    const converted = convertCitation(raw);
-    convertedOutput.value = converted;
-    updateCounts();
-    setStatus("Converted successfully.");
-    return converted;
-}
+function normalizeWhitespace(value) { return String(value || "").replace(/\s+/g, " ").trim(); }
 
 function stripOuterBraces(value) {
-    return value
+    return String(value || "")
         .trim()
         .replace(/^\{/, "")
         .replace(/\}$/, "")
@@ -379,12 +470,8 @@ function stripOuterBraces(value) {
         .trim();
 }
 
-function normalizeWhitespace(value) {
-    return value.replace(/\s+/g, " ").trim();
-}
-
 function splitBibtexAuthors(authorField) {
-    return authorField
+    return String(authorField || "")
         .split(/\s+and\s+/i)
         .map(author => normalizeWhitespace(stripOuterBraces(author)))
         .filter(Boolean);
@@ -456,30 +543,11 @@ function parseRis(raw) {
     };
 
     const tagMap = {
-        AU: "%A",
-        A1: "%A",
-        A2: "%E",
-        ED: "%E",
-        TI: "%T",
-        T1: "%T",
-        JO: "%J",
-        JF: "%J",
-        JA: "%J",
-        T2: "%J",
-        BT: "%B",
-        T3: "%B",
-        PB: "%I",
-        PY: "%D",
-        Y1: "%D",
-        VL: "%V",
-        IS: "%N",
-        SP: "%P",
-        EP: "%P_END",
-        DO: "%R",
-        UR: "%U",
-        AB: "%X",
-        KW: "%K",
-        SN: "%@"
+        AU: "%A", A1: "%A", A2: "%E", ED: "%E",
+        TI: "%T", T1: "%T", JO: "%J", JF: "%J", JA: "%J", T2: "%J",
+        BT: "%B", T3: "%B", PB: "%I", PY: "%D", Y1: "%D",
+        VL: "%V", IS: "%N", SP: "%P", EP: "%P_END",
+        DO: "%R", UR: "%U", AB: "%X", KW: "%K", SN: "%@"
     };
 
     const parsed = [];
@@ -503,13 +571,9 @@ function parseRis(raw) {
         const endnoteTag = tagMap[tag];
         if (!endnoteTag) return;
 
-        if (endnoteTag === "%P") {
-            startPage = value;
-        } else if (endnoteTag === "%P_END") {
-            endPage = value;
-        } else {
-            parsed.push(`${endnoteTag} ${value}`);
-        }
+        if (endnoteTag === "%P") startPage = value;
+        else if (endnoteTag === "%P_END") endPage = value;
+        else parsed.push(`${endnoteTag} ${value}`);
     });
 
     const lines = [`%0 ${type}`];
@@ -521,10 +585,188 @@ function parseRis(raw) {
 }
 
 function detectFormat(raw) {
-    const trimmed = raw.trim();
+    const trimmed = String(raw || "").trim();
     if (/^@[a-zA-Z]+\s*\{/.test(trimmed)) return "bibtex";
     if (/^TY\s*-\s*/m.test(trimmed) || /^AU\s*-\s*/m.test(trimmed)) return "ris";
+    if (/^%[A-Z0-9@\[]\s+/m.test(trimmed)) return "endnote";
     return "unknown";
+}
+
+function normalizeCitationToEndnote(raw, chosen) {
+    const fmt = chosen === "auto" ? detectFormat(raw) : chosen;
+    if (fmt === "bibtex") return { citation: parseBibtex(raw), format: fmt };
+    if (fmt === "ris") return { citation: parseRis(raw), format: fmt };
+    if (fmt === "endnote") return { citation: raw.trim(), format: fmt };
+    return { citation: raw.trim(), format: "unknown" };
+}
+
+function safeJsonIdFromFilename(filename) {
+    return String(filename || "paper-001.json")
+        .trim()
+        .replace(/\.json$/i, "")
+        .replace(/[^a-zA-Z0-9_-]+/g, "-")
+        .replace(/^-+|-+$/g, "") || "paper-001";
+}
+
+function ensureJsonFilename(filename) {
+    const cleaned = String(filename || "paper-001.json").trim() || "paper-001.json";
+    return /\.json$/i.test(cleaned) ? cleaned : `${cleaned}.json`;
+}
+
+function uniquePush(list, value) {
+    if (value && !list.includes(value)) list.push(value);
+}
+
+function renderTags(topicData) {
+    tagContainer.innerHTML = "";
+
+    const highTags = Array.isArray(topicData.highTags) ? topicData.highTags : [];
+    if (!highTags.length) {
+        tagContainer.innerHTML = '<p class="hint">No highTags found in this topic-tags JSON.</p>';
+        updateSelectedTagCount();
+        return;
+    }
+
+    highTags.forEach(high => {
+        const group = document.createElement("div");
+        group.className = "tag-group";
+
+        const heading = document.createElement("h3");
+        heading.textContent = high.label || high.id || "Untitled high tag";
+        group.appendChild(heading);
+
+        group.appendChild(makeTagCheckbox("high", high.label, high.id));
+
+        (high.midTags || []).forEach(mid => {
+            const midHeading = document.createElement("h4");
+            midHeading.textContent = mid.label || mid.id || "Untitled mid tag";
+            group.appendChild(midHeading);
+
+            group.appendChild(makeTagCheckbox("mid", mid.label, mid.id));
+
+            (mid.lowTags || []).forEach(low => {
+                group.appendChild(makeTagCheckbox("low", low.label, low.id));
+            });
+        });
+
+        tagContainer.appendChild(group);
+    });
+
+    updateSelectedTagCount();
+}
+
+function makeTagCheckbox(level, label, id) {
+    const wrap = document.createElement("label");
+    wrap.className = `tag-item ${level}`;
+    const input = document.createElement("input");
+    input.type = "checkbox";
+    input.dataset.level = level;
+    input.dataset.label = label || id || "";
+    input.dataset.id = id || "";
+    input.addEventListener("change", updateSelectedTagCount);
+    const span = document.createElement("span");
+    span.textContent = label || id || "Untitled";
+    wrap.appendChild(input);
+    wrap.appendChild(span);
+    return wrap;
+}
+
+function getSelectedTags() {
+    const selected = { high: [], mid: [], low: [] };
+    document.querySelectorAll("#tagContainer input[type='checkbox']:checked").forEach(box => {
+        const level = box.dataset.level;
+        if (selected[level]) uniquePush(selected[level], box.dataset.label);
+    });
+    return selected;
+}
+
+function updateSelectedTagCount() {
+    const selected = getSelectedTags();
+    const total = selected.high.length + selected.mid.length + selected.low.length;
+    tagCount.textContent = `${total} selected`;
+}
+
+async function loadTopicTags() {
+    tagContainer.innerHTML = '<p class="hint">Loading topic tags from <code>../bga2o3/topic_tags.json</code>...</p>';
+    updateSelectedTagCount();
+
+    try {
+        const response = await fetch(TOPIC_TAGS_PATH, { cache: "no-store" });
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        topicTagsData = await response.json();
+        renderTags(topicTagsData);
+        setPaperStatus(`Topic tags loaded from ${TOPIC_TAGS_PATH}.`);
+    } catch (err) {
+        console.error(err);
+        tagContainer.innerHTML = `
+            <p class="hint">Could not load topic tags from <code>${TOPIC_TAGS_PATH}</code>. Check that the JSON file exists at that path and that the page is running through a local/server URL, not blocked by browser file restrictions.</p>
+        `;
+        updateSelectedTagCount();
+        setPaperStatus("Topic tags failed to load. Check the JSON path.");
+    }
+}
+
+function generatePaperJson() {
+    const raw = paperInput.value;
+    if (!raw.trim()) {
+        paperOutput.value = "";
+        updatePaperCounts();
+        setPaperStatus("Paste a citation or upload a file first.");
+        return "";
+    }
+
+    const normalized = normalizeCitationToEndnote(raw, paperFormat.value);
+    const filename = ensureJsonFilename(fileNameInput.value);
+    fileNameInput.value = filename;
+
+    const paperJson = {
+        id: safeJsonIdFromFilename(filename),
+        topicTags: getSelectedTags(),
+        summary: summaryInput.value.trim(),
+        citationRaw: normalized.citation
+    };
+
+    lastGeneratedJson = JSON.stringify(paperJson, null, 2);
+    paperOutput.value = lastGeneratedJson;
+    updatePaperCounts();
+
+    const fmtMsg = normalized.format === "unknown" ? "as pasted text" : normalized.format.toUpperCase();
+    setPaperStatus(`Generated ${filename} from ${fmtMsg} input.`);
+    return lastGeneratedJson;
+}
+
+async function copyToClipboard(text, statusSetter, successMessage, fallbackElement) {
+    if (!text) {
+        statusSetter("Nothing to copy yet.");
+        return;
+    }
+    try {
+        await navigator.clipboard.writeText(text);
+        statusSetter(successMessage);
+    } catch (err) {
+        fallbackElement.focus();
+        fallbackElement.select();
+        document.execCommand("copy");
+        statusSetter(successMessage);
+    }
+}
+
+function downloadGeneratedJson() {
+    const text = paperOutput.value || generatePaperJson();
+    if (!text) return;
+    const filename = ensureJsonFilename(fileNameInput.value);
+    const blob = new Blob([text], { type: "application/json;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    setPaperStatus(`Downloaded ${filename}.`);
 }
 
 function convertFormatNow() {
@@ -538,10 +780,10 @@ function convertFormatNow() {
 
     const chosenFormat = sourceFormat.value === "auto" ? detectFormat(raw) : sourceFormat.value;
 
-    if (chosenFormat === "unknown") {
+    if (chosenFormat === "unknown" || chosenFormat === "endnote") {
         endnoteOutput.value = "";
         updateFormatCounts();
-        setFormatStatus("Could not detect the format. Choose BibTeX or RIS manually, then convert again.");
+        setFormatStatus("Could not detect BibTeX or RIS. Choose BibTeX/RIS manually, then convert again.");
         return "";
     }
 
@@ -552,84 +794,84 @@ function convertFormatNow() {
     return converted;
 }
 
-async function copyText(text, successMessage) {
-    if (!text) {
-        setStatus("Nothing to copy yet.");
-        return;
-    }
+citationFileInput.addEventListener("change", async event => {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+    const text = await file.text();
+    paperInput.value = text;
+    updatePaperCounts();
 
-    try {
-        await navigator.clipboard.writeText(text);
-        setStatus(successMessage);
-    } catch (err) {
-        convertedOutput.focus();
-        convertedOutput.select();
-        document.execCommand("copy");
-        setStatus(successMessage);
-    }
-}
+    const lower = file.name.toLowerCase();
+    if (lower.endsWith(".bib")) paperFormat.value = "bibtex";
+    else if (lower.endsWith(".ris")) paperFormat.value = "ris";
+    else paperFormat.value = "auto";
 
-async function copyFormatText(text, successMessage) {
-    if (!text) {
-        setFormatStatus("Nothing to copy yet.");
-        return;
-    }
-
-    try {
-        await navigator.clipboard.writeText(text);
-        setFormatStatus(successMessage);
-    } catch (err) {
-        endnoteOutput.focus();
-        endnoteOutput.select();
-        document.execCommand("copy");
-        setFormatStatus(successMessage);
-    }
-}
-
-document.getElementById("convertBtn").addEventListener("click", convertNow);
-
-document.getElementById("copyBtn").addEventListener("click", () => {
-    const converted = convertedOutput.value || convertNow();
-    copyText(converted, "Output copied.");
+    setPaperStatus(`Loaded ${file.name}.`);
 });
 
-document.getElementById("wrapBtn").addEventListener("click", () => {
-    const converted = convertedOutput.value || convertNow();
-    if (!converted) return;
-    copyText(`"citationRaw": "${converted}"`, "citationRaw field copied.");
+paperInput.addEventListener("input", () => {
+    paperOutput.value = "";
+    lastGeneratedJson = "";
+    updatePaperCounts();
 });
 
-document.getElementById("clearBtn").addEventListener("click", () => {
-    rawInput.value = "";
-    convertedOutput.value = "";
-    updateCounts();
-    setStatus("Cleared.");
+summaryInput.addEventListener("input", () => {
+    if (paperOutput.value) paperOutput.value = "";
+    updatePaperCounts();
+});
+
+formatInput.addEventListener("input", () => {
+    if (endnoteOutput.value) endnoteOutput.value = "";
+    updateFormatCounts();
+});
+
+fileNameInput.addEventListener("blur", () => { fileNameInput.value = ensureJsonFilename(fileNameInput.value); });
+
+document.getElementById("generateJsonBtn").addEventListener("click", generatePaperJson);
+document.getElementById("copyJsonBtn").addEventListener("click", () => copyToClipboard(paperOutput.value || generatePaperJson(), setPaperStatus, "JSON copied.", paperOutput));
+document.getElementById("downloadJsonBtn").addEventListener("click", downloadGeneratedJson);
+document.getElementById("copyCitationRawBtn").addEventListener("click", () => {
+    const raw = paperInput.value;
+    if (!raw.trim()) { setPaperStatus("Nothing to copy yet."); return; }
+    const normalized = normalizeCitationToEndnote(raw, paperFormat.value);
+    copyToClipboard(normalized.citation, setPaperStatus, "citationRaw copied.", paperInput);
+});
+document.getElementById("clearPaperBtn").addEventListener("click", () => {
+    paperInput.value = "";
+    paperOutput.value = "";
+    summaryInput.value = "";
+    citationFileInput.value = "";
+    lastGeneratedJson = "";
+    updatePaperCounts();
+    setPaperStatus("Cleared.");
+});
+document.getElementById("selectAllTagsBtn").addEventListener("click", () => {
+    document.querySelectorAll("#tagContainer input[type='checkbox']").forEach(box => box.checked = true);
+    updateSelectedTagCount();
+});
+document.getElementById("clearTagsBtn").addEventListener("click", () => {
+    document.querySelectorAll("#tagContainer input[type='checkbox']").forEach(box => box.checked = false);
+    updateSelectedTagCount();
 });
 
 document.getElementById("formatConvertBtn").addEventListener("click", convertFormatNow);
-
-document.getElementById("copyEndnoteBtn").addEventListener("click", () => {
-    const converted = endnoteOutput.value || convertFormatNow();
-    copyFormatText(converted, "EndNote output copied.");
-});
-
+document.getElementById("copyEndnoteBtn").addEventListener("click", () => copyToClipboard(endnoteOutput.value || convertFormatNow(), setFormatStatus, "EndNote output copied.", endnoteOutput));
 document.getElementById("sendToRawBtn").addEventListener("click", () => {
     const converted = endnoteOutput.value || convertFormatNow();
     if (!converted) return;
-    rawInput.value = converted;
-    convertedOutput.value = "";
-    updateCounts();
-    setFormatStatus("Sent to the raw converter above.");
-    rawInput.scrollIntoView({ behavior: "smooth", block: "center" });
+    paperInput.value = converted;
+    paperFormat.value = "endnote";
+    paperOutput.value = "";
+    updatePaperCounts();
+    setFormatStatus("Sent to the JSON generator above.");
+    paperInput.scrollIntoView({ behavior: "smooth", block: "center" });
 });
-
 document.getElementById("clearFormatBtn").addEventListener("click", () => {
     formatInput.value = "";
     endnoteOutput.value = "";
     updateFormatCounts();
     setFormatStatus("Cleared.");
 });
-
 document.getElementById("sampleBibBtn").addEventListener("click", () => {
     sourceFormat.value = "bibtex";
     formatInput.value = `@article{khan2025example,\n  title={Example paper title},\n  author={Khan, Saleh Ahmed and Doe, Jane},\n  journal={Applied Physics Letters},\n  year={2025},\n  volume={126},\n  number={4},\n  pages={101-110},\n  doi={10.0000/example},\n  url={https://example.com/paper}\n}`;
@@ -637,7 +879,6 @@ document.getElementById("sampleBibBtn").addEventListener("click", () => {
     updateFormatCounts();
     setFormatStatus("BibTeX sample loaded.");
 });
-
 document.getElementById("sampleRisBtn").addEventListener("click", () => {
     sourceFormat.value = "ris";
     formatInput.value = `TY  - JOUR\nAU  - Khan, Saleh Ahmed\nAU  - Doe, Jane\nTI  - Example paper title\nJO  - Applied Physics Letters\nPY  - 2025\nVL  - 126\nIS  - 4\nSP  - 101\nEP  - 110\nDO  - 10.0000/example\nUR  - https://example.com/paper\nER  -`;
@@ -646,18 +887,10 @@ document.getElementById("sampleRisBtn").addEventListener("click", () => {
     setFormatStatus("RIS sample loaded.");
 });
 
-rawInput.addEventListener("input", () => {
-    updateCounts();
-    if (convertedOutput.value) convertedOutput.value = "";
-});
-
-formatInput.addEventListener("input", () => {
-    updateFormatCounts();
-    if (endnoteOutput.value) endnoteOutput.value = "";
-});
-
-updateCounts();
+updatePaperCounts();
 updateFormatCounts();
+updateSelectedTagCount();
+loadTopicTags();
 </script>
 
 </body>
