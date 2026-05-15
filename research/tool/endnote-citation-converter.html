@@ -264,29 +264,35 @@
 
     .tag-item input { accent-color: #9fc9ff; }
     .tag-item.high { border-color: rgba(159,201,255,0.35); }
-    .tag-item.mid { border-color: rgba(0,200,180,0.25); }
-    .tag-item.low { border-color: rgba(255,255,255,0.14); }
-
-    .mid-indicator {
+    .mid-row {
         display: flex;
         align-items: center;
         gap: 0.45rem;
         margin: 0.65rem 0 0.4rem;
-        font-size: 0.88rem;
-        opacity: 0.92;
-        font-weight: 800;
     }
 
     .mid-arrow {
-        opacity: 0.42;
-        transform: translateY(-1px);
-        transition: opacity 0.13s ease, color 0.13s ease;
+        width: 1.05rem;
+        height: 1.05rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        border: 1px solid rgba(255,255,255,0.16);
+        background: rgba(255,255,255,0.06);
+        font-size: 0.72rem;
+        color: rgba(245,245,245,0.48);
+        flex: 0 0 auto;
     }
 
-    .mid-arrow.active {
-        opacity: 1;
-        color: #9fc9ff;
+    .mid-arrow.selected {
+        color: #dbeafe;
+        border-color: rgba(0,200,180,0.35);
+        background: rgba(0,200,180,0.14);
     }
+
+    .tag-item.mid { display: none; }
+    .tag-item.low { border-color: rgba(255,255,255,0.14); }
 
     .mini-grid {
         display: grid;
@@ -321,7 +327,7 @@
     <section class="panel">
         <h2>Generate paper JSON</h2>
         <p class="hint">
-            Paste EndNote, paste BibTeX/RIS, or upload an EndNote/BibTeX/RIS file.
+            Paste EndNote tagged text, paste BibTeX/RIS, or upload an EndNote/BibTeX/RIS file. Tags are automatically loaded from <code>../bga2o3/topic-tags.json</code> and can be selected individually before generating the paper JSON.
         </p>
 
         <div class="form-row">
@@ -329,7 +335,7 @@
                 <label class="field-title" for="paperFormat">Input format</label>
                 <select id="paperFormat" aria-label="Paper citation format">
                     <option value="auto">Auto-detect</option>
-                    <option value="endnote">EndNote</option>
+                    <option value="endnote">EndNote tagged text</option>
                     <option value="bibtex">BibTeX</option>
                     <option value="ris">RIS</option>
                 </select>
@@ -340,7 +346,7 @@
             </div>
         </div>
 
-        <div style="margin-top: 1rem;">
+        <div style="margin-top: 1rem; margin-bottom: 1rem;">
             <div class="box-label">
                 <span>Topic tags</span>
                 <span id="tag-count">0 selected</span>
@@ -354,14 +360,13 @@
             </div>
         </div>
 
-
         <div class="workspace two-col">
             <div>
                 <div class="box-label">
                     <span>Citation input</span>
                     <span id="paper-input-count">0 chars</span>
                 </div>
-                <textarea id="paperInput" placeholder="Paste EndNote, BibTeX, or RIS here...&#10;&#10;%0 Journal Article&#10;%A Khan, Saleh Ahmed&#10;%T Paper title...&#10;&#10;or&#10;&#10;@article{key, title={...}}&#10;&#10;or&#10;&#10;TY  - JOUR&#10;AU  - Khan, Saleh Ahmed&#10;TI  - Paper title&#10;ER  -"></textarea>
+                <textarea id="paperInput" placeholder="Paste EndNote tagged text, BibTeX, or RIS here...&#10;&#10;%0 Journal Article&#10;%A Khan, Saleh Ahmed&#10;%T Paper title...&#10;&#10;or&#10;&#10;@article{key, title={...}}&#10;&#10;or&#10;&#10;TY  - JOUR&#10;AU  - Khan, Saleh Ahmed&#10;TI  - Paper title&#10;ER  -"></textarea>
             </div>
 
             <div>
@@ -394,7 +399,7 @@
     <section class="panel">
         <h2>Convert BibTeX or RIS to EndNote</h2>
         <p class="hint">
-            Paste a BibTeX or RIS citation record below and convert it into EndNote format. You can then send it into the JSON generator above.
+            Paste a BibTeX or RIS citation record below and convert it into EndNote tagged format. You can then send it into the JSON generator above.
         </p>
 
         <div class="controls" style="margin-top: 0; margin-bottom: 1rem;">
@@ -418,7 +423,7 @@
 
             <div>
                 <div class="box-label">
-                    <span>EndNote output</span>
+                    <span>EndNote tagged output</span>
                     <span id="format-output-count">0 chars</span>
                 </div>
                 <textarea id="endnoteOutput" readonly placeholder="Converted EndNote citation will appear here..."></textarea>
@@ -653,20 +658,27 @@ function renderTags(topicData) {
         heading.textContent = high.label || high.id || "Untitled high tag";
         group.appendChild(heading);
 
-        group.appendChild(makeTagCheckbox("high", high.label, high.id, "", ""));
+        group.appendChild(makeTagCheckbox("high", high.label, high.id));
 
         (high.midTags || []).forEach(mid => {
-            const midIndicator = document.createElement("div");
-            midIndicator.className = "mid-indicator";
-            midIndicator.innerHTML = `<span class="mid-arrow">↳</span><span>${mid.label || mid.id || "Untitled mid tag"}</span>`;
-            midIndicator.dataset.level = "mid";
-            midIndicator.dataset.label = mid.label || mid.id || "";
-            midIndicator.dataset.id = mid.id || "";
-            midIndicator.dataset.parentHigh = high.label || high.id || "";
-            group.appendChild(midIndicator);
+            const midRow = document.createElement("div");
+            midRow.className = "mid-row";
+
+            const midArrow = document.createElement("span");
+            midArrow.className = "mid-arrow";
+            midArrow.textContent = "›";
+            midArrow.dataset.midId = mid.id || "";
+            midArrow.title = "Auto-selected when any low tag under this mid tag is selected";
+
+            const midHeading = document.createElement("h4");
+            midHeading.textContent = mid.label || mid.id || "Untitled mid tag";
+
+            midRow.appendChild(midArrow);
+            midRow.appendChild(midHeading);
+            group.appendChild(midRow);
 
             (mid.lowTags || []).forEach(low => {
-                group.appendChild(makeTagCheckbox("low", low.label, low.id, high.label || high.id || "", mid.label || mid.id || ""));
+                group.appendChild(makeTagCheckbox("low", low.label, low.id, high.label, mid.label, mid.id));
             });
         });
 
@@ -676,7 +688,7 @@ function renderTags(topicData) {
     updateSelectedTagCount();
 }
 
-function makeTagCheckbox(level, label, id, parentHigh, parentMid) {
+function makeTagCheckbox(level, label, id, parentHighLabel = "", parentMidLabel = "", parentMidId = "") {
     const wrap = document.createElement("label");
     wrap.className = `tag-item ${level}`;
     const input = document.createElement("input");
@@ -684,8 +696,9 @@ function makeTagCheckbox(level, label, id, parentHigh, parentMid) {
     input.dataset.level = level;
     input.dataset.label = label || id || "";
     input.dataset.id = id || "";
-    input.dataset.parentHigh = parentHigh || "";
-    input.dataset.parentMid = parentMid || "";
+    input.dataset.parentHighLabel = parentHighLabel || "";
+    input.dataset.parentMidLabel = parentMidLabel || "";
+    input.dataset.parentMidId = parentMidId || "";
     input.addEventListener("change", updateSelectedTagCount);
     const span = document.createElement("span");
     span.textContent = label || id || "Untitled";
@@ -700,40 +713,36 @@ function getSelectedTags() {
     document.querySelectorAll("#tagContainer input[type='checkbox']:checked").forEach(box => {
         const level = box.dataset.level;
 
-        if (level === "high") {
-            uniquePush(selected.high, box.dataset.label);
-        }
-
         if (level === "low") {
             uniquePush(selected.low, box.dataset.label);
-            uniquePush(selected.mid, box.dataset.parentMid);
-            uniquePush(selected.high, box.dataset.parentHigh);
+            uniquePush(selected.mid, box.dataset.parentMidLabel);
+            uniquePush(selected.high, box.dataset.parentHighLabel);
+        } else if (level === "high") {
+            uniquePush(selected.high, box.dataset.label);
         }
     });
 
     return selected;
 }
 
-function updateMidIndicators() {
-    document.querySelectorAll(".mid-indicator").forEach(indicator => {
-        const midLabel = indicator.dataset.label;
-        const hasSelectedLow = Array.from(document.querySelectorAll("#tagContainer input[data-level='low']:checked"))
-            .some(box => box.dataset.parentMid === midLabel);
-
-        const arrow = indicator.querySelector(".mid-arrow");
-        if (arrow) arrow.classList.toggle("active", hasSelectedLow);
+function updateMidArrows() {
+    document.querySelectorAll(".mid-arrow").forEach(arrow => {
+        const midId = arrow.dataset.midId || "";
+        const hasSelectedLow = !!document.querySelector(`#tagContainer input[data-level='low'][data-parent-mid-id='${CSS.escape(midId)}']:checked`);
+        arrow.classList.toggle("selected", hasSelectedLow);
+        arrow.textContent = hasSelectedLow ? "✓" : "›";
     });
 }
 
 function updateSelectedTagCount() {
-    updateMidIndicators();
+    updateMidArrows();
     const selected = getSelectedTags();
     const total = selected.high.length + selected.mid.length + selected.low.length;
     tagCount.textContent = `${total} selected`;
 }
 
 async function loadTopicTags() {
-    tagContainer.innerHTML = '<p class="hint">Topic tags are loading...</p>';
+    tagContainer.innerHTML = '<p class="hint">Loading topic tags from <code>../bga2o3/topic-tags.json</code>...</p>';
     updateSelectedTagCount();
 
     try {
@@ -836,7 +845,7 @@ function convertFormatNow() {
     const converted = chosenFormat === "bibtex" ? parseBibtex(raw) : parseRis(raw);
     endnoteOutput.value = converted;
     updateFormatCounts();
-    setFormatStatus(`Converted ${chosenFormat.toUpperCase()} to EndNote format.`);
+    setFormatStatus(`Converted ${chosenFormat.toUpperCase()} to EndNote tagged format.`);
     return converted;
 }
 
