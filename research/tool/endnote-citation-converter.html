@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Citation Converter Utility</title>
+<title>Citation Converter Utility Tool</title>
 
 <link rel="icon" type="image/png" href="../bga2o3/favicon_res.png">
 
@@ -268,40 +268,24 @@
     .tag-item.low { border-color: rgba(255,255,255,0.14); }
 
     .mid-indicator {
-        display: inline-flex;
+        display: flex;
         align-items: center;
-        gap: 0.35rem;
-        margin: 0.55rem 0.28rem 0.35rem 0;
-        padding: 0.38rem 0.55rem;
-        border: 1px solid rgba(0,200,180,0.25);
-        border-radius: 999px;
-        background: rgba(255,255,255,0.07);
-        font-size: 0.82rem;
-        opacity: 0.95;
+        gap: 0.45rem;
+        margin: 0.65rem 0 0.4rem;
+        font-size: 0.88rem;
+        opacity: 0.92;
         font-weight: 800;
-        user-select: none;
-        pointer-events: none;
     }
 
-    .mid-fake-check {
-        width: 13px;
-        height: 13px;
-        border-radius: 3px;
-        border: 2px solid rgba(255,255,255,0.55);
-        background: rgba(255,255,255,0.85);
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        color: transparent;
-        font-size: 11px;
-        line-height: 1;
-        font-weight: 900;
+    .mid-arrow {
+        opacity: 0.42;
+        transform: translateY(-1px);
+        transition: opacity 0.13s ease, color 0.13s ease;
     }
 
-    .mid-indicator.active .mid-fake-check {
-        background: #9fc9ff;
-        border-color: #9fc9ff;
-        color: #101827;
+    .mid-arrow.active {
+        opacity: 1;
+        color: #9fc9ff;
     }
 
     .mini-grid {
@@ -329,7 +313,7 @@
 <body>
 
 <header>
-    <h1>Citation Converter Utility</h1>
+    <h1>Citation Converter Utility Tool</h1>
     <p>Generate compatible JSON files from EndNote, BibTeX, or RIS citations, select relevant research tags, or simply convert between citation types.</p>
 </header>
 
@@ -337,7 +321,7 @@
     <section class="panel">
         <h2>Generate paper JSON</h2>
         <p class="hint">
-            Paste or upload an EndNote, BibTeX, or RIS file.
+            Paste EndNote, paste BibTeX/RIS, or upload an EndNote/BibTeX/RIS file.
         </p>
 
         <div class="form-row">
@@ -674,7 +658,7 @@ function renderTags(topicData) {
         (high.midTags || []).forEach(mid => {
             const midIndicator = document.createElement("div");
             midIndicator.className = "mid-indicator";
-            midIndicator.innerHTML = `<span class="mid-fake-check">✓</span><span>${mid.label || mid.id || "Untitled mid tag"}</span>`;
+            midIndicator.innerHTML = `<span class="mid-arrow">↳</span><span>${mid.label || mid.id || "Untitled mid tag"}</span>`;
             midIndicator.dataset.level = "mid";
             midIndicator.dataset.label = mid.label || mid.id || "";
             midIndicator.dataset.id = mid.id || "";
@@ -736,7 +720,8 @@ function updateMidIndicators() {
         const hasSelectedLow = Array.from(document.querySelectorAll("#tagContainer input[data-level='low']:checked"))
             .some(box => box.dataset.parentMid === midLabel);
 
-        indicator.classList.toggle("active", hasSelectedLow);
+        const arrow = indicator.querySelector(".mid-arrow");
+        if (arrow) arrow.classList.toggle("active", hasSelectedLow);
     });
 }
 
