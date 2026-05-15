@@ -202,9 +202,9 @@
     }
 
     .tag-shell {
-        min-height: 220px;
-        max-height: 420px;
-        overflow: auto;
+        min-height: 250px;
+        overflow-x: auto;
+        overflow-y: hidden;
         border: 1px solid rgba(255,255,255,0.14);
         background: rgba(5, 10, 22, 0.36);
         border-radius: 14px;
@@ -213,25 +213,29 @@
 
     .tag-toolbar {
         display: flex;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         gap: 0.5rem;
         margin-bottom: 0.8rem;
-        position: sticky;
-        top: 0;
-        z-index: 2;
-        background: rgba(9, 15, 28, 0.94);
-        border-bottom: 1px solid rgba(255,255,255,0.10);
-        padding-bottom: 0.7rem;
+        min-width: max-content;
     }
 
     .tag-toolbar button { padding: 0.55rem 0.7rem; font-size: 0.82rem; box-shadow: none; }
+
+    #tagContainer {
+        display: flex;
+        gap: 0.75rem;
+        align-items: stretch;
+        min-width: max-content;
+    }
 
     .tag-group {
         border: 1px solid rgba(255,255,255,0.12);
         background: rgba(255,255,255,0.06);
         border-radius: 14px;
         padding: 0.75rem;
-        margin-bottom: 0.75rem;
+        width: 310px;
+        min-width: 310px;
+        max-width: 310px;
     }
 
     .tag-group h3 {
@@ -301,13 +305,6 @@
 
         <div class="form-row">
             <div class="form-field small">
-                <label class="field-title" for="fileNameInput">Output filename</label>
-                <input id="fileNameInput" type="text" value="paper-001.json" placeholder="paper-001.json">
-            </div>
-        </div>
-
-        <div class="form-row">
-            <div class="form-field small">
                 <label class="field-title" for="paperFormat">Input format</label>
                 <select id="paperFormat" aria-label="Paper citation format">
                     <option value="auto">Auto-detect</option>
@@ -317,7 +314,7 @@
                 </select>
             </div>
             <div class="form-field">
-                <label class="field-title" for="citationFileInput">Optional citation file</label>
+                <label class="field-title" for="citationFileInput">Upload citation file</label>
                 <input id="citationFileInput" type="file" accept=".enw,.txt,.bib,.ris,.ciw,.xml,.json,text/plain,application/x-bibtex,application/json">
             </div>
         </div>
@@ -354,10 +351,10 @@
             </div>
         </div>
 
-        <div class="form-row">
-            <div class="form-field">
-                <label class="field-title" for="summaryInput">Optional summary</label>
-                <textarea id="summaryInput" style="min-height: 100px;" placeholder="Optional short summary. Leave empty if you want summary to stay blank."></textarea>
+        <div class="form-row" style="margin-top: 1rem; margin-bottom: 0;">
+            <div class="form-field small">
+                <label class="field-title" for="fileNameInput">Output filename</label>
+                <input id="fileNameInput" type="text" value="paper-001.json" placeholder="paper-001.json">
             </div>
         </div>
 
@@ -432,7 +429,6 @@ const fileNameInput = document.getElementById("fileNameInput");
 const citationFileInput = document.getElementById("citationFileInput");
 const tagContainer = document.getElementById("tagContainer");
 const tagCount = document.getElementById("tag-count");
-const summaryInput = document.getElementById("summaryInput");
 
 const formatInput = document.getElementById("formatInput");
 const endnoteOutput = document.getElementById("endnoteOutput");
@@ -687,7 +683,7 @@ function updateSelectedTagCount() {
 }
 
 async function loadTopicTags() {
-    tagContainer.innerHTML = '<p class="hint">Loading topic tags from <code>../bga2o3/topic_tags.json</code>...</p>';
+    tagContainer.innerHTML = '<p class="hint">Loading topic tags from <code>../bga2o3/topic-tags.json</code>...</p>';
     updateSelectedTagCount();
 
     try {
@@ -724,7 +720,7 @@ function generatePaperJson() {
     const paperJson = {
         id: safeJsonIdFromFilename(filename),
         topicTags: getSelectedTags(),
-        summary: summaryInput.value.trim(),
+        summary: "",
         citationRaw: normalized.citation
     };
 
@@ -815,11 +811,6 @@ paperInput.addEventListener("input", () => {
     updatePaperCounts();
 });
 
-summaryInput.addEventListener("input", () => {
-    if (paperOutput.value) paperOutput.value = "";
-    updatePaperCounts();
-});
-
 formatInput.addEventListener("input", () => {
     if (endnoteOutput.value) endnoteOutput.value = "";
     updateFormatCounts();
@@ -839,7 +830,6 @@ document.getElementById("copyCitationRawBtn").addEventListener("click", () => {
 document.getElementById("clearPaperBtn").addEventListener("click", () => {
     paperInput.value = "";
     paperOutput.value = "";
-    summaryInput.value = "";
     citationFileInput.value = "";
     lastGeneratedJson = "";
     updatePaperCounts();
