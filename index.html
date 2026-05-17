@@ -296,30 +296,30 @@
         .pub-doi a:hover{ text-decoration: underline; }
         .pub-tags{
             display: grid;
-            grid-template-columns: repeat(4, max-content);
+            grid-template-columns: repeat(5, max-content);
             justify-content: center;
-            gap: 0.35rem;
+            gap: 0.28rem;
             max-width: 100%;
             margin: 0.2rem auto 0;
         }
 
         .pub-tag{
-            padding: 0.22rem 0.65rem;
+            padding: 0.14rem 0.48rem;
             border-radius: 999px;
             border: 1px solid rgba(148,163,184,0.45);
             background: rgba(148,163,184,0.18);
             color: #dbeafe;
-            font-size: 0.76rem;
+            font-size: 0.74rem;
             font-weight: 700;
             line-height: 1.2;
         }
-        .pub-tag-high{ border-color: rgba(147,197,253,0.72); background: rgba(37,99,235,0.34); color: #eff6ff; }
-        .pub-tag-low-0{ border-color: rgba(45,212,191,0.62); background: rgba(20,184,166,0.20); color: #ccfbf1; }
-        .pub-tag-low-1{ border-color: rgba(167,139,250,0.62); background: rgba(124,58,237,0.20); color: #ede9fe; }
-        .pub-tag-low-2{ border-color: rgba(251,191,36,0.62); background: rgba(245,158,11,0.18); color: #fef3c7; }
-        .pub-tag-low-3{ border-color: rgba(244,114,182,0.62); background: rgba(219,39,119,0.18); color: #fce7f3; }
-        .pub-tag-low-4{ border-color: rgba(74,222,128,0.62); background: rgba(34,197,94,0.18); color: #dcfce7; }
-        .pub-tag-low-5{ border-color: rgba(56,189,248,0.62); background: rgba(14,165,233,0.18); color: #e0f2fe; }
+        .pub-tag-high{ border-color: rgba(147,197,253,0.42); background: rgba(37,99,235,0.16); color: #dbeafe; }
+        .pub-tag-low-0{ border-color: rgba(45,212,191,0.34); background: rgba(20,184,166,0.10); color: #ccfbf1; }
+        .pub-tag-low-1{ border-color: rgba(167,139,250,0.34); background: rgba(124,58,237,0.10); color: #ede9fe; }
+        .pub-tag-low-2{ border-color: rgba(251,191,36,0.34); background: rgba(245,158,11,0.10); color: #fef3c7; }
+        .pub-tag-low-3{ border-color: rgba(244,114,182,0.34); background: rgba(219,39,119,0.10); color: #fce7f3; }
+        .pub-tag-low-4{ border-color: rgba(74,222,128,0.34); background: rgba(34,197,94,0.10); color: #dcfce7; }
+        .pub-tag-low-5{ border-color: rgba(56,189,248,0.34); background: rgba(14,165,233,0.10); color: #e0f2fe; }
         .pub-empty{
             margin: 0.15rem 0 0.3rem;
             color: #94a3b8;
@@ -922,28 +922,21 @@
         const getTopicTags = (paper) => {
             const topicTags = paper.topicTags && typeof paper.topicTags === "object" ? paper.topicTags : {};
             const highTags = Array.isArray(topicTags.high) ? topicTags.high : [];
-            const midTags = Array.isArray(topicTags.mid) ? topicTags.mid : [];
             const lowSource = topicTags.low;
 
             const tags = highTags.map(label => ({ label, className: "pub-tag-high" }));
+            const lowTags = [];
 
             if (lowSource && typeof lowSource === "object" && !Array.isArray(lowSource)) {
-                Object.values(lowSource).forEach((group, groupIndex) => {
-                    const lowTags = Array.isArray(group) ? group : [group];
-                    lowTags.filter(Boolean).forEach(label => {
-                        tags.push({ label, className: `pub-tag-low-${groupIndex % 6}` });
-                    });
+                Object.values(lowSource).forEach((group) => {
+                    (Array.isArray(group) ? group : [group]).filter(Boolean).forEach(label => lowTags.push(label));
                 });
-                return tags;
+            } else if (Array.isArray(lowSource)) {
+                lowSource.filter(Boolean).forEach(label => lowTags.push(label));
             }
 
-            const lowTags = Array.isArray(lowSource) ? lowSource : [];
-            const groupCount = Math.max(midTags.length, 1);
-            const groupSize = Math.max(1, Math.ceil(lowTags.length / groupCount));
-
             lowTags.forEach((label, index) => {
-                const groupIndex = Math.min(Math.floor(index / groupSize), groupCount - 1);
-                tags.push({ label, className: `pub-tag-low-${groupIndex % 6}` });
+                tags.push({ label, className: `pub-tag-low-${index % 6}` });
             });
 
             return tags;
