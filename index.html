@@ -891,7 +891,7 @@
 
         const getPublicationSortTime = (paper) => {
             const citation = parseEndNoteCitation(paper.citationRaw || "");
-            const raw = paper.published_date || citation.year || "";
+            const raw = getPaperDate(paper) || citation.year || "";
             const parsed = new Date(raw);
             if (!isNaN(parsed.getTime())) return parsed.getTime();
 
@@ -901,18 +901,24 @@
 
         const renderPublicationEntry = (paper) => {
             const citation = parseEndNoteCitation(paper.citationRaw || "");
-            const typeValue = paper.type || "";
+            const typeValue = getPaperType(paper);
 
             const pubTitle = htmlWithCitationBreaks(citation.title || "Untitled publication");
             const authors = htmlWithCitationBreaks(citation.authors.map(formatAuthorName).join(", "));
             const venue = htmlWithCitationBreaks(cleanJournalName(citation, typeValue));
-            const publishedDate = htmlWithBreaks(formatPublishedDate(paper.published_date || citation.year || ""));
+            const publishedDate = htmlWithBreaks(formatPublishedDate(getPaperDate(paper) || citation.year || ""));
             const doiUrlRaw = citation.url || (citation.doi ? `https://doi.org/${citation.doi}` : "");
             const doiUrl = escapeHTML(doiUrlRaw.trim());
             const doiLabel = citation.doi ? `DOI: ${htmlWithBreaks(citation.doi)}` : "DOI";
-            const tags = Array.isArray(paper.tags)
-                ? paper.tags
-                : String(paper.tags || "").split(",").map(t => t.trim()).filter(Boolean);
+            const tags = paper.topicTags && typeof paper.topicTags === "object"
+                ? [
+                    ...(Array.isArray(paper.topicTags.high) ? paper.topicTags.high : []),
+                    ...(Array.isArray(paper.topicTags.mid) ? paper.topicTags.mid : []),
+                    ...(Array.isArray(paper.topicTags.low) ? paper.topicTags.low : [])
+                  ]
+                : (Array.isArray(paper.tags)
+                    ? paper.tags
+                    : String(paper.tags || "").split(",").map(t => t.trim()).filter(Boolean));
             const tagsHTML = tags.map(tag => `<span class="pub-tag">${htmlWithBreaks(tag)}</span>`).join("");
 
             return `
@@ -938,11 +944,25 @@
             const title = `<h3>${htmlWithBreaks(data.h3 || "Publications")}</h3>`;
             const intro = data.intro ? `<p class="pub-intro">${htmlWithBreaks(data.intro)}</p>` : "";
 
-            const manifestFiles =
+            const manifestEntriesRaw =
                 Array.isArray(data.paper_jsons) ? data.paper_jsons :
                 Array.isArray(data.papers) ? data.papers :
                 Array.isArray(data.files) ? data.files :
                 [];
+
+            // New manifest format supports per-paper metadata here instead of inside each paper JSON:
+            // { "file": "paper-001.json", "type": "journal", "published_date": "2026-04-21" }
+            // Old string-only entries are still supported as a fallback.
+            const manifestEntries = manifestEntriesRaw.map((entry) => {
+                if (typeof entry === "string") {
+                    return { file: entry, type: "", published_date: "" };
+                }
+                return {
+                    file: entry.file || entry.path || entry.url || "",
+                    type: entry.type || entry.category || "",
+                    published_date: entry.published_date || entry.date || entry.publishedDate || ""
+                };
+            }).filter(entry => entry.file);
 
             const typeOrder =
                 Array.isArray(data.publication_types) ? data.publication_types :
@@ -951,23 +971,30 @@
 
             const basePath = jsonUrl.includes("/") ? jsonUrl.slice(0, jsonUrl.lastIndexOf("/") + 1) : "";
 
-            const papers = (await Promise.all(manifestFiles.map(async (fileName) => {
+            const papers = (await Promise.all(manifestEntries.map(async (entry) => {
                 try {
-                    const paperRes = await fetch(basePath + fileName, { cache: "no-store" });
+                    const paperRes = await fetch(basePath + entry.file, { cache: "no-store" });
                     if (!paperRes.ok) return null;
-                    return await paperRes.json();
+                    const paperData = await paperRes.json();
+                    return { ...paperData, __manifest: entry };
                 } catch (e) {
                     return null;
                 }
             }))).filter(Boolean);
 
+            const getPaperType = (paper) =>
+                paper.__manifest?.type || paper.type || "";
+
+            const getPaperDate = (paper) =>
+                paper.__manifest?.published_date || paper.published_date || paper.date || "";
+
             const sectionTypes = typeOrder.length
                 ? typeOrder
-                : [...new Set(papers.map(p => p.type).filter(Boolean))];
+                : [...new Set(papers.map(getPaperType).filter(Boolean))];
 
             const sectionsHTML = sectionTypes.map((type) => {
                 const entries = papers
-                    .filter(p => String(p.type || "").toLowerCase().trim() === String(type).toLowerCase().trim())
+                    .filter(p => String(getPaperType(p) || "").toLowerCase().trim() === String(type).toLowerCase().trim())
                     .sort((a, b) => getPublicationSortTime(b) - getPublicationSortTime(a));
 
                 const entriesHTML = entries.length
