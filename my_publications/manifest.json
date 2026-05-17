@@ -1,3 +1,4 @@
+
 {
   "last_updated": "2026-05-14",
   "h3": "Publications",
@@ -11,17 +12,65 @@
     "patents"
   ],
   "paper_jsons": [
-    "paper-001.json",
-    "paper-002.json",
-    "paper-003.json",
-    "paper-004.json",
-    "paper-005.json",
-    "paper-006.json",
-    "paper-007.json",
-    "paper-008.json",
-    "paper-009.json",
-    "prep-01.json",
-    "prep-02.json",
-    "prep-03.json"
+    {
+      "file": "paper-001.json",
+      "type": "journal",
+      "published_date": "2026-04-21"
+    },
+    {
+      "file": "paper-002.json",
+      "type": "journal",
+      "published_date": ""
+    },
+    {
+      "file": "paper-003.json",
+      "type": "journal",
+      "published_date": ""
+    },
+    {
+      "file": "paper-004.json",
+      "type": "journal",
+      "published_date": ""
+    },
+    {
+      "file": "paper-005.json",
+      "type": "journal",
+      "published_date": ""
+    },
+    {
+      "file": "paper-006.json",
+      "type": "journal",
+      "published_date": ""
+    },
+    {
+      "file": "paper-007.json",
+      "type": "journal",
+      "published_date": ""
+    },
+    {
+      "file": "paper-008.json",
+      "type": "journal",
+      "published_date": ""
+    },
+    {
+      "file": "paper-009.json",
+      "type": "journal",
+      "published_date": ""
+    },
+    {
+      "file": "prep-01.json",
+      "type": "preprints",
+      "published_date": ""
+    },
+    {
+      "file": "prep-02.json",
+      "type": "preprints",
+      "published_date": ""
+    },
+    {
+      "file": "prep-03.json",
+      "type": "preprints",
+      "published_date": ""
+    }
   ]
 }
