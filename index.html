@@ -842,21 +842,15 @@
                 const code = trimmed.slice(1, 2);
                 const value = trimmed.slice(3).trim();
 
-                if (code === "A") {
-                    // Handles both repeated %A lines and one comma-separated %A line.
-                    if (value.includes(";")) {
-                        value.split(";").map(a => a.trim()).filter(Boolean).forEach(a => parsed.authors.push(a));
-                    } else {
-                        parsed.authors.push(value);
-                    }
-                }
+                if (code === "A") parsed.authors.push(value);
                 if (code === "T") parsed.title = value;
                 if (code === "J") parsed.journal = value;
                 if (code === "B") parsed.bookOrConference = value;
-                if (code === "D") parsed.year = value;
+                if (code === "D" && !parsed.year) parsed.year = value;
                 if (code === "V") parsed.volume = value;
                 if (code === "N") parsed.issue = value;
                 if (code === "1") parsed.pagesOrArticle = value;
+                if (code === "P") parsed.pagesOrArticle = value;
                 if (code === "R") parsed.doi = value;
                 if (code === "U") parsed.url = value;
             });
@@ -889,9 +883,11 @@
             return String(raw);
         };
 
+        const getManifestType = (paper) => paper.__manifest?.type || "";
+        const getManifestDate = (paper) => paper.__manifest?.published_date || "";
+
         const getPublicationSortTime = (paper) => {
-            const citation = parseEndNoteCitation(paper.citationRaw || "");
-            const raw = getPaperDate(paper) || citation.year || "";
+            const raw = getManifestDate(paper);
             const parsed = new Date(raw);
             if (!isNaN(parsed.getTime())) return parsed.getTime();
 
@@ -899,27 +895,29 @@
             return yearMatch ? new Date(`${yearMatch[0]}-01-01`).getTime() : -Infinity;
         };
 
+        const getTopicTags = (paper) => {
+            const topicTags = paper.topicTags && typeof paper.topicTags === "object" ? paper.topicTags : {};
+            return [
+                ...(Array.isArray(topicTags.high) ? topicTags.high : []),
+                ...(Array.isArray(topicTags.mid) ? topicTags.mid : []),
+                ...(Array.isArray(topicTags.low) ? topicTags.low : [])
+            ];
+        };
+
         const renderPublicationEntry = (paper) => {
             const citation = parseEndNoteCitation(paper.citationRaw || "");
-            const typeValue = getPaperType(paper);
+            const typeValue = getManifestType(paper);
 
             const pubTitle = htmlWithCitationBreaks(citation.title || "Untitled publication");
             const authors = htmlWithCitationBreaks(citation.authors.map(formatAuthorName).join(", "));
             const venue = htmlWithCitationBreaks(cleanJournalName(citation, typeValue));
-            const publishedDate = htmlWithBreaks(formatPublishedDate(getPaperDate(paper) || citation.year || ""));
+            const publishedDate = htmlWithBreaks(formatPublishedDate(getManifestDate(paper)));
             const doiUrlRaw = citation.url || (citation.doi ? `https://doi.org/${citation.doi}` : "");
             const doiUrl = escapeHTML(doiUrlRaw.trim());
             const doiLabel = citation.doi ? `DOI: ${htmlWithBreaks(citation.doi)}` : "DOI";
-            const tags = paper.topicTags && typeof paper.topicTags === "object"
-                ? [
-                    ...(Array.isArray(paper.topicTags.high) ? paper.topicTags.high : []),
-                    ...(Array.isArray(paper.topicTags.mid) ? paper.topicTags.mid : []),
-                    ...(Array.isArray(paper.topicTags.low) ? paper.topicTags.low : [])
-                  ]
-                : (Array.isArray(paper.tags)
-                    ? paper.tags
-                    : String(paper.tags || "").split(",").map(t => t.trim()).filter(Boolean));
-            const tagsHTML = tags.map(tag => `<span class="pub-tag">${htmlWithBreaks(tag)}</span>`).join("");
+            const tagsHTML = getTopicTags(paper)
+                .map(tag => `<span class="pub-tag">${htmlWithBreaks(tag)}</span>`)
+                .join("");
 
             return `
                 <div class="pub-entry">
@@ -944,25 +942,13 @@
             const title = `<h3>${htmlWithBreaks(data.h3 || "Publications")}</h3>`;
             const intro = data.intro ? `<p class="pub-intro">${htmlWithBreaks(data.intro)}</p>` : "";
 
-            const manifestEntriesRaw =
-                Array.isArray(data.paper_jsons) ? data.paper_jsons :
-                Array.isArray(data.papers) ? data.papers :
-                Array.isArray(data.files) ? data.files :
-                [];
-
-            // New manifest format supports per-paper metadata here instead of inside each paper JSON:
-            // { "file": "paper-001.json", "type": "journal", "published_date": "2026-04-21" }
-            // Old string-only entries are still supported as a fallback.
-            const manifestEntries = manifestEntriesRaw.map((entry) => {
-                if (typeof entry === "string") {
-                    return { file: entry, type: "", published_date: "" };
-                }
-                return {
-                    file: entry.file || entry.path || entry.url || "",
-                    type: entry.type || entry.category || "",
-                    published_date: entry.published_date || entry.date || entry.publishedDate || ""
-                };
-            }).filter(entry => entry.file);
+            const manifestEntries = (Array.isArray(data.paper_jsons) ? data.paper_jsons : [])
+                .filter(entry => entry && typeof entry === "object" && entry.file)
+                .map(entry => ({
+                    file: entry.file,
+                    type: entry.type || "",
+                    published_date: entry.published_date || ""
+                }));
 
             const typeOrder =
                 Array.isArray(data.publication_types) ? data.publication_types :
@@ -982,19 +968,13 @@
                 }
             }))).filter(Boolean);
 
-            const getPaperType = (paper) =>
-                paper.__manifest?.type || paper.type || "";
-
-            const getPaperDate = (paper) =>
-                paper.__manifest?.published_date || paper.published_date || paper.date || "";
-
             const sectionTypes = typeOrder.length
                 ? typeOrder
-                : [...new Set(papers.map(getPaperType).filter(Boolean))];
+                : [...new Set(papers.map(getManifestType).filter(Boolean))];
 
             const sectionsHTML = sectionTypes.map((type) => {
                 const entries = papers
-                    .filter(p => String(getPaperType(p) || "").toLowerCase().trim() === String(type).toLowerCase().trim())
+                    .filter(p => String(getManifestType(p)).toLowerCase().trim() === String(type).toLowerCase().trim())
                     .sort((a, b) => getPublicationSortTime(b) - getPublicationSortTime(a));
 
                 const entriesHTML = entries.length
@@ -1011,7 +991,7 @@
 
             panelEl.innerHTML = title + intro + sectionsHTML;
         } catch (e) {
-            panelEl.innerHTML = `<h3>Publications</h3><p class="pub-intro">Publication data could not be loaded. Check that my_publications/manifest.json and the paper JSON files are uploaded in the correct folder.</p>`;
+            panelEl.innerHTML = `<h3>Publications</h3><p class="pub-intro">Publication data could not be loaded. Check that my_publications/manifest.json and the listed paper JSON files are uploaded in the same folder.</p>`;
         }
     }
 
