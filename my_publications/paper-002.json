@@ -11,7 +11,7 @@
       "Schottky Diodes"
     ],
     "low": [
-      "Total Ionizing Dose",
+      "TID",
       "FNI",
       "Breakdown Measurement",
       "HVPE"
