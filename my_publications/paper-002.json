@@ -12,10 +12,9 @@
     ],
     "low": [
       "Total Ionizing Dose",
-      "Fast Neutron",
+      "FNI",
       "Breakdown Measurement",
-      "HVPE",
-      "Electro-thermal Annealing"
+      "HVPE"
     ]
   },
   "summary": "",
