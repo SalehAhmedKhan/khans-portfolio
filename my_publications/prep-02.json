@@ -1,0 +1,22 @@
+{
+  "id": "prep-02",
+  "topicTags": {
+    "high": [
+      "Thermal Management"
+    ],
+    "mid": [
+      "Diamond Integration",
+      "CVD Growth",
+      "Surface Characterization"
+    ],
+    "low": [
+      "MPCVD",
+      "Polycrystalline Diamond",
+      "SEM",
+      "AFM",
+      "β-Ga2O3"
+    ]
+  },
+  "summary": "",
+  "citationRaw": "%0 Generic\n%A Saleh Ahmed Khan\n%A Stephen Margiotta\n%A Ahmed Ibreljic\n%A A F M Anhar Uddin Bhuiyan\n%T High-Purity Diamond Integration on beta-Ga2O3 via Microwave Plasma CVD <br>for Enhanced Thermal Management\n%D 2025\n%U https://arxiv.org/abs/2511.08758"
+}

@@ -1,0 +1,21 @@
+{
+  "id": "prep-01",
+  "topicTags": {
+    "high": [
+      "Epitaxial Growth"
+    ],
+    "mid": [
+      "Pseudo-substrate Integration",
+      "Sputtering",
+      "Buffer Growth"
+    ],
+    "low": [
+      "SPE Ga2O3",
+      "Sapphire",
+      "SEM",
+      "TEM"
+    ]
+  },
+  "summary": "",
+  "citationRaw": "%0 Generic\n%A Guangying Wang\n%A Shuwen Xie\n%A William Brand\n%A Saleh Ahmed Khan\n%A Ahmed Ibreljic\n%A Darryl Shima\n%A <br>Yueying Ma\n%A Brahmani Challa\n%A Fikadu Alema\n%A Andrei Osinsky\n%A <br>Anhar Bhuiyan\n%A Ganesh Balakrishnan\n%A Shubhra S. Pasayat\n%T Single-crystalline high-quality beta-Ga2O3 pseudo-substrate on sapphire through sputtering <br>for epitaxial deposition\n%D 2025\n%U https://arxiv.org/abs/2512.09294"
+}
