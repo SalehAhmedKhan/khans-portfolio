@@ -37,7 +37,7 @@ export const FAITH_CARDS = [
     title: "Chapters of the Holy Quran",
     description:
       "A primer on the names of each surah of the holy Quran",
-    image: "./main_images/quran.png",
+    image: "./main_images/arabic.png",
     module: "js/tabs/surahs.js",
   },
   {
