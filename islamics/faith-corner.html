@@ -184,6 +184,11 @@
       -webkit-backdrop-filter: blur(12px);
       overflow: hidden;
       position: relative;
+      display: block;
+      min-height: 320px;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
     }
 
     .calligraphy-slot::before{
@@ -201,7 +206,41 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(90deg, rgba(2,6,23,0.55), rgba(2,6,23,0.15));
+      background: linear-gradient(180deg, rgba(2,6,23,0.18), rgba(2,6,23,0.48) 55%, rgba(2,6,23,0.78));
+    }
+
+    .wisdom-overlay{
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .wisdom-arabic{
+      font-family: 'Lateef', 'Scheherazade New', serif;
+      font-size: clamp(6rem, 11vw, 9rem);
+      font-weight: 700;
+      line-height: 1;
+      color: #f8fafc;
+      margin-bottom: 1rem;
+      text-shadow:
+        0 0 16px rgba(16,185,129,0.40),
+        0 0 40px rgba(16,185,129,0.25),
+        0 3px 10px rgba(2,6,23,0.85);
+    }
+
+    .wisdom-caption{
+      max-width: 620px;
+      font-family: 'Aref Ruqaa', 'Scheherazade New', serif;
+      font-size: 1.08rem;
+      line-height: 1.55;
+      color: #dbeafe;
+      text-shadow: 0 2px 8px rgba(2,6,23,0.85);
     }
 
     /* ===== Cards section ===== */
@@ -577,7 +616,15 @@
       <p class="last-updated">Last updated: 4 February 2026</p>
     </div>
 
-    <div class="calligraphy-slot"></div>
+    <a class="calligraphy-slot" href="islamics_hub/house_of_wisdom.html" aria-label="Open the House of Wisdom page">
+      <div class="wisdom-overlay">
+        <div class="wisdom-arabic">بيت الحكمة</div>
+        <div class="wisdom-caption">
+          Explore the legacy of the House of Wisdom — a calm gateway for Islamic
+          learning, reflection, and curiosity.
+        </div>
+      </div>
+    </a>
   </div>
 
   <!-- CARDS -->
