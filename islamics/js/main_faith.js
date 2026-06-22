@@ -46,6 +46,6 @@ export const FAITH_CARDS = [
     description:
       "The reflection of the months and theirs significance that make up the lunar calender",
     image: "./main_images/moon.png",
-    module: "js/tabs/month.js",
+    module: "js/tabs/months.js",
   },
 ];
