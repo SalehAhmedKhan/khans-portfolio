@@ -9,14 +9,6 @@ export const FAITH_CARDS = [
     module: "js/tabs/asma.js",
   },
   {
-    id: "luqman",
-    title: "Lessons of Luqman (AS)",
-    description:
-      "Practical wisdom from Surah Luqman — advice on gratitude, character, humility, prayer, and family life.",
-    image: "./main_images/luqman101.jpg",
-    module: "js/tabs/luqman.js",
-  },
-  {
     id: "arabic",
     title: "Essential Arabics for Every Muslim",
     description:
@@ -34,10 +26,26 @@ export const FAITH_CARDS = [
   },
   {
     id: "prophets",
-    title: "Stories of the Prophets",
+    title: "Names of the Prophets",
     description:
       "A calm, reflective collection of prophetic stories — focusing on lessons, patience, and timeless guidance for everyday life.",
     image: "./main_images/journey.png",
     module: "js/tabs/prophets.js",
   },
+  {
+    id: "surahs",
+    title: "Chapters of the Holy Quran",
+    description:
+      "A primer on the names of each surah of the holy Quran",
+    image: "./main_images/quran.png",
+    module: "js/tabs/surahs.js",
+  },
+  {
+    id: "months",
+    title: "Months of the Hijri Calender",
+    description:
+      "The reflection of the months and theirs significance that make up the lunar calender",
+    image: "./main_images/cresent.png",
+    module: "js/tabs/month.js",
+  }
 ];
