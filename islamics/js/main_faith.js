@@ -5,7 +5,7 @@ export const FAITH_CARDS = [
     title: "Al-Asma Ul Husna",
     description:
       "A guided space to learn, reflect on, and internalize the Beautiful Names — with meaning, context, and daily remembrance.",
-    image: "main_images/image_1.jpg",
+    image: "main_images/allah.jpg",
     module: "js/tabs/asma.js",
   },
   {
