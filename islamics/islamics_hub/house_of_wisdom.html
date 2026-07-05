@@ -20,13 +20,16 @@
 
     body{
       font-family: 'Aref Ruqaa', 'Scheherazade New', serif;
-      color: #f3f4e8;
+      color: #e5e7eb;
       overflow-x: hidden;
       position: relative;
       background:
-        radial-gradient(circle at 50% 5%, rgba(198,151,60,0.12), transparent 32%),
-        radial-gradient(circle at 50% 36%, rgba(16,185,129,0.13), transparent 38%),
-        linear-gradient(180deg, #092016 0%, #032015 38%, #002f21 68%, #012015 100%);
+        radial-gradient(circle at 50% 0%, rgba(16,185,129,0.20) 0%, rgba(16,185,129,0.08) 34%, rgba(16,185,129,0.02) 62%, rgba(16,185,129,0.00) 100%),
+        radial-gradient(circle at top left, rgba(16,185,129,0.22) 0%, rgba(16,185,129,0.10) 40%, rgba(16,185,129,0.03) 70%, rgba(16,185,129,0.00) 100%),
+        linear-gradient(180deg, #04130c 0%, #04130c 55%, #03100a 78%, #020617 100%);
+      background-repeat: no-repeat, no-repeat, no-repeat;
+      background-size: 100% 100%, 100% 100%, 100% 100%;
+      background-attachment: fixed, fixed, fixed;
     }
 
     body::before{
@@ -35,13 +38,9 @@
       inset: 0;
       pointer-events: none;
       z-index: 0;
-      opacity: 0.13;
+      opacity: 0.06;
       background-image:
-        linear-gradient(rgba(218,177,91,0.12) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(218,177,91,0.12) 1px, transparent 1px),
-        radial-gradient(circle at 12px 12px, rgba(218,177,91,0.14) 1px, transparent 1.5px);
-      background-size: 42px 42px, 42px 42px, 24px 24px;
-      mask-image: linear-gradient(180deg, transparent 0%, black 22%, black 88%, transparent 100%);
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.06) 0px, rgba(255,255,255,0.06) 1px, rgba(0,0,0,0.00) 2px, rgba(0,0,0,0.00) 4px);
     }
 
     body > *{
@@ -52,10 +51,10 @@
     h1, h2, h3, .card h3{
       font-family: 'Aref Ruqaa', 'Scheherazade New', serif;
       letter-spacing: 0.025em;
-      -webkit-text-stroke: 0.25px rgba(255,246,210,0.38);
+      -webkit-text-stroke: 0.25px rgba(209,250,229,0.45);
       text-shadow:
-        0 1px 0 rgba(2,6,23,0.75),
-        0 0 18px rgba(198,151,60,0.20);
+        0 1px 0 rgba(2,6,23,0.65),
+        0 0 10px rgba(16,185,129,0.18);
     }
 
     p, a, .eyebrow, .back-btn, .card p{
@@ -66,7 +65,7 @@
     .page-shell{
       width: 100%;
       margin: 0;
-      padding: 0 0 2.4rem;
+      padding: 0 0 2.2rem;
     }
 
     .landing-card{
@@ -74,12 +73,15 @@
       width: 100%;
       min-height: 100vh;
       overflow: hidden;
-      background: transparent;
+      background:
+        radial-gradient(circle at 50% 26%, rgba(16,185,129,0.10), transparent 42%),
+        linear-gradient(180deg, transparent 0%, #04130c 46%, #03100a 76%, #020617 100%);
     }
 
+    /* ===== Top image / intro: kept as requested ===== */
     .hero-image{
       position: relative;
-      min-height: 66vh;
+      min-height: 76vh;
       width: 100%;
       display: grid;
       place-items: center;
@@ -106,9 +108,9 @@
       inset: 0;
       z-index: -2;
       background:
-        radial-gradient(circle at center 43%, rgba(1,32,21,0.10) 0%, rgba(1,32,21,0.28) 38%, rgba(1,32,21,0.80) 74%, rgba(1,32,21,0.98) 100%),
-        linear-gradient(180deg, rgba(0,0,0,0.10) 0%, rgba(3,32,21,0.18) 45%, #003421 100%),
-        linear-gradient(90deg, rgba(0,42,27,0.90) 0%, rgba(0,42,27,0.36) 14%, transparent 30%, transparent 70%, rgba(0,42,27,0.36) 86%, rgba(0,42,27,0.90) 100%);
+        radial-gradient(circle at center 40%, rgba(4,19,12,0.04) 0%, rgba(4,19,12,0.20) 42%, rgba(4,19,12,0.76) 78%, #04130c 100%),
+        linear-gradient(180deg, rgba(0,0,0,0.10) 0%, rgba(4,19,12,0.18) 36%, rgba(4,19,12,0.60) 64%, rgba(4,19,12,0.92) 86%, #04130c 100%),
+        linear-gradient(90deg, rgba(4,19,12,0.92) 0%, rgba(4,19,12,0.48) 13%, transparent 31%, transparent 69%, rgba(4,19,12,0.48) 87%, rgba(4,19,12,0.92) 100%);
     }
 
     .hero-fade{
@@ -116,9 +118,10 @@
       left: 0;
       right: 0;
       bottom: -1px;
-      height: 28vh;
+      height: 52vh;
       z-index: -1;
-      background: linear-gradient(180deg, transparent 0%, rgba(0,52,33,0.80) 48%, #003421 100%);
+      background:
+        linear-gradient(180deg, transparent 0%, rgba(4,19,12,0.20) 20%, rgba(4,19,12,0.72) 58%, #04130c 88%, #04130c 100%);
     }
 
     .intro-panel{
@@ -134,35 +137,25 @@
     }
 
     .eyebrow{
-      color: #e7c87a;
-      font-size: 0.98rem;
-      margin-bottom: 0.7rem;
+      color: #a7f3d0;
+      font-family: 'Lateef', 'Scheherazade New', serif;
+      font-size: clamp(3.4rem, 7vw, 6.4rem);
+      line-height: 0.85;
+      margin-bottom: 0.25rem;
       opacity: 0.95;
       text-shadow: 0 2px 8px rgba(0,0,0,0.8);
     }
 
     h1{
       margin: 0;
-      font-size: clamp(3rem, 7vw, 6rem);
-      line-height: 0.98;
-      color: #fff9df;
-    }
-
-    .arabic-title{
-      font-family: 'Lateef', 'Scheherazade New', serif;
-      font-size: clamp(4.4rem, 10vw, 8rem);
-      line-height: 0.85;
-      color: #fff8df;
-      margin: 0.35rem 0 0.75rem;
-      text-shadow:
-        0 0 18px rgba(198,151,60,0.42),
-        0 0 44px rgba(16,185,129,0.22),
-        0 4px 12px rgba(2,6,23,0.90);
+      font-size: clamp(2.05rem, 4.1vw, 3.7rem);
+      line-height: 1.04;
+      color: #d1fae5;
     }
 
     p{
       margin: 0.45rem 0;
-      color: #f3f0dc;
+      color: #cbd5f5;
       line-height: 1.72;
       font-size: 1.08rem;
       text-shadow: 0 2px 7px rgba(0,0,0,0.72);
@@ -173,32 +166,15 @@
       margin-left: auto;
       margin-right: auto;
       font-size: clamp(1rem, 1.55vw, 1.22rem);
+      color: #f3f4e8;
     }
 
-    .divider{
-      width: 150px;
-      height: 1px;
-      margin: 1.35rem auto;
-      background: linear-gradient(to right, transparent, #d6ad58, transparent);
-      position: relative;
-    }
-
-    .divider::after{
-      content: "◇";
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -52%);
-      color: #d6ad58;
-      font-size: 0.8rem;
-      background: rgba(0,38,25,0.55);
-      padding: 0 0.35rem;
-    }
-
+    /* ===== Original-style card/button layout ===== */
     .hero-content{
+      padding: 0 1.6rem 0;
+      margin-top: -7.5rem;
       position: relative;
-      margin-top: -8vh;
-      padding: 0 clamp(1rem, 6vw, 7rem) 0;
+      z-index: 2;
     }
 
     .cards-section{
@@ -206,116 +182,142 @@
     }
 
     .section-title{
-      text-align: center;
-      padding: 0.3rem 0 1.3rem;
+      display: none;
     }
 
-    .section-title h2{
-      margin: 0;
-      color: #fff3c7;
-      font-size: clamp(1.55rem, 3vw, 2.1rem);
+    .cards-shell{
+      width: 100%;
+      margin: 0 auto;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      overflow: hidden;
+      padding: 0;
     }
 
     .cards-grid{
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: clamp(1rem, 2vw, 1.6rem);
-      width: min(1120px, 100%);
+      gap: 1rem;
+      width: 100%;
       margin: 0 auto;
     }
 
+    .card-link{
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      height: 100%;
+      border-radius: 16px;
+      outline: none;
+      background: transparent;
+      border: none;
+      padding: 0;
+      text-align: left;
+      cursor: pointer;
+    }
+
     .card{
-      position: relative;
-      min-height: 270px;
-      padding: 1.35rem 1.35rem 1.4rem;
-      background:
-        radial-gradient(circle at 50% 0%, rgba(16,185,129,0.10), transparent 55%),
-        rgba(0,52,33,0.70);
-      border: 1px solid rgba(214,173,88,0.72);
-      border-radius: 18px;
-      box-shadow: 0 22px 54px rgba(0,0,0,0.28), inset 0 0 36px rgba(0,0,0,0.18);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      background: rgba(2,6,23,0.55);
+      border: 1px solid rgba(148,163,184,0.18);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.45);
+      display: flex;
+      flex-direction: column;
+      min-height: 320px;
+      height: 100%;
       transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .card-link:hover .card{
+      transform: translateY(-2px);
+      border-color: rgba(16,185,129,0.35);
+      background: rgba(2,6,23,0.62);
+    }
+
+    .card-media{
+      height: 150px;
+      background: rgba(15,23,42,0.55);
+      position: relative;
       overflow: hidden;
     }
 
-    .card::before,
-    .card::after{
+    .card-media::before{
       content: "";
       position: absolute;
-      width: 28px;
-      height: 28px;
-      border-color: #d6ad58;
-      border-style: solid;
-      opacity: 0.90;
+      inset: 0;
+      background-image: var(--img, none);
+      background-size: cover;
+      background-position: center;
+      opacity: 0.95;
     }
 
-    .card::before{
-      left: 10px;
-      top: 10px;
-      border-width: 1px 0 0 1px;
-      border-radius: 10px 0 0 0;
+    .card-media::after{
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(2,6,23,0.10), rgba(2,6,23,0.70));
     }
 
-    .card::after{
-      right: 10px;
-      bottom: 10px;
-      border-width: 0 1px 1px 0;
-      border-radius: 0 0 10px 0;
-    }
-
-    .card:hover{
-      transform: translateY(-2px);
-      border-color: rgba(255,216,128,0.95);
-      background: rgba(0,56,35,0.78);
+    .card-body{
+      padding: 0.95rem 1rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      flex: 1;
     }
 
     .card h3{
-      margin: 0 0 0.6rem;
-      color: #fff3c7;
-      font-size: 1.25rem;
+      margin: 0;
+      font-size: 1.16rem;
+      font-weight: 700;
+      color: #d1fae5;
     }
 
     .card p{
       margin: 0;
       font-size: 1rem;
-      color: #eee8c9;
+      line-height: 1.65;
+      color: #cbd5f5;
     }
 
     .bottom-cta{
       display: flex;
       justify-content: center;
-      padding: 2.5rem 1rem 0;
+      padding: 2.2rem 1.6rem 0;
     }
 
     .back-btn{
-      padding: 0.7rem 1.35rem;
+      padding: 0.65rem 1.35rem;
       border-radius: 999px;
-      border: 1px solid rgba(214,173,88,0.82);
-      background: rgba(0,48,31,0.76);
-      color: #f9d982;
+      border: 1px solid rgba(16,185,129,0.45);
+      background: rgba(2,6,23,0.6);
+      color: #a7f3d0;
       text-decoration: none;
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 600;
-      box-shadow: 0 14px 36px rgba(0,0,0,0.35);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
     }
 
     .back-btn:hover{
-      background: rgba(12,79,52,0.82);
+      background: rgba(16,185,129,0.18);
     }
 
     @media (max-width: 900px){
-      .hero-image{ min-height: 64vh; }
-      .hero-content{ margin-top: -5vh; padding-left: 1.1rem; padding-right: 1.1rem; }
+      .hero-image{ min-height: 72vh; }
+      .hero-content{ margin-top: -5.5rem; padding-left: 1.2rem; padding-right: 1.2rem; }
       .cards-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
     @media (max-width: 640px){
-      .hero-image{ min-height: 620px; }
+      .hero-image{ min-height: 640px; }
       .intro-panel{ width: min(100% - 1.2rem, 760px); margin-top: 4vh; }
       .cards-grid{ grid-template-columns: 1fr; }
-      .card{ min-height: 230px; }
+      .card{ min-height: 300px; }
     }
   </style>
 </head>
@@ -325,9 +327,8 @@
     <section class="landing-card" aria-label="House of Wisdom landing area">
       <div class="hero-image">
         <article class="intro-panel">
-          <div class="eyebrow">Bayt al-Hikmah · بيت الحكمة</div>
+          <div class="eyebrow" lang="ar" dir="rtl">بيت الحكمة</div>
           <h1>The House<br>of Wisdom</h1>
-          <div class="divider"></div>
           <p>
             A legacy of knowledge, curiosity, and discovery. The House of Wisdom in Baghdad was one of the greatest centers of learning in the history of civilization — where scholars, thinkers, and visionaries came together to translate, preserve, and expand the world's knowledge.
           </p>
@@ -337,40 +338,68 @@
 
       <div class="hero-content">
         <section class="cards-section" aria-label="House of Wisdom cards">
-          <div class="section-title">
-            <h2>Study Chambers</h2>
-          </div>
+          <div class="cards-shell">
+            <div class="cards-grid">
+              <a class="card-link" href="#">
+                <article class="card">
+                  <div class="card-media" style="--img: url('../main_images/arabic.png'), url('arabic.png');"></div>
+                  <div class="card-body">
+                    <h3>Prophets & Timelines</h3>
+                    <p>Short guides to the lives, relationships, and historical order of the prophets named in the Qur'an.</p>
+                  </div>
+                </article>
+              </a>
 
-          <div class="cards-grid">
-            <article class="card">
-              <h3>Prophets & Timelines</h3>
-              <p>Short guides to the lives, relationships, and historical order of the prophets named in the Qur'an.</p>
-            </article>
+              <a class="card-link" href="#">
+                <article class="card">
+                  <div class="card-media" style="--img: url('../main_images/asma.png'), url('asma.png');"></div>
+                  <div class="card-body">
+                    <h3>Names & Meanings</h3>
+                    <p>A place for the names of surahs, key Arabic terms, and symbolic meanings that can be expanded later.</p>
+                  </div>
+                </article>
+              </a>
 
-            <article class="card">
-              <h3>Names & Meanings</h3>
-              <p>A place for the names of surahs, key Arabic terms, and symbolic meanings that can be expanded later.</p>
-            </article>
+              <a class="card-link" href="#">
+                <article class="card">
+                  <div class="card-media" style="--img: url('../main_images/dhikr and dua.png'), url('dhikr and dua.png');"></div>
+                  <div class="card-body">
+                    <h3>Duas & Remembrance</h3>
+                    <p>Daily duas, dhikr, short reflections, and context notes for practical spiritual grounding.</p>
+                  </div>
+                </article>
+              </a>
 
-            <article class="card">
-              <h3>Duas & Remembrance</h3>
-              <p>Daily duas, dhikr, short reflections, and context notes for practical spiritual grounding.</p>
-            </article>
+              <a class="card-link" href="#">
+                <article class="card">
+                  <div class="card-media" style="--img: url('../main_images/quran.png'), url('quran.png');"></div>
+                  <div class="card-body">
+                    <h3>Qur'anic Themes</h3>
+                    <p>Connections between recurring themes: mercy, patience, justice, gratitude, repentance, and trust in Allah.</p>
+                  </div>
+                </article>
+              </a>
 
-            <article class="card">
-              <h3>Qur'anic Themes</h3>
-              <p>Connections between recurring themes: mercy, patience, justice, gratitude, repentance, and trust in Allah.</p>
-            </article>
+              <a class="card-link" href="#">
+                <article class="card">
+                  <div class="card-media" style="--img: url('../main_images/scroll.png'), url('scroll.png');"></div>
+                  <div class="card-body">
+                    <h3>Arabic Essentials</h3>
+                    <p>Foundational Arabic vocabulary and phrase-boundary notes for reading with better understanding.</p>
+                  </div>
+                </article>
+              </a>
 
-            <article class="card">
-              <h3>Arabic Essentials</h3>
-              <p>Foundational Arabic vocabulary and phrase-boundary notes for reading with better understanding.</p>
-            </article>
-
-            <article class="card">
-              <h3>Reflections Archive</h3>
-              <p>A calm card space for future notes, mini essays, summaries, and personal learning checkpoints.</p>
-            </article>
+              <a class="card-link" href="#">
+                <article class="card">
+                  <div class="card-media" style="--img: url('../main_images/houseofwisdom.png'), url('houseofwisdom.png');"></div>
+                  <div class="card-body">
+                    <h3>Reflections Archive</h3>
+                    <p>A calm card space for future notes, mini essays, summaries, and personal learning checkpoints.</p>
+                  </div>
+                </article>
+              </a>
+            </div>
           </div>
         </section>
       </div>
