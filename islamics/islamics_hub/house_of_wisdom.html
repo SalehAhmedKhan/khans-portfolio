@@ -78,6 +78,137 @@
         linear-gradient(180deg, transparent 0%, #04130c 46%, #03100a 76%, #020617 100%);
     }
 
+
+    /* ===== Hanging archive banners: screen-edge tapestry style ===== */
+    .archive-banners{
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 34vh;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .banner-cluster{
+      position: absolute;
+      top: 0;
+      display: flex;
+      gap: clamp(0.7rem, 1.35vw, 1.05rem);
+      align-items: flex-start;
+    }
+
+    .banner-cluster.left{
+      left: clamp(0.55rem, 2.2vw, 2.3rem);
+    }
+
+    .banner-cluster.right{
+      right: clamp(0.55rem, 2.2vw, 2.3rem);
+    }
+
+    .archive-banner{
+      width: clamp(82px, 7.6vw, 112px);
+      min-height: clamp(152px, 18vh, 202px);
+      padding: 1.45rem 0.78rem 2.05rem;
+      box-sizing: border-box;
+      text-align: center;
+      color: #f8f0c8;
+      background:
+        radial-gradient(circle at 50% 12%, rgba(255,232,166,0.20), transparent 42%),
+        linear-gradient(90deg, rgba(255,232,166,0.12), transparent 19%, transparent 81%, rgba(255,232,166,0.12)),
+        repeating-linear-gradient(135deg, rgba(255,232,166,0.035) 0 7px, rgba(0,0,0,0.00) 7px 16px),
+        linear-gradient(180deg, rgba(13,70,47,0.96), rgba(3,34,23,0.94));
+      border: 1px solid rgba(218,177,91,0.72);
+      border-top: 0;
+      border-radius: 0;
+      clip-path: polygon(0 0, 100% 0, 100% calc(100% - 25px), 50% 100%, 0 calc(100% - 25px));
+      box-shadow:
+        0 18px 42px rgba(0,0,0,0.44),
+        inset 0 0 0 1px rgba(255,246,210,0.09),
+        inset 0 0 36px rgba(0,0,0,0.22);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transform-origin: top center;
+      animation: bannerDropIn 0.9s cubic-bezier(.18,.78,.22,1) both;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .archive-banner:nth-child(2){
+      margin-top: 1.1rem;
+      animation-delay: 0.10s;
+    }
+
+    .archive-banner:nth-child(3){
+      margin-top: 0.35rem;
+      animation-delay: 0.20s;
+    }
+
+    .archive-banner::before,
+    .archive-banner::after{
+      content: none;
+    }
+
+    .archive-banner .banner-number::before{
+      content: "✦";
+      display: block;
+      margin-bottom: 0.42rem;
+      color: #f7d98a;
+      font-size: 0.68rem;
+      line-height: 1;
+      text-shadow: 0 0 10px rgba(247,217,138,0.38);
+    }
+
+    .banner-number{
+      display: block;
+      font-size: clamp(1.45rem, 2.55vw, 2.08rem);
+      line-height: 1;
+      font-weight: 700;
+      color: #fff3c7;
+      text-shadow:
+        0 1px 0 rgba(0,0,0,0.60),
+        0 0 15px rgba(218,177,91,0.28);
+    }
+
+    .banner-label{
+      display: block;
+      margin-top: 0.48rem;
+      font-size: clamp(0.72rem, 0.98vw, 0.90rem);
+      line-height: 1.12;
+      color: #d1fae5;
+      text-shadow: 0 1px 6px rgba(0,0,0,0.70);
+    }
+
+    .archive-banner .banner-label::before,
+    .archive-banner .banner-label::after{
+      content: "";
+      display: block;
+      width: 42%;
+      height: 1px;
+      margin: 0.34rem auto;
+      background: linear-gradient(to right, transparent, rgba(218,177,91,0.70), transparent);
+    }
+
+    @keyframes bannerDropIn{
+      0%{
+        opacity: 0;
+        transform: translateY(-38px) scaleY(0.94);
+      }
+      70%{
+        opacity: 1;
+        transform: translateY(4px) scaleY(1.01);
+      }
+      100%{
+        opacity: 1;
+        transform: translateY(0) scaleY(1);
+      }
+    }
+
+
+    @media (prefers-reduced-motion: reduce){
+      .archive-banner{ animation: none; }
+    }
+
     /* ===== Top image / intro: kept as requested ===== */
     .hero-image{
       position: relative;
@@ -94,7 +225,7 @@
       position: absolute;
       inset: 0;
       z-index: -3;
-      background-image: url("../houseofwisdom3.png"), url("houseofwisdom3.png");
+      background-image: url("../houseofwisdom2.png"), url("houseofwisdom2.png");
       background-size: cover;
       background-position: center top;
       opacity: 0.98;
@@ -148,9 +279,10 @@
 
     h1{
       margin: 0;
-      font-size: clamp(2.05rem, 4.1vw, 3.7rem);
+      font-size: clamp(1.9rem, 4.1vw, 3.45rem);
       line-height: 1.04;
       color: #d1fae5;
+      white-space: nowrap;
     }
 
     p{
@@ -320,14 +452,64 @@
     }
 
     @media (max-width: 900px){
+      .archive-banners{ opacity: 0.86; }
+      .archive-banner{ width: 68px; min-height: 132px; padding: 1.1rem 0.45rem 1.7rem; }
+      .banner-cluster{ gap: 0.45rem; }
       .hero-image{ min-height: 72vh; }
       .hero-content{ margin-top: 1.6rem; padding-left: 1.2rem; padding-right: 1.2rem; }
       .cards-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
     @media (max-width: 640px){
-      .hero-image{ min-height: 640px; }
-      .intro-panel{ width: min(100% - 1.2rem, 760px); margin-top: 4vh; }
+      h1{ white-space: normal; }
+      .hero-image{
+        min-height: 760px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding-bottom: 1.2rem;
+      }
+      .intro-panel{
+        width: min(100% - 1.2rem, 760px);
+        margin-top: 4vh;
+        order: 1;
+      }
+      .archive-banners{
+        position: relative;
+        order: 2;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.55rem;
+        width: min(100% - 1.2rem, 390px);
+        height: auto;
+        margin: 1rem auto 0;
+        opacity: 1;
+      }
+      .banner-cluster{
+        position: relative;
+        top: auto;
+        left: auto;
+        right: auto;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+      .banner-cluster.left,
+      .banner-cluster.right{
+        left: auto;
+        right: auto;
+      }
+      .archive-banner{
+        width: 30%;
+        min-height: 104px;
+        padding: 0.85rem 0.32rem 1.4rem;
+        animation: bannerDropIn 0.8s cubic-bezier(.18,.78,.22,1) both;
+      }
+      .archive-banner:nth-child(2),
+      .archive-banner:nth-child(3){
+        margin-top: 0;
+      }
+      .banner-number{ font-size: 1.25rem; }
+      .banner-label{ font-size: 0.67rem; }
       .cards-grid{ grid-template-columns: 1fr; }
       .card{ min-height: 300px; }
     }
@@ -338,9 +520,40 @@
   <main class="page-shell">
     <section class="landing-card" aria-label="House of Wisdom landing area">
       <div class="hero-image">
+        <div class="archive-banners" aria-hidden="true">
+          <div class="banner-cluster left">
+            <div class="archive-banner">
+              <span class="banner-number">0</span>
+              <span class="banner-label">Books</span>
+            </div>
+            <div class="archive-banner">
+              <span class="banner-number">0</span>
+              <span class="banner-label">Stories</span>
+            </div>
+            <div class="archive-banner">
+              <span class="banner-number">0</span>
+              <span class="banner-label">Duas</span>
+            </div>
+          </div>
+
+          <div class="banner-cluster right">
+            <div class="archive-banner">
+              <span class="banner-number">0</span>
+              <span class="banner-label">Luminaries</span>
+            </div>
+            <div class="archive-banner">
+              <span class="banner-number">0</span>
+              <span class="banner-label">Maps & Regions</span>
+            </div>
+            <div class="archive-banner">
+              <span class="banner-number">0</span>
+              <span class="banner-label">Traditions</span>
+            </div>
+          </div>
+        </div>
         <article class="intro-panel">
           <div class="eyebrow" lang="ar" dir="rtl">بيت الحكمة</div>
-          <h1>The House<br>of Wisdom</h1>
+          <h1>The House of Wisdom</h1>
           <p>
             This is my ongoing personal project to archive Islamic information, knowledge, history, language, and heritage in one calm, organized space. I am building it as a living collection that can grow over time through notes, timelines, reflections, and carefully structured resources.
           </p>
