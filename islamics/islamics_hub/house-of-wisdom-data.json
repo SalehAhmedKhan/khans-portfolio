@@ -1,7 +1,7 @@
 {
   "page": {
     "backgroundImages": [
-      "house-of-wisdom-images/houseofwisdom3.png"
+      "../houseofwisdom3.png"
     ],
     "introText": "This is my ongoing personal project to archive Islamic information, knowledge, history, language, and heritage in one calm, organized space. I am building it as a living collection that can grow over time through notes, timelines, reflections, and carefully structured resources.",
     "contactEmail": "salehahmedkhan1998@gmail.com",
