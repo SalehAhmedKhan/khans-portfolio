@@ -1,0 +1,95 @@
+{
+  "page": {
+    "backgroundImages": [
+      "../houseofwisdom3.png",
+      "houseofwisdom3.png"
+    ],
+    "introText": "This is my ongoing personal project to archive Islamic information, knowledge, history, language, and heritage in one calm, organized space. I am building it as a living collection that can grow over time through notes, timelines, reflections, and carefully structured resources.",
+    "contactEmail": "salehahmedkhan1998@gmail.com",
+    "lastUpdated": "July 4, 2026",
+    "faithCornerText": "Return to The Faith Corner",
+    "faithCornerLink": "../faith-corner.html"
+  },
+  "banners": [
+    {
+      "title": "Books",
+      "number": 0
+    },
+    {
+      "title": "Stories",
+      "number": 0
+    },
+    {
+      "title": "Duas",
+      "number": 0
+    },
+    {
+      "title": "Luminaries",
+      "number": 0
+    },
+    {
+      "title": "Maps",
+      "number": 0
+    },
+    {
+      "title": "Traditions",
+      "number": 0
+    }
+  ],
+  "cards": [
+    {
+      "title": "Prophets & Timelines",
+      "description": "Short guides to the lives, relationships, and historical order of the prophets named in the Qur'an.",
+      "images": [
+        "../main_images/arabic.png",
+        "arabic.png"
+      ],
+      "link": "#"
+    },
+    {
+      "title": "Names & Meanings",
+      "description": "A place for the names of surahs, key Arabic terms, and symbolic meanings that can be expanded later.",
+      "images": [
+        "../main_images/asma.png",
+        "asma.png"
+      ],
+      "link": "#"
+    },
+    {
+      "title": "Duas & Remembrance",
+      "description": "Daily duas, dhikr, short reflections, and context notes for practical spiritual grounding.",
+      "images": [
+        "../main_images/dhikr and dua.png",
+        "dhikr and dua.png"
+      ],
+      "link": "#"
+    },
+    {
+      "title": "Qur'anic Themes",
+      "description": "Connections between recurring themes: mercy, patience, justice, gratitude, repentance, and trust in Allah.",
+      "images": [
+        "../main_images/quran.png",
+        "quran.png"
+      ],
+      "link": "#"
+    },
+    {
+      "title": "Arabic Essentials",
+      "description": "Foundational Arabic vocabulary and phrase-boundary notes for reading with better understanding.",
+      "images": [
+        "../main_images/scroll.png",
+        "scroll.png"
+      ],
+      "link": "#"
+    },
+    {
+      "title": "Reflections Archive",
+      "description": "A calm card space for future notes, mini essays, summaries, and personal learning checkpoints.",
+      "images": [
+        "../main_images/houseofwisdom.png",
+        "houseofwisdom.png"
+      ],
+      "link": "#"
+    }
+  ]
+}
