@@ -319,7 +319,7 @@
 
     /* ===== Original-style card/button layout ===== */
     .hero-content{
-      padding: 2.45rem 1.6rem 0;
+      padding: 1.15rem 1.6rem 0;
       margin-top: 0;
       position: relative;
       z-index: 2;
@@ -349,24 +349,57 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 1rem;
-      margin: 0 auto 1.55rem;
-      color: #f7d98a;
-      font-size: clamp(1.45rem, 3vw, 2.15rem);
+      gap: clamp(0.75rem, 2vw, 1.35rem);
+      margin: -0.2rem auto 1.15rem;
+      font-family: 'Aref Ruqaa', 'Scheherazade New', serif;
+      font-size: clamp(1.65rem, 3.35vw, 2.55rem);
       font-weight: 700;
       text-align: center;
+      letter-spacing: 0.055em;
+      color: #fff3c7;
+      background: linear-gradient(180deg, #fff8d7 0%, #f7d98a 44%, #d9a84e 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
       text-shadow:
-        0 1px 0 rgba(0,0,0,0.70),
-        0 0 16px rgba(218,177,91,0.22);
+        0 1px 0 rgba(0,0,0,0.72),
+        0 0 10px rgba(255,243,199,0.18),
+        0 0 22px rgba(218,177,91,0.26),
+        0 0 36px rgba(16,185,129,0.10);
+      position: relative;
     }
 
     .section-title::before,
     .section-title::after{
       content: "";
-      width: min(130px, 22vw);
-      height: 1px;
-      background: linear-gradient(to right, transparent, rgba(218,177,91,0.78), transparent);
+      width: min(210px, 26vw);
+      height: 2px;
+      background:
+        radial-gradient(circle at center, rgba(255,243,199,0.95) 0 2px, transparent 3px),
+        linear-gradient(to right, transparent, rgba(218,177,91,0.88), rgba(255,243,199,0.78), rgba(218,177,91,0.88), transparent);
+      box-shadow: 0 0 12px rgba(218,177,91,0.28);
     }
+
+    .section-title span{
+      position: relative;
+      display: inline-block;
+      padding: 0 0.25rem;
+    }
+
+    .section-title span::before,
+    .section-title span::after{
+      content: "";
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(190px, 82%);
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(218,177,91,0.62), transparent);
+      opacity: 0.9;
+    }
+
+    .section-title span::before{ top: -0.42rem; }
+    .section-title span::after{ bottom: -0.42rem; }
 
     .cards-shell{
       width: 100%;
@@ -418,46 +451,35 @@
       transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
     }
 
-    .card::before,
-    .card::after{
+    .card::before{
       content: "";
       position: absolute;
-      width: min(150px, 30%);
-      height: min(150px, 30%);
+      inset: 0;
       z-index: 3;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.22s ease, transform 0.22s ease;
-      border-color: rgba(167,243,208,0.78);
-      filter:
-        drop-shadow(0 0 9px rgba(16,185,129,0.35))
-        drop-shadow(0 0 18px rgba(16,185,129,0.18));
-    }
-
-    .card::before{
-      top: 0.72rem;
-      left: 0.72rem;
-      border-top: 1px solid rgba(167,243,208,0.78);
-      border-left: 1px solid rgba(167,243,208,0.78);
-      border-radius: 16px 0 0 0;
+      transition: opacity 0.22s ease;
       background:
-        radial-gradient(circle at 0 0, transparent 0 42%, rgba(167,243,208,0.28) 43% 44%, transparent 45%),
-        radial-gradient(circle at 100% 100%, transparent 0 62%, rgba(16,185,129,0.20) 63% 64%, transparent 65%),
-        linear-gradient(135deg, rgba(167,243,208,0.34), transparent 34%);
-      transform: translate(-9px, -9px);
+        radial-gradient(circle at 0% 0%, rgba(167,243,208,0.38) 0%, rgba(16,185,129,0.18) 12%, transparent 31%),
+        radial-gradient(circle at 100% 0%, rgba(167,243,208,0.34) 0%, rgba(16,185,129,0.16) 12%, transparent 31%),
+        radial-gradient(circle at 0% 100%, rgba(167,243,208,0.34) 0%, rgba(16,185,129,0.16) 12%, transparent 31%),
+        radial-gradient(circle at 100% 100%, rgba(167,243,208,0.38) 0%, rgba(16,185,129,0.18) 12%, transparent 31%);
+      filter: blur(1px);
     }
 
     .card::after{
-      right: 0.72rem;
-      bottom: 0.72rem;
-      border-right: 1px solid rgba(167,243,208,0.78);
-      border-bottom: 1px solid rgba(167,243,208,0.78);
-      border-radius: 0 0 16px 0;
-      background:
-        radial-gradient(circle at 100% 100%, transparent 0 42%, rgba(167,243,208,0.28) 43% 44%, transparent 45%),
-        radial-gradient(circle at 0 0, transparent 0 62%, rgba(16,185,129,0.20) 63% 64%, transparent 65%),
-        linear-gradient(315deg, rgba(167,243,208,0.34), transparent 34%);
-      transform: translate(9px, 9px);
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      opacity: 0;
+      pointer-events: none;
+      border-radius: 16px;
+      transition: opacity 0.22s ease;
+      box-shadow:
+        inset 0 0 0 1px rgba(167,243,208,0.38),
+        inset 0 0 26px rgba(16,185,129,0.12),
+        0 0 22px rgba(16,185,129,0.14);
     }
 
     .card-link:hover .card,
@@ -472,14 +494,12 @@
 
     .card-link:hover .card::before,
     .card-link:focus-visible .card::before{
-      opacity: 0.82;
-      transform: translate(0, 0);
+      opacity: 1;
     }
 
     .card-link:hover .card::after,
     .card-link:focus-visible .card::after{
-      opacity: 0.82;
-      transform: translate(0, 0);
+      opacity: 1;
     }
 
     .card-media{
@@ -593,7 +613,7 @@
       .archive-banner{ width: 68px; height: 132px; min-height: 0; padding: 1.1rem 0.45rem 1.7rem; }
       .banner-cluster{ gap: 0.45rem; }
       .hero-image{ min-height: 72vh; }
-      .hero-content{ margin-top: 0; padding-left: 1.2rem; padding-right: 1.2rem; }
+      .hero-content{ margin-top: 0; padding: 1rem 1.2rem 0; }
     }
 
     @media (max-width: 640px){
@@ -667,7 +687,7 @@
           <h1>The House of Wisdom</h1>
           <p id="introText"></p>
           <p>
-            If you want to contribute, suggest corrections, or share resources - <a class="intro-link" id="contactLink" href="#">contact me!</a>
+            If you want to contribute, suggest a correction, or share resources — <a class="intro-link" id="contactLink" href="#">contact me!</a>
           </p>
           <p style="margin-top:0.9rem;font-size:0.92rem;color:#a7f3d0;">
             <strong>Last updated:</strong> <span id="lastUpdated"></span>
@@ -679,7 +699,7 @@
       <div class="hero-content">
         <section class="cards-section" aria-label="House of Wisdom cards">
           <div class="cards-shell">
-            <h2 class="section-title">Scholars' Chambers</h2>
+            <h2 class="section-title"><span>Scholars' Chambers</span></h2>
             <div class="cards-grid" id="cardsGrid"></div>
           </div>
         </section>
