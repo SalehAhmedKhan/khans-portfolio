@@ -348,8 +348,8 @@
 
     .cards-grid{
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1rem;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.05rem;
       width: 100%;
       margin: 0 auto;
     }
@@ -364,7 +364,7 @@
       background: transparent;
       border: none;
       padding: 0;
-      text-align: left;
+      text-align: center;
       cursor: pointer;
     }
 
@@ -374,23 +374,76 @@
       border-radius: 16px;
       overflow: hidden;
       box-shadow: 0 16px 40px rgba(0,0,0,0.45);
-      display: flex;
-      flex-direction: column;
-      min-height: 320px;
+      display: grid;
+      place-items: center;
+      min-height: 330px;
       height: 100%;
-      transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+      position: relative;
+      isolation: isolate;
+      transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
     }
 
-    .card-link:hover .card{
+    .card::before{
+      content: "۞";
+      position: absolute;
+      top: 1rem;
+      left: 50%;
+      z-index: 3;
+      transform: translateX(-50%) scale(0.82);
+      color: #a7f3d0;
+      font-family: 'Lateef', 'Scheherazade New', serif;
+      font-size: 2.2rem;
+      line-height: 1;
+      opacity: 0;
+      text-shadow: 0 0 18px rgba(16,185,129,0.65);
+      transition: opacity 0.18s ease, transform 0.18s ease;
+      pointer-events: none;
+    }
+
+    .card::after{
+      content: "";
+      position: absolute;
+      inset: 0.8rem;
+      z-index: 3;
+      border: 1px solid rgba(167,243,208,0.00);
+      border-radius: 12px;
+      background:
+        radial-gradient(circle at 0 0, rgba(16,185,129,0.32), transparent 16%),
+        radial-gradient(circle at 100% 0, rgba(16,185,129,0.32), transparent 16%),
+        radial-gradient(circle at 0 100%, rgba(16,185,129,0.32), transparent 16%),
+        radial-gradient(circle at 100% 100%, rgba(16,185,129,0.32), transparent 16%);
+      opacity: 0;
+      transition: opacity 0.18s ease, border-color 0.18s ease;
+      pointer-events: none;
+    }
+
+    .card-link:hover .card,
+    .card-link:focus-visible .card{
       transform: translateY(-2px);
-      border-color: rgba(16,185,129,0.35);
+      border-color: rgba(16,185,129,0.45);
       background: rgba(2,6,23,0.62);
+      box-shadow:
+        0 18px 44px rgba(0,0,0,0.50),
+        0 0 28px rgba(16,185,129,0.13);
+    }
+
+    .card-link:hover .card::before,
+    .card-link:focus-visible .card::before{
+      opacity: 0.95;
+      transform: translateX(-50%) scale(1);
+    }
+
+    .card-link:hover .card::after,
+    .card-link:focus-visible .card::after{
+      opacity: 1;
+      border-color: rgba(167,243,208,0.38);
     }
 
     .card-media{
-      height: 150px;
+      position: absolute;
+      inset: 0;
+      z-index: -2;
       background: rgba(15,23,42,0.55);
-      position: relative;
       overflow: hidden;
     }
 
@@ -402,35 +455,72 @@
       background-size: cover;
       background-position: center;
       opacity: 0.95;
+      transform: scale(1.01);
+      transition: transform 0.22s ease, opacity 0.22s ease;
     }
 
     .card-media::after{
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(2,6,23,0.10), rgba(2,6,23,0.70));
+      background:
+        radial-gradient(circle at center, rgba(4,19,12,0.24), rgba(2,6,23,0.72) 72%),
+        linear-gradient(180deg, rgba(2,6,23,0.34), rgba(2,6,23,0.78));
+    }
+
+    .card-link:hover .card-media::before,
+    .card-link:focus-visible .card-media::before{
+      transform: scale(1.055);
+      opacity: 1;
     }
 
     .card-body{
-      padding: 0.95rem 1rem 1rem;
+      padding: 3.2rem clamp(1.15rem, 3vw, 2.4rem) 2.1rem;
       display: flex;
       flex-direction: column;
-      gap: 0.55rem;
-      flex: 1;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      min-height: 100%;
+      box-sizing: border-box;
+      position: relative;
+      z-index: 2;
+      text-align: center;
+    }
+
+    .card-body::before,
+    .card-body::after{
+      content: "";
+      display: block;
+      width: min(170px, 52%);
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(167,243,208,0.70), transparent);
+      opacity: 0;
+      transform: scaleX(0.72);
+      transition: opacity 0.18s ease, transform 0.18s ease;
+    }
+
+    .card-link:hover .card-body::before,
+    .card-link:hover .card-body::after,
+    .card-link:focus-visible .card-body::before,
+    .card-link:focus-visible .card-body::after{
+      opacity: 1;
+      transform: scaleX(1);
     }
 
     .card h3{
       margin: 0;
-      font-size: 1.16rem;
+      font-size: clamp(1.18rem, 2.05vw, 1.55rem);
       font-weight: 700;
       color: #d1fae5;
     }
 
     .card p{
       margin: 0;
-      font-size: 1rem;
+      max-width: 540px;
+      font-size: clamp(0.98rem, 1.28vw, 1.08rem);
       line-height: 1.65;
-      color: #cbd5f5;
+      color: #f3f4e8;
     }
 
     .bottom-cta{
@@ -461,7 +551,6 @@
       .banner-cluster{ gap: 0.45rem; }
       .hero-image{ min-height: 72vh; }
       .hero-content{ margin-top: 1.6rem; padding-left: 1.2rem; padding-right: 1.2rem; }
-      .cards-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
     @media (max-width: 640px){
@@ -516,7 +605,7 @@
       .banner-number{ font-size: 1.25rem; }
       .banner-label{ font-size: 0.62rem; min-height: 2.45em; }
       .cards-grid{ grid-template-columns: 1fr; }
-      .card{ min-height: 300px; }
+      .card{ min-height: 290px; }
     }
   </style>
 </head>
