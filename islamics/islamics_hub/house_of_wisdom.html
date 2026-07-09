@@ -229,7 +229,7 @@
       position: absolute;
       inset: 0;
       z-index: -3;
-      background-image: url("../houseofwisdom3.png"), url("houseofwisdom3.png");
+      background-image: var(--hero-bg, url("../houseofwisdom3.png"), url("houseofwisdom3.png"));
       background-size: cover;
       background-position: center top;
       opacity: 0.98;
@@ -524,49 +524,21 @@
 <body>
   <main class="page-shell">
     <section class="landing-card" aria-label="House of Wisdom landing area">
-      <div class="hero-image">
+      <div class="hero-image" id="heroImage">
         <div class="archive-banners" aria-hidden="true">
-          <div class="banner-cluster left">
-            <div class="archive-banner">
-              <span class="banner-number">0</span>
-              <span class="banner-label">Books</span>
-            </div>
-            <div class="archive-banner">
-              <span class="banner-number">0</span>
-              <span class="banner-label">Stories</span>
-            </div>
-            <div class="archive-banner">
-              <span class="banner-number">0</span>
-              <span class="banner-label">Duas</span>
-            </div>
-          </div>
-
-          <div class="banner-cluster right">
-            <div class="archive-banner">
-              <span class="banner-number">0</span>
-              <span class="banner-label">Luminaries</span>
-            </div>
-            <div class="archive-banner">
-              <span class="banner-number">0</span>
-              <span class="banner-label">Maps</span>
-            </div>
-            <div class="archive-banner">
-              <span class="banner-number">0</span>
-              <span class="banner-label">Traditions</span>
-            </div>
-          </div>
+          <div class="banner-cluster left" id="bannerLeft"></div>
+          <div class="banner-cluster right" id="bannerRight"></div>
         </div>
+
         <article class="intro-panel">
           <div class="eyebrow" lang="ar" dir="rtl">بيت الحكمة</div>
           <h1>The House of Wisdom</h1>
+          <p id="introText"></p>
           <p>
-            This is my ongoing personal project to archive Islamic information, knowledge, history, language, and heritage in one calm, organized space. I am building it as a living collection that can grow over time through notes, timelines, reflections, and carefully structured resources.
-          </p>
-          <p>
-            If you want to contribute, suggest a correction, or share resources — <a class="intro-link" href="mailto:salehahmedkhan1998@gmail.com">contact me!</a>
+            If you want to contribute, suggest a correction, or share resources — <a class="intro-link" id="contactLink" href="#">contact me!</a>
           </p>
           <p style="margin-top:0.9rem;font-size:0.92rem;color:#a7f3d0;">
-            <strong>Last updated:</strong> July 4, 2026
+            <strong>Last updated:</strong> <span id="lastUpdated"></span>
           </p>
         </article>
         <div class="hero-fade" aria-hidden="true"></div>
@@ -575,75 +547,94 @@
       <div class="hero-content">
         <section class="cards-section" aria-label="House of Wisdom cards">
           <div class="cards-shell">
-            <div class="cards-grid">
-              <a class="card-link" href="#">
-                <article class="card">
-                  <div class="card-media" style="--img: url('../main_images/arabic.png'), url('arabic.png');"></div>
-                  <div class="card-body">
-                    <h3>Prophets & Timelines</h3>
-                    <p>Short guides to the lives, relationships, and historical order of the prophets named in the Qur'an.</p>
-                  </div>
-                </article>
-              </a>
-
-              <a class="card-link" href="#">
-                <article class="card">
-                  <div class="card-media" style="--img: url('../main_images/asma.png'), url('asma.png');"></div>
-                  <div class="card-body">
-                    <h3>Names & Meanings</h3>
-                    <p>A place for the names of surahs, key Arabic terms, and symbolic meanings that can be expanded later.</p>
-                  </div>
-                </article>
-              </a>
-
-              <a class="card-link" href="#">
-                <article class="card">
-                  <div class="card-media" style="--img: url('../main_images/dhikr and dua.png'), url('dhikr and dua.png');"></div>
-                  <div class="card-body">
-                    <h3>Duas & Remembrance</h3>
-                    <p>Daily duas, dhikr, short reflections, and context notes for practical spiritual grounding.</p>
-                  </div>
-                </article>
-              </a>
-
-              <a class="card-link" href="#">
-                <article class="card">
-                  <div class="card-media" style="--img: url('../main_images/quran.png'), url('quran.png');"></div>
-                  <div class="card-body">
-                    <h3>Qur'anic Themes</h3>
-                    <p>Connections between recurring themes: mercy, patience, justice, gratitude, repentance, and trust in Allah.</p>
-                  </div>
-                </article>
-              </a>
-
-              <a class="card-link" href="#">
-                <article class="card">
-                  <div class="card-media" style="--img: url('../main_images/scroll.png'), url('scroll.png');"></div>
-                  <div class="card-body">
-                    <h3>Arabic Essentials</h3>
-                    <p>Foundational Arabic vocabulary and phrase-boundary notes for reading with better understanding.</p>
-                  </div>
-                </article>
-              </a>
-
-              <a class="card-link" href="#">
-                <article class="card">
-                  <div class="card-media" style="--img: url('../main_images/houseofwisdom.png'), url('houseofwisdom.png');"></div>
-                  <div class="card-body">
-                    <h3>Reflections Archive</h3>
-                    <p>A calm card space for future notes, mini essays, summaries, and personal learning checkpoints.</p>
-                  </div>
-                </article>
-              </a>
-            </div>
+            <div class="cards-grid" id="cardsGrid"></div>
           </div>
         </section>
       </div>
     </section>
 
     <div class="bottom-cta">
-      <a class="back-btn" href="../faith-corner.html">Return to The Faith Corner</a>
+      <a class="back-btn" id="faithCornerLink" href="#">Return to The Faith Corner</a>
     </div>
   </main>
+
+  <script>
+    const DATA_FILE = "house-of-wisdom-data.json";
+
+    function cssUrlList(paths) {
+      return paths.map(path => `url("${path}")`).join(", ");
+    }
+
+    function makeBanner(banner) {
+      const item = document.createElement("div");
+      item.className = "archive-banner";
+      item.innerHTML = `
+        <span class="banner-number">${banner.number}</span>
+        <span class="banner-label">${banner.title}</span>
+      `;
+      return item;
+    }
+
+    function makeCard(card) {
+      const link = document.createElement("a");
+      link.className = "card-link";
+      link.href = card.link || "#";
+
+      link.innerHTML = `
+        <article class="card">
+          <div class="card-media"></div>
+          <div class="card-body">
+            <h3>${card.title}</h3>
+            <p>${card.description}</p>
+          </div>
+        </article>
+      `;
+
+      const media = link.querySelector(".card-media");
+      media.style.setProperty("--img", cssUrlList(card.images || []));
+      return link;
+    }
+
+    async function loadHouseOfWisdom() {
+      try {
+        const response = await fetch(DATA_FILE);
+        if (!response.ok) throw new Error(`Could not load ${DATA_FILE}`);
+        const data = await response.json();
+
+        const page = data.page || {};
+        const banners = data.banners || [];
+        const cards = data.cards || [];
+
+        if (page.backgroundImages?.length) {
+          document.getElementById("heroImage").style.setProperty("--hero-bg", cssUrlList(page.backgroundImages));
+        }
+
+        document.getElementById("introText").textContent = page.introText || "";
+        document.getElementById("lastUpdated").textContent = page.lastUpdated || "";
+
+        const contactLink = document.getElementById("contactLink");
+        contactLink.href = page.contactEmail ? `mailto:${page.contactEmail}` : "#";
+
+        const faithCornerLink = document.getElementById("faithCornerLink");
+        faithCornerLink.href = page.faithCornerLink || "#";
+        faithCornerLink.textContent = page.faithCornerText || "Return to The Faith Corner";
+
+        const left = document.getElementById("bannerLeft");
+        const right = document.getElementById("bannerRight");
+        left.innerHTML = "";
+        right.innerHTML = "";
+        banners.slice(0, 3).forEach(banner => left.appendChild(makeBanner(banner)));
+        banners.slice(3, 6).forEach(banner => right.appendChild(makeBanner(banner)));
+
+        const grid = document.getElementById("cardsGrid");
+        grid.innerHTML = "";
+        cards.forEach(card => grid.appendChild(makeCard(card)));
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    loadHouseOfWisdom();
+  </script>
 </body>
 </html>
