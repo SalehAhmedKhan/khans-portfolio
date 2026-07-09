@@ -45,7 +45,7 @@ export const FAITH_CARDS = [
     title: "The Foundations of Faith",
     description:
       "Morning and evening remembrances, short du'as, and a simple routine to keep the heart anchored throughout the day.",
-    image: "./main_images/dhikr and dua.png",
+    image: "./main_images/dhikr and duax.png",
     module: "js/tabs/dhikr.js",
   },
 ];
