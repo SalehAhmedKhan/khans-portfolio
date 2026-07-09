@@ -151,7 +151,7 @@
     }
 
     .archive-banner .banner-number::before{
-      content: "✦";
+      content: "";
       display: block;
       margin-bottom: 0.42rem;
       color: #f7d98a;
@@ -422,33 +422,42 @@
     .card::after{
       content: "";
       position: absolute;
-      width: min(138px, 28%);
-      aspect-ratio: 1 / 1;
+      width: min(150px, 30%);
+      height: min(150px, 30%);
       z-index: 3;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.22s ease, transform 0.22s ease;
-      background:
-        linear-gradient(45deg, transparent 47%, rgba(218,177,91,0.72) 49%, rgba(218,177,91,0.72) 51%, transparent 53%),
-        linear-gradient(-45deg, transparent 47%, rgba(218,177,91,0.62) 49%, rgba(218,177,91,0.62) 51%, transparent 53%),
-        radial-gradient(circle at 50% 50%, transparent 0 28%, rgba(167,243,208,0.55) 29% 31%, transparent 32%),
-        repeating-conic-gradient(from 45deg, rgba(167,243,208,0.36) 0deg 8deg, transparent 8deg 22deg);
-      background-size: 38px 38px, 38px 38px, 46px 46px, 48px 48px;
-      filter: drop-shadow(0 0 10px rgba(16,185,129,0.20));
-      mask-image: radial-gradient(circle at 0 0, #000 0 56%, transparent 72%);
-      -webkit-mask-image: radial-gradient(circle at 0 0, #000 0 56%, transparent 72%);
+      border-color: rgba(167,243,208,0.78);
+      filter:
+        drop-shadow(0 0 9px rgba(16,185,129,0.35))
+        drop-shadow(0 0 18px rgba(16,185,129,0.18));
     }
 
     .card::before{
-      top: 0.55rem;
-      left: 0.55rem;
-      transform: translate(-10px, -10px);
+      top: 0.72rem;
+      left: 0.72rem;
+      border-top: 1px solid rgba(167,243,208,0.78);
+      border-left: 1px solid rgba(167,243,208,0.78);
+      border-radius: 16px 0 0 0;
+      background:
+        radial-gradient(circle at 0 0, transparent 0 42%, rgba(167,243,208,0.28) 43% 44%, transparent 45%),
+        radial-gradient(circle at 100% 100%, transparent 0 62%, rgba(16,185,129,0.20) 63% 64%, transparent 65%),
+        linear-gradient(135deg, rgba(167,243,208,0.34), transparent 34%);
+      transform: translate(-9px, -9px);
     }
 
     .card::after{
-      right: 0.55rem;
-      bottom: 0.55rem;
-      transform: rotate(180deg) translate(-10px, -10px);
+      right: 0.72rem;
+      bottom: 0.72rem;
+      border-right: 1px solid rgba(167,243,208,0.78);
+      border-bottom: 1px solid rgba(167,243,208,0.78);
+      border-radius: 0 0 16px 0;
+      background:
+        radial-gradient(circle at 100% 100%, transparent 0 42%, rgba(167,243,208,0.28) 43% 44%, transparent 45%),
+        radial-gradient(circle at 0 0, transparent 0 62%, rgba(16,185,129,0.20) 63% 64%, transparent 65%),
+        linear-gradient(315deg, rgba(167,243,208,0.34), transparent 34%);
+      transform: translate(9px, 9px);
     }
 
     .card-link:hover .card,
@@ -463,14 +472,14 @@
 
     .card-link:hover .card::before,
     .card-link:focus-visible .card::before{
-      opacity: 0.78;
+      opacity: 0.82;
       transform: translate(0, 0);
     }
 
     .card-link:hover .card::after,
     .card-link:focus-visible .card::after{
-      opacity: 0.78;
-      transform: rotate(180deg) translate(0, 0);
+      opacity: 0.82;
+      transform: translate(0, 0);
     }
 
     .card-media{
@@ -670,7 +679,7 @@
       <div class="hero-content">
         <section class="cards-section" aria-label="House of Wisdom cards">
           <div class="cards-shell">
-            <h2 class="section-title">Scholar's Chambers</h2>
+            <h2 class="section-title">Scholars' Chambers</h2>
             <div class="cards-grid" id="cardsGrid"></div>
           </div>
         </section>
