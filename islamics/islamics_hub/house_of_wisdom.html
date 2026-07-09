@@ -667,6 +667,24 @@
       }
       .banner-number{ font-size: 1.25rem; }
       .banner-label{ font-size: 0.62rem; min-height: 2.45em; }
+      .section-title{
+        gap: 0.42rem;
+        font-size: clamp(1.05rem, 5.2vw, 1.45rem);
+        letter-spacing: 0.035em;
+        white-space: nowrap;
+      }
+      .section-title::before,
+      .section-title::after{
+        width: 34px;
+        flex: 0 0 34px;
+      }
+      .section-title span{
+        white-space: nowrap;
+      }
+      .section-title span::before,
+      .section-title span::after{
+        width: 92%;
+      }
       .cards-grid{ grid-template-columns: 1fr; }
       .card{ min-height: 290px; }
     }
