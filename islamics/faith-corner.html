@@ -189,6 +189,10 @@
       text-decoration: none;
       color: inherit;
       cursor: pointer;
+      transition:
+        transform 0.22s ease,
+        border-color 0.22s ease,
+        box-shadow 0.22s ease;
     }
 
     .calligraphy-slot::before{
@@ -200,6 +204,10 @@
       background-position: center;
       opacity: 0.95;
       filter: saturate(1.02) contrast(1.02);
+      transition:
+        transform 0.32s ease,
+        filter 0.32s ease,
+        opacity 0.32s ease;
     }
 
     .calligraphy-slot::after{
@@ -207,6 +215,7 @@
       position: absolute;
       inset: 0;
       background: linear-gradient(180deg, rgba(2,6,23,0.18), rgba(2,6,23,0.48) 55%, rgba(2,6,23,0.78));
+      transition: opacity 0.24s ease;
     }
 
     .wisdom-overlay{
@@ -219,6 +228,48 @@
       align-items: center;
       text-align: center;
       padding: 2rem;
+    }
+
+    .wisdom-overlay::before{
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 18px;
+      pointer-events: none;
+      opacity: 0;
+      z-index: -1;
+      transition: opacity 0.24s ease;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(167,243,208,0.30) 0%, rgba(16,185,129,0.13) 13%, transparent 31%),
+        radial-gradient(circle at 100% 0%, rgba(167,243,208,0.26) 0%, rgba(16,185,129,0.12) 13%, transparent 31%),
+        radial-gradient(circle at 0% 100%, rgba(167,243,208,0.26) 0%, rgba(16,185,129,0.12) 13%, transparent 31%),
+        radial-gradient(circle at 100% 100%, rgba(167,243,208,0.30) 0%, rgba(16,185,129,0.13) 13%, transparent 31%);
+      filter: blur(1px);
+    }
+
+    .calligraphy-slot:hover,
+    .calligraphy-slot:focus-visible{
+      transform: translateY(-2px);
+      border-color: rgba(16,185,129,0.55);
+      box-shadow:
+        0 22px 60px rgba(0,0,0,0.60),
+        0 0 22px rgba(16,185,129,0.14);
+    }
+
+    .calligraphy-slot:hover::before,
+    .calligraphy-slot:focus-visible::before{
+      transform: scale(1.025);
+      filter: saturate(1.06) contrast(1.03) brightness(1.03);
+    }
+
+    .calligraphy-slot:hover::after,
+    .calligraphy-slot:focus-visible::after{
+      opacity: 0.94;
+    }
+
+    .calligraphy-slot:hover .wisdom-overlay::before,
+    .calligraphy-slot:focus-visible .wisdom-overlay::before{
+      opacity: 1;
     }
 
     .wisdom-arabic{
